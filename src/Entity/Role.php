@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\RoleRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: RoleRepository::class)]
@@ -21,6 +23,14 @@ class Role
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $description;
+
+    #[ORM\ManyToMany(targetEntity: Permission::class, inversedBy: 'roles')]
+    private $permission;
+
+    public function __construct()
+    {
+        $this->permission = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -59,6 +69,30 @@ class Role
     public function setDescription(?string $description): self
     {
         $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Permission>
+     */
+    public function getPermission(): Collection
+    {
+        return $this->permission;
+    }
+
+    public function addPermission(Permission $permission): self
+    {
+        if (!$this->permission->contains($permission)) {
+            $this->permission[] = $permission;
+        }
+
+        return $this;
+    }
+
+    public function removePermission(Permission $permission): self
+    {
+        $this->permission->removeElement($permission);
 
         return $this;
     }

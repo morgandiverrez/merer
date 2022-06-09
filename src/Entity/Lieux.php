@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\LieuxRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: LieuxRepository::class)]
@@ -30,6 +32,14 @@ class Lieux
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $ville;
+
+    #[ORM\ManyToMany(targetEntity: Seance::class, inversedBy: 'lieux')]
+    private $seance;
+
+    public function __construct()
+    {
+        $this->seance = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -104,6 +114,30 @@ class Lieux
     public function setVille(?string $ville): self
     {
         $this->ville = $ville;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Seance>
+     */
+    public function getSeance(): Collection
+    {
+        return $this->seance;
+    }
+
+    public function addSeance(Seance $seance): self
+    {
+        if (!$this->seance->contains($seance)) {
+            $this->seance[] = $seance;
+        }
+
+        return $this;
+    }
+
+    public function removeSeance(Seance $seance): self
+    {
+        $this->seance->removeElement($seance);
 
         return $this;
     }

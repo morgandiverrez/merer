@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\BadgeRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: BadgeRepository::class)]
@@ -24,6 +26,14 @@ class Badge
 
     #[ORM\Column(type: 'date', nullable: true)]
     private $date_creation;
+
+    #[ORM\ManyToMany(targetEntity: profil::class, inversedBy: 'badge')]
+    private $profil;
+
+    public function __construct()
+    {
+        $this->profil = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -74,6 +84,30 @@ class Badge
     public function setDateCreation(?\DateTimeInterface $date_creation): self
     {
         $this->date_creation = $date_creation;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, profil>
+     */
+    public function getProfil(): Collection
+    {
+        return $this->profil;
+    }
+
+    public function addProfil(profil $profil): self
+    {
+        if (!$this->profil->contains($profil)) {
+            $this->profil[] = $profil;
+        }
+
+        return $this;
+    }
+
+    public function removeProfil(profil $profil): self
+    {
+        $this->profil->removeElement($profil);
 
         return $this;
     }

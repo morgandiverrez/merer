@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\FormationRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: FormationRepository::class)]
@@ -33,6 +35,14 @@ class Formation
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $opg;
+
+    #[ORM\OneToMany(mappedBy: 'formation', targetEntity: Seance::class)]
+    private $seance;
+
+    public function __construct()
+    {
+        $this->Seance = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -119,6 +129,36 @@ class Formation
     public function setOpg(?string $opg): self
     {
         $this->opg = $opg;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Seance>
+     */
+    public function getSeance(): Collection
+    {
+        return $this->seance;
+    }
+
+    public function addSeance(Seance $seance): self
+    {
+        if (!$this->seance->contains($seance)) {
+            $this->seance[] = $seance;
+            $seance->setFormation($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSeance(Seance $seance): self
+    {
+        if ($this->seance->removeElement($seance)) {
+            // set the owning side to null (unless already changed)
+            if ($seance->getFormation() === $this) {
+                $seance->setFormation(null);
+            }
+        }
 
         return $this;
     }

@@ -19,6 +19,9 @@ class Identification
     #[ORM\Column(type: 'string', length: 255)]
     private $password;
 
+    #[ORM\OneToOne(targetEntity: profil::class, cascade: ['persist', 'remove'])]
+    private $profil;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -44,6 +47,18 @@ class Identification
     public function setPassword(string $password): self
     {
         $this->password = $password;
+
+        return $this;
+    }
+
+    public function getProfil(): ?profil
+    {
+        return $this->profil;
+    }
+
+    public function setProfil(?profil $profil): self
+    {
+        $this->profil = $profil;
 
         return $this;
     }

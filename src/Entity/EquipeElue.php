@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\EquipeElueRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: EquipeElueRepository::class)]
@@ -30,6 +32,14 @@ class EquipeElue
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $etablissement;
+
+    #[ORM\ManyToMany(targetEntity: Profil::class, inversedBy: 'equipeElue')]
+    private $profil;
+
+    public function __construct()
+    {
+        $this->profil = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -104,6 +114,30 @@ class EquipeElue
     public function setEtablissement(?string $etablissement): self
     {
         $this->etablissement = $etablissement;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Profil>
+     */
+    public function getProfil(): Collection
+    {
+        return $this->profil;
+    }
+
+    public function addProfil(Profil $profil): self
+    {
+        if (!$this->profil->contains($profil)) {
+            $this->profil[] = $profil;
+        }
+
+        return $this;
+    }
+
+    public function removeProfil(Profil $profil): self
+    {
+        $this->profil->removeElement($profil);
 
         return $this;
     }

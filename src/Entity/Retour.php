@@ -70,6 +70,12 @@ class Retour
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $mot_fin;
 
+    #[ORM\ManyToOne(targetEntity: Seance::class, inversedBy: 'retour')]
+    private $seance;
+
+    #[ORM\ManyToOne(targetEntity: Profil::class, inversedBy: 'retour')]
+    private $profil;
+
 
     public function getId(): ?int
     {
@@ -300,6 +306,30 @@ class Retour
     public function setMotFin(?string $mot_fin): self
     {
         $this->mot_fin = $mot_fin;
+
+        return $this;
+    }
+
+    public function getSeance(): ?Seance
+    {
+        return $this->seance;
+    }
+
+    public function setSeance(?Seance $seance): self
+    {
+        $this->seance = $seance;
+
+        return $this;
+    }
+
+    public function getProfil(): ?Profil
+    {
+        return $this->profil;
+    }
+
+    public function setProfil(?Profil $profil): self
+    {
+        $this->profil = $profil;
 
         return $this;
     }
