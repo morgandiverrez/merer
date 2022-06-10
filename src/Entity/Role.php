@@ -27,9 +27,13 @@ class Role
     #[ORM\ManyToMany(targetEntity: Permission::class, inversedBy: 'roles')]
     private $permission;
 
+    #[ORM\OneToMany(mappedBy: 'role', targetEntity: RoleIdentification::class)]
+    private $roleIdentification;
+
     public function __construct()
     {
         $this->permission = new ArrayCollection();
+        $this->roleIdentification = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -93,6 +97,36 @@ class Role
     public function removePermission(Permission $permission): self
     {
         $this->permission->removeElement($permission);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, RoleIdentification>
+     */
+    public function getRoleIdentification(): Collection
+    {
+        return $this->roleIdentification;
+    }
+
+    public function addRoleIdentification(RoleIdentification $roleIdentification): self
+    {
+        if (!$this->roleIdentification->contains($roleIdentification)) {
+            $this->roleIdentification[] = $roleIdentification;
+            $roleIdentification->setRole($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRoleIdentification(RoleIdentification $roleIdentification): self
+    {
+        if ($this->roleIdentification->removeElement($roleIdentification)) {
+            // set the owning side to null (unless already changed)
+            if ($roleIdentification->getRole() === $this) {
+                $roleIdentification->setRole(null);
+            }
+        }
 
         return $this;
     }

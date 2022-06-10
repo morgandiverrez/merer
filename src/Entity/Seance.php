@@ -39,11 +39,15 @@ class Seance
     #[ORM\ManyToMany(targetEntity: Profil::class, mappedBy: 'formateurice')]
     private $formateurice;
 
+    #[ORM\OneToMany(mappedBy: 'seance', targetEntity: SeanceProfil::class)]
+    private $seanceProfil;
+
     public function __construct()
     {
         $this->lieux = new ArrayCollection();
         $this->retour = new ArrayCollection();
         $this->formateurice = new ArrayCollection();
+        $this->seanceProfil = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -190,6 +194,36 @@ class Seance
     {
         if ($this->formateurice->removeElement($formateurice)) {
             $formateurice->removeFormateurice($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, SeanceProfil>
+     */
+    public function getSeanceProfil(): Collection
+    {
+        return $this->seanceProfil;
+    }
+
+    public function addSeanceProfil(SeanceProfil $seanceProfil): self
+    {
+        if (!$this->seanceProfil->contains($seanceProfil)) {
+            $this->seanceProfil[] = $seanceProfil;
+            $seanceProfil->setSeance($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSeanceProfil(SeanceProfil $seanceProfil): self
+    {
+        if ($this->seanceProfil->removeElement($seanceProfil)) {
+            // set the owning side to null (unless already changed)
+            if ($seanceProfil->getSeance() === $this) {
+                $seanceProfil->setSeance(null);
+            }
         }
 
         return $this;

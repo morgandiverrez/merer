@@ -48,6 +48,9 @@ class Profil
     #[ORM\ManyToMany(targetEntity: seance::class, inversedBy: 'profil')]
     private $formateurice;
 
+    #[ORM\OneToMany(mappedBy: 'profil', targetEntity: SeanceProfil::class)]
+    private $seanceProfil;
+
     public function __construct()
     {
         $this->retour = new ArrayCollection();
@@ -55,6 +58,7 @@ class Profil
         $this->association = new ArrayCollection();
         $this->badge = new ArrayCollection();
         $this->formateurice = new ArrayCollection();
+        $this->seanceProfil = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -265,6 +269,36 @@ class Profil
     public function removeFormateurice(seance $formateurice): self
     {
         $this->formateurice->removeElement($formateurice);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, SeanceProfil>
+     */
+    public function getSeanceProfil(): Collection
+    {
+        return $this->seanceProfil;
+    }
+
+    public function addSeanceProfil(SeanceProfil $seanceProfil): self
+    {
+        if (!$this->seanceProfil->contains($seanceProfil)) {
+            $this->seanceProfil[] = $seanceProfil;
+            $seanceProfil->setProfil($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSeanceProfil(SeanceProfil $seanceProfil): self
+    {
+        if ($this->seanceProfil->removeElement($seanceProfil)) {
+            // set the owning side to null (unless already changed)
+            if ($seanceProfil->getProfil() === $this) {
+                $seanceProfil->setProfil(null);
+            }
+        }
 
         return $this;
     }
