@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Catalogue{% endblock %}
+
+
+{% block body %}
+    <div class="container-fluid">
+        <div class="corps mx-auto">
+            <p class="display-6 no-wrap text-center mb-5"> Catalogue</p>
+
+            <table class="table table-dark table-striped table-hover text-center">
+                <thead>
+                
+                </thead>
+
+                <tbody>
+                    <tr scope="col">Nom</tr>
+                    <tr>{{formation.name}}</tr>
+
+                    <tr scope="col">Description</tr>
+                    <tr>{{formation.description}}</tr>
+
+                    <tr>
+                    <td scope="col">Pre-Requis</td>
+                    <td scope="col">Durée</td>
+                    </tr>
+                    <tr>
+                    <th{{formation.pre_requis}}</th>
+                    <th>{{formation.duration.format("h:m")}}</th>
+                    </tr>
+                    
+                    <tr>
+                    <th scope="col">Code</th>
+                    <th scope="col">public_cible</th>
+                    </tr>
+                    <tr>
+                    <th>{{formation.code}}</th>
+                    <th>{{formation.public_cible}}</th>
+                    </tr>
+
+                    <tr scope="col">opg</tr>
+                    <tr>{{formation.opg}}</tr>
+                    
+                    <th><a href="/formation/edit/{{ children.children.childrenId }}"><i class = "fa text-light fa-folder"></i></a></th>  <!--A modife pas definitif-->
+                    <th><a href="/formation/delete/{{ children.children.childrenId }}/{{ camp.campId }}"><i class = "fa text-light fa-pencil"></i></a></th>
+                    r> {% endfor %}
+                </tbody>
+            </table>
+
+            <div class="text-center">
+                <a href="/chlidren/childrenToCamp/{{camp.campId}}"><button class="btn btn-success mt-3 mb-3"><i class = "fa text-light fa-plus-square me-2"></i>{{ button_label|default('Nouveau') }}</button></a>
+            </div>
+
+        </div>
+    </div>
+
+
+{% endblock %}
