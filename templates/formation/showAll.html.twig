@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Catalogue{% endblock %}
+
+
+{% block body %}
+    <div class="container-fluid">
+        <div class="corps mx-auto">
+            <p class="display-6 no-wrap text-center mb-5"> Catalogue</p>
+
+            <table class="table table-dark table-striped table-hover text-center">
+                <thead>
+                <tr>
+                    <th scope="col">Nom</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Durée</th>
+                    <th scope="col">Voir plus</th>
+                    
+                </tr>
+                </thead>
+
+                <tbody>
+                {% for formation in formations %} <tr>
+                    <th>{{formation.name}}</th>
+                    <th>{{formation.description}}</th>
+                    <th>{{formation.duration.format("h:m")}}</th>
+                    <th><a href="/document/showAll/{{ formation.id }}"><i class = "fa text-light fa-folder"></i></a></th>  <!--A modife pas definitif-->
+               </tr> {% endfor %}
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+
+
+{% endblock %}
