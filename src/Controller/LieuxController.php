@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Lieux;
+use Symfony\Component\HttpFoundation\Request;
 
 
 #[Route('/lieux', name: 'lieux_')]
@@ -42,6 +43,28 @@ class LieuxController extends AbstractController
 
         return $this->render('lieux/edit.html.twig', [
             'lieu' => $lieu,
+        ]);
+    }
+
+    #[Route('/new', name: 'new')]
+    public function new(EntityManagerInterface $entityManager, Request $request): Response
+    {
+        $lieu = new Lieux();
+        $form = $this->createForm(FormationType::class, $lieu);
+        $form->handleRequest($request);
+
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $entityManager->persist($lieu);
+            $entityManager->flush();
+            return $this->redirectToRoute('lieux_showAll', []);
+        }
+
+        return $this->render('formation/new.html.twig', [
+            'lieu' => $lieu,
+            'form' => $form->createView(),
+
         ]);
     }
 

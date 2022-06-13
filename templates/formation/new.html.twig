@@ -1,10 +1,10 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Modifier  la formation {{formation.name}}{% endblock %}
+{% block title %}Nouvelle Formation{% endblock %}
 
 {% block body %}
     <div class="container-fluid">
-        <p class="display-6 no-wrap text-center">Modifier  la formation {{formation.name}}</p>
+        <p class="display-6 no-wrap text-center">Ajouter une nouvelle formation au Catalogue</p>
         <div class="form-control form-control-lg mx-auto corps text-center">
             {{ form_start(form) }}
             <div class="mx-auto mt-5 mb-5">
@@ -33,21 +33,21 @@
                 </div>
 
                  <div class="pre_requis my-5">
-                    {{ form_label(form.pre_requis, 'Pré-Requis ', {'label_attr': {'class': 'foo'}}) }}
+                    {{ form_label(form.pre_requis, 'pre-requis ', {'label_attr': {'class': 'foo'}}) }}
                     {{ form_errors(form.pre_requis) }}
                     {{ form_widget(form.pre_requis) }}
                     {{ form_help(form.pre_requis) }}
                 </div>
 
                 <div class="duration my-5">
-                    {{ form_label(form.duration, ' Durée ', {'label_attr': {'class': 'foo'}}) }}
+                    {{ form_label(form.duration, 'durée ', {'label_attr': {'class': 'foo'}}) }}
                     {{ form_errors(form.duration) }}
                     {{ form_widget(form.duration) }}
                     {{ form_help(form.duration) }}
                 </div>
 
                 <div class="public_cible my-5">
-                    {{ form_label(form.public_cible, ' Public Cible ', {'label_attr': {'class': 'foo'}}) }}
+                    {{ form_label(form.public_cible, 'public-cible ', {'label_attr': {'class': 'foo'}}) }}
                     {{ form_errors(form.public_cible) }}
                     {{ form_widget(form.public_cible) }}
                     {{ form_help(form.public_cible) }}

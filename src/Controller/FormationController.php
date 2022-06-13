@@ -10,7 +10,7 @@ use App\Entity\Formation;
 use Doctrine\ORM\EntityManager;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManagerInterface;
-
+use App\Form\FormationType;
 
 
 #[Route('/catalogue', name: 'catalogue_')]
@@ -40,17 +40,49 @@ class FormationController extends AbstractController
 
 
 
-    #[Route('/edit/{formationID}', name: 'edit')]
-    public function edit(EntityManagerInterface $entityManager, $formationID): Response
+    #[Route('/new', name: 'new')]
+    public function new(EntityManagerInterface $entityManager, Request $request): Response
     {
+        $formation = new Formation();
+        $form = $this->createForm(FormationType::class, $formation);
+        $form->handleRequest($request);
 
-        $formation = $entityManager->getRepository(Formation::class)->findById($formationID)[0];
 
-        return $this->render('formation/show.html.twig', [
+        if ($form->isSubmitted() && $form->isValid()) {
+            
+            $entityManager->persist($formation);
+            $entityManager->flush();
+            return $this->redirectToRoute('catalogue_showAll', []);
+            
+        }
+
+        return $this->render('formation/new.html.twig', [
             'formation' => $formation,
+            'form' => $form->createView(),
+            
         ]);
-   }
+    }
 
+    #[Route('/edit/{formationID}', name: 'edit')]
+    public function edit(EntityManagerInterface $entityManager, Request $request, $formationID): Response
+    {
+        $formation = $entityManager->getRepository(Formation::class)->findById($formationID)[0];
+        $form = $this->createForm(FormationType::class, $formation);
+        $form->handleRequest($request);
+
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            
+            $entityManager->persist($formation);
+            $entityManager->flush();
+            return $this->redirectToRoute('catalogue_showAll');
+        }
+
+        return $this->render('formation/edit.html.twig', [
+            'formation' => $formation,
+            'form' => $form->createView(),
+        ]);
+    }
 
 
     #[Route('/delete/{formationID}', name: 'delete')]
@@ -65,15 +97,4 @@ class FormationController extends AbstractController
         ]);
     }
 
-
-    // #[Route('/create}', name: 'create')]
-    // public function create(EntityManagerInterface $entityManager): Response
-    // {
-
-    //     $formation = $entityManager->getRepository(Formation::class)->findById($formationID)[0];
-
-    //     return $this->render('formation/show.html.twig', [
-    //         'controller_name' => 'FormationController'
-    //     ]);
-    // }
 }

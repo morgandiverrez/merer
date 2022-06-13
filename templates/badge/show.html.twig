@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Badge{% endblock %}
+
+
+
+{% block body %}
+    <div class="container-fluid">
+        <div class="corps mx-auto">
+            <p class="display-6 no-wrap text-center mb-5"> Badge</p>
+                <div class=" d-flex justify-content-center text-center align-center">
+                    <div class="card" style="width: 18rem;">
+                
+                        <div class=" card-body ">
+                            <h5 class="card-title">{{badge.getCode()}}</h5>
+                            <p class="card-text">{{badge.getName()}}</p>
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">Description : {{badge.getDescription()}}</li>
+                            <li class="list-group-item">Date de création : {{badge.getDeateCreation().format("d:m:y")}}</li>
+
+                        </ul>
+                        <div class="card-body">
+                            <a href="/badge/edit/{{ badge.getId() }}" class="card-link"><i class="fa-solid fa-pen-to-square"></i></a>
+                            <a href="/badge/delete/{{ badge.getId()}}" class="card-link"><i class="fa-solid fa-trash-can"></i></a>
+                            <a href="/badge/" class="card-link"><i class="fa-solid fa-list"></i></a>
+                           
+                        </div>
+                    </div>
+                </div>
+ 
+
+            {# <div class="text-center">
+                <a href="/chlidren/childrenToCamp/{{camp.campId}}"><button class="btn btn-success mt-3 mb-3"><i class = "fa text-light fa-plus-square me-2"></i>{{ button_label|default('Nouveau') }}</button></a>
+            </div> #}
+
+        </div>
+    </div>
+
+
+{% endblock %}

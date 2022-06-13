@@ -30,6 +30,9 @@ class Badge
     #[ORM\ManyToMany(targetEntity: profil::class, inversedBy: 'badge')]
     private $profil;
 
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private $image;
+
     public function __construct()
     {
         $this->profil = new ArrayCollection();
@@ -108,6 +111,18 @@ class Badge
     public function removeProfil(profil $profil): self
     {
         $this->profil->removeElement($profil);
+
+        return $this;
+    }
+
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    public function setImage(?string $image): self
+    {
+        $this->image = $image;
 
         return $this;
     }
