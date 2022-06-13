@@ -63,15 +63,15 @@ class FormationRepository extends ServiceEntityRepository
     //            ->getOneOrNullResult()
     //        ;
     //    }
-    public function findByID($value): array
+    public function findByID($value): ?array
    {
-       return $this->createQueryBuilder('f')
-           ->andWhere('f.exampleField = :val')
+       return $this->createQueryBuilder('formation')
+           ->andWhere('formation.id = :val')
            ->setParameter('val', $value)
-           ->orderBy('f.id', 'ASC')
-           ->setMaxResults(10)
+          // ->orderBy('formation.id', 'ASC')
+           ->setMaxResults(1)
            ->getQuery()
-           ->getResult()
+            ->getResult()
        ;
    }
 
