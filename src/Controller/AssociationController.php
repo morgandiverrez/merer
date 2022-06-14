@@ -11,6 +11,7 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Form\AssociationType;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
 
 #[Route('/association', name: 'association_')]
@@ -48,6 +49,23 @@ class AssociationController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
+             $logoUpload=$form->get('image')->getData();
+             $sigle = $form->get('sigle')->getData();
+             $sigleMajuscule = strtoupper($sigle);
+
+            if($logoUpload){
+                $logoFileSigle = 'logo_'. $sigleMajuscule . '.' . $logoUpload->guessExtension();
+                $association->setExtension($logoUpload->guessExtension());
+                try {
+                    $logoUpload->move(
+                        'public/files/association',
+                        $logoFileSigle
+                    );
+                } catch (FileException $e) {
+                    
+                }              
+            }
+
             $entityManager->persist($association);
             $entityManager->flush();
             return $this->redirectToRoute('association_showAll', []);
@@ -71,6 +89,22 @@ class AssociationController extends AbstractController
 
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $logoUpload = $form->get('image')->getData();
+            $sigle = $form->get('sigle')->getData();
+            $sigleMajuscule = strtoupper($sigle);
+            
+            if ($logoUpload) {
+                $logoFileSigle = 'logo_' . $sigleMajuscule . '.' . $logoUpload->guessExtension();
+                $association->setExtension($logoUpload->guessExtension());
+                try {
+                    $logoUpload->move(
+                        'public/files/association',
+                        $logoFileSigle
+                    );
+                } catch (FileException $e) {
+                }
+            }
 
             $entityManager->persist($association);
             $entityManager->flush();

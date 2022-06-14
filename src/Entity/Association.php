@@ -19,10 +19,13 @@ class Association
     private $code;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $image;
+    private $extension;
+
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private $name;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private $name;
+    private $sigle;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $categorie;
@@ -45,8 +48,7 @@ class Association
     #[ORM\ManyToMany(targetEntity: Profil::class, inversedBy: 'association')]
     private $profil;
 
-
-
+ 
     public function __construct()
     {
         $this->profil = new ArrayCollection();
@@ -69,14 +71,14 @@ class Association
         return $this;
     }
 
-    public function getImage(): ?string
+    public function getExtension(): ?string
     {
-        return $this->image;
+        return $this->extension;
     }
 
-    public function setImage(?string $image): self
+    public function setExtension(?string $extension): self
     {
-        $this->image = $image;
+        $this->extension = $extension;
 
         return $this;
     }
@@ -93,6 +95,18 @@ class Association
         return $this;
     }
 
+    public function getSigle(): ?string
+    {
+        return $this->sigle;
+    }
+
+    public function setSigle(?string $sigle): self
+    {
+        $this->sigle = $sigle;
+
+        return $this;
+    }
+    
     public function getCategorie(): ?string
     {
         return $this->categorie;
@@ -188,5 +202,7 @@ class Association
 
         return $this;
     }
+
+ 
 
 }

@@ -12,9 +12,10 @@
                     <div class="card" style="width: 18rem;">
                 
                         <div class=" card-body ">
-                            <img class="card-img-top" src="{{association.getimage()}}" alt="image du association : {{association.getName()}}" >
+                            <img class="card-img-top" src="/files/association/logo_{{association.getSigle()}}.{{association.getExtension()}}" alt="image du association : {{association.getName()}}" >
                             <h5 class="card-title">{{association.getCode()}}</h5>
                             <p class="card-text">{{association.getName()}}</p>
+                            <p class="card-text">{{association.getSigle()}}</p>
                         </div>
                         <ul class="list-group list-group-flush">
                             <li class="list-group-item">Catégorie : {{association.getCategorie()}}</li>

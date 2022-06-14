@@ -23,6 +23,12 @@
                     {{ form_help(form.image) }}
                 </div>
 
+                <div class="sigle my-5">
+                    {{ form_label(form.sigle, 'Sigle ', {'label_attr': {'class': 'foo'}}) }}
+                    {{ form_errors(form.sigle) }}
+                    {{ form_widget(form.sigle) }}
+                    {{ form_help(form.sigle) }}
+                </div>
 
                 <div class="name my-5">
                     {{ form_label(form.name, 'Nom ', {'label_attr': {'class': 'foo'}}) }}

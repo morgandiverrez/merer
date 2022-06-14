@@ -13,9 +13,10 @@
             <table class="table table-striped">
                 <thead>
                 <tr>
-                    <th scope="col">Badge</th>
+
                     <th scope="col">Nom</th>
                     <th scope="col">Description</th>
+                    <th scope="col">Catégorie</th>
                     <th scope="col">Détails</th>       
                     
                  </tr>
@@ -24,8 +25,8 @@
                 <tbody>
                     {% for badge in badges %} 
                         <tr>
-                            <th>{{badge.getImage()}}</th>
                             <th>{{badge.getName()}}</th>
+                            <th>{{badge.getCategorie()}}</th>
                             <th>{{badge.getDescription()}}</th>
                             <th><a href="/badge/show/{{badge.getId()}}"><i class="fa-solid fa-eye"></i></i></a></th> 
                         </tr> 
