@@ -10,7 +10,7 @@ use App\Entity\Association;
 use Doctrine\ORM\EntityManager;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManagerInterface;
-use App\Form\FormationType;
+use App\Form\AssociationType;
 
 
 #[Route('/association', name: 'association_')]
@@ -66,7 +66,7 @@ class AssociationController extends AbstractController
     public function edit(EntityManagerInterface $entityManager, Request $request, $associationID): Response
     {
         $association = $entityManager->getRepository(Association::class)->findById($associationID)[0];
-        $form = $this->createForm(FormationType::class, $association);
+        $form = $this->createForm(AssociationType::class, $association);
         $form->handleRequest($request);
 
 

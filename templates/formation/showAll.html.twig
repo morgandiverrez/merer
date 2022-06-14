@@ -9,7 +9,7 @@
 
             <a href="/catalogue/new"><i class="fa-solid fa-plus align-left"></i></i></i></a>
 
-            <p class="table"> Catalogue</p>
+            <p class="table">Catalogue des formations</p>
 
             <table class="table table-striped">
                 
@@ -19,7 +19,7 @@
                     <th scope="col">Nom</th>
                     <th scope="col">Description</th>
                     <th scope="col">Durée</th>
-                    <th scope="col">Voir plus</th>
+                    <th scope="col">Détails</th>
                     
                  </tr>
                 </thead>
@@ -30,7 +30,7 @@
                     <th>{{formation.getName()}}</th>
                     <th>{{formation.getDescription()}}</th>
                     <th>{%if formation.getDuration() is null %}0 {% else %} {{formation.getDuration().format("H:i:s")}} {% endif %}</th>
-                    <th><a href="/catalogue/show/{{formation.id}}"><i class="fa-solid fa-eye"></i></i></a></th> 
+                    <th><a href="/catalogue/show/{{formation.getId()}}"><i class="fa-solid fa-eye"></i></i></a></th> 
                </tr> {% endfor %}
                 </tbody>
             </table>

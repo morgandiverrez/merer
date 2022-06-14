@@ -10,7 +10,7 @@ use App\Entity\Badge;
 use Doctrine\ORM\EntityManager;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManagerInterface;
-use App\Form\FormationType;
+use App\Form\BadgeType;
 
 
 
@@ -65,10 +65,10 @@ class BadgeController extends AbstractController
 
 
     #[Route('/edit/{badgeID}', name: 'edit')]
-    public function edit(EntityManagerInterface $entityManager, Request $request, $formationID): Response
+    public function edit(EntityManagerInterface $entityManager, Request $request, $badgeID): Response
     {
-        $badge = $entityManager->getRepository(Badge::class)->findById($formationID)[0];
-        $form = $this->createForm(FormationType::class, $badge);
+        $badge = $entityManager->getRepository(Badge::class)->findById($badgeID)[0];
+        $form = $this->createForm(BadgeType::class, $badge);
         $form->handleRequest($request);
 
 
@@ -80,7 +80,7 @@ class BadgeController extends AbstractController
         }
 
         return $this->render('badge/edit.html.twig', [
-            'formation' => $badge,
+            'badge' => $badge,
             'form' => $form->createView(),
             ]);
     }

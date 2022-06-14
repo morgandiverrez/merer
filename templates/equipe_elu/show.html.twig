@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détails équipes d'élus{% endblock %}
+
+
+
+{% block body %}
+    <div class="container-fluid">
+        <div class="corps mx-auto">
+            <p class="display-6 no-wrap text-center mb-5"> Détails de l'équipe d'élu {{equipeElu.getName()}}</p>
+                <div class=" d-flex justify-content-center text-center align-center">
+                    <div class="card" style="width: 18rem;">
+                
+                        <div class=" card-body ">
+                            <h5 class="card-title">{{equipeElu.getName()}}</h5>
+                            <p class="card-text">{{equipeElu.getDescription()}}</p>
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">Code : {{equipeElu.getCode()}}</li>
+                            <li class="list-group-item">Catégorie : {{equipeElu.getCategorie()}}</li>
+                            <li class="list-group-item">Adresse mail : {{equipeElu.getAdresseMail()}} </li>
+                            <li class="list-group-item">Etablissement : {{equipeElu.getEtablissement()}}</li>
+                                                 
+                            
+                        </ul>
+                        <div class="card-body">
+                            <a href="/equipeElu/edit/{{ equipeElu.getId() }}" class="card-link"><i class="fa-solid fa-pen-to-square"></i></a>
+                            <a href="/equipeElu/delete/{{ equipeElu.getId()}}" class="card-link"><i class="fa-solid fa-trash-can"></i></a>
+                            <a href="/equipeElu/" class="card-link"><i class="fa-solid fa-list"></i></a>
+                           
+                        </div>
+                    </div>
+                </div>
+ 
+
+            {# <div class="text-center">
+                <a href="/chlidren/childrenToCamp/{{camp.campId}}"><button class="btn btn-success mt-3 mb-3"><i class = "fa text-light fa-plus-square me-2"></i>{{ button_label|default('Nouveau') }}</button></a>
+            </div> #}
+
+        </div>
+    </div>
+
+
+{% endblock %}

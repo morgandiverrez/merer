@@ -18,8 +18,14 @@ class Badge
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $code;
 
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private $image;
+
     #[ORM\Column(type: 'string', length: 255)]
     private $name;
+
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private $categorie;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $description;
@@ -27,11 +33,10 @@ class Badge
     #[ORM\Column(type: 'date', nullable: true)]
     private $date_creation;
 
-    #[ORM\ManyToMany(targetEntity: profil::class, inversedBy: 'badge')]
+    #[ORM\ManyToMany(targetEntity: Profil::class, inversedBy: 'badge')]
     private $profil;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $image;
+    
 
     public function __construct()
     {
@@ -55,6 +60,18 @@ class Badge
         return $this;
     }
 
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    public function setImage(?string $image): self
+    {
+        $this->image = $image;
+
+        return $this;
+    }
+
     public function getName(): ?string
     {
         return $this->name;
@@ -63,6 +80,18 @@ class Badge
     public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    public function getCategorie(): ?string
+    {
+        return $this->categorie;
+    }
+
+    public function setCategorie(?string $categorie): self
+    {
+        $this->categorie = $categorie;
 
         return $this;
     }
@@ -115,15 +144,4 @@ class Badge
         return $this;
     }
 
-    public function getImage(): ?string
-    {
-        return $this->image;
-    }
-
-    public function setImage(?string $image): self
-    {
-        $this->image = $image;
-
-        return $this;
-    }
 }

@@ -19,7 +19,13 @@ class Association
     private $code;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private $image;
+
+    #[ORM\Column(type: 'string', length: 255)]
     private $name;
+
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private $categorie;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $description;
@@ -38,6 +44,8 @@ class Association
 
     #[ORM\ManyToMany(targetEntity: Profil::class, inversedBy: 'association')]
     private $profil;
+
+
 
     public function __construct()
     {
@@ -61,6 +69,18 @@ class Association
         return $this;
     }
 
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    public function setImage(?string $image): self
+    {
+        $this->image = $image;
+
+        return $this;
+    }
+    
     public function getName(): ?string
     {
         return $this->name;
@@ -69,6 +89,18 @@ class Association
     public function setName(?string $name): self
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    public function getCategorie(): ?string
+    {
+        return $this->categorie;
+    }
+
+    public function setCategorie(?string $categorie): self
+    {
+        $this->categorie = $categorie;
 
         return $this;
     }
@@ -156,4 +188,5 @@ class Association
 
         return $this;
     }
+
 }

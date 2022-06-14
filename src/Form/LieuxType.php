@@ -2,31 +2,29 @@
 
 namespace App\Form;
 
-use App\Entity\Formation;
+use App\Entity\Lieux;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
-class FormationType extends AbstractType
+class LieuxType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('code')
             ->add('name')
-            ->add('description', TextareaType::class)
-            ->add('pre_requis')
-            ->add('duration' )
-            ->add('public_cible')
-            ->add('opg', TextareaType::class)
+            ->add('salle')
+            ->add('adresse')
+            ->add('code_postale')
+            ->add('ville')
         ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Formation::class,
+            'data_class' => Lieux::class,
         ]);
     }
 }

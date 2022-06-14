@@ -1,33 +1,35 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Badge{% endblock %}
+{% block title %}Liste Badge{% endblock %}
 
 
 {% block body %}
     <div class="container-fluid">
         <div class="corps mx-auto">
-            <p class="table"> Badge</p>
+
+            <p class="table">Liste des Badges</p>
+            <a href="/badge/new"><i class="fa-solid fa-plus align-right"></i></i></i></a>
 
             <table class="table table-striped">
                 <thead>
                 <tr>
-                    <th scope="col">Code</th>
+                    <th scope="col">Badge</th>
                     <th scope="col">Nom</th>
                     <th scope="col">Description</th>
-                    <th scope="col">Date Création</th>
-                    <th scope="col">Voir plus</th>
+                    <th scope="col">Détails</th>       
                     
                  </tr>
                 </thead>
 
                 <tbody>
-                {% for badge in badges %} 
-                <tr>
-                    <th>{{badge.getCode()}}</th>
-                    <th>{{badge.getName()}}</th>
-                    <th>{{badge.getDescription()}}</th>
-                    <th>{{badge.getDateCreation().format("d:m:y")}}</th>
-                    <th><a href="/badge/show/{{badge.id}}"><i class="fa-solid fa-eye"></i></i></a></th>  
+                    {% for badge in badges %} 
+                        <tr>
+                            <th>{{badge.getImage()}}</th>
+                            <th>{{badge.getName()}}</th>
+                            <th>{{badge.getDescription()}}</th>
+                            <th><a href="/badge/show/{{badge.getId()}}"><i class="fa-solid fa-eye"></i></i></a></th> 
+                        </tr> 
+                    {% endfor %}
                 </tbody>
             </table>
 

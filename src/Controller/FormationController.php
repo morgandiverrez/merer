@@ -13,6 +13,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use App\Form\FormationType;
 
 
+
 #[Route('/catalogue', name: 'catalogue_')]
 
 class FormationController extends AbstractController

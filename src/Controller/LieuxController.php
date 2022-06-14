@@ -8,6 +8,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Lieux;
 use Symfony\Component\HttpFoundation\Request;
+use App\Form\LieuxType;
 
 
 #[Route('/lieux', name: 'lieux_')]
@@ -36,13 +37,23 @@ class LieuxController extends AbstractController
     }
 
     #[Route('/edit/{lieuID}', name: 'edit')]
-    public function edit(EntityManagerInterface $entityManager, $lieuID): Response
+    public function edit(EntityManagerInterface $entityManager, Request $request, $lieuID): Response
     {
-
         $lieu = $entityManager->getRepository(Lieux::class)->findById($lieuID)[0];
+        $form = $this->createForm(LieuxType::class, $lieu);
+        $form->handleRequest($request);
+
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $entityManager->persist($lieu);
+            $entityManager->flush();
+            return $this->redirectToRoute('lieux_showAll');
+        }
 
         return $this->render('lieux/edit.html.twig', [
             'lieu' => $lieu,
+            'form' => $form->createView(),
         ]);
     }
 
@@ -50,7 +61,7 @@ class LieuxController extends AbstractController
     public function new(EntityManagerInterface $entityManager, Request $request): Response
     {
         $lieu = new Lieux();
-        $form = $this->createForm(FormationType::class, $lieu);
+        $form = $this->createForm(LieuxType::class, $lieu);
         $form->handleRequest($request);
 
 
@@ -61,7 +72,7 @@ class LieuxController extends AbstractController
             return $this->redirectToRoute('lieux_showAll', []);
         }
 
-        return $this->render('formation/new.html.twig', [
+        return $this->render('lieux/new.html.twig', [
             'lieu' => $lieu,
             'form' => $form->createView(),
 

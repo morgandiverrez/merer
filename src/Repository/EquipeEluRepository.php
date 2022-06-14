@@ -2,26 +2,26 @@
 
 namespace App\Repository;
 
-use App\Entity\EquipeElue;
+use App\Entity\EquipeElu;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<EquipeElue>
+ * @extends ServiceEntityRepository<EquipeElu>
  *
- * @method EquipeElue|null find($id, $lockMode = null, $lockVersion = null)
- * @method EquipeElue|null findOneBy(array $criteria, array $orderBy = null)
- * @method EquipeElue[]    findAll()
- * @method EquipeElue[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method EquipeElu|null find($id, $lockMode = null, $lockVersion = null)
+ * @method EquipeElu|null findOneBy(array $criteria, array $orderBy = null)
+ * @method EquipeElu[]    findAll()
+ * @method EquipeElu[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class EquipeElueRepository extends ServiceEntityRepository
+class EquipeEluRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, EquipeElue::class);
+        parent::__construct($registry, EquipeElu::class);
     }
 
-    public function add(EquipeElue $entity, bool $flush = false): void
+    public function add(EquipeElu $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);
 
@@ -30,7 +30,7 @@ class EquipeElueRepository extends ServiceEntityRepository
         }
     }
 
-    public function remove(EquipeElue $entity, bool $flush = false): void
+    public function remove(EquipeElu $entity, bool $flush = false): void
     {
         $this->getEntityManager()->remove($entity);
 
@@ -40,7 +40,7 @@ class EquipeElueRepository extends ServiceEntityRepository
     }
 
     //    /**
-    //     * @return EquipeElue[] Returns an array of EquipeElue objects
+    //     * @return EquipeElu[] Returns an array of EquipeElu objects
     //     */
     //    public function findByExampleField($value): array
     //    {
@@ -54,7 +54,7 @@ class EquipeElueRepository extends ServiceEntityRepository
     //        ;
     //    }
 
-    //    public function findOneBySomeField($value): ?EquipeElue
+    //    public function findOneBySomeField($value): ?EquipeElu
     //    {
     //        return $this->createQueryBuilder('e')
     //            ->andWhere('e.exampleField = :val')
@@ -65,8 +65,8 @@ class EquipeElueRepository extends ServiceEntityRepository
     //    }
     public function findByID($value): ?array
     {
-        return $this->createQueryBuilder('EquipeElue')
-        ->andWhere('EquipeElue.id = :val')
+        return $this->createQueryBuilder('EquipeElu')
+        ->andWhere('EquipeElu.id = :val')
             ->setParameter('val', $value)
             ->setMaxResults(1)
             ->getQuery()

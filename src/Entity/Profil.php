@@ -36,8 +36,8 @@ class Profil
     #[ORM\OneToMany(mappedBy: 'profil', targetEntity: Retour::class)]
     private $retour;
 
-    #[ORM\ManyToMany(targetEntity: EquipeElue::class, mappedBy: 'profil')]
-    private $equipeElue;
+    #[ORM\ManyToMany(targetEntity: EquipeElu::class, mappedBy: 'profil')]
+    private $equipeElu;
 
     #[ORM\ManyToMany(targetEntity: Association::class, mappedBy: 'profil')]
     private $association;
@@ -45,7 +45,7 @@ class Profil
     #[ORM\ManyToMany(targetEntity: Badge::class, mappedBy: 'profil')]
     private $badge;
 
-    #[ORM\ManyToMany(targetEntity: seance::class, inversedBy: 'profil')]
+    #[ORM\ManyToMany(targetEntity: Seance::class, inversedBy: 'profil')]
     private $formateurice;
 
     #[ORM\OneToMany(mappedBy: 'profil', targetEntity: SeanceProfil::class)]
@@ -54,7 +54,7 @@ class Profil
     public function __construct()
     {
         $this->retour = new ArrayCollection();
-        $this->equipeElue = new ArrayCollection();
+        $this->equipeElu = new ArrayCollection();
         $this->association = new ArrayCollection();
         $this->badge = new ArrayCollection();
         $this->formateurice = new ArrayCollection();
@@ -169,27 +169,27 @@ class Profil
     }
 
     /**
-     * @return Collection<int, EquipeElue>
+     * @return Collection<int, EquipeElu>
      */
-    public function getEquipeElue(): Collection
+    public function getEquipeElu(): Collection
     {
-        return $this->equipeElue;
+        return $this->equipeElu;
     }
 
-    public function addEquipeElue(EquipeElue $equipeElue): self
+    public function addEquipeElu(EquipeElu $equipeElu): self
     {
-        if (!$this->equipeElue->contains($equipeElue)) {
-            $this->equipeElue[] = $equipeElue;
-            $equipeElue->addProfil($this);
+        if (!$this->equipeElu->contains($equipeElu)) {
+            $this->equipeElu[] = $equipeElu;
+            $equipeElu->addProfil($this);
         }
 
         return $this;
     }
 
-    public function removeEquipeElue(EquipeElue $equipeElue): self
+    public function removeEquipeElu(EquipeElu $equipeElu): self
     {
-        if ($this->equipeElue->removeElement($equipeElue)) {
-            $equipeElue->removeProfil($this);
+        if ($this->equipeElu->removeElement($equipeElu)) {
+            $equipeElu->removeProfil($this);
         }
 
         return $this;

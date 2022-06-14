@@ -1,10 +1,10 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Nouvelle Equipe d'élue{% endblock %}
+{% block title %}Modifier équipe d'élu {% endblock %}
 
 {% block body %}
     <div class="container-fluid">
-        <p class="display-6 no-wrap text-center">Ajouter une nouvelle équipe d'élue</p>
+        <p class="display-6 no-wrap text-center">Modifier l'équipe d'élu {{equipeElu.getName()}}</p>
         <div class="form-control form-control-lg mx-auto corps text-center">
             {{ form_start(form) }}
             <div class="mx-auto mt-5 mb-5">
@@ -52,6 +52,7 @@
                     {{ form_widget(form.etablissement) }}
                     {{ form_help(form.etablissement) }}
                 </div>
+
                
                 <button class="btn btn-success mt-3 mb-3">{{ button_label|default('Valider ') }}<i class = "fa text-light fa-save me-2"></i></button>
             </div>

@@ -1,18 +1,20 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Liste des Lieux{% endblock %}
+{% block title %}Liste Lieux{% endblock %}
 
 {% block body %}
    <div class="container-fluid">
         <div class="corps mx-auto">
-            <p class="table"> Catalogue</p>
+            <p class="table"> Liste des lieux</p>
+            <a href="/lieux/new"><i class="fa-solid fa-plus align-right"></i></i></i></a>
 
             <table class="table table-striped">
                 <thead>
                 <tr>
-                    <th scope="col">nom</th>
-                    <th scope="col">ville</th>
-                    <th scope="col">Voir plus</th>
+                    <th scope="col">Nom</th>
+                    <th scope="col">Salle</th>
+                    <th scope="col">Ville</th>
+                    <th scope="col">Détails</th>
                     
                  </tr>
                 </thead>
@@ -21,8 +23,9 @@
                 {% for lieu in lieux %} 
                 <tr>
                     <th>{{lieu.getName()}}</th>
+                    <th>{{lieu.getSalle()}}</th>
                     <th>{{lieu.getVille()}}</th>
-                    <th><a href="/lieux/show/{{lieu.id}}"><i class="fa-solid fa-eye"></i></i></a></th>
+                    <th><a href="/lieux/show/{{lieu.getId()}}"><i class="fa-solid fa-eye"></i></i></a></th>
                </tr> {% endfor %}
                 </tbody>
             </table>

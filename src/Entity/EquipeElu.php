@@ -2,13 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\EquipeElueRepository;
+use App\Repository\EquipeEluRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: EquipeElueRepository::class)]
-class EquipeElue
+#[ORM\Entity(repositoryClass: EquipeEluRepository::class)]
+class EquipeElu
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -33,7 +33,7 @@ class EquipeElue
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $etablissement;
 
-    #[ORM\ManyToMany(targetEntity: Profil::class, inversedBy: 'equipeElue')]
+    #[ORM\ManyToMany(targetEntity: Profil::class, inversedBy: 'equipeElu')]
     private $profil;
 
     public function __construct()

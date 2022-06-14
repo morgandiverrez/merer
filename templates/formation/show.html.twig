@@ -1,13 +1,13 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Catalogue{% endblock %}
+{% block title %}Détails formation{% endblock %}
 
 
 
 {% block body %}
     <div class="container-fluid">
         <div class="corps mx-auto">
-            <p class="display-6 no-wrap text-center mb-5"> Catalogue</p>
+            <p class="display-6 no-wrap text-center mb-5"> Détails de la formation {{formation.getName()}}</p>
                 <div class=" d-flex justify-content-center text-center align-center">
                     <div class="card" style="width: 18rem;">
                 
@@ -19,8 +19,8 @@
                         <ul class="list-group list-group-flush">
                             <li class="list-group-item">Code : {{formation.getCode()}}</li>
                             <li class="list-group-item">Pré-requis : {{formation.getPreRequis()}}</li>
-                            <li class="list-group-item">Durée : {%if formation.getDuration() is null %}0 {% else %} {{formation.getDuration().format("H:i:s")}} {% endif %} </li>
-                            <li class="list-group-item">PublicCible : {{formation.getPublicCible()}}</li>
+                            <li class="list-group-item">Durée : {%if formation.getDuration() is null %}0 {% else %} {{formation.getDuration().format("H:i")}} {% endif %} </li>
+                            <li class="list-group-item">Public Cible : {{formation.getPublicCible()}}</li>
                                                  
                             
                         </ul>
