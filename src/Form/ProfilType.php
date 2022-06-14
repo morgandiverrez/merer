@@ -12,16 +12,13 @@ class ProfilType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('code')
             ->add('name')
             ->add('last_name')
             ->add('pronom')
             ->add('date_of_birth')
-            ->add('score')
             ->add('equipeElu')
             ->add('association')
-            ->add('badge')
-            ->add('formateurice')
+            
         ;
     }
 
