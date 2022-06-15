@@ -7,8 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\Association;
-use Doctrine\ORM\EntityManager;
-use Doctrine\Persistence\ManagerRegistry;
+use App\Entity\Profil;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Form\AssociationType;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
@@ -36,6 +35,7 @@ class AssociationController extends AbstractController
 
         return $this->render('association/show.html.twig', [
             'association' => $association,
+            
         ]);
     }
 

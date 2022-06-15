@@ -8,62 +8,59 @@
     <div class="container-fluid">
         <div class="corps mx-auto">
             <p class="display-6 no-wrap text-center mb-5"> Détails de l'association {{association.name}}</p>
-                <div class=" d-flex justify-content-center text-center align-center">
-                    
-                    <div class="card align-left" style="width: 18rem;">
-                        <div class=" card-body ">
-                            <img class="card-img-top" src="/files/association/logo_{{association.getSigle()}}.{{association.getExtension()}}" alt="image du association : {{association.getName()}}" >
-                            <h5 class="card-title">{{association.getCode()}}</h5>
-                            <p class="card-text">{{association.getName()}}</p>
-                            <p class="card-text">{{association.getSigle()}}</p>
-                        </div>
-                        <ul class="list-group list-group-flush ">
-                            <li class="list-group-item">Catégorie : {{association.getCategorie()}}</li>
-                            <li class="list-group-item">Description : {{association.getDescription()}}</li>
-                            <li class="list-group-item">Fédération de fillière : {{association.getFedeFilliere()}}</li>
-                            <li class="list-group-item">Fédération de territoire : {{association.getFedeTerritoire()}}</li>
-                            <li class="list-group-item">Local : {{association.getLocal()}}</li>
-                            <li class="list-group-item">Adresse mail : {{association.getAdresseMail()}}</li>
-                        </ul>
-                        <div class="card-body">
-                            <a href="/association/edit/{{ association.getId() }}" class="card-link"><i class="fa-solid fa-pen-to-square"></i></a>
-                            <a href="/association/delete/{{ association.getId()}}" class="card-link"><i class="fa-solid fa-trash-can"></i></a>
-                            <a href="/association/" class="card-link"><i class="fa-solid fa-list"></i></a>
-                           
-                        </div>
+
+            <div class=" d-flex justify-content-center text-center align-left">
+                <div class="card align-left" style="width: 18rem;">
+                    <div class=" card-body ">
+                        <img class="card-img-top" src="/files/association/logo_{{association.getSigle()}}.{{association.getExtension()}}" alt="image du association : {{association.getName()}}" >
+                        <h5 class="card-title">{{association.getCode()}}</h5>
+                        <p class="card-text">{{association.getName()}}</p>
+                        <p class="card-text">{{association.getSigle()}}</p>
                     </div>
-                    <table class="table table-striped">
-                                    <thead>
-                                    <tr>
-                                        <th scope="col">Nom</th>
-                                        <th scope="col">Prénom</th>
-                                        <th scope="col">equipeElu</th>
-                                        <th scope="col">Adresse mail</th>
-                                        <th scope="col">Profil</th>
-                                        
-                                    </tr>
-                                    </thead>
-
-                                    <tbody>
-                                        {% for profil in profils %} 
-                                            <tr>
-                                                <th>{{profil.getName()}}</th>
-                                                <th>{{profil.getLastName()}}</th>
-                                                <th>{{profil.getEquipeElu()}}</th>
-                                                <th>{{profil.getAdresseMail()}}</th>
-                                                <th><a href="/profil/show/{{profil.getId()}}"><i class="fa-solid fa-eye"></i></i></a></th> 
-                                            </tr> 
-                                        {% endfor %}
-                                    </tbody>
-                                </table>
-
+                    <ul class="list-group list-group-flush ">
+                        <li class="list-group-item">Catégorie : {{association.getCategorie()}}</li>
+                        <li class="list-group-item">Description : {{association.getDescription()}}</li>
+                        <li class="list-group-item">Fédération de fillière : {{association.getFedeFilliere()}}</li>
+                        <li class="list-group-item">Fédération de territoire : {{association.getFedeTerritoire()}}</li>
+                        <li class="list-group-item">Local : {{association.getLocal()}}</li>
+                        <li class="list-group-item">Adresse mail : {{association.getAdresseMail()}}</li>
+                    </ul>
+                    <div class="card-body">
+                        <a href="/association/edit/{{ association.getId() }}" class="card-link"><i class="fa-solid fa-pen-to-square"></i></a>
+                        <a href="/association/delete/{{ association.getId()}}" class="card-link"><i class="fa-solid fa-trash-can"></i></a>
+                        <a href="/association/" class="card-link"><i class="fa-solid fa-list"></i></a>
+                        
+                    </div>
                 </div>
- 
-
-            {# <div class="text-center">
-                <a href="/chlidren/childrenToCamp/{{camp.campId}}"><button class="btn btn-success mt-3 mb-3"><i class = "fa text-light fa-plus-square me-2"></i>{{ button_label|default('Nouveau') }}</button></a>
-            </div> #}
-
+                <table class="table table-striped justify-content-center align-right">
+                    <thead>
+                    <tr>
+                        <th scope="col">Nom</th>
+                        <th scope="col">Prénom</th>
+                        <th scope="col">equipeElu</th>
+                        <th scope="col">Adresse mail</th>
+                        <th scope="col">Profil</th>
+                        
+                    </tr>
+                    </thead>
+                    <tbody>
+                        {%if association.getProfil() is null %} 
+                                Aucun membre inscrit sur la plateforme
+                        {% else %} 
+                            {% for profil in association.getProfil() %}
+                                <tr>
+                                    <th>{{profil.getName()}}</th>
+                                    <th>{{profil.getLastName()}}</th>
+                                    <th>{{profil.equipeElu.getName()}}</th>
+                                    <th>{{profil.getAdresseMail()}}</th>
+                                    <th><a href="/profil/show/{{profil.getId()}}"><i class="fa-solid fa-eye"></i></i></a></th> 
+                                </tr> 
+                            {% endfor %}
+                        {% endif %}
+                    
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 
