@@ -22,7 +22,7 @@ class ProfilController extends AbstractController
         ]);
     }
 
-    #[Route('/edit', name: 'edit')]
+    #[Route('/edit/{profilID}', name: 'edit')]
     public function edit(EntityManagerInterface $entityManager, Request $request, $profilID): Response
     {
         $profil = $entityManager->getRepository(Profil::class)->findById($profilID)[0];
