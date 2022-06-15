@@ -18,7 +18,7 @@ class EquipeElu
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $code;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(type: 'string', length: 255)]
     private $name;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
@@ -39,6 +39,11 @@ class EquipeElu
     public function __construct()
     {
         $this->profil = new ArrayCollection();
+    }
+
+    public function __toString()
+    {
+        return $this->getName();
     }
 
     public function getId(): ?int

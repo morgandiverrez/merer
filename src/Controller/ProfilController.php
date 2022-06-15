@@ -26,11 +26,15 @@ class ProfilController extends AbstractController
     public function edit(EntityManagerInterface $entityManager, Request $request, $profilID): Response
     {
         $profil = $entityManager->getRepository(Profil::class)->findById($profilID)[0];
+        
         $form = $this->createForm(ProfilType::class, $profil);
         $form->handleRequest($request);
 
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $profil ->setLastName(mb_strtoupper($profil->getLastName()));
+            $profil->setName(mb_convert_case($profil->getName(), MB_CASE_TITLE, "UTF-8"));
 
             $entityManager->persist($profil);
             $entityManager->flush();

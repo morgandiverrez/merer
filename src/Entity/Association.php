@@ -54,6 +54,11 @@ class Association
         $this->profil = new ArrayCollection();
     }
 
+    public function  __toString()
+    {
+        return $this->getSigle();
+    }
+    
     public function getId(): ?int
     {
         return $this->id;
