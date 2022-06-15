@@ -9,7 +9,7 @@
         <div class="corps mx-auto">
             <p class="display-6 no-wrap text-center mb-5"> Détails du profil de {{profil.getName()}} {{profil.getLastName()}}</p>
                 <div class=" d-flex justify-content-center text-center align-center">
-                    <div class="card" style="width: 18rem;">
+                    <div class="card align-center" style="width: 18rem;">
                 
                         <div class=" card-body ">
                             <h5 class="card-title">{{profil.getName()}}</h5>
@@ -33,6 +33,28 @@
                            
                         </div>
                     </div>
+                    <table class="table table-striped align-left">
+                        <thead>
+                            <tr>
+                                tableau des badges obtenus
+                            </tr>
+                        </thead>
+                        <tbody> 
+                            {% for badge in profil.getBadge() %} 
+                                <tr>
+                                    <img class="card-img-top" src="{{badge.getImage}}" alt="image du association : {{badge.getName()}}" >
+                                </tr>
+                                <tr>
+                                    {{badge.getName()}}
+                                </tr>
+                            {% endfor %}
+                        </tbody>   
+                        
+                        
+                        
+                     </table>
+                
+                
                 </div>
  
 
