@@ -15,11 +15,10 @@ use App\Form\RetourType;
 
 class RetourController extends AbstractController
 {
-    #[Route('/new/{profilID}/{seanceID}', name: 'new')]
-    public function new(EntityManagerInterface $entityManager, Request $request, $profilID, $seanceID): Response
+    #[Route('/new/{seanceID}', name: 'new')]
+    public function new(EntityManagerInterface $entityManager, Request $request, $seanceID): Response
     {
-        $retour = new Retour();
-        $seance = $entityManager->getRepository(Seance::class)->findById($seanceID)[0];
+        $retour = new Retour();       
         $form = $this->createForm(RetourType::class, $retour);
         $form->handleRequest($request);
 
@@ -33,7 +32,6 @@ class RetourController extends AbstractController
 
         return $this->render('retour/new.html.twig', [
             'retour' => $retour,
-            'seance' => $seance,
             'form' => $form->createView(),
         ]);
     }

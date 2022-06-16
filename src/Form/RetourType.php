@@ -6,6 +6,7 @@ use App\Entity\Retour;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 class RetourType extends AbstractType
 {
@@ -13,7 +14,7 @@ class RetourType extends AbstractType
     {
         $builder
             ->add('note_contenu')
-            ->add('remarque_contenu')
+            ->add('remarque_contenu', TextareaType::class)
             ->add('note_animation')
             ->add('remarque_animation')
             ->add('note_implication')
@@ -31,8 +32,8 @@ class RetourType extends AbstractType
             ->add('moins_aimer')
             ->add('aimer_voir')
             ->add('mot_fin')
-            // ->add('seance')
-            // ->add('profil')
+            ->add('seance')
+            ->add('profil')
         ;
     }
 
