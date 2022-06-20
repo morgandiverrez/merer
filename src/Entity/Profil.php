@@ -2,10 +2,11 @@
 
 namespace App\Entity;
 
-use App\Repository\ProfilRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use App\Entity\Seance;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\ProfilRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 #[ORM\Entity(repositoryClass: ProfilRepository::class)]
 class Profil
