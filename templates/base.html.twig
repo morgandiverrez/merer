@@ -23,6 +23,8 @@
 
             <script src="/build/runtime.js" defer></script>
             <script src="/build/app.js" defer></script>
+            <!-- JavaScript Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
                
        
         {% endblock %}
@@ -31,7 +33,7 @@
     <body>
         {% block header %}   
             <header>
-                <nav class="navbar navbar-expand-lg bg-light">
+                <nav style="background-color:#2B9D7D ;" class="navbar navbar-expand-lg ">
                     <div class="container-fluid">
                         <a class="navbar-brand" href="https://fedeb.net/"></a>
                         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -74,11 +76,11 @@
         {% endblock %}
 
         {% block footer %}
-            <footer class="bg-white bottom">
-                        <div class="container-fluid">
+            <footer style="background-color:#2B9D7D ;"  class="fixed-bottom">
+                <div class="container-fluid">
                     <div class="row">
                         <div class="col-lg-4 mt-2 mb-2">
-                            <p class="text-light justify-content-center">&copyCOLOR</p>
+                            <p class="text-light justify-content-center">Logiciel de gestion des formations et de suivie des formé.e.s de la Fédé B</p>
                             <p class="text-light justify-content-center"></p>
 
                         </div>
@@ -87,8 +89,8 @@
                             <p class="text-light justify-content-center"></p>
                         </div>
                         <div class="col-lg-4 mt-2 mb-2">
-                            <img src="/build/images/logo_FAGE.png" width="100" height="100" class="d-inline-block align-items-cente" alt="logo FAGE">
-                            <img src="/build/images/logo_FEDEB.png" width="100" height="100" class="d-inline-block align-items-cente" alt="logo Fédé B">
+                            <img src="/build/images/logo_FAGE.png"  height="80" class="d-inline-block align-items-right" alt="logo FAGE">
+                            <img src="/build/images/logo_FEDEB.png"  height="80" class="d-inline-block align-items-right" alt="logo Fédé B">
                         </div>
                     </div>
                 </div>
