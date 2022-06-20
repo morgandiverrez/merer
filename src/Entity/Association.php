@@ -19,7 +19,7 @@ class Association
     private $code;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $extension;
+    private $logo;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $name;
@@ -76,14 +76,14 @@ class Association
         return $this;
     }
 
-    public function getExtension(): ?string
+    public function getImage(): ?string
     {
-        return $this->extension;
+        return $this->image;
     }
 
-    public function setExtension(?string $extension): self
+    public function setImage(?string $image): self
     {
-        $this->extension = $extension;
+        $this->image = $image;
 
         return $this;
     }

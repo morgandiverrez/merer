@@ -12,7 +12,7 @@
                     <div class="card" style="width: 18rem;">
                 
                         <div class=" card-body ">
-                            <img class="card-img-top" src="/files/association/logo_{{association.getSigle()}}.{{association.getExtension()}}" alt="image du association : {{association.getName()}}" >
+                            <img class="card-img-top" src="{{asset(badge.getImage())}}" alt="image de {{badge.getName()}}" >
                             <h5 class="card-title">{{badge.getCode()}}</h5>
                             <p class="card-text">{{badge.getName()}}</p>
                         </div>
@@ -26,7 +26,7 @@
                             <a href="/badge/edit/{{ badge.getId() }}" class="card-link"><i class="fa-solid fa-pen-to-square"></i></a>
                             <a href="/badge/delete/{{ badge.getId()}}" class="card-link"><i class="fa-solid fa-trash-can"></i></a>
                             <a href="/badge/" class="card-link"><i class="fa-solid fa-list"></i></a>
-                           
+
                         </div>
                     </div>                   
                 </div>

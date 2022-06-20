@@ -36,7 +36,7 @@ class Seance
     #[ORM\OneToMany(mappedBy: 'seance', targetEntity: Retour::class)]
     private $retour;
 
-    #[ORM\ManyToMany(targetEntity: Profil::class, mappedBy: 'profil')]
+    #[ORM\ManyToMany(targetEntity: Profil::class, mappedBy: 'seance')]
     private $profil;
 
     #[ORM\OneToMany(mappedBy: 'seance', targetEntity: SeanceProfil::class)]

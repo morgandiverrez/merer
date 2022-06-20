@@ -12,7 +12,7 @@
             <div class=" d-flex justify-content-center text-center align-left">
                 <div class="card align-left" style="width: 18rem;">
                     <div class=" card-body ">
-                        <img class="card-img-top" src="/files/association/logo_{{association.getSigle()}}.{{association.getExtension()}}" alt="image du association : {{association.getName()}}" >
+                        <img class="card-img-top" src="{{asset(association.getImage())}}}}" alt="image du association : {{association.getName()}}" >
                         <h5 class="card-title">{{association.getCode()}}</h5>
                         <p class="card-text">{{association.getName()}}</p>
                         <p class="card-text">{{association.getSigle()}}</p>
