@@ -2,17 +2,18 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Entity\Lieux;
+use App\Form\LieuxType;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Doctrine\ORM\EntityManagerInterface;
-use App\Entity\Lieux;
-use Symfony\Component\HttpFoundation\Request;
-use App\Form\LieuxType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 
 #[Route('/lieux', name: 'lieux_')]
-
+#[IsGranted('ROLE_ADMIN')]
 class LieuxController extends AbstractController
 {
     #[Route('/', name: 'showAll')]
