@@ -4,7 +4,7 @@
         <meta charset="UTF-8">
         <title>{% block title %} Welcome!{% endblock %}</title>
         {# favicon du site#}
-        <link rel="icon" type="png" height="auto" sizes="16x16" href="/build/images/logo_FEDEB.png">
+        <link rel="icon" type="png" height="auto" sizes="16x16" href="{{asset('build/images/logo_FEDEB.png')}}">
         
         {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
         <script src="https://kit.fontawesome.com/ffbea23889.js" crossorigin="anonymous"></script>
@@ -38,7 +38,7 @@
             <header>
                 <nav style="background-color:#2B9D7D ;" class="navbar navbar-expand-lg ">
                     <div class="container-fluid">
-                        <a class="navbar-brand" href="https://fedeb.net/"><img src="/build/images/logo_FEDEB.png" height="80" alt="logo Fédé B"></a>
+                        <a class="navbar-brand" href="https://fedeb.net/"><img src="{{asset('build/images/logo_FEDEB.png')}}" height="80" alt="logo Fédé B"></a>
                         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                             <span class="navbar-toggler-icon"></span>
                         </button>
@@ -92,8 +92,8 @@
                             <p class="text-light justify-content-center"></p>
                         </div>
                         <div class="col-lg-4 mt-2 mb-2">
-                            <img src="/build/images/logo_FAGE.png"  height="80" class="d-inline-block align-items-right" alt="logo FAGE">
-                            <img src="/build/images/logo_FEDEB.png"  height="80" class="d-inline-block align-items-right" alt="logo Fédé B">
+                            <img src="{{asset('build/images/logo_FAGE.png')}}"  height="80" class="d-inline-block align-items-left" alt="logo FAGE">
+                            <img src="{{asset('build/images/logo_FEDEB.png')}}"  height="80" class="d-inline-block align-items-left" alt="logo Fédé B">
                         </div>
                     </div>
                 </div>

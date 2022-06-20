@@ -17,7 +17,7 @@ use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
 
 #[Route('/badge', name: 'badge_')]
-#[IsGranted('ROLE_ADMIN')]
+
 
 class BadgeController extends AbstractController
 {
@@ -57,15 +57,16 @@ class BadgeController extends AbstractController
             $nameMajuscule = strtoupper($name);
 
             if ($logoUpload) {
-                $logoFileName = 'logo_' . $nameMajuscule . '.' . $logoUpload->guessExtension();
-                $badge->setExtension($logoUpload->guessExtension());
+                $logoFileName = 'badge_' . $nameMajuscule . '.' . $logoUpload->guessExtension();
+                $badge->setImage('build/badge/'.$logoFileName);
                 try {
                     $logoUpload->move(
-                        'public/files/badge',
+                        'build/badge',
                         $logoFileName
                     );
                 } catch (FileException $e) {
                 }
+
             }
 
 
@@ -100,7 +101,7 @@ class BadgeController extends AbstractController
 
             if ($logoUpload) {
                 $logoFileName = 'logo_' . $nameMajuscule . '.' . $logoUpload->guessExtension();
-                $badge->setExtension($logoUpload->guessExtension());
+                $badge->setImage('public/build/badge/' . $logoFileName);
                 try {
                     $logoUpload->move(
                         'public/files/badge',
