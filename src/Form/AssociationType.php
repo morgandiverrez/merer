@@ -8,6 +8,8 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Validator\Constraints\Image;
 
 class AssociationType extends AbstractType
 {
@@ -15,7 +17,12 @@ class AssociationType extends AbstractType
     {
         $builder
             ->add('code')
-            ->add('image')
+            ->add('image', FileType::class, [
+                'required' => false,
+                'mapped' => false,
+                'constraints' => [new Image(['maxSize' => '1024k'])]
+                ])
+            ->add('sigle')
             ->add('name')
             ->add('categorie')
             ->add('description', TextareaType::class)

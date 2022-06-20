@@ -72,4 +72,6 @@ class EquipeEluRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+
 }

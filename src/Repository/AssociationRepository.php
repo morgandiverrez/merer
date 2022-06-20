@@ -72,4 +72,6 @@ class AssociationRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    
 }

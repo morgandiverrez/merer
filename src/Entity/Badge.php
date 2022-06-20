@@ -36,6 +36,9 @@ class Badge
     #[ORM\ManyToMany(targetEntity: Profil::class, inversedBy: 'badge')]
     private $profil;
 
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private $extension;
+
     
 
     public function __construct()
@@ -140,6 +143,18 @@ class Badge
     public function removeProfil(profil $profil): self
     {
         $this->profil->removeElement($profil);
+
+        return $this;
+    }
+
+    public function getExtension(): ?string
+    {
+        return $this->extension;
+    }
+
+    public function setExtension(?string $extension): self
+    {
+        $this->extension = $extension;
 
         return $this;
     }

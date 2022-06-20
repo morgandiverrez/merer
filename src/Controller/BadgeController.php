@@ -11,7 +11,7 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Form\BadgeType;
-
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
 
 
@@ -50,6 +50,24 @@ class BadgeController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
+            $logoUpload = $form->get('image')->getData();
+            $name = $form->get('name')->getData();
+            $nameMajuscule = strtoupper($name);
+
+            if ($logoUpload) {
+                $logoFileName = 'logo_' . $nameMajuscule . '.' . $logoUpload->guessExtension();
+                $badge->setExtension($logoUpload->guessExtension());
+                try {
+                    $logoUpload->move(
+                        'public/files/badge',
+                        $logoFileName
+                    );
+                } catch (FileException $e) {
+                }
+            }
+
+
+
             $entityManager->persist($badge);
             $entityManager->flush();
             return $this->redirectToRoute('badge_showAll', []);
@@ -73,7 +91,22 @@ class BadgeController extends AbstractController
 
 
         if ($form->isSubmitted() && $form->isValid()) {
+            
+            $logoUpload = $form->get('image')->getData();
+            $name = $form->get('name')->getData();
+            $nameMajuscule = strtoupper($name);
 
+            if ($logoUpload) {
+                $logoFileName = 'logo_' . $nameMajuscule . '.' . $logoUpload->guessExtension();
+                $badge->setExtension($logoUpload->guessExtension());
+                try {
+                    $logoUpload->move(
+                        'public/files/badge',
+                        $logoFileName
+                    );
+                } catch (FileException $e) {
+                }
+            }
             $entityManager->persist($badge);
             $entityManager->flush();
             return $this->redirectToRoute('badge_showAll');

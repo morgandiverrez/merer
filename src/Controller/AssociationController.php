@@ -7,10 +7,10 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\Association;
-use Doctrine\ORM\EntityManager;
-use Doctrine\Persistence\ManagerRegistry;
+use App\Entity\Profil;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Form\AssociationType;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
 
 #[Route('/association', name: 'association_')]
@@ -35,6 +35,7 @@ class AssociationController extends AbstractController
 
         return $this->render('association/show.html.twig', [
             'association' => $association,
+            
         ]);
     }
 
@@ -47,6 +48,23 @@ class AssociationController extends AbstractController
 
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+             $logoUpload=$form->get('image')->getData();
+             $sigle = $form->get('sigle')->getData();
+             $sigleMajuscule = strtoupper($sigle);
+
+            if($logoUpload){
+                $logoFileSigle = 'logo_'. $sigleMajuscule . '.' . $logoUpload->guessExtension();
+                $association->setExtension($logoUpload->guessExtension());
+                try {
+                    $logoUpload->move(
+                        'public/files/association',
+                        $logoFileSigle
+                    );
+                } catch (FileException $e) {
+                    
+                }              
+            }
 
             $entityManager->persist($association);
             $entityManager->flush();
@@ -71,6 +89,22 @@ class AssociationController extends AbstractController
 
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $logoUpload = $form->get('image')->getData();
+            $sigle = $form->get('sigle')->getData();
+            $sigleMajuscule = strtoupper($sigle);
+            
+            if ($logoUpload) {
+                $logoFileSigle = 'logo_' . $sigleMajuscule . '.' . $logoUpload->guessExtension();
+                $association->setExtension($logoUpload->guessExtension());
+                try {
+                    $logoUpload->move(
+                        'public/files/association',
+                        $logoFileSigle
+                    );
+                } catch (FileException $e) {
+                }
+            }
 
             $entityManager->persist($association);
             $entityManager->flush();

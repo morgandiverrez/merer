@@ -17,7 +17,7 @@ use App\Entity\EquipeElu;
 class EquipeEluController extends AbstractController
 {
     #[Route('/', name: 'showAll')]
-    public function indshowAllex(EntityManagerInterface $entityManager): Response
+    public function showAll(EntityManagerInterface $entityManager): Response
     {
         $equipeElus = $entityManager->getRepository(EquipeElu::class)->findAll();
 
@@ -25,6 +25,7 @@ class EquipeEluController extends AbstractController
             'equipeElus' => $equipeElus,
         ]);
     }
+    
     #[Route('/show/{equipeEluID}', name: 'show')]
     public function show(EntityManagerInterface $entityManager, $equipeEluID): Response
     {

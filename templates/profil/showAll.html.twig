@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste profil{% endblock %}
+
+
+{% block body %}
+    <div class="container-fluid">
+        <div class="corps mx-auto">
+
+            <a href="/catalogue/new"><i class="fa-solid fa-plus align-left"></i></i></i></a>
+
+            <p class="table">Liste des Utilisateurs de la plateforme</p>
+
+            <table class="table table-striped">
+                
+                
+                <thead>
+                <tr>
+                    <th scope="col">Nom</th>
+                    <th scope="col">Prénom</th>
+                    <th scope="col">Association</th>
+                     <th scope="col">Equipe d'élu</th>
+                    <th scope="col">Détails</th>
+                    
+                 </tr>
+                </thead>
+
+                <tbody>
+                    {% for profil in profils %} 
+                        <tr>
+                            <th>{{profil.getName()}}</th>
+                            <th>{{profil.getLastName()}}</th>
+                            <th>{%if profil.getEquipeElu() is null %}- {% else %}  {% for equipeElu in profil.getEquipeElu() %}{{equipeElu.getName()}} {% endfor %}{% endif %}</th>
+                            <th>{%if profil.getAssociation() is null %}- {% else %} {% for association in profil.getAssociation() %}{{association.getSigle()}} {% endfor %} {% endif %}</th>
+                            <th><a href="/profil/show/{{profil.getId()}}"><i class="fa-solid fa-eye"></i></i></a></th> 
+                        </tr> 
+                    {% endfor %}
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+{% endblock %}
