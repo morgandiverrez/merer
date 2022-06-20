@@ -2,13 +2,14 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Entity\Formation;
+use App\Form\FormationType;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpFoundation\Request;
-use App\Entity\Formation;
-use Doctrine\ORM\EntityManagerInterface;
-use App\Form\FormationType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 
 
@@ -40,6 +41,7 @@ class FormationController extends AbstractController
 
 
     #[Route('/new', name: 'new')]
+    #[IsGranted('ROLE_ADMIN')]
     public function new(EntityManagerInterface $entityManager, Request $request): Response
     {
         $formation = new Formation();
@@ -63,6 +65,7 @@ class FormationController extends AbstractController
     }
 
     #[Route('/edit/{formationID}', name: 'edit')]
+    #[IsGranted('ROLE_ADMIN')]
     public function edit(EntityManagerInterface $entityManager, Request $request, $formationID): Response
     {
         $formation = $entityManager->getRepository(Formation::class)->findById($formationID)[0];
@@ -85,6 +88,7 @@ class FormationController extends AbstractController
 
 
     #[Route('/delete/{formationID}', name: 'delete')]
+    #[IsGranted('ROLE_ADMIN')]
     public function delete(EntityManagerInterface $entityManager, $formationID): Response
     {
 

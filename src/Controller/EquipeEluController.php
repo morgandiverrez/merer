@@ -2,18 +2,20 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Entity\EquipeElu;
+use App\Form\EquipeEluType;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpFoundation\Request;
-use Doctrine\ORM\EntityManager;
-use Doctrine\Persistence\ManagerRegistry;
-use Doctrine\ORM\EntityManagerInterface;
-use App\Form\EquipeEluType;
-use App\Entity\EquipeElu;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 
  #[Route('/equipeElu', name: 'equipeElu_')]
+#[IsGranted('ROLE_ADMIN')]
 class EquipeEluController extends AbstractController
 {
     #[Route('/', name: 'showAll')]
@@ -27,6 +29,7 @@ class EquipeEluController extends AbstractController
     }
     
     #[Route('/show/{equipeEluID}', name: 'show')]
+    #[IsGranted('ROLE_ADMIN')]
     public function show(EntityManagerInterface $entityManager, $equipeEluID): Response
     {
         // find renvoi tjr un array (tableau), donc faut mettre [0] pour enlever l'array, si on veut plus d'une valeur s'il y en a, on met pas ou [nombre]
@@ -38,6 +41,7 @@ class EquipeEluController extends AbstractController
     }
 
     #[Route('/new', name: 'new')]
+    #[IsGranted('ROLE_ADMIN')]
     public function new(EntityManagerInterface $entityManager, Request $request): Response
     {
         $equipeElu = new EquipeElu();
@@ -62,6 +66,7 @@ class EquipeEluController extends AbstractController
 
 
     #[Route('/edit/{equipeEluID}', name: 'edit')]
+    #[IsGranted('ROLE_ADMIN')]
     public function edit(EntityManagerInterface $entityManager, Request $request, $equipeEluID): Response
     {
         $equipeElu = $entityManager->getRepository(EquipeElu::class)->findById($equipeEluID)[0];
@@ -85,6 +90,7 @@ class EquipeEluController extends AbstractController
 
 
     #[Route('/delete/{equipeEluID}', name: 'delete')]
+    #[IsGranted('ROLE_ADMIN')]
     public function delete(EntityManagerInterface $entityManager, $equipeEluID): Response
     {
 
