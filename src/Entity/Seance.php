@@ -36,8 +36,8 @@ class Seance
     #[ORM\OneToMany(mappedBy: 'seance', targetEntity: Retour::class)]
     private $retour;
 
-    #[ORM\ManyToMany(targetEntity: Profil::class, mappedBy: 'formateurice')]
-    private $formateurice;
+    #[ORM\ManyToMany(targetEntity: Profil::class, mappedBy: 'profil')]
+    private $profil;
 
     #[ORM\OneToMany(mappedBy: 'seance', targetEntity: SeanceProfil::class)]
     private $seanceProfil;
@@ -46,7 +46,7 @@ class Seance
     {
         $this->lieux = new ArrayCollection();
         $this->retour = new ArrayCollection();
-        $this->formateurice = new ArrayCollection();
+        $this->profil = new ArrayCollection();
         $this->seanceProfil = new ArrayCollection();
     }
 
@@ -175,25 +175,25 @@ class Seance
     /**
      * @return Collection<int, Profil>
      */
-    public function getFormateurice(): Collection
+    public function getProfil(): Collection
     {
-        return $this->formateurice;
+        return $this->profil;
     }
 
-    public function addFormateurice(Profil $formateurice): self
+    public function addProfil(Profil $profil): self
     {
-        if (!$this->formateurice->contains($formateurice)) {
-            $this->formateurice[] = $formateurice;
-            $formateurice->addFormateurice($this);
+        if (!$this->profil->contains($profil)) {
+            $this->profil[] = $profil;
+            $profil->addSeance($this);
         }
 
         return $this;
     }
 
-    public function removeFormateurice(Profil $formateurice): self
+    public function removeProfil(Profil $profil): self
     {
-        if ($this->formateurice->removeElement($formateurice)) {
-            $formateurice->removeFormateurice($this);
+        if ($this->profil->removeElement($profil)) {
+            $profil->removeSeance($this);
         }
 
         return $this;

@@ -46,7 +46,7 @@ class Profil
     private $badge;
 
     #[ORM\ManyToMany(targetEntity: Seance::class, inversedBy: 'profil')]
-    private $formateurice;
+    private $seance;
 
     #[ORM\OneToMany(mappedBy: 'profil', targetEntity: SeanceProfil::class)]
     private $seanceProfil;
@@ -57,7 +57,7 @@ class Profil
         $this->equipeElu = new ArrayCollection();
         $this->association = new ArrayCollection();
         $this->badge = new ArrayCollection();
-        $this->formateurice = new ArrayCollection();
+        $this->seance = new ArrayCollection();
         $this->seanceProfil = new ArrayCollection();
     }
 
@@ -252,23 +252,23 @@ class Profil
     /**
      * @return Collection<int, seance>
      */
-    public function getFormateurice(): Collection
+    public function getSeance(): Collection
     {
-        return $this->formateurice;
+        return $this->seance;
     }
 
-    public function addFormateurice(seance $formateurice): self
+    public function addSeance(seance $seance): self
     {
-        if (!$this->formateurice->contains($formateurice)) {
-            $this->formateurice[] = $formateurice;
+        if (!$this->seance->contains($seance)) {
+            $this->seance[] = $seance;
         }
 
         return $this;
     }
 
-    public function removeFormateurice(seance $formateurice): self
+    public function removeSeance(seance $seance): self
     {
-        $this->formateurice->removeElement($formateurice);
+        $this->seance->removeElement($seance);
 
         return $this;
     }
