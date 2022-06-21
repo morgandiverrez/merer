@@ -19,7 +19,7 @@ class Association
     private $code;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $logo;
+    private $image;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $name;

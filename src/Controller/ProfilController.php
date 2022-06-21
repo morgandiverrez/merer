@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use App\Entity\Profil;
 use App\Form\ProfilType;
+use App\Entity\EquipeElu;
+use App\Entity\Association;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -12,12 +14,10 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[Route('/profil', name: 'profil_')]
-
-
 class ProfilController extends AbstractController
 {
     #[Route('/', name: 'showAll')]
-    #[IsGranted('ROLE_ADMIN')]
+
     public function showAll(EntityManagerInterface $entityManager): Response
     {
         $profils = $entityManager->getRepository(Profil::class)->findAll();
@@ -50,14 +50,39 @@ class ProfilController extends AbstractController
 
             $profil->setLastName(mb_strtoupper($profil->getLastName()));
             $profil->setName(mb_convert_case($profil->getName(), MB_CASE_TITLE, "UTF-8"));
-            //$equipeElus = $entityManager->getRepository(EquipeElu::class)->findById()[0];
-            //$profil->addEquipeElu();
-            //$profil->addAssociation();
+            $go = true;
+            $i = 0;
+
+            while ($go) {
+                if (isset($form->get('equipeElu')->getData()[$i])) {
+                    $nameEquipeElu = $form->get('equipeElu')->getData()[$i];
+                    $equipeElu = $entityManager->getRepository(EquipeElu::class)->findByName(strval($nameEquipeElu))[0];  
+                    $profil->addEquipeElu($equipeElu);
+                    $entityManager->persist($profil);
+                    $entityManager->flush();
+                    $i++;
+                } else {
+                    $go = false;
+                }
+            }
+            
+            $go = true;
+            $i = 0;
+            while ($go) {
+                if (isset($form->get('association')->getData()[$i])) {
+                    $nameAssociation = $form->get('association')->getData()[$i];
+                    $association = $entityManager->getRepository(Association::class)->findBySigle(strval($nameAssociation))[0];
+                    $profil->addAssociation($association);
+                    $i++;
+                } else {
+                    $go = false;
+                }
+            }
 
             $entityManager->persist($profil);
             $entityManager->flush();
 
-            return $this->redirectToRoute('profil_show',['profilID' => $profil->getID()]);
+           // return $this->redirectToRoute('profil_show',['profilID' => $profil->getID()]);
         }
 
         return $this->render('profil/edit.html.twig', [
@@ -78,9 +103,31 @@ class ProfilController extends AbstractController
 
             $profil->setLastName(mb_strtoupper($profil->getLastName()));
             $profil->setName(mb_convert_case($profil->getName(), MB_CASE_TITLE, "UTF-8"));
-            //$equipeElus = $entityManager->getRepository(EquipeElu::class)->findById()[0];
-            //$profil->addEquipeElu();
-            //$profil->addAssociation();
+           
+            $go=true; $i=0;
+
+            while ($go) {
+                if (isset($form->get('equipeElu')->getData()[$i])) {
+                    $nameEquipeElu = $form->get('equipeElu')->getData()[$i];
+                    $equipeElu = $entityManager->getRepository(EquipeElu::class)->findByName(strval($nameEquipeElu))[0];
+                    $profil->addEquipeElu($equipeElu);
+                    $i++;
+                } else {
+                    $go = false;
+                }
+            }
+
+            $go = true; $i = 0;
+            while ($go) {
+                if (isset($form->get('association')->getData()[$i])) {
+                    $sigleAssociation = $form->get('association')->getData()[$i];
+                    $association = $entityManager->getRepository(Association::class)->findBySigle(strval($sigleAssociation))[0];
+                    $profil->addAssociation($association);
+                    $i++;
+                } else {
+                    $go = false;
+                }
+            }
 
             $entityManager->persist($profil);
             $entityManager->flush();

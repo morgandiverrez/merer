@@ -29,13 +29,13 @@ class ProfilType extends AbstractType
                 
                  // used to render a select box, check boxes or radios
                  'multiple' => true,
-                 //'expanded' => true,
+                 'expanded' => true,
             ])
 
             ->add('association', EntityType::class, [
                  'class' => Association::class,
                  'multiple' => true,
-                 //'expanded'=> true,
+                 'expanded'=> true,
                 
             ])
             
