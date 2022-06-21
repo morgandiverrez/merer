@@ -66,7 +66,17 @@ class EquipeEluRepository extends ServiceEntityRepository
     public function findByID($value): ?array
     {
         return $this->createQueryBuilder('EquipeElu')
-        ->andWhere('EquipeElu.id = :val')
+            ->andWhere('EquipeElu.id = :val')
+            ->setParameter('val', $value)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findByName($value): ?array
+    {
+        return $this->createQueryBuilder('EquipeElu')
+            ->where('EquipeElu.name LIKE :val')
             ->setParameter('val', $value)
             ->setMaxResults(1)
             ->getQuery()

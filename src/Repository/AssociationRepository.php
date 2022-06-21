@@ -73,5 +73,15 @@ class AssociationRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function findBySigle($value): ?array
+    {
+        return $this->createQueryBuilder('association')
+            ->andWhere('association.sigle LIKE :val')
+            ->setParameter('val', $value)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getResult();
+    }
+
     
 }
