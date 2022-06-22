@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
 use App\Entity\Profil;
 use App\Entity\Association;
 use App\Form\AssociationType;
@@ -22,9 +23,12 @@ class AssociationController extends AbstractController
     public function showAll(EntityManagerInterface $entityManager): Response
     {
         $associations = $entityManager->getRepository(Association::class)->findAll();
+        $user = $entityManager->getRepository(User::class)->findAll();
+
 
         return $this->render('association/showAll.html.twig', [
             'associations' => $associations,
+            'user'=> $user,
         ]);
     }
 

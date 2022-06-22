@@ -11,14 +11,14 @@
             <div class="mx-auto mt-5 mb-5">
 
                 <div class="name my-5">
-                    {{ form_label(form.name, 'Nom ', {'label_attr': {'class': 'foo'}}) }}
+                    {{ form_label(form.name, 'Prénom ', {'label_attr': {'class': 'foo'}}) }}
                     {{ form_errors(form.name) }}
                     {{ form_widget(form.name) }}
                     {{ form_help(form.name) }}
                 </div>
 
                 <div class="last_name my-5">
-                    {{ form_label(form.last_name, 'Prénom ', {'label_attr': {'class': 'foo'}}) }}
+                    {{ form_label(form.last_name, 'Nom ', {'label_attr': {'class': 'foo'}}) }}
                     {{ form_errors(form.last_name) }}
                     {{ form_widget(form.last_name) }}
                     {{ form_help(form.last_name) }}

@@ -48,7 +48,7 @@
                                     <a class="nav-link active" aria-current="page" href="#">Home</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="/catalogue/">Edit Profil</a>
+                                    <a class="nav-link" href="/profil/">Profil</a>
                                 </li>
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle"  id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="true">
@@ -63,13 +63,14 @@
                                     <li><hr class="dropdown-divider"></li>
                                     <li><a class="dropdown-item" href="#">Something else here</a></li>
                                 </ul>
-                                </li>
-                                    <li class="nav-item">
-                                    <a class="nav-link disabled">Disabled</a>
-                                </li>
                             </ul>
+                             <ul class="justify-content-end">
+                                <li>{{user.getUserIdentifier()}}</li>
+                                <li><a class="nav-link disabled" href="/logout"><i color="dark" class="fa-solid fa-power-off"></i></a></li>
+                            </ul>
+                        <div>
+
                             
-                        </div>
                     </div>
                 </nav>
              </header>
