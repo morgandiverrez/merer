@@ -48,28 +48,29 @@
                                      <a class="nav-link active" aria-current="page" href="#">Home</a>
                                 </li>
                                 <li class="nav-item">
-                                     <a class="nav-link" href="#">Link</a>
+                                    <a class="nav-link" href="/profil/">Profil</a>
                                 </li>
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                         Dropdown
                                     </a>
-                                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                        <li><a class="dropdown-item" href="#">Action</a></li>
-                                        <li><a class="dropdown-item" href="#">Another action</a></li>
-                                        <li><hr class="dropdown-divider"></li>
-                                        <li><a class="dropdown-item" href="#">Something else here</a></li>
-                                    </ul>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link disabled">Disabled</a>
-                                </li>
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <li><a class="dropdown-item" href="/association/">Association</a></li>
+                                    <li><a class="dropdown-item" href="/badge/">Badge</a></li>
+                                    <li><a class="dropdown-item" href="/catalogue/">Formation</a></li>
+                                    <li><a class="dropdown-item" href="/equipe_elu/">Equipe d'élu</a></li>
+                                    <li><a class="dropdown-item" href="/lieux/">Lieu</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" href="#">Something else here</a></li>
+                                </ul>
                             </ul>
-                            <form class="d-flex" role="search">
-                                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                                <button class="btn btn-outline-success" type="submit">Search</button>
-                            </form>
-                        </div>
+                             <ul class="justify-content-end">
+                                <li>{{user.getUserIdentifier()}}</li>
+                                <li><a class="nav-link disabled" href="/logout"><i color="dark" class="fa-solid fa-power-off"></i></a></li>
+                            </ul>
+                        <div>
+
+                            
                     </div>
                 </nav>
              </header>

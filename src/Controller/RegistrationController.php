@@ -30,9 +30,10 @@ class RegistrationController extends AbstractController
                 )
             );
 
+            $user->
             $entityManager->persist($user);
             $entityManager->flush();
-            // do anything else you need here, like send an email
+            
 
             return $this->redirectToRoute('profil_new');
         }

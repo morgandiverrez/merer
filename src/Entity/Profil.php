@@ -52,6 +52,9 @@ class Profil
     #[ORM\OneToMany(mappedBy: 'profil', targetEntity: SeanceProfil::class)]
     private $seanceProfil;
 
+    #[ORM\OneToOne(mappedBy: 'profil', targetEntity: User::class, cascade: ['persist', 'remove'])]
+    private $user;
+
     public function __construct()
     {
         $this->retour = new ArrayCollection();
@@ -300,6 +303,23 @@ class Profil
                 $seanceProfil->setProfil(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(User $user): self
+    {
+        // set the owning side of the relation if necessary
+        if ($user->getProfil() !== $this) {
+            $user->setProfil($this);
+        }
+
+        $this->user = $user;
 
         return $this;
     }
