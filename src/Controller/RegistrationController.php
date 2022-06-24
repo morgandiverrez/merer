@@ -46,20 +46,20 @@ class RegistrationController extends AbstractController
         ]);
     }
 
-    #[Route('/register/role_admin', name: 'role_admin')]
-    public function ajoutRole(EntityManagerInterface $entityManager)
-    {
+    // #[Route('/register/role_admin', name: 'role_admin')]
+    // public function ajoutRole(EntityManagerInterface $entityManager)
+    // {
 
-        $role = ['ROLE_ADMIN'];
-
-
-        $user = $this->getUser();
-        //$user->setRoles($role);
+    //     $role = ['ROLE_ADMIN'];
 
 
-        $entityManager->persist($user);
-        $entityManager->flush();
+    //     $user = $this->getUser();
+    //     $user->setRoles($role);
 
-        return $this->redirectToRoute('account');
-    }
+
+    //     $entityManager->persist($user);
+    //     $entityManager->flush();
+
+    //     return $this->redirectToRoute('profil_showAll');
+    // }
 }

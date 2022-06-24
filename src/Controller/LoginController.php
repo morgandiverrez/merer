@@ -16,7 +16,6 @@ class LoginController extends AbstractController
     {
 
         $user = $this->getUser();
-       // $user = $entityManager->getRepository(User::class)->findOneBy($user);
 
         // get the login error if there is one
          $error = $authenticationUtils->getLastAuthenticationError();
@@ -36,5 +35,13 @@ class LoginController extends AbstractController
     {
         // controller can be blank: it will never be called!
         throw new \Exception('Don\'t forget to activate logout in security.yaml');
+    }
+
+    #[Route('/account', name: 'account', methods: ['GET'])]
+    public function account(EntityManagerInterface $entityManager)
+    {
+        $user = $this->getUser();
+        $profil = $entityManager->getRepository(Profil::class)->findByUser($user);
+        return $this->redirectToRoute('profil_show', ['profilID' => $profil->getID()]);
     }
 }

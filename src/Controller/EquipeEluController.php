@@ -19,6 +19,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class EquipeEluController extends AbstractController
 {
     #[Route('/', name: 'showAll')]
+    #[IsGranted('ROLE_ADMIN')]
     public function showAll(EntityManagerInterface $entityManager): Response
     {
         $equipeElus = $entityManager->getRepository(EquipeElu::class)->findAll();
