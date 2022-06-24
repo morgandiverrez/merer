@@ -65,7 +65,7 @@
                                 </ul>
                             </ul>
                              <ul class="justify-content-end">
-                                <li>{{user.getUserIdentifier()}}</li>
+                                <li>{% if user is null %} non connectée {% else %} {{user.getUserIdentifier()}} {% endif %}</li>
                                 <li><a class="nav-link disabled" href="/logout"><i color="dark" class="fa-solid fa-power-off"></i></a></li>
                             </ul>
                         <div>

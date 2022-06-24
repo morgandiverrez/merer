@@ -32,9 +32,11 @@ class ProfilController extends AbstractController
     {
         // find renvoi tjr un array (tableau), donc faut mettre [0] pour enlever l'array, si on veut plus d'une valeur s'il y en a, on met pas ou [nombre]
         $profil = $entityManager->getRepository(Profil::class)->findById($profilID)[0];
+         $user = $this->getUser();
 
         return $this->render('profil/show.html.twig', [
             'profil' => $profil,
+            'user' => $user,
         ]);
     }
 
@@ -45,6 +47,7 @@ class ProfilController extends AbstractController
         $form = $this->createForm(ProfilType::class, $profil);
         $form->handleRequest($request);
 
+        $user = $this->getUser();
 
         if ($form->isSubmitted() && $form->isValid()) {
 
@@ -88,6 +91,7 @@ class ProfilController extends AbstractController
         return $this->render('profil/edit.html.twig', [
             'profil' => $profil,
             'form' => $form->createView(),
+            'user'=> $user,
         ]);
     }
 
@@ -97,6 +101,8 @@ class ProfilController extends AbstractController
         $profil = new Profil();
         $form = $this->createForm(ProfilType::class, $profil);
         $form->handleRequest($request);
+
+        $user = $this->getUser();
 
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -139,6 +145,7 @@ class ProfilController extends AbstractController
         return $this->render('profil/edit.html.twig', [
             'profil' => $profil,
             'form' => $form->createView(),
+            'user' => $user,
         ]);
     }
     
