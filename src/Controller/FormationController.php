@@ -18,6 +18,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class FormationController extends AbstractController
 {
     #[Route('/', name: 'showAll')]
+    #[IsGranted('ROLE_USER')]
     public function showAll(EntityManagerInterface $entityManager): Response
     {
         $formations = $entityManager->getRepository(Formation::class)->findAll();
@@ -29,6 +30,7 @@ class FormationController extends AbstractController
     }
 
     #[Route('/show/{formationID}', name: 'show')]
+    #[IsGranted('ROLE_USER')]
     public function show(EntityManagerInterface $entityManager, $formationID): Response
     {
         // find renvoi tjr un array (tableau), donc faut mettre [0] pour enlever l'array, si on veut plus d'une valeur s'il y en a, on met pas ou [nombre]

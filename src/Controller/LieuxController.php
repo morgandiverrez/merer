@@ -17,6 +17,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class LieuxController extends AbstractController
 {
     #[Route('/', name: 'showAll')]
+    #[IsGranted('ROLE_ADMIN')]
     public function showAll(EntityManagerInterface $entityManager): Response
     {
         $lieux = $entityManager->getRepository(Lieux::class)->findAll();
@@ -28,6 +29,7 @@ class LieuxController extends AbstractController
     }
 
     #[Route('/show/{lieuID}', name: 'show')]
+    #[IsGranted('ROLE_ADMIN')]
     public function show(EntityManagerInterface $entityManager, $lieuID): Response
     {
         // find renvoi tjr un array (tableau), donc faut mettre [0] pour enlever l'array, si on veut plus d'une valeur s'il y en a, on met pas ou [nombre]
@@ -40,6 +42,7 @@ class LieuxController extends AbstractController
     }
 
     #[Route('/edit/{lieuID}', name: 'edit')]
+    #[IsGranted('ROLE_ADMIN')]
     public function edit(EntityManagerInterface $entityManager, Request $request, $lieuID): Response
     {
         $lieu = $entityManager->getRepository(Lieux::class)->findById($lieuID)[0];
@@ -62,6 +65,7 @@ class LieuxController extends AbstractController
     }
 
     #[Route('/new', name: 'new')]
+    #[IsGranted('ROLE_ADMIN')]
     public function new(EntityManagerInterface $entityManager, Request $request): Response
     {
         $lieu = new Lieux();
@@ -85,6 +89,7 @@ class LieuxController extends AbstractController
     }
 
     #[Route('/delete/{lieuID}', name: 'delete')]
+    #[IsGranted('ROLE_ADMIN')]
     public function delete(EntityManagerInterface $entityManager, $lieuID): Response
     {
 

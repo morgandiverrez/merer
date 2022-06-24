@@ -18,10 +18,10 @@ use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
 #[Route('/badge', name: 'badge_')]
 
-
 class BadgeController extends AbstractController
 {
     #[Route('/', name: 'showAll')]
+    #[IsGranted('ROLE_ADMIN')]
     public function showAll(EntityManagerInterface $entityManager): Response
     {
         $badges = $entityManager->getRepository(Badge::class)->findAll();
@@ -33,6 +33,7 @@ class BadgeController extends AbstractController
     }
 
     #[Route('/show/{badgeID}', name: 'show')]
+    #[IsGranted('ROLE_ADMIN')]
     public function show(EntityManagerInterface $entityManager, $badgeID): Response
     {
         // find renvoi tjr un array (tableau), donc faut mettre [0] pour enlever l'array, si on veut plus d'une valeur s'il y en a, on met pas ou [nombre]
@@ -45,6 +46,7 @@ class BadgeController extends AbstractController
     }
 
     #[Route('/new', name: 'new')]
+    #[IsGranted('ROLE_ADMIN')]
     public function new(EntityManagerInterface $entityManager, Request $request): Response
     {
         $badge = new Badge();
@@ -89,6 +91,7 @@ class BadgeController extends AbstractController
 
 
     #[Route('/edit/{badgeID}', name: 'edit')]
+    #[IsGranted('ROLE_ADMIN')]
     public function edit(EntityManagerInterface $entityManager, Request $request, $badgeID): Response
     {
         $badge = $entityManager->getRepository(Badge::class)->findById($badgeID)[0];
@@ -128,6 +131,7 @@ class BadgeController extends AbstractController
 
 
     #[Route('/delete/{badgeID}', name: 'delete')]
+    #[IsGranted('ROLE_ADMIN')]
     public function delete(EntityManagerInterface $entityManager, $badgeID): Response
     {
 

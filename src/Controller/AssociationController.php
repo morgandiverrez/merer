@@ -16,10 +16,11 @@ use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
 
 #[Route('/association', name: 'association_')]
-#[IsGranted('ROLE_ADMIN')]
+
 class AssociationController extends AbstractController
 {
     #[Route('/', name: 'showAll')]
+    #[IsGranted('ROLE_ADMIN')]
     public function showAll(EntityManagerInterface $entityManager): Response
     {
         $associations = $entityManager->getRepository(Association::class)->findAll();
@@ -35,6 +36,7 @@ class AssociationController extends AbstractController
     }
 
     #[Route('/show/{associationID}', name: 'show')]
+    #[IsGranted('ROLE_ADMIN')]
     public function show(EntityManagerInterface $entityManager, $associationID): Response
     {
         // find renvoi tjr un array (tableau), donc faut mettre [0] pour enlever l'array, si on veut plus d'une valeur s'il y en a, on met pas ou [nombre]
@@ -47,6 +49,7 @@ class AssociationController extends AbstractController
     }
 
     #[Route('/new', name: 'new')]
+    #[IsGranted('ROLE_ADMIN')]
     public function new(EntityManagerInterface $entityManager, Request $request): Response
     {
         $association = new Association();
@@ -89,6 +92,7 @@ class AssociationController extends AbstractController
 
 
     #[Route('/edit/{associationID}', name: 'edit')]
+    #[IsGranted('ROLE_ADMIN')]
     public function edit(EntityManagerInterface $entityManager, Request $request, $associationID): Response
     {
         $association = $entityManager->getRepository(Association::class)->findById($associationID)[0];
@@ -129,6 +133,7 @@ class AssociationController extends AbstractController
 
 
     #[Route('/delete/{associationID}', name: 'delete')]
+    #[IsGranted('ROLE_ADMIN')]
     public function delete(EntityManagerInterface $entityManager, $associationID): Response
     {
 
