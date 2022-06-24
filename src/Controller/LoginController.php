@@ -2,16 +2,22 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Entity\User;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class LoginController extends AbstractController
 {
     #[Route('/login', name: 'login')]
-    public function login(AuthenticationUtils $authenticationUtils): Response
+    public function login(EntityManagerInterface $entityManager, AuthenticationUtils $authenticationUtils): Response
     {
+
+        $user = $this->getUser();
+       // $user = $entityManager->getRepository(User::class)->findOneBy($user);
+
         // get the login error if there is one
          $error = $authenticationUtils->getLastAuthenticationError();
 
@@ -20,6 +26,7 @@ class LoginController extends AbstractController
 
           return $this->render('login/index.html.twig', [
              'last_username' => $lastUsername,
+             'user'         => $user,
              'error'         => $error,
         ]);
     }
