@@ -23,12 +23,14 @@ class AssociationController extends AbstractController
     public function showAll(EntityManagerInterface $entityManager): Response
     {
         $associations = $entityManager->getRepository(Association::class)->findAll();
-        $user = $entityManager->getRepository(User::class)->findAll();
+        $users = $entityManager->getRepository(User::class)->findAll();
+        $user = $this->getUser();
 
 
         return $this->render('association/showAll.html.twig', [
             'associations' => $associations,
             'user'=> $user,
+            'users'=> $users,
         ]);
     }
 
@@ -37,10 +39,10 @@ class AssociationController extends AbstractController
     {
         // find renvoi tjr un array (tableau), donc faut mettre [0] pour enlever l'array, si on veut plus d'une valeur s'il y en a, on met pas ou [nombre]
         $association = $entityManager->getRepository(Association::class)->findById($associationID)[0];
-
+        $user = $this->getUser();
         return $this->render('association/show.html.twig', [
             'association' => $association,
-            
+            'user' => $user,     
         ]);
     }
 
@@ -50,7 +52,8 @@ class AssociationController extends AbstractController
         $association = new Association();
         $form = $this->createForm(AssociationType::class, $association);
         $form->handleRequest($request);
-
+        
+        $user = $this->getUser();
 
         if ($form->isSubmitted() && $form->isValid()) {
 
@@ -79,7 +82,7 @@ class AssociationController extends AbstractController
         return $this->render('association/new.html.twig', [
             'association' => $association,
             'form' => $form->createView(),
-
+            'user' => $user,
         ]);
     }
 
@@ -91,7 +94,7 @@ class AssociationController extends AbstractController
         $association = $entityManager->getRepository(Association::class)->findById($associationID)[0];
         $form = $this->createForm(AssociationType::class, $association);
         $form->handleRequest($request);
-
+        $user = $this->getUser();
 
         if ($form->isSubmitted() && $form->isValid()) {
 
@@ -119,6 +122,7 @@ class AssociationController extends AbstractController
         return $this->render('association/edit.html.twig', [
             'association' => $association,
             'form' => $form->createView(),
+            'user' => $user,
         ]);
     }
 
@@ -131,6 +135,8 @@ class AssociationController extends AbstractController
         $association = $entityManager->getRepository(Association::class)->findById($associationID)[0];
         $entityManager->remove($association);
         $entityManager->flush();
+
+        $user = $this->getUser();
 
         return $this->redirectToRoute('association_showAll', []);
     }

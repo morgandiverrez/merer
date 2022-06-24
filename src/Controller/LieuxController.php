@@ -20,9 +20,10 @@ class LieuxController extends AbstractController
     public function showAll(EntityManagerInterface $entityManager): Response
     {
         $lieux = $entityManager->getRepository(Lieux::class)->findAll();
-
+        $user = $this->getUser();
         return $this->render('lieux/showAll.html.twig', [
             'lieux' => $lieux,
+            'user' => $user,
         ]);
     }
 
@@ -31,9 +32,10 @@ class LieuxController extends AbstractController
     {
         // find renvoi tjr un array (tableau), donc faut mettre [0] pour enlever l'array, si on veut plus d'une valeur s'il y en a, on met pas ou [nombre]
         $lieu = $entityManager->getRepository(Lieux::class)->findById($lieuID)[0];
-
+        $user = $this->getUser();
         return $this->render('lieux/show.html.twig', [
             'lieu' => $lieu,
+            'user' => $user,
         ]);
     }
 
@@ -43,7 +45,7 @@ class LieuxController extends AbstractController
         $lieu = $entityManager->getRepository(Lieux::class)->findById($lieuID)[0];
         $form = $this->createForm(LieuxType::class, $lieu);
         $form->handleRequest($request);
-
+        $user = $this->getUser();
 
         if ($form->isSubmitted() && $form->isValid()) {
 
@@ -55,6 +57,7 @@ class LieuxController extends AbstractController
         return $this->render('lieux/edit.html.twig', [
             'lieu' => $lieu,
             'form' => $form->createView(),
+            'user' => $user,
         ]);
     }
 
@@ -64,7 +67,7 @@ class LieuxController extends AbstractController
         $lieu = new Lieux();
         $form = $this->createForm(LieuxType::class, $lieu);
         $form->handleRequest($request);
-
+        $user = $this->getUser();
 
         if ($form->isSubmitted() && $form->isValid()) {
 
@@ -76,6 +79,7 @@ class LieuxController extends AbstractController
         return $this->render('lieux/new.html.twig', [
             'lieu' => $lieu,
             'form' => $form->createView(),
+            'user' => $user,
 
         ]);
     }
@@ -87,6 +91,7 @@ class LieuxController extends AbstractController
         $lieu = $entityManager->getRepository(Lieux::class)->findById($lieuID)[0];
         $entityManager->remove($lieu);
         $entityManager->flush();
+        $user = $this->getUser();
 
         return $this->redirectToRoute('lieux_showAll', []);
     }

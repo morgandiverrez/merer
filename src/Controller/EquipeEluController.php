@@ -22,9 +22,10 @@ class EquipeEluController extends AbstractController
     public function showAll(EntityManagerInterface $entityManager): Response
     {
         $equipeElus = $entityManager->getRepository(EquipeElu::class)->findAll();
-
+        $user = $this->getUser();
         return $this->render('equipe_elu/showAll.html.twig', [
             'equipeElus' => $equipeElus,
+            'user' => $user,
         ]);
     }
     
@@ -34,9 +35,10 @@ class EquipeEluController extends AbstractController
     {
         // find renvoi tjr un array (tableau), donc faut mettre [0] pour enlever l'array, si on veut plus d'une valeur s'il y en a, on met pas ou [nombre]
         $equipeElu = $entityManager->getRepository(EquipeElu::class)->findById($equipeEluID)[0];
-
+        $user = $this->getUser();
         return $this->render('equipe_elu/show.html.twig', [
             'equipeElu' => $equipeElu,
+            'user' => $user,
         ]);
     }
 
@@ -47,7 +49,7 @@ class EquipeEluController extends AbstractController
         $equipeElu = new EquipeElu();
         $form = $this->createForm(EquipeEluType::class, $equipeElu);
         $form->handleRequest($request);
-
+        $user = $this->getUser();
 
         if ($form->isSubmitted() && $form->isValid()) {
 
@@ -59,6 +61,7 @@ class EquipeEluController extends AbstractController
         return $this->render('equipe_elu/new.html.twig', [
             'equipeElu' => $equipeElu,
             'form' => $form->createView(),
+            'user' => $user,
 
         ]);
     }
@@ -72,7 +75,7 @@ class EquipeEluController extends AbstractController
         $equipeElu = $entityManager->getRepository(EquipeElu::class)->findById($equipeEluID)[0];
         $form = $this->createForm(EquipeEluType::class, $equipeElu);
         $form->handleRequest($request);
-
+        $user = $this->getUser();
 
         if ($form->isSubmitted() && $form->isValid()) {
 
@@ -84,6 +87,7 @@ class EquipeEluController extends AbstractController
         return $this->render('equipe_elu/edit.html.twig', [
             'equipeElu' => $equipeElu,
             'form' => $form->createView(),
+            'user' => $user,
         ]);
     }
 
@@ -97,7 +101,7 @@ class EquipeEluController extends AbstractController
         $equipeElu = $entityManager->getRepository(EquipeElu::class)->findById($equipeEluID)[0];
         $entityManager->remove($equipeElu);
         $entityManager->flush();
-
+        $user = $this->getUser();
         return $this->redirectToRoute('equipeElu_showAll', []);
     }
 }
