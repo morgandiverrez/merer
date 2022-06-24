@@ -21,6 +21,7 @@ class ProfilController extends AbstractController
     public function showAll(EntityManagerInterface $entityManager): Response
     {
         $profils = $entityManager->getRepository(Profil::class)->findAll();
+        $user = $this->getUser();
 
         return $this->render('profil/showAll.html.twig', [
             'profils' => $profils,
@@ -46,7 +47,6 @@ class ProfilController extends AbstractController
         $profil = $entityManager->getRepository(Profil::class)->findById($profilID)[0];
         $form = $this->createForm(ProfilType::class, $profil);
         $form->handleRequest($request);
-
         $user = $this->getUser();
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -101,7 +101,6 @@ class ProfilController extends AbstractController
         $profil = new Profil();
         $form = $this->createForm(ProfilType::class, $profil);
         $form->handleRequest($request);
-
         $user = $this->getUser();
 
 

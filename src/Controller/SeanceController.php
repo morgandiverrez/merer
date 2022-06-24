@@ -20,6 +20,7 @@ class SeanceController extends AbstractController
     {
         return $this->render('seance/menu.html.twig', [
             'controller_name' => 'SeanceController',
+            
         ]);
     }
 }
