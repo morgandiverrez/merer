@@ -28,16 +28,16 @@
                             
                         </ul>
                         <div class="card-body">
-                            <a href="/account/edit/{{ app.user.profil.getId() }}" class="card-link"><i class="fa-solid fa-pen-to-square"></i></a>
-                            <a href="/account/delete/{{ app.user.profil.getId()}}" class="card-link"><i class="fa-solid fa-trash-can"></i></a>
-                            <a href="/account/showAll" class="card-link"><i class="fa-solid fa-list"></i></a>
-                           
+                            <a href="/account/edit" class="card-link"><i class="fa-solid fa-pen-to-square"></i></a>
+                            {% if is_granted('ROLE_ADMIN') %}
+                                 <a href="/account/showAll" class="card-link"><i class="fa-solid fa-list"></i></a>
+                            {% endif %}
                         </div>
                     </div>
                     <div class="d-flex align-content-start flex-wrap">
                             {% for badge in app.user.profil.getBadge() %} 
                             <div class="p-2">
-                                 <img class="card-img-top" src="{{badge.getImage}}" alt="image du association : {{badge.getName()}}" >
+                                 <img class="card-img-top" src="{{badge.getImage}}" alt="badge :{{badge.getName()}}" >
                                       {{badge.getName()}}
                             </div>                       
                             {% endfor %}
