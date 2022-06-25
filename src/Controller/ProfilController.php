@@ -17,7 +17,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class ProfilController extends AbstractController
 {
     #[Route('/showAll', name: 'showAll')]
-    #[IsGranted('ROLE_ADMIN')]
+    #[IsGranted('ROLE_FORMATEURICE')]
     public function showAll(EntityManagerInterface $entityManager): Response
     {
         $profils = $entityManager->getRepository(Profil::class)->findAll();
@@ -30,8 +30,8 @@ class ProfilController extends AbstractController
     }
 
     #[Route('/', name: 'show')]
-    #[IsGranted('ROLE_USER')] // a réflechir
-    public function show(EntityManagerInterface $entityManager): Response
+    #[IsGranted('ROLE_USER')] 
+    public function show(): Response
     {
         // find renvoi tjr un array (tableau), donc faut mettre [0] pour enlever l'array, si on veut plus d'une valeur s'il y en a, on met pas ou [nombre]
         return $this->render('profil/show.html.twig', [           
@@ -40,7 +40,7 @@ class ProfilController extends AbstractController
 
 
     #[Route('/show/{profilID}', name: 'showByAdmin')]
-    #[IsGranted('ROLE_ADMIN')] 
+    #[IsGranted('ROLE_FORMATEURICE')] 
     public function showProfilAdmin(EntityManagerInterface $entityManager, $profilID): Response
     {
         // find renvoi tjr un array (tableau), donc faut mettre [0] pour enlever l'array, si on veut plus d'une valeur s'il y en a, on met pas ou [nombre]
@@ -54,7 +54,7 @@ class ProfilController extends AbstractController
 
 
     #[Route('/edit/{profilID}', name: 'editByAdmin')]
-    #[IsGranted('ROLE_FORMATEURICE')]
+    #[IsGranted('ROLE_ADMIN')]
     public function editByAdmin(EntityManagerInterface $entityManager, Request $request, $profilID): Response
     {
         $user = $this->getUser();
