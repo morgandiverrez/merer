@@ -75,4 +75,16 @@ class SeanceRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function findAllByDatetime($value): array
+       {
+           return $this->createQueryBuilder('seance')
+               ->andWhere('seance.datetime > :val')
+               ->setParameter('val', $value)
+               ->orderBy('seance.datetime', 'ASC')
+               ->setMaxResults(50)
+               ->getQuery()
+               ->getResult()
+           ;
+       }
 }

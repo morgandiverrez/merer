@@ -19,7 +19,7 @@ class SeanceController extends AbstractController
     #[IsGranted('ROLE_USER')]
     public function showAll(EntityManagerInterface $entityManager): Response
     {
-        $seances = $entityManager->getRepository(Seance::class)->findAll();
+        $seances = $entityManager->getRepository(Seance::class)->findAllByDatetime();
 
         return $this->render('seance/showAll.html.twig', [
             'seances' => $seances,
