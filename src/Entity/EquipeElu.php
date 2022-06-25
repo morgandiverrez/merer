@@ -146,4 +146,6 @@ class EquipeElu
 
         return $this;
     }
+
+    
 }

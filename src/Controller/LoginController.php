@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Entity\Profil;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -37,11 +38,11 @@ class LoginController extends AbstractController
         throw new \Exception('Don\'t forget to activate logout in security.yaml');
     }
 
-    #[Route('/account', name: 'account', methods: ['GET'])]
-    public function account(EntityManagerInterface $entityManager)
-    {
-        $user = $this->getUser();
-        $profil = $entityManager->getRepository(Profil::class)->findByUser($user);
-        return $this->redirectToRoute('profil_show', ['profilID' => $profil->getID()]);
-    }
+    // #[Route('/account', name: 'account')]
+    // public function account(EntityManagerInterface $entityManager)
+    // {
+    //     $user = $this->getUser();
+    //     // $profil = $entityManager->getRepository(Profil::class)->findByUser($user);
+    //     return $this->redirectToRoute('profil_show', ['profilID' => $user->getProfil()->getID()]);
+    // }
 }

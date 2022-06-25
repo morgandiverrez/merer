@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'base_user.html.twig' %}
 
 {% block title %}liste des associations{% endblock %}
 
@@ -13,7 +13,7 @@
                 <thead>
                 <tr>
                     <th scope="col">Code</th>
-                    <th scope="col">Nom</th>
+                    <th scope="col">Sigle</th>
                     <th scope="col">Fédération fillière</th>
                     <th scope="col">Adresse mail</th>
                     <th scope="col">Détails</th>
@@ -25,7 +25,7 @@
                     {% for association in associations %} 
                         <tr>
                             <th>{{association.getCode()}}</th>
-                            <th>{{association.getName()}}</th>
+                            <th>{{association.getSigle()}}</th>
                             <th>{{association.getFedeFilliere()}}</th>
                             <th>{{association.getAdresseMail()}}</th>
                             <th><a href="/association/show/{{association.getId()}}"><i class="fa-solid fa-eye"></i></i></a></th> 

@@ -74,15 +74,15 @@ class ProfilRepository extends ServiceEntityRepository
                 ->getResult();
         }
 
-    public function findByUser($value): ?array
-    {
-        return $this->createQueryBuilder('profil')
-            ->andWhere('profil.user = :val')
-            ->setParameter('val', $value)
-            // ->orderBy('formation.id', 'ASC')
-            ->setMaxResults(1)
-            ->getQuery()
-            ->getResult();
-    }
+    // public function findByUser($value): ?array
+    // {
+    //     return $this->createQueryBuilder('profil')
+    //         ->andWhere('profil.user = :val')
+    //         ->setParameter('val', $value)
+    //         // ->orderBy('formation.id', 'ASC')
+    //         ->setMaxResults(1)
+    //         ->getQuery()
+    //         ->getResult();
+    // }
 
 }

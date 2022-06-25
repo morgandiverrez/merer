@@ -103,6 +103,6 @@ class EquipeEluController extends AbstractController
         $entityManager->remove($equipeElu);
         $entityManager->flush();
         $user = $this->getUser();
-        return $this->redirectToRoute('equipeElu_showAll', []);
+        return $this->redirectToRoute('equipeElu_showAll');
     }
 }
