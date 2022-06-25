@@ -9,6 +9,7 @@ security:
             entity:
                 class: App\Entity\User
                 property: email
+
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
@@ -35,7 +36,11 @@ security:
             # switch_user: true
 
     role_hierarchy:
-        ROLE_ADMIN:       ROLE_USER
+        ROLE_FORMATEURICE: ROLE_USER
+        ROLE_BF: ROLE_FORMATEURICE
+        ROLE_COORDINATEURICE: ROLE_BF
+        ROLE_ADMIN:       ROLE_COORDINATEURICE
+
 
     # ROLE_SUPER_ADMIN: [ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
     # Easy way to control access for large sections of your site

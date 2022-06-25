@@ -33,7 +33,7 @@ class Lieux
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $ville;
 
-    #[ORM\ManyToMany(targetEntity: Seance::class, inversedBy: 'lieux')]
+    #[ORM\ManyToMany(targetEntity: Seance::class, mappedBy: 'lieux')]
     private $seance;
 
     public function __construct()
