@@ -14,6 +14,7 @@
                     <th scope="col">Date</th>
                     <th scope="col">Nom</th>
                     <th scope="col">Durée</th>
+                     <th scope="col">Formateurice</th>
                     <th scope="col">Ville</th>
                     <th scope="col">Détails</th>
                     
@@ -26,13 +27,26 @@
                     <th>Date et Heure :{{seance.getDatetime().format("Y-m-d H:i:s")}}</th>
                     <th>{{seance.getName()}}</th>
                     <th>{{seance.formation.getDuration().format("H:i")}}</th>
-                    {% if seance.getLieux() is not null %}
-                        {% for lieu in seance.getLieux() %}
-                            <th> {{lieu.getVille()}} </th>
+                    <th>
+                    {% if seance.getProfil() is not null %}
+                        {% for formateurice in seance.getProfil() %} 
+                                <tr>{{formateurice.getName()}} {{formateurice.getLastName()}}</tr>
                         {% endfor %}
                     {% else %}
                         -
                     {% endif %}
+                    </th>
+
+                    <th>
+                    {% if seance.getLieux() is not null %}
+                        {% for lieu in seance.getLieux() %}
+                            <tr> {{lieu.getVille()}} </tr>
+                        {% endfor %}
+                    {% else %}
+                        -
+                    {% endif %}
+                    <th>
+
                     <th><a href="/seance/show/{{seance.getId()}}"><i class="fa-solid fa-eye"></i></i></a></th>
                </tr> {% endfor %}
                 </tbody>
