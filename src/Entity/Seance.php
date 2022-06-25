@@ -31,7 +31,7 @@ class Seance
     #[ORM\ManyToOne(targetEntity: Formation::class, inversedBy: 'seance')]
     private $formation;
 
-    #[ORM\ManyToMany(targetEntity: Lieux::class, mappedBy: 'seance')]
+    #[ORM\ManyToMany(targetEntity: Lieux::class, inversedBy: 'seance')]
     private $lieux;
 
     #[ORM\OneToMany(mappedBy: 'seance', targetEntity: Retour::class)]

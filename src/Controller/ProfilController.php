@@ -54,7 +54,7 @@ class ProfilController extends AbstractController
 
 
     #[Route('/edit/{profilID}', name: 'editByAdmin')]
-    #[IsGranted('ROLE_ADMIN')]
+    #[IsGranted('ROLE_FORMATEURICE')]
     public function editByAdmin(EntityManagerInterface $entityManager, Request $request, $profilID): Response
     {
         $user = $this->getUser();

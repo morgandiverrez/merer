@@ -1,0 +1,55 @@
+{% extends 'base_user.html.twig' %}
+
+
+{% block title %}Détails Séance{% endblock %}
+
+
+
+{% block body %}
+    <div class="container-fluid">
+        <div class="corps mx-auto">
+            <p class="display-6 no-wrap text-center mb-5"> Détails de la Seance </p>
+            <div class=" d-flex justify-content-center text-center align-center">
+                <div class="card align-center" style="width: 18rem;">
+                    <div class=" card-body ">
+                        <h5 class="card-title">{{seance.getName()}}</h5>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Code : {{seance.getCode()}}</li>
+                        <li class="list-group-item">Date et Heure : {% if seance.getDateTime() is null %} - {% else %} {{seance.getDatetime().format("Y-m-d H:i")}} {% endif %}</li>
+                        <li class="list-group-item">Nombre de Place Maximum : {{seance.getNombrePlace()}}</li>   
+                    </ul>  
+                </div>
+
+                <div class="card" style="width: 18rem;">{# début information formation #}
+                    <div class=" card-body ">
+                        <h5 class="card-title">{{seance.formation.getName()}}</h5>
+                        <p class="card-text">{{seance.formation.getDescription()}}</p>
+                        <p class="card-text">OPG :{{seance.formation.getOpg()}}</p>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Pré-requis : {{seance.formation.getPreRequis()}}</li>
+                        <li class="list-group-item">Durée : {%if seance.formation.getDuration() is null %}0 {% else %} {{seance.formation.getDuration().format("H:i")}} {% endif %} </li>
+                        <li class="list-group-item">Public Cible : {{seance.formation.getPublicCible()}}</li>                         
+                    </ul>
+                </div>  {# fin information formation #}
+
+                <div class="card" style="width: 18rem;">{# début information lieux #}
+                    {% for lieu in seance.getLieux() %}
+                    <div class=" card-body ">
+                        <h5 class="card-title">{{lieu.getName()}}</h5>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Salle : {{lieu.getSalle()}}</li>
+                        <li class="list-group-item">Adresse : {{lieu.getAdresse()}}</li>
+                        <li class="list-group-item">Code Postale : {{lieu.getCodePostale()}}</li>
+                        <li class="list-group-item">ville : {{lieu.getVille()}}</li>                          
+                    </ul>
+                    {% endfor %}
+                </div>{# fin information lieux #}
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
