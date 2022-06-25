@@ -36,7 +36,7 @@ class AssociationController extends AbstractController
     }
 
     #[Route('/show/{associationID}', name: 'show')]
-    #[IsGranted('ROLE_ADMIN')]
+     #[IsGranted('ROLE_ADMIN')]
     public function show(EntityManagerInterface $entityManager, $associationID): Response
     {
         // find renvoi tjr un array (tableau), donc faut mettre [0] pour enlever l'array, si on veut plus d'une valeur s'il y en a, on met pas ou [nombre]

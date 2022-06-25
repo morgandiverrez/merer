@@ -36,9 +36,9 @@
     <body>
         {% block header %}   
             <header>
-                <nav style="background-color:#2B9D7D ;" class="navbar navbar-expand-lg ">
+                <nav height="60" style="background-color:#2B9D7D ;" class="navbar navbar-expand-lg ">
                     <div class="container-fluid">
-                        <a class="navbar-brand" href="https://fedeb.net/"><img src="{{asset('build/images/logo_FEDEB.png')}}" height="80" alt="logo Fédé B"></a>
+                        <a class="navbar-brand" href="https://fedeb.net/"><img src="{{asset('build/images/logo_FEDEB.png')}}" height="60" alt="logo Fédé B"></a>
                         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                             <span class="navbar-toggler-icon"></span>
                         </button>
@@ -64,11 +64,42 @@
                                     <li><a class="dropdown-item" href="#">Something else here</a></li>
                                 </ul>
                             </ul>
+                            {% if app.user is not null %}
+                                {% if  app.user.profil.getEquipeElu() is not null %}
+                                        <table>
+                                            <thead>
+                                                <tr><th>Equipe d'elu</th></tr>
+                                            </thead> 
+                                            <tbody>
+                                            {% for equipeElu in app.user.profil.getEquipeElu() %}
+                                                <tr><td> {{equipeElu.getName()}}</td></tr>
+                                            {% endfor %}
+                                            </tbody>
+                                        </table>
+                                {% endif %}
+                                {% if  app.user.profil.getAssociation() is not null %}
+
+                                    <div class="d-flex flex-row-reverse">
+                                        {% for association in app.user.profil.getAssociation() %}
+                                            <div class="p-2">  
+                                            {% if association.getImage() is null %}
+                                                {{association.getSigle()}} 
+                                            {% else %} 
+                                                <a><img src="{{asset(association.getImage())}}" height="60" class="rounded-circle" alt="{{association.getSigle()}}"> </a>
+                                            {% endif %} 
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            
+                                
+                            {% endif %}
+
                              <ul class="justify-content-end">
-                            <li><a class="nav-link disabled" href="/profil/show">{% if app.user is null %} non connectée {% else %} {{app.user.getUserIdentifier()}} {% endif %}</a></li>
+                            <li><a class="nav-link " href="/profil/show">{% if app.user is null %} non connectée {% else %} {{app.user.getUserIdentifier()}} {% endif %}</a></li>
                             </ul>
                              <ul class="justify-content-end">
-                                <li><a class="nav-link disabled" href="/logout"><i color="dark" class="fa-solid fa-power-off"></i></a></li>
+                                <li><a class="nav-link " href="/logout/"><i color="dark" class="fa-solid fa-power-off"></i></a></li>
                             </ul>
                         <div>
 
@@ -82,7 +113,7 @@
         {% endblock %}
 
         {% block footer %}
-            <footer style="background-color:#2B9D7D ;"  class="fixed-bottom">
+            <footer  height="60" style="background-color:#2B9D7D ;"  class="fixed-bottom">
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-lg-4 mt-2 mb-2">
@@ -94,9 +125,10 @@
                             <p class="text-light justify-content-center"></p>
                             <p class="text-light justify-content-center"></p>
                         </div>
+                       
                         <div class="col-lg-4 mt-2 mb-2">
-                            <img src="{{asset('build/images/logo_FAGE.png')}}"  height="80" class="d-inline-block align-items-left" alt="logo FAGE">
-                            <img src="{{asset('build/images/logo_FEDEB.png')}}"  height="80" class="d-inline-block align-items-left" alt="logo Fédé B">
+                            <img src="{{asset('build/images/logo_FAGE.png')}}"  height="60" class="d-inline-block fixed-end" alt="logo FAGE">
+                            <img src="{{asset('build/images/logo_FEDEB.png')}}"  height="60" class="d-inline-block align-items-left" alt="logo Fédé B">
                         </div>
                     </div>
                 </div>
