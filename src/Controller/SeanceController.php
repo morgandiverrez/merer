@@ -17,7 +17,7 @@ class SeanceController extends AbstractController
 {
     #[Route('/', name: 'showAll')]
     #[IsGranted('ROLE_USER')]
-    public function shoAll(EntityManagerInterface $entityManager): Response
+    public function showAll(EntityManagerInterface $entityManager): Response
     {
         $seances = $entityManager->getRepository(Seance::class)->findAll();
 
@@ -27,9 +27,21 @@ class SeanceController extends AbstractController
         ]);
     }
 
+    #[Route('/showAll', name: 'showAllForFormateurice')]
+    #[IsGranted('ROLE_FORMATEURICE')]
+    public function showAllForFormateurice(EntityManagerInterface $entityManager): Response
+    {
+        $seances = $entityManager->getRepository(Seance::class)->findAll();
+
+        return $this->render('seance/showAllForFormateurice.html.twig', [
+            'seances' => $seances,
+
+        ]);
+    }
+
 
     #[Route('/showForAdmin/{seanceID}', name: 'show')]
-    #[IsGranted('ROLE_ADMIN')]
+    #[IsGranted('ROLE_FORMATEURICE')]
     public function show(EntityManagerInterface $entityManager, $seanceID): Response
     {
         $seance = $entityManager->getRepository(Seance::class)->findByID($seanceID)[0];
@@ -51,7 +63,7 @@ class SeanceController extends AbstractController
     }
 
     #[Route('/liste_inscrit/{seanceID}', name: 'liste_inscrit')]
-    #[IsGranted('ROLE_ADMIN')]
+    #[IsGranted('ROLE_FORMATEURICE')]
     public function menu(EntityManagerInterface $entityManager, $seanceID): Response
     {
         $seance = $entityManager->getRepository(Seance::class)->findByID($seanceID)[0];

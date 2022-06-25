@@ -1,0 +1,47 @@
+{% extends 'base_user.html.twig' %}
+
+{% block title %}Liste Inscrits{% endblock %}
+
+
+{% block body %}
+    <div class="container-fluid">
+        <div class="corps mx-auto">
+
+            <a href="/equipeElu/new"><i class="fa-solid fa-plus align-right"></i></i></i></a>
+
+            <p class="display-6 no-wrap text-center mb-5">Liste des inscrits</p>
+
+            <table class="table table-striped">
+                
+                
+                <thead>
+                <tr>
+                    <th scope="col">Heure inscription</th> 
+                    <th scope="col">Nom</th>
+                    <th scope="col">Prénom</th>
+                    <th scope="col">Association</th>
+                    <th scope="col">Equipe d'élu</th>
+                    <th scope="col">Détails</th>
+                    
+                 </tr>
+                </thead>
+
+                <tbody>
+                {% for profil in seance.getSeanceProfil() %} 
+                    <tr>
+                        <th>{{seance.seanceProfil.getHorrodateur().format("Y-m-d H:i:s")}}
+                        <th>{{profil.getLastName()}}</th>
+                        <th>{{profil.getName()}}</th>
+                        <th>{{profil.getAssociation()}}</th>
+                        <th>{{profil.getEquipeElu()}}</th>
+                        <th><a href="/account/show/{{profil.getId()}}"><i class="fa-solid fa-eye"></i></i></a></th> 
+                     </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+
+
+{% endblock %}
