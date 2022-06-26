@@ -2,9 +2,10 @@
 
 namespace App\Form;
 
+use App\Entity\Lieux;
+use App\Entity\Profil;
 use App\Entity\Seance;
 use App\Entity\Formation;
-use App\Entity\Lieux;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -21,18 +22,16 @@ class SeanceType extends AbstractType
             ->add('nombreplace')
             ->add('formation', EntityType::class, [
             'class' => Formation::class,
-            'multiple' => true,
-            'expanded' => true
+            
         ])
             ->add('lieux', EntityType::class, [    
             'class' => Lieux::class,
             'multiple' => true,
-            'expanded' => true
+      
         ])
             ->add('profil', EntityType::class, [
             'class' => Profil::class,
-            'multiple' => true,
-            'expanded' => true,
+            'multiple' => true, 
         ])
         ;
     }

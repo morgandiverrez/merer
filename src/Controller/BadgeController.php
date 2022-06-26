@@ -21,7 +21,7 @@ use Symfony\Component\HttpFoundation\File\Exception\FileException;
 class BadgeController extends AbstractController
 {
     #[Route('/', name: 'showAll')]
-    #[IsGranted('ROLE_ADMIN')]
+    #[IsGranted('ROLE_USER')]
     public function showAll(EntityManagerInterface $entityManager): Response
     {
         $badges = $entityManager->getRepository(Badge::class)->findAll();
@@ -33,7 +33,7 @@ class BadgeController extends AbstractController
     }
 
     #[Route('/show/{badgeID}', name: 'show')]
-    #[IsGranted('ROLE_ADMIN')]
+    #[IsGranted('ROLE_USER')]
     public function show(EntityManagerInterface $entityManager, $badgeID): Response
     {
         // find renvoi tjr un array (tableau), donc faut mettre [0] pour enlever l'array, si on veut plus d'une valeur s'il y en a, on met pas ou [nombre]
@@ -46,7 +46,7 @@ class BadgeController extends AbstractController
     }
 
     #[Route('/new', name: 'new')]
-    #[IsGranted('ROLE_ADMIN')]
+    #[IsGranted('ROLE_BF')]
     public function new(EntityManagerInterface $entityManager, Request $request): Response
     {
         $badge = new Badge();
@@ -72,9 +72,6 @@ class BadgeController extends AbstractController
                 }
 
             }
-
-
-
             $entityManager->persist($badge);
             $entityManager->flush();
             return $this->redirectToRoute('badge_showAll', []);
@@ -91,7 +88,7 @@ class BadgeController extends AbstractController
 
 
     #[Route('/edit/{badgeID}', name: 'edit')]
-    #[IsGranted('ROLE_ADMIN')]
+    #[IsGranted('ROLE_BF')]
     public function edit(EntityManagerInterface $entityManager, Request $request, $badgeID): Response
     {
         $badge = $entityManager->getRepository(Badge::class)->findById($badgeID)[0];

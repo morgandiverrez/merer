@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\Seance;
+use App\Form\SeanceType;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -27,7 +29,7 @@ class SeanceController extends AbstractController
         ]);
     }
 
-    #[Route('/showAll', name: 'showAllForFormateurice')]
+    #[Route('/showAllForFormateurice', name: 'showAllForFormateurice')]
     #[IsGranted('ROLE_FORMATEURICE')]
     public function showAllForFormateurice(EntityManagerInterface $entityManager): Response
     {
@@ -40,7 +42,7 @@ class SeanceController extends AbstractController
     }
 
 
-    #[Route('/showForAdmin/{seanceID}', name: 'show')]
+    #[Route('/showForFormateurice/{seanceID}', name: 'showForFormateurice')]
     #[IsGranted('ROLE_FORMATEURICE')]
     public function show(EntityManagerInterface $entityManager, $seanceID): Response
     {
@@ -70,6 +72,50 @@ class SeanceController extends AbstractController
 
         return $this->render('seance/listeInscrit.html.twig', [
             'seance' => $seance,
+        ]);
+    }
+
+    #[Route('/edit/{seanceID}', name: 'edit')]
+    #[IsGranted('ROLE_BF')]
+    public function edit(EntityManagerInterface $entityManager, Request $request, $seanceID): Response
+    {
+        $seance = $entityManager->getRepository(Seance::class)->findById($seanceID)[0];
+        $form = $this->createForm(SeanceType::class, $seance);
+        $form->handleRequest($request);
+        
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $entityManager->persist($seance);
+            $entityManager->flush();
+            return $this->redirectToRoute('seance_showForFormateurice', ['seanceID' => $seance->getID()]);
+        }
+
+        return $this->render('seance/edit.html.twig', [
+            'seance' => $seance,
+            'form' => $form->createView(),
+        ]);
+    }
+
+    #[Route('/new', name: 'new')]
+    #[IsGranted('ROLE_BF')]
+    public function new(EntityManagerInterface $entityManager, Request $request): Response
+    {
+        $seance = new Seance();
+        $form = $this->createForm(SeanceType::class, $seance);
+        $form->handleRequest($request);
+
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $entityManager->persist($seance);
+            $entityManager->flush();
+            return $this->redirectToRoute('seance_showForFormateurice', ['seanceID' => $seance->getID()]);
+        }
+
+        return $this->render('seance/new.html.twig', [
+            'seance' => $seance,
+            'form' => $form->createView(),
+            
         ]);
     }
 }

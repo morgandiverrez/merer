@@ -65,6 +65,11 @@ class Profil
         $this->seanceProfil = new ArrayCollection();
     }
 
+    public function  __toString()
+    {
+        return $this->getUser()->getEmail();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
