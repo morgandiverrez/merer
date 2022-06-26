@@ -21,7 +21,7 @@ class RetourController extends AbstractController
         $retour = new Retour();       
         $form = $this->createForm(RetourType::class, $retour);
         $form->handleRequest($request);
-        $user = $this->getUser();
+
 
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -34,7 +34,7 @@ class RetourController extends AbstractController
         return $this->render('retour/new.html.twig', [
             'retour' => $retour,
             'form' => $form->createView(),
-            'user' => $user,
+           
         ]);
     }
 }
