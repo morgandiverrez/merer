@@ -75,4 +75,14 @@ class FormationRepository extends ServiceEntityRepository
        ;
    }
 
+    public function findByName($value): ?array
+    {
+        return $this->createQueryBuilder('formation')
+        ->andWhere('formation.name LIKE :val')
+        ->setParameter('val', $value)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getResult();
+    }
+
 }
