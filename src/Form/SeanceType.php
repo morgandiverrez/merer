@@ -18,7 +18,11 @@ class SeanceType extends AbstractType
         $builder
             ->add('code')
             ->add('name')
-            ->add('datetime')
+            ->add('datetime', DateTimeType::class,[
+            'widget' => 'single_text',
+            // this is actually the default format for single_text
+            'format' => "Y-m-d H:i",
+            ])
             ->add('nombreplace')
             ->add('formation', EntityType::class, [
             'class' => Formation::class,

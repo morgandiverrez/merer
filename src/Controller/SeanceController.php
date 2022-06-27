@@ -7,6 +7,7 @@ use App\Entity\Profil;
 use App\Entity\Seance;
 use App\Form\SeanceType;
 use App\Entity\Formation;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,8 +25,10 @@ class SeanceController extends AbstractController
     #[IsGranted('ROLE_USER')]
     public function showAll(EntityManagerInterface $entityManager): Response
     {
-        $seances = $entityManager->getRepository(Seance::class)->findAllByDatetime();
-
+        $dateActuelle =new DateTime();
+        //print_r($dateActuelle);
+        $seances = $entityManager->getRepository(Seance::class)->findAllByDatetime($dateActuelle);
+       // print_r($seances);
         return $this->render('seance/showAll.html.twig', [
             'seances' => $seances,
             
@@ -95,7 +98,7 @@ class SeanceController extends AbstractController
                     $nameLastNameProfil = $form->get('profil')->getData()[$i];
                     list($nameProfil, $lastNameProfil) = explode(" ", $nameLastNameProfil);
                     $profil = $entityManager->getRepository(Profil::class)->findByName(strval($nameProfil),strval($lastNameProfil))[0];
-                    $profil->addProfil($seance);
+                    $profil->addSeance($seance);
                     $entityManager->persist($profil);
 
                     $i++;
@@ -110,7 +113,7 @@ class SeanceController extends AbstractController
                 if (isset($form->get('lieux')->getData()[$i])) {
                     $nameLieux = $form->get('lieux')->getData()[$i];
                     $lieux = $entityManager->getRepository(Lieux::class)->findByName(strval($nameLieux))[0];
-                    $lieux->addProfil($seance);
+                    $lieux->addSeance($seance);
                     $entityManager->persist($lieux);
 
                     $i++;
@@ -119,10 +122,10 @@ class SeanceController extends AbstractController
                 }
             }
 
-            if (isset($form->get('formation')->getData()[0])) {
-                $nameFormation = $form->get('formation')->getData()[0];
+            if ($form->get('formation')->getData()) {
+                $nameFormation = $form->get('formation')->getData();
                 $formation = $entityManager->getRepository(Formation::class)->findByName(strval($nameFormation))[0];
-                $formation->addProfil($seance);
+                $formation->addSeance($seance);
                 $entityManager->persist($formation);
 
                 $i++;
