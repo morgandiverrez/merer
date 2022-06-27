@@ -72,4 +72,14 @@ class LieuxRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function findByName($value): ?array
+    {
+        return $this->createQueryBuilder('lieux')
+        ->andWhere('lieux.name LIKE :val')
+        ->setParameter('val', $value)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getResult();
+    }
 }

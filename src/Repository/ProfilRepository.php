@@ -74,15 +74,17 @@ class ProfilRepository extends ServiceEntityRepository
                 ->getResult();
         }
 
-    // public function findByUser($value): ?array
-    // {
-    //     return $this->createQueryBuilder('profil')
-    //         ->andWhere('profil.user = :val')
-    //         ->setParameter('val', $value)
-    //         // ->orderBy('formation.id', 'ASC')
-    //         ->setMaxResults(1)
-    //         ->getQuery()
-    //         ->getResult();
-    // }
+
+    public function findByName($name, $lastName): ?array
+    {
+        return $this->createQueryBuilder('profil')
+        ->where('profil.name LIKE :name')
+        ->andWhere('profil.last_name LIKE :last_name')
+        ->setParameter('name', $name)
+        ->setParameter('last_name', $lastName)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getResult();
+    }
 
 }

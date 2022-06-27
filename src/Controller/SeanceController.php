@@ -2,8 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\Lieux;
+use App\Entity\Profil;
 use App\Entity\Seance;
 use App\Form\SeanceType;
+use App\Entity\Formation;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -82,8 +85,48 @@ class SeanceController extends AbstractController
         $seance = $entityManager->getRepository(Seance::class)->findById($seanceID)[0];
         $form = $this->createForm(SeanceType::class, $seance);
         $form->handleRequest($request);
-        
+
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $go = true;
+            $i = 0;
+            while ($go) {
+                if (isset($form->get('profil')->getData()[$i])) {       
+                    $nameLastNameProfil = $form->get('profil')->getData()[$i];
+                    list($nameProfil, $lastNameProfil) = explode(" ", $nameLastNameProfil);
+                    $profil = $entityManager->getRepository(Profil::class)->findByName(strval($nameProfil),strval($lastNameProfil))[0];
+                    $profil->addProfil($seance);
+                    $entityManager->persist($profil);
+
+                    $i++;
+                } else {
+                    $go = false;
+                }
+            }
+
+            $go = true;
+            $i = 0;
+            while ($go) {
+                if (isset($form->get('lieux')->getData()[$i])) {
+                    $nameLieux = $form->get('lieux')->getData()[$i];
+                    $lieux = $entityManager->getRepository(Lieux::class)->findByName(strval($nameLieux))[0];
+                    $lieux->addProfil($seance);
+                    $entityManager->persist($lieux);
+
+                    $i++;
+                } else {
+                    $go = false;
+                }
+            }
+
+            if (isset($form->get('formation')->getData()[0])) {
+                $nameFormation = $form->get('formation')->getData()[0];
+                $formation = $entityManager->getRepository(Formation::class)->findByName(strval($nameFormation))[0];
+                $formation->addProfil($seance);
+                $entityManager->persist($formation);
+
+                $i++;
+            }
 
             $entityManager->persist($seance);
             $entityManager->flush();
@@ -107,6 +150,46 @@ class SeanceController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
+            $go = true;
+            $i = 0;
+            while ($go) {
+                if (isset($form->get('profil')->getData()[$i])) {
+                    $nameLastNameProfil = $form->get('profil')->getData()[$i];
+                    list($nameProfil, $lastNameProfil) = explode(" ", $nameLastNameProfil);
+                    $profil = $entityManager->getRepository(Profil::class)->findByName(strval($nameProfil), strval($lastNameProfil))[0];
+                    $profil->addSeance($seance);
+                    $entityManager->persist($profil);
+
+                    $i++;
+                } else {
+                    $go = false;
+                }
+            }
+
+            $go = true;
+            $i = 0;
+            while ($go) {
+                if (isset($form->get('lieux')->getData()[$i])) {
+                    $nameLieux = $form->get('lieux')->getData()[$i];
+                    $lieux = $entityManager->getRepository(Lieux::class)->findByName(strval($nameLieux))[0];
+                    $lieux->addSeance($seance);
+                    $entityManager->persist($lieux);
+
+                    $i++;
+                } else {
+                    $go = false;
+                }
+            }
+           
+            if ($form->get('formation')->getData()) {
+                $nameFormation = $form->get('formation')->getData();
+                $formation = $entityManager->getRepository(Formation::class)->findByName(strval($nameFormation))[0];
+                $formation->addSeance($seance);
+                $entityManager->persist($formation);
+
+                $i++;
+            } 
+    
             $entityManager->persist($seance);
             $entityManager->flush();
             return $this->redirectToRoute('seance_showForFormateurice', ['seanceID' => $seance->getID()]);

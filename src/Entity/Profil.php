@@ -67,7 +67,8 @@ class Profil
 
     public function  __toString()
     {
-        return $this->getUser()->getEmail();
+        $stringName = $this->getName().' '.$this->getLastName();
+        return $stringName;
     }
 
     public function getId(): ?int
