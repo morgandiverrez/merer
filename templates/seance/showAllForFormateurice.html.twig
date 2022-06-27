@@ -6,12 +6,12 @@
    <div class="container-fluid">
         <div class="corps mx-auto">
             <p class="display-6 no-wrap text-center mb-5"> Liste des Séances</p>
-            <a href="/lieux/new"><i class="fa-solid fa-plus align-right"></i></i></i></a>
+            <a href="/seance/new"><i class="fa-solid fa-plus align-right"></i></i></i></a>
 
             <table class="table table-striped">
                 <thead>
                 <tr>
-                    <th scope="col">Date</th>
+                    <th scope="col">Date et Heure</th>
                     <th scope="col">Nom</th>
                     <th scope="col">Durée</th>
                     <th scope="col">Ville</th>
@@ -23,17 +23,19 @@
                 <tbody>
                 {% for seance in seances %} 
                 <tr>
-                    <th>Date et Heure :{{seance.getDatetime().format("Y-m-d H:i:s")}}</th>
+                    <th>{{seance.getDatetime().format("Y-m-d H:i")}}</th>
                     <th>{{seance.getName()}}</th>
                     <th>{{seance.formation.getDuration().format("H:i")}}</th>
+                    <th>
                     {% if seance.getLieux() is not null %}
                         {% for lieu in seance.getLieux() %}
-                            <th> {{lieu.getVille()}} </th>
+                            {{lieu.getVille()}} 
                         {% endfor %}
                     {% else %}
                         -
                     {% endif %}
-                    <th><a href="/seance/show/{{seance.getId()}}"><i class="fa-solid fa-eye"></i></i></a></th>
+                    </th>
+                    <th><a href="/seance/show/{{seance.getId()}}"><i class="fa-solid fa-eye"></i></a></th>
                </tr> {% endfor %}
                 </tbody>
             </table>
