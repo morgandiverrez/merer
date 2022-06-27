@@ -13,55 +13,55 @@ class Retour
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer', nullable: true)]
+    #[ORM\Column(type: 'integer' )]
     private $note_contenu;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $remarque_contenu;
 
-    #[ORM\Column(type: 'integer', nullable: true)]
+    #[ORM\Column(type: 'integer')]
     private $note_animation;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $remarque_animation;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(type: 'integer')]
     private $note_implication;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $remarque_implication;
 
-    #[ORM\Column(type: 'integer', nullable: true)]
+    #[ORM\Column(type: 'integer')]
     private $note_reponse_atente;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $remarque_reponse_attente;
 
-    #[ORM\Column(type: 'integer', nullable: true)]
+    #[ORM\Column(type: 'integer')]
     private $note_niv_competence;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $remarque_niv_competence;
 
-    #[ORM\Column(type: 'integer', nullable: true)]
+    #[ORM\Column(type: 'integer')]
     private $note_utilite;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $remarque_utilite;
 
-    #[ORM\Column(type: 'integer', nullable: true)]
+    #[ORM\Column(type: 'integer')]
     private $note_generale;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $remarque_generale;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(type: 'string', length: 255)]
     private $apport_generale;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(type: 'string', length: 255)]
     private $plus_aimer;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(type: 'string', length: 255)]
     private $moins_aimer;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]

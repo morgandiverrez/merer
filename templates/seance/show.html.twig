@@ -72,26 +72,28 @@
                             {%if seance.getSeanceProfil() is null %} 
                                     Aucun.e  inscrit.e pour le moment sur cette formation
                             {% else %} 
-                                {% for profil in seance.getSeanceProfil() %}
+                                {% for seanceProfil in seance.getSeanceProfil() %}
                                     <tr>
-                                        <th>{{profil.getName()}}</th>
-                                        <th>{{profil.getLastName()}}</th>
-                                        <th><a href="/account/show/{{profil.getId()}}"><i class="fa-solid fa-eye"></i></a></th> 
+                                        <th>{{seanceProfil.profil.getName()}}</th>
+                                        <th>{{seanceProfil.profil.getLastName()}}</th>
+                                        <th><a href="/account/show/{{seanceProfil.profil.getId()}}"><i class="fa-solid fa-eye"></i></a></th> 
                                     </tr> 
                                 {% endfor %}
                             {% endif %}
                         </tbody>
-                        <tfoot class='justify-content-center'>
+                        <tfoot>
+                            <th></th>
                             <th><a href="/seance/listeInscrit/{{seance.getID()}}"><i class="fa-solid fa-list"></i></a></th> 
+                            <th></th>
                         </tfoot>
                     </table>
                 </div>  {# fin listing inscrit#}
             </div>
-            <footer class='justify-content-center'>
-                <a class='align-center' href="/seance/edit/{{seance.getId()}}"><i class="fa-solid fa-pen-to-square"></i></a>
-            </footer>
         </div>
     </div>
+    <footer "d-flex justify-content-center" >
+        <a  href="/seance/edit/{{seance.getId()}}"><i class="fa-solid fa-pen-to-square"></i></a>
+    </footer>
 
 
 {% endblock %}
