@@ -79,7 +79,7 @@ class SeanceRepository extends ServiceEntityRepository
     public function findAllByDatetime($value): array
        {
            return $this->createQueryBuilder('seance')
-               ->andWhere('seance.datetime > :val')
+               ->andWhere('seance.datetime >= :val')
                ->setParameter('val', $value)
                ->orderBy('seance.datetime', 'ASC')
                ->setMaxResults(50)
