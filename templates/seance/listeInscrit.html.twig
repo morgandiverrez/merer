@@ -7,9 +7,8 @@
     <div class="container-fluid">
         <div class="corps mx-auto">
 
-            <a href="/equipeElu/new"><i class="fa-solid fa-plus align-right"></i></i></i></a>
 
-            <p class="display-6 no-wrap text-center mb-5">Liste des inscrits</p>
+            <p class="display-6 no-wrap text-center mb-5">Liste des inscrits pour la formation {{seance.getName()}} du {{seance.getDatetime().format("Y-m-d H:i")}}</p>
 
             <table class="table table-striped">
                 
@@ -27,14 +26,22 @@
                 </thead>
 
                 <tbody>
-                {% for profil in seance.getSeanceProfil() %} 
+                {% for seanceProfil in seance.getSeanceProfil() %} 
                     <tr>
-                        <th>{{seance.seanceProfil.getHorrodateur().format("Y-m-d H:i:s")}}
-                        <th>{{profil.getLastName()}}</th>
-                        <th>{{profil.getName()}}</th>
-                        <th>{{profil.getAssociation()}}</th>
-                        <th>{{profil.getEquipeElu()}}</th>
-                        <th><a href="/account/show/{{profil.getId()}}"><i class="fa-solid fa-eye"></i></i></a></th> 
+                        <th>{{seanceProfil.getHorrodateur().format("Y-m-d H:i")}}
+                        <th>{{seanceProfil.profil.getLastName()}}</th>
+                        <th>{{seanceProfil.profil.getName()}}</th>
+                        <th>
+                        {% for association in seanceProfil.profil.getAssociation() %}
+                            {{association }}
+                        {% endfor %}
+                        </th>
+                        <th>
+                        {% for equipeElu in seanceProfil.profil.getEquipeElu() %}
+                            {{equipeElu }}
+                        {% endfor %}
+                        </th>
+                        <th><a href="/account/show/{{seanceProfil.profil.getId()}}"><i class="fa-solid fa-eye"></i></i></a></th> 
                      </tr>
                 {% endfor %}
                 </tbody>

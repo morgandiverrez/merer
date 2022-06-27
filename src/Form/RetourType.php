@@ -32,8 +32,6 @@ class RetourType extends AbstractType
             ->add('moins_aimer')
             ->add('aimer_voir')
             ->add('mot_fin')
-            ->add('seance')
-            ->add('profil')
         ;
     }
 
