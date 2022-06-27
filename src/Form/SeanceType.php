@@ -10,6 +10,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 
 class SeanceType extends AbstractType
 {
@@ -19,9 +20,10 @@ class SeanceType extends AbstractType
             ->add('code')
             ->add('name')
             ->add('datetime', DateTimeType::class,[
-            'widget' => 'single_text',
+            // 'widget' => 'single_text',
             // this is actually the default format for single_text
-            'format' => "Y-m-d H:i",
+            'format' => 'Y-m-d H:i',
+            'html5' => false,
             ])
             ->add('nombreplace')
             ->add('formation', EntityType::class, [
