@@ -22,6 +22,13 @@ class SeanceProfil
     #[ORM\JoinColumn(name: "seance_ID", referencedColumnName: "id")]
     private $seance;
 
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private $attente;
+
+    #[ORM\ManyToOne(targetEntity: Lieux::class, inversedBy: 'seanceProfils')]
+    #[ORM\JoinColumn(nullable: false)]
+    private $lieu;
+
     
     public function getHorrodateur(): ?\DateTimeInterface
     {
@@ -55,6 +62,30 @@ class SeanceProfil
     public function setSeance(?Seance $seance): self
     {
         $this->seance = $seance;
+
+        return $this;
+    }
+
+    public function getAttente(): ?string
+    {
+        return $this->attente;
+    }
+
+    public function setAttente(?string $attente): self
+    {
+        $this->attente = $attente;
+
+        return $this;
+    }
+
+    public function getLieu(): ?Lieux
+    {
+        return $this->lieu;
+    }
+
+    public function setLieu(?Lieux $lieu): self
+    {
+        $this->lieu = $lieu;
 
         return $this;
     }

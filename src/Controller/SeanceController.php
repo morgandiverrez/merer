@@ -26,9 +26,9 @@ class SeanceController extends AbstractController
     public function showAll(EntityManagerInterface $entityManager): Response
     {
         $dateActuelle =new DateTime();
-        //print_r($dateActuelle);
+        
         $seances = $entityManager->getRepository(Seance::class)->findAllByDatetime($dateActuelle);
-       // print_r($seances);
+        
         return $this->render('seance/showAll.html.twig', [
             'seances' => $seances,
             

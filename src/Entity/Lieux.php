@@ -36,9 +36,13 @@ class Lieux
     #[ORM\ManyToMany(targetEntity: Seance::class, mappedBy: 'lieux')]
     private $seance;
 
+    #[ORM\OneToMany(mappedBy: 'lieu', targetEntity: SeanceProfil::class)]
+    private $seanceProfils;
+
     public function __construct()
     {
         $this->seance = new ArrayCollection();
+        $this->seanceProfils = new ArrayCollection();
     }
 
     public function  __toString()
@@ -143,6 +147,36 @@ class Lieux
     public function removeSeance(Seance $seance): self
     {
         $this->seance->removeElement($seance);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, SeanceProfil>
+     */
+    public function getSeanceProfils(): Collection
+    {
+        return $this->seanceProfils;
+    }
+
+    public function addSeanceProfil(SeanceProfil $seanceProfil): self
+    {
+        if (!$this->seanceProfils->contains($seanceProfil)) {
+            $this->seanceProfils[] = $seanceProfil;
+            $seanceProfil->setLieu($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSeanceProfil(SeanceProfil $seanceProfil): self
+    {
+        if ($this->seanceProfils->removeElement($seanceProfil)) {
+            // set the owning side to null (unless already changed)
+            if ($seanceProfil->getLieu() === $this) {
+                $seanceProfil->setLieu(null);
+            }
+        }
 
         return $this;
     }
