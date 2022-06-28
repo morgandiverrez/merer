@@ -14,19 +14,83 @@ class RetourType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('note_contenu')
+            ->add('note_contenu', ChoiceType::class,[
+                'choices' => [
+                    '1' => 1,
+                    '2' => 2,
+                    '3' => 3,
+                    '4' => 4,
+                    '5' => 5,
+                    
+                ]
+            ])
+
             ->add('remarque_contenu')
-            ->add('note_animation')
+            ->add('note_animation', ChoiceType::class,[
+                'choices' => [
+                    '1' => 1,
+                    '2' => 2,
+                    '3' => 3,
+                    '4' => 4,
+                    '5' => 5,
+
+                ]
+            ])
             ->add('remarque_animation')
-            ->add('note_implication')
+            ->add('note_implication', ChoiceType::class, [
+            'choices' => [
+                '1' => 1,
+                '2' => 2,
+                '3' => 3,
+                '4' => 4,
+                '5' => 5,
+
+            ]
+        ])
             ->add('remarque_implication')
-            ->add('note_reponse_atente')
+            ->add('note_reponse_atente', ChoiceType::class, [
+            'choices' => [
+                '1' => 1,
+                '2' => 2,
+                '3' => 3,
+                '4' => 4,
+                '5' => 5,
+
+            ]
+        ])
             ->add('remarque_reponse_attente')
-            ->add('note_niv_competence')
+            ->add('note_niv_competence', ChoiceType::class, [
+            'choices' => [
+                '1' => 1,
+                '2' => 2,
+                '3' => 3,
+                '4' => 4,
+                '5' => 5,
+
+            ]
+        ])
             ->add('remarque_niv_competence')
-            ->add('note_utilite')
+            ->add('note_utilite', ChoiceType::class, [
+            'choices' => [
+                '1' => 1,
+                '2' => 2,
+                '3' => 3,
+                '4' => 4,
+                '5' => 5,
+
+            ]
+        ])
             ->add('remarque_utilite')
-            ->add('note_generale')
+            ->add('note_generale', ChoiceType::class, [
+            'choices' => [
+                '1' => 1,
+                '2' => 2,
+                '3' => 3,
+                '4' => 4,
+                '5' => 5,
+
+            ]
+        ])
             ->add('remarque_generale')
             ->add('apport_generale', ChoiceType::class,[
                 'choices' => [
