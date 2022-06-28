@@ -12,6 +12,36 @@
             <div class=" d-flex justify-content-center text-center align-center">
                 {{ render_chart(chart) }}
             </div>
+            <div class=" d-flex justify-content-center text-center align-center">
+                
+                {{ render_chart(chartApport) }}
+            </div>
+            <div class=" d-flex justify-content-center text-center align-center">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">Question</th>
+                            <th scope="col">Remarque </th>
+                            <th scope="col">Moyenne</th>
+                            
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                    {% for i in 0..10 %} 
+                        <tr>
+                            <th>{{dataQuestion[i]}}</th>
+                            <th>{{dataRemarque[i]}}</th>
+                            {% if i <= 6 %}
+                                 <th>{{dataMoyenne[i]}}</th>
+                            {% endif %}
+                            
+                        </tr> {% endfor %}
+                    </tbody>
+                 </table>
+            </div>
+            <div>
+            </div>
         </div>
     </div>
   
