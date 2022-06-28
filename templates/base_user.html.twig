@@ -65,10 +65,10 @@
                                 </ul>
                             </ul>
                             {% if app.user is not null %}
-                                {% if  app.user.profil.getEquipeElu() is not null %}
+                                {% if  app.user.profil.getEquipeElu() is not empty %}
                                         <table>
                                             <thead>
-                                                <tr><th>Equipe d'élu</th></tr>
+                                                <tr><th>Equipe d'élu </th></tr>
                                             </thead> 
                                             <tbody>
                                             {% for equipeElu in app.user.profil.getEquipeElu() %}
@@ -77,7 +77,7 @@
                                             </tbody>
                                         </table>
                                 {% endif %}
-                                {% if  app.user.profil.getAssociation() is not null %}
+                                {% if  app.user.profil.getAssociation() is not empty %}
 
                                     <div class="d-flex flex-row-reverse">
                                         {% for association in app.user.profil.getAssociation() %}
