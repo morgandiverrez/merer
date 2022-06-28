@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[Route('/retour', name: 'retour_')]
@@ -19,6 +20,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class RetourController extends AbstractController
 {
     #[Route('/new/{seanceID}', name: 'new')]
+    #[IsGranted('ROLE_USER')]
     public function new(EntityManagerInterface $entityManager, Request $request, $seanceID): Response
     {
         $retour = new Retour();
@@ -56,6 +58,7 @@ class RetourController extends AbstractController
     }
 
     #[Route('/resultat/{seanceID}', name: 'resultat')]
+    #[IsGranted('ROLE_FORMATEURICE')]
     public function resultat(ChartBuilderInterface $chartBuilder, EntityManagerInterface $entityManager, $seanceID): Response
     {
 
@@ -68,51 +71,128 @@ class RetourController extends AbstractController
                          [0, 0, 0, 0, 0, 0, 0],
                          [0, 0, 0, 0, 0, 0, 0]);
        
-        $dataMoyenne= array(0, 0, 0, 0, 0, 0, 0);
+        $dataMoyenne = array(0, 0, 0, 0, 0, 0, 0);
+
+        $dataApport = array(0, 0, 0, 0);
+
+        $dataRemarque = array('','','','','','','','','','','',''); 
         
+        $dataQuestion = array('Satisfaction générale vis-à-vis de la formation', 'Pensez-vous que les compétences acquises durant cette formation seront utiles dans votre parcours de associatif ?', 'Comment évaluez-vous le niveau de compétences techniques (connaissances du sujet, exposé) et pédagogiques (débit de parole, charisme, échange) des formateurices ?', 'Cette formation a-t-elle répondu à vos attentes ?', 'Comment évaluez-vous l\'implication des participant.e.s à la formation ?', 'Comment évaluez-vous l’animation [séquence, utilisation du matériel, débats] de la formation ?', 'Comment évaluez-vous le contenu de la formation (informations adaptées au public, compréhension, technicité) ?','Qu\'est-ce que tu as aimé ? ','Qu\'est-ce que tu as moins aimé ?', 'Qu\'est-ce que tu aurais aimé voir dans cette formation ?','Mot de la fin');
+       
         foreach( $retours as $retour){ // indentation pour passer par chaque retour
             $note = $retour ->getNoteGenerale();
-                $dataSomme[$note - 1][0] += 1; // ajout d'un 1 en fonction de la valeur du retour
-                $dataMoyenne[0] += $note;
+            $critere = 0;
+            $dataSomme[$note - 1][$critere] += 1; // ajout d'un 1 en fonction de la valeur du retour
+            $dataMoyenne[$critere] += $note;
+            
+            $remarque = $retour->getRemarqueGenerale();
+            $dataRemarque[$critere] .= ',' . $remarque;
         }
 
         foreach ($retours as $retour) { // indentation pour passer par chaque retour
             $note = $retour->getNoteUtilite();
-            $dataSomme[$note - 1][1] += 1; // ajout d'un 1 en fonction de la valeur du retour
-            $dataMoyenne[1] += $note;
+            $critere = 1;
+            $dataSomme[$note - 1][$critere] += 1; // ajout d'un 1 en fonction de la valeur du retour
+            $dataMoyenne[$critere] += $note;
+
+            $remarque = $retour->getRemarqueUtilite();
+            $dataRemarque[$critere] .= ',' . $remarque;
         }
 
         foreach ($retours as $retour) { // indentation pour passer par chaque retour
             $note = $retour->getNoteNivCompetence();
-            $dataSomme[$note - 1][2] += 1; // ajout d'un 1 en fonction de la valeur du retour
-            $dataMoyenne[2] += $note;
+            $critere = 2;
+            $dataSomme[$note - 1][$critere] += 1; // ajout d'un 1 en fonction de la valeur du retour
+            $dataMoyenne[$critere] += $note;
+
+            $remarque = $retour->getRemarqueNivCompetence();
+            $dataRemarque[$critere] .= ',' . $remarque;
         }
 
         foreach ($retours as $retour) { // indentation pour passer par chaque retour
             $note = $retour->getNoteReponseAtente();
-            $dataSomme[$note - 1][3] += 1; // ajout d'un 1 en fonction de la valeur du retour
-            $dataMoyenne[3] += $note;
+            $critere = 3;
+            $dataSomme[$note - 1][$critere] += 1; // ajout d'un 1 en fonction de la valeur du retour
+            $dataMoyenne[$critere] += $note;
+
+            $remarque = $retour->getRemarqueReponseAttente();
+            $dataRemarque[$critere] .= ',' . $remarque;
         }
 
         foreach ($retours as $retour) { // indentation pour passer par chaque retour
             $note = $retour->getNoteImplication();
-            $dataSomme[$note - 1][4] += 1; // ajout d'un 1 en fonction de la valeur du retour
-            $dataMoyenne[4] += $note;
+            $critere = 4;
+            $dataSomme[$note - 1][$critere] += 1; // ajout d'un 1 en fonction de la valeur du retour
+            $dataMoyenne[$critere] += $note;
+
+            $remarque = $retour->getRemarqueImplication();
+            $dataRemarque[$critere] .= ',' . $remarque;
         }
 
         foreach ($retours as $retour) { // indentation pour passer par chaque retour
             $note = $retour->getNoteAnimation();
-            $dataSomme[$note - 1][5] += 1; // ajout d'un 1 en fonction de la valeur du retour
-            $dataMoyenne[5] += $note;
+            $critere = 5;
+            $dataSomme[$note - 1][$critere] += 1; // ajout d'un 1 en fonction de la valeur du retour
+            $dataMoyenne[$critere] += $note;
+
+
+            $remarque = $retour->getRemarqueAnimation();
+            $dataRemarque[$critere] .= ',' . $remarque;
         }
 
         foreach ($retours as $retour) { // indentation pour passer par chaque retour
             $note = $retour->getNoteContenu();
-            $dataSomme[$note - 1][6] += 1; // ajout d'un 1 en fonction de la valeur du retour
-            $dataMoyenne[6] += $note;
-        } 
+            $critere = 6;
+            $dataSomme[$note - 1][$critere] += 1; // ajout d'un 1 en fonction de la valeur du retour
+            $dataMoyenne[$critere] += $note;
+
+            $remarque = $retour->getRemarqueContenu();
+            $dataRemarque[$critere] .= ',' . $remarque;
+        }
+        
+        $remarque = $retour->getPlusAimer();
+        $dataRemarque[7] .= ',' . $remarque;
+
+        $remarque = $retour->getMoinsAimer();
+        $dataRemarque[8] .= ',' . $remarque;
+
+        $remarque = $retour->getAimerVoir();
+        $dataRemarque[9] .= ',' . $remarque;
+
+        $remarque = $retour->getMotFin();
+        $dataRemarque[10] .= ',' . $remarque;
+
+
+        foreach ($retours as $retour) { // indentation pour passer par chaque retour
+            $choix = $retour->getApportGenerale();
+
+            switch ($choix) {
+                case ('ne m\'a rien apporté'):
+                    $dataApport[0] += 1; // ajout d'un 1 en fonction de la valeur du retour
+                   
+                    break;
+                case ('a confirmé ce que je savais déjà'):
+                    $dataApport[1] += 1; // ajout d'un 1 en fonction de la valeur du retour
+                   
+                    break;
+                case ('m\'a apporté de nouvelles connaissances'):
+                    $dataApport[2] += 1; // ajout d'un 1 en fonction de la valeur du retour
+                   
+                    break;
+                case ('m\'a permis d`\'échanger avec les participant.e.s'):
+                    $dataApport[3] += 1; // ajout d'un 1 en fonction de la valeur du retour
+                   
+                    break;
+                
+            }
+            
+           
+        }
+        
 
         $chart = $chartBuilder->createChart(Chart::TYPE_BAR);
+
+        $chartApport = $chartBuilder->createChart(Chart::TYPE_BAR);
 
         $chart->setData([
             'labels' => ['Satisfaction générale vis-à-vis de la formation','Utilité des compétences acquises', 'Compétences techniques et pédagogiques des formateurices', 'Cette formation a-t-elle répondu à vos attentes ?', 'L\'implication des participant.e.s', 'L\'animation de la formation', 'Le contenu de la formation'],
@@ -164,8 +244,57 @@ class RetourController extends AbstractController
             ],
         ]);
 
+        $chartApport->setData([
+            'labels' => ['Cette formation :'],
+            'datasets' => [
+                [
+                    'label' => 'ne m\'a rien apporté',
+                    'backgroundColor' => 'blue',
+                    'stack' => 'Stack 0',
+                    'data' => array($dataApport[0]),
+                ],
+
+                [
+                    'label' => 'a confirmé ce que je savais déjà',
+                    'backgroundColor' => 'red',
+                    'stack' => 'Stack 0',
+                    'data' => array($dataApport[1]),
+                ],
+
+                [
+                    'label' => 'm\'a apporté de nouvelles connaissances',
+                    'backgroundColor' => 'yellow',
+                    'stack' => 'Stack 0',
+                    'data' => array($dataApport[2]),
+                ],
+
+                [
+                    'label' => 'm\'a permis d`\'échanger avec les participant.e.s',
+                    'backgroundColor' => 'green',
+                    'stack' => 'Stack 0',
+                    'data' => array($dataApport[3]),
+                ],
+
+            ],
+        ]);
+
+        $chartApport->setOptions([
+            'indexAxis' => 'y',
+            'scales' => [
+                'y' => [
+                    'suggestedMin' => 0,
+                    'suggestedMax' => 100,
+                ],
+            ],
+        ]);
+
         return $this->render('retour/afficheur.html.twig', [
             'chart' => $chart,
+            'chartApport' => $chartApport,
+            'dataApport' => $dataApport,
+            'dataMoyenne' => $dataMoyenne,
+            'dataRemarque' => $dataRemarque,
+            'dataQuestion' => $dataQuestion,
         ]);
     }
 }
