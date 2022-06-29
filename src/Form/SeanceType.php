@@ -39,6 +39,7 @@ class SeanceType extends AbstractType
             'class' => Profil::class,
             'multiple' => true, 
         ])
+
         ;
     }
 

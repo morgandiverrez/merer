@@ -36,6 +36,12 @@ class EquipeElu
     #[ORM\ManyToMany(targetEntity: Profil::class, inversedBy: 'equipeElu')]
     private $profil;
 
+    #[ORM\Column(type: 'date', nullable: true)]
+    private $date_election;
+
+    #[ORM\Column(type: 'integer', nullable: true)]
+    private $duree_mandat;
+
     public function __construct()
     {
         $this->profil = new ArrayCollection();
@@ -143,6 +149,30 @@ class EquipeElu
     public function removeProfil(Profil $profil): self
     {
         $this->profil->removeElement($profil);
+
+        return $this;
+    }
+
+    public function getDateElection(): ?\DateTimeInterface
+    {
+        return $this->date_election;
+    }
+
+    public function setDateElection(?\DateTimeInterface $date_election): self
+    {
+        $this->date_election = $date_election;
+
+        return $this;
+    }
+
+    public function getDureeMandat(): ?int
+    {
+        return $this->duree_mandat;
+    }
+
+    public function setDureeMandat(?int $duree_mandat): self
+    {
+        $this->duree_mandat = $duree_mandat;
 
         return $this;
     }

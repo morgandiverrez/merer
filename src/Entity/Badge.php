@@ -36,6 +36,11 @@ class Badge
     #[ORM\ManyToMany(targetEntity: Profil::class, inversedBy: 'badge')]
     private $profil;
 
+    #[ORM\OneToMany(mappedBy: 'badge', targetEntity: Formation::class)]
+    private $formations;
+
+
+
 
 
     
@@ -43,6 +48,8 @@ class Badge
     public function __construct()
     {
         $this->profil = new ArrayCollection();
+        $this->formations = new ArrayCollection();
+       
     }
 
     public function  __toString()
@@ -150,6 +157,38 @@ class Badge
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, Formation>
+     */
+    public function getFormations(): Collection
+    {
+        return $this->formations;
+    }
+
+    public function addFormation(Formation $formation): self
+    {
+        if (!$this->formations->contains($formation)) {
+            $this->formations[] = $formation;
+            $formation->setBadge($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFormation(Formation $formation): self
+    {
+        if ($this->formations->removeElement($formation)) {
+            // set the owning side to null (unless already changed)
+            if ($formation->getBadge() === $this) {
+                $formation->setBadge(null);
+            }
+        }
+
+        return $this;
+    }
+
+
 
 
 }
