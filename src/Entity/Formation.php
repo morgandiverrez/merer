@@ -39,9 +39,15 @@ class Formation
     #[ORM\OneToMany(mappedBy: 'formation', targetEntity: Seance::class)]
     private $seance;
 
+    #[ORM\ManyToOne(targetEntity: Badge::class, inversedBy: 'formations')]
+    private $badge;
+
+   
+
     public function __construct()
     {
         $this->Seance = new ArrayCollection();
+
     }
 
     public function  __toString()
@@ -167,4 +173,18 @@ class Formation
 
         return $this;
     }
+
+    public function getBadge(): ?Badge
+    {
+        return $this->badge;
+    }
+
+    public function setBadge(?Badge $badge): self
+    {
+        $this->badge = $badge;
+
+        return $this;
+    }
+
+
 }

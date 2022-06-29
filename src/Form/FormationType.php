@@ -2,9 +2,11 @@
 
 namespace App\Form;
 
+use App\Entity\Badge;
 use App\Entity\Formation;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
@@ -20,6 +22,10 @@ class FormationType extends AbstractType
             ->add('duration' )
             ->add('public_cible')
             ->add('opg', TextareaType::class)
+            ->add('badge', EntityType::class,[
+                'class' => Badge::class,
+                
+            ])
         ;
     }
 

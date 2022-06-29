@@ -48,6 +48,9 @@ class Association
     #[ORM\ManyToMany(targetEntity: Profil::class, inversedBy: 'association')]
     private $profil;
 
+    #[ORM\Column(type: 'date', nullable: true)]
+    private $date_election;
+
  
     public function __construct()
     {
@@ -204,6 +207,18 @@ class Association
     public function removeProfil(Profil $profil): self
     {
         $this->profil->removeElement($profil);
+
+        return $this;
+    }
+
+    public function getDateElection(): ?\DateTimeInterface
+    {
+        return $this->date_election;
+    }
+
+    public function setDateElection(?\DateTimeInterface $date_election): self
+    {
+        $this->date_election = $date_election;
 
         return $this;
     }

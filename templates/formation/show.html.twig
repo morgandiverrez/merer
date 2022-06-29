@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'base_user.html.twig' %}
 
 {% block title %}Détails formation{% endblock %}
 
@@ -21,7 +21,9 @@
                         <li class="list-group-item">Pré-requis : {{formation.getPreRequis()}}</li>
                         <li class="list-group-item">Durée : {%if formation.getDuration() is null %}0 {% else %} {{formation.getDuration().format("H:i")}} {% endif %} </li>
                         <li class="list-group-item">Public Cible : {{formation.getPublicCible()}}</li>
-                                                
+                        {% if formation.getBadge() is not null %}
+                            <li class="list-group-item"> <img  src="{{asset(formation.badge.getImage())}}" alt="image de {{formation.badge.getName()}}" ></li>
+                        {% endif %}                 
                         
                     </ul>
                     <div class="card-body">
