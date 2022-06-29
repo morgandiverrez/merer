@@ -44,7 +44,7 @@ class RetourController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             
-
+            $profil -> addBadge($seance-> getFormation() -> getBadge());
             $entityManager->persist($retour);
             $entityManager->flush();
             return $this->redirectToRoute('profil_show', []);
