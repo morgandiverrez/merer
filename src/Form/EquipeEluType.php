@@ -20,7 +20,8 @@ class EquipeEluType extends AbstractType
             ->add('description' , TextareaType::class)
             ->add('adresse_mail', EmailType::class)
             ->add('etablissement')
-            
+            ->add('date_election')
+            -> add('duree_mandat')
         ;
     }
 

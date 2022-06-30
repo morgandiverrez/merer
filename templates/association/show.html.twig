@@ -24,16 +24,17 @@
                         <li class="list-group-item">Fédération de territoire : {{association.getFedeTerritoire()}}</li>
                         <li class="list-group-item">Local : {{association.getLocal()}}</li>
                         <li class="list-group-item">Adresse mail : {{association.getAdresseMail()}}</li>
+                        <li class="list-group-item">Date de la dernière AGO : {{association.getDateElection()}}</li>
                     </ul>
-                    {% if is_granted('ROLE_ADMIN') %}
-                        <div class="card-body">
-                            <a href="/association/edit/{{ association.getId() }}" class="card-link"><i class="fa-solid fa-pen-to-square"></i></a>
-                            <a href="/association/delete/{{ association.getId()}}" class="card-link"><i class="fa-solid fa-trash-can"></i></a>
-                            <a href="/association/" class="card-link"><i class="fa-solid fa-list"></i></a>
-                    {% endif %}
+                    <div class="card-body">
+                        {% if is_granted('ROLE_ADMIN') %}
+                                <a href="/association/edit/{{ association.getId() }}" class="card-link"><i class="fa-solid fa-pen-to-square"></i></a>
+                                <a href="/association/delete/{{ association.getId()}}" class="card-link"><i class="fa-solid fa-trash-can"></i></a>
+                                <a href="/association/" class="card-link"><i class="fa-solid fa-list"></i></a>
+                        {% endif %}
                     </div>
                 </div>
-                <div >
+                <div > {# div pour espacer les 2 items#}
 
                 </div>
                 <div >
@@ -61,12 +62,10 @@
                                             {{equipeElu.getName()}}
                                         {% endfor %}
                                         </th>
-                                        <th>
-                                        {% for user in profil.getUser() %}
-                                            {{user.getAdresseMail()}}
-                                        {% endfor %}
-                                        </th>
-                                        <th><a href="/account/show/{{profil.getId()}}"><i class="fa-solid fa-eye"></i></i></a></th> 
+                                         {% if is_granted('ROLE_FORMATEURICE') %}
+                                            <th> {{profil.user.getEMail()}} </th>
+                                            <th><a href="/account/show/{{profil.getId()}}"><i class="fa-solid fa-eye"></i></i></a></th> 
+                                        {% endif %}
                                     </tr> 
                                 {% endfor %}
                             {% endif %}
