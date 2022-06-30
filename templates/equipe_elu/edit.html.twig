@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'base_user.html.twig' %}
 
 {% block title %}Modifier équipe d'élu {% endblock %}
 
@@ -51,6 +51,20 @@
                     {{ form_errors(form.etablissement) }}
                     {{ form_widget(form.etablissement) }}
                     {{ form_help(form.etablissement) }}
+                </div>
+
+                <div class="date_election my-5">
+                    {{ form_label(form.date_election, ' date de l\'élection ', {'label_attr': {'class': 'foo'}}) }}
+                    {{ form_errors(form.date_election) }}
+                    {{ form_widget(form.date_election) }}
+                    {{ form_help(form.date_election) }}
+                </div>
+
+                 <div class="duree_mandat my-5">
+                    {{ form_label(form.duree_mandat, ' duree de mandat (an) ', {'label_attr': {'class': 'foo'}}) }}
+                    {{ form_errors(form.duree_mandat) }}
+                    {{ form_widget(form.duree_mandat) }}
+                    {{ form_help(form.duree_mandat) }}
                 </div>
 
                

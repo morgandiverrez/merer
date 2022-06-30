@@ -78,6 +78,13 @@
                     {{ form_widget(form.adresse_mail) }}
                     {{ form_help(form.adresse_mail) }}
                 </div>
+
+                <div class="date_election my-5">
+                    {{ form_label(form.date_election, ' Date de l\'AGO ', {'label_attr': {'class': 'foo'}}) }}
+                    {{ form_errors(form.date_election) }}
+                    {{ form_widget(form.date_election) }}
+                    {{ form_help(form.date_election) }}
+                </div>
                
                 <button class="btn btn-success mt-3 mb-3">{{ button_label|default('Valider ') }}<i class = "fa text-light fa-save me-2"></i></button>
             </div>

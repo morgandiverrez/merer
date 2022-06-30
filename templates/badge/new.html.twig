@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'base_user.html.twig' %}
 
 {% block title %}Nouveau badge{% endblock %}
 
@@ -46,7 +46,7 @@
                 </div>
 
                  <div class="date_creation my-5">
-                    {{ form_label(form.date_creation, 'Date de création mail ', {'label_attr': {'class': 'foo'}}) }}
+                    {{ form_label(form.date_creation, 'Date de création', {'label_attr': {'class': 'foo'}}) }}
                     {{ form_errors(form.date_creation) }}
                     {{ form_widget(form.date_creation) }}
                     {{ form_help(form.date_creation) }}
