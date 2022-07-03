@@ -40,22 +40,18 @@ class RegistrationController extends AbstractController
             $entityManager->flush();
 
             $email = (new Email())
-                ->from('no-reply@fedeb.net')
-                ->to($user -> getEmail())
-                //->cc('cc@example.com')
-                //->bcc('bcc@example.com')
-                //->replyTo('fabien@example.com')
-                //->priority(Email::PRIORITY_HIGH)
-                ->subject('Inscription sur la plateforme de gestion des formations de la Fédé B')
-                
-                ->htmlTemplate('emails/signup.html.twig')
-                // pass variables (name => value) to the template
-                ->context([
-                    'expiration_date' => new \DateTime('+7 days'),
-                    'username' => 'foo',
-                ])
+            ->from('hello@example.com')
+            ->to('you@example.com')
+            //->cc('cc@example.com')
+            //->bcc('bcc@example.com')
+            //->replyTo('fabien@example.com')
+            //->priority(Email::PRIORITY_HIGH)
+            ->subject('Time for Symfony Mailer!')
+                ->text('Sending emails is fun again!');
+           
 
             $mailer->send($email);
+
 
 
             return $this->redirectToRoute('profil_edit', ['profilID' => $profil->getID()]);
@@ -67,20 +63,26 @@ class RegistrationController extends AbstractController
         ]);
     }
 
-    // #[Route('/register/role_admin', name: 'role_admin')]
-    // public function ajoutRole(EntityManagerInterface $entityManager)
-    // {
+    #[Route('/mail', name: 'email')]
+    public function mail(EntityManagerInterface $entityManager, MailerInterface $mailer)
+    {
+        //$user = $this->getUser();
 
-    //     $role = ['ROLE_ADMIN'];
+        $email = (new Email())
+            //->from('no-reply@fedeb.net')
+            ->to('morgan.diverrez@fedeb.net')
+            //->cc('cc@example.com')
+            //->bcc('bcc@example.com')
+            //->replyTo('fabien@example.com')
+            //->priority(Email::PRIORITY_HIGH)
+            ->subject('Time for Symfony Mailer!')
+            ->text('Sending emails is fun again!');
+            
+        $mailer->send($email);
+           
+            return $this->redirectToRoute('register');
 
+        
 
-    //     $user = $this->getUser();
-    //     $user->setRoles($role);
-
-
-    //     $entityManager->persist($user);
-    //     $entityManager->flush();
-
-    //     return $this->redirectToRoute('profil_showAll');
-    // }
+    }
 }
