@@ -55,6 +55,9 @@ class Profil
     #[ORM\OneToOne(mappedBy: 'profil', targetEntity: User::class, cascade: ['persist', 'remove'])]
     private $user;
 
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private $telephone;
+
     public function __construct()
     {
         $this->retour = new ArrayCollection();
@@ -326,6 +329,18 @@ class Profil
         }
 
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getTelephone(): ?string
+    {
+        return $this->telephone;
+    }
+
+    public function setTelephone(?string $telephone): self
+    {
+        $this->telephone = $telephone;
 
         return $this;
     }

@@ -105,4 +105,19 @@ class EquipeEluController extends AbstractController
         $user = $this->getUser();
         return $this->redirectToRoute('equipeElu_showAll');
     }
+
+    #[Route('/signature/CROUS', name: 'signatureCROUS')]
+    #[IsGranted('ROLE_USER')]
+    public function signatureCROUS(): Response
+    {
+        return $this->render('equipe_elu/signature_crous.html.twig');   
+    }
+
+    #[Route('/signature/CentrauxUBO', name: 'signatureCentrauxUBO')]
+    #[IsGranted('ROLE_USER')]
+    public function signatureCentrauxUBO(): Response
+    {
+        return $this->render('equipe_elu/signature_centrauxUBO.html.twig');
+    }
+      
 }

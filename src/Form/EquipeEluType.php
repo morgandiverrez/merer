@@ -6,8 +6,9 @@ use App\Entity\EquipeElu;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 class EquipeEluType extends AbstractType
 {
@@ -16,7 +17,18 @@ class EquipeEluType extends AbstractType
         $builder
             ->add('code')
             ->add('name')
-            ->add('categorie')
+            ->add('categorie', ChoiceType::class, [
+                'choice' => [
+                    'UBO' => 'UBO',
+                    'UFR' =>  'UFR',
+                    'Rennes 1' =>  'Rennes 1',
+                    'Rennes 2' =>    'Rennes 2',
+                    'CROUS'=> 'CROUS',
+                    'Centraux' =>  'Centraux',
+                    'Ecole Ingénieur' =>  'Ecole Ingénieur',
+                ],
+                'multiple' => true,
+            ])
             ->add('description' , TextareaType::class)
             ->add('adresse_mail', EmailType::class)
             ->add('etablissement')

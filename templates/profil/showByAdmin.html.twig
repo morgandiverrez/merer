@@ -20,6 +20,8 @@
                         </div>
                         <ul class="list-group list-group-flush">
                             <li class="list-group-item">Code : {{profil.getCode()}}</li>
+                            <li class="list-group-item">Code : {{app.user.getEmail()}}</li>
+                            <li class="list-group-item">Code : {{app.user.profil.getTelephone()}}</li>
                             <li class="list-group-item">Date de naissance : {% if profil.getDateOfBirth() is null %} - {% else %} {{profil.getDateOfBirth().format("d:m:y")}} {% endif %}</li>
                             <li class="list-group-item">Score : {%if profil.getScore() is null %}0 {% else %} {{profil.getScore()}} {% endif %} </li>
                             <li class="list-group-item">Equipe d'élu : {% for equipeElu in profil.getEquipeElu() %}{{equipeElu.getName()}} {% endfor %}</li>
