@@ -31,11 +31,19 @@
                     {{ form_help(form.pronom) }}
                 </div>
 
+
                 <div class="date_of_birth my-5">
                     {{ form_label(form.date_of_birth, 'Date de naissance ', {'label_attr': {'class': 'foo'}}) }}
                     {{ form_errors(form.date_of_birth) }}
                     {{ form_widget(form.date_of_birth) }}
                     {{ form_help(form.date_of_birth) }}
+                </div>
+
+                <div class="telephone my-5">
+                    {{ form_label(form.telephone, ' numéro de téléphone ', {'label_attr': {'class': 'foo'}}) }}
+                    {{ form_errors(form.telephone) }}
+                    {{ form_widget(form.telephone) }}
+                    {{ form_help(form.telephone) }}
                 </div>
 
                 <div class="equipeElu my-5">

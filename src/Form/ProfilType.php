@@ -7,10 +7,11 @@ use App\Entity\EquipeElu;
 use App\Entity\Association;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\TelType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 
 class ProfilType extends AbstractType
 {
@@ -20,7 +21,7 @@ class ProfilType extends AbstractType
             ->add('name')
             ->add('last_name')
             ->add('pronom')
-                
+            ->add('telephone', TelType::class)    
             ->add('date_of_birth', BirthdayType::class)
             ->add('equipeElu', EntityType::class,[
                  // looks for choices from this entity
@@ -38,6 +39,7 @@ class ProfilType extends AbstractType
                  'expanded'=> true,
                 
             ])
+            
             
         ;
     }
