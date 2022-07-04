@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20220620215810 extends AbstractMigration
+final class Version20220704205612 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -20,14 +20,12 @@ final class Version20220620215810 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE association CHANGE sigle sigle VARCHAR(255) DEFAULT NULL, CHANGE extension image VARCHAR(255) DEFAULT NULL');
-        $this->addSql('ALTER TABLE badge DROP extension');
+        $this->addSql('ALTER TABLE formation CHANGE pre_requis pre_requis VARCHAR(1024) DEFAULT NULL, CHANGE public_cible public_cible VARCHAR(1024) DEFAULT NULL, CHANGE opg opg VARCHAR(2048) DEFAULT NULL');
     }
 
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE association CHANGE sigle sigle VARCHAR(255) NOT NULL, CHANGE image extension VARCHAR(255) DEFAULT NULL');
-        $this->addSql('ALTER TABLE badge ADD extension VARCHAR(255) DEFAULT NULL');
+        $this->addSql('ALTER TABLE formation CHANGE pre_requis pre_requis VARCHAR(255) DEFAULT NULL, CHANGE public_cible public_cible VARCHAR(255) DEFAULT NULL, CHANGE opg opg VARCHAR(255) DEFAULT NULL');
     }
 }
