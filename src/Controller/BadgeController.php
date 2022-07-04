@@ -25,10 +25,10 @@ class BadgeController extends AbstractController
     public function showAll(EntityManagerInterface $entityManager): Response
     {
         $badges = $entityManager->getRepository(Badge::class)->findAll();
-        $user = $this->getUser();
+        
         return $this->render('badge/showAll.html.twig', [     
             'badges' => $badges,
-            'user' => $user,
+            
         ]);
     }
 
@@ -36,12 +36,12 @@ class BadgeController extends AbstractController
     #[IsGranted('ROLE_USER')]
     public function show(EntityManagerInterface $entityManager, $badgeID): Response
     {
-        // find renvoi tjr un array (tableau), donc faut mettre [0] pour enlever l'array, si on veut plus d'une valeur s'il y en a, on met pas ou [nombre]
+
         $badge = $entityManager->getRepository(Badge::class)->findById($badgeID)[0];
-        $user = $this->getUser();
+        
         return $this->render('badge/show.html.twig', [
             'badge'=> $badge,
-            'user' => $user,
+            
         ]);
     }
 
@@ -52,7 +52,7 @@ class BadgeController extends AbstractController
         $badge = new Badge();
         $form = $this->createForm(BadgeType::class, $badge);
         $form->handleRequest($request);
-        $user = $this->getUser();
+        
 
         if ($form->isSubmitted() && $form->isValid()) {
 
@@ -80,8 +80,7 @@ class BadgeController extends AbstractController
         return $this->render('badge/new.html.twig', [
             'badge' => $badge,
             'form' => $form->createView(),
-            'user' => $user,
-
+            
         ]);
     }
 
@@ -94,7 +93,7 @@ class BadgeController extends AbstractController
         $badge = $entityManager->getRepository(Badge::class)->findById($badgeID)[0];
         $form = $this->createForm(BadgeType::class, $badge);
         $form->handleRequest($request);
-        $user = $this->getUser();
+       
 
         if ($form->isSubmitted() && $form->isValid()) {
             
@@ -121,7 +120,7 @@ class BadgeController extends AbstractController
         return $this->render('badge/edit.html.twig', [
             'badge' => $badge,
             'form' => $form->createView(),
-            'user' => $user,
+            
             ]);
     }
 
@@ -135,7 +134,7 @@ class BadgeController extends AbstractController
         $badge = $entityManager->getRepository(Badge::class)->findById($badgeID)[0];
         $entityManager->remove($badge);
         $entityManager->flush();
-        $user = $this->getUser();
+       
         return $this->redirectToRoute('badge_showAll', []);
     }
 }

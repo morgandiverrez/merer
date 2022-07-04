@@ -27,7 +27,7 @@ class Badge
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $categorie;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(type: 'string', length: 2048, nullable: true)]
     private $description;
 
     #[ORM\Column(type: 'date', nullable: true)]

@@ -5,7 +5,7 @@
         <title>{% block title %} Welcome!{% endblock %}</title>
         {# favicon du site#}
         <link rel="icon" type="png" height="auto" sizes="16x16" href="{{asset('build/images/logo_FEDEB.png')}}">
-        
+
         {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
         <script src="https://kit.fontawesome.com/ffbea23889.js" crossorigin="anonymous"></script>
         {% block stylesheets %}
@@ -13,10 +13,10 @@
             {{ encore_entry_link_tags('app') }}
 
             <link rel="stylesheet" href="/build/app.css">
-            
+
             <script src="https://kit.fontawesome.com/ffbea23889.js" crossorigin="anonymous"></script>
             <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
-       
+
         {% endblock %}
 
         {% block javascripts %}
@@ -26,87 +26,142 @@
             <script src="/build/app.js" defer></script>
             <!-- JavaScript Bundle with Popper -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
-               
-       
+
+
         {% endblock %}
 
-    
-    </head> 
+
+    </head>
 
     <body>
-        {% block header %}   
+        {% block header %}
             <header>
                 <nav height="60" style="background-color:#2B9D7D ;" class="navbar navbar-expand-lg ">
                     <div class="container-fluid">
                         <a class="navbar-brand" href="https://fedeb.net/"><img src="{{asset('build/images/logo_FEDEB.png')}}" height="60" alt="logo Fédé B"></a>
-                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        {# <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                             <span class="navbar-toggler-icon"></span>
-                        </button>
-                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                                <li class="nav-item">
-                                    <a class="nav-link active" aria-current="page" href="#">Home</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="/account/">Profil</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="/seance/">Séance</a>
-                                </li>
-                                <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle"  id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="true">
-                                        Liste
-                                    </a>
-                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <li><a class="dropdown-item" href="/association/">Association</a></li>
-                                    <li><a class="dropdown-item" href="/badge/">Badge</a></li>
-                                    <li><a class="dropdown-item" href="/catalogue/">Formation</a></li>
-                                    <li><a class="dropdown-item" href="/equipe_elu/">Equipe d'élu</a></li>
-                                    <li><a class="dropdown-item" href="/lieux/">Lieu</a></li>
-                                    <li><hr class="dropdown-divider"></li>
-                                    <li><a class="dropdown-item" href="#">Something else here</a></li>
-                                </ul>
-                            </ul>
-                            {% if app.user is not null %}
-                                {% if  app.user.profil.getEquipeElu() is not empty %}
-                                        <table>
-                                            <thead>
-                                                <tr><th>Equipe d'élu </th></tr>
-                                            </thead> 
-                                            <tbody>
+                        </button> #}
+
+                        {% if is_granted('ROLE_USER') %}
+                            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" aria-current="page" href="/account/">Mon Profil</a>
+                                    </li>
+
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="/seance/">Séance</a>
+                                    </li>
+
+                                    {% if is_granted('ROLE_FORMATEURICE') %}
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="/account/showAll">Liste des profils</a>
+                                        </li>
+                                    {% endif %}
+
+                                    {% if is_granted('ROLE_FORMATEURICE') %}
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="/association/">Liste des associations</a>
+                                        </li>
+                                    {% endif %}
+
+
+
+                                    {% if is_granted('ROLE_FORMATEURICE') %}
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="/equipeElu/">Liste des equipes d'élu.e.s</a>
+                                        </li>
+                                    {% endif %}
+
+
+                                    {% if is_granted('ROLE_USER') %}
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="/badge/">Liste des badges</a>
+                                        </li>
+                                    {% endif %}
+                                    {% if is_granted('ROLE_USER') %}
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="/lieux/">Liste des Lieux </a>
+                                        </li>
+                                    {% endif %}
+
+                                    {% if is_granted('ROLE_USER') %}
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="/catalogue/">Catalogue de formation </a>
+                                        </li>
+                                    {% endif %}
+
+                                    {% if is_granted('ROLE_USER') %}
+                                        {% if app.user.profil.getEquipeElu() is not empty %}
+                                        <li class="nav-item dropdown">
+                                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            Signature </a>
+                                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+
                                             {% for equipeElu in app.user.profil.getEquipeElu() %}
-                                                <tr><td> {{equipeElu.getName()}}</td></tr>
+                                                {% if equipeElu == 'Centraux-UBO' or is_granted('ROLE_BF') %}
+                                                    <li >
+                                                        <a class="dropdown-item" href="/equipeElu/signature/centrauxUBO">Signature Centraux UBO </a>
+                                                    </li>
+                                                {% endif %}
+                                                {% if equipeElu == 'CROUS' or is_granted('ROLE_BF') %}
+                                                    <li >
+                                                        <a class="dropdown-item" href="/equipeElu/signature/CROUS">Signature CROUS </a>
+                                                    </li>
+                                                {% endif %}
+
                                             {% endfor %}
-                                            </tbody>
-                                        </table>
-                                {% endif %}
-                                {% if  app.user.profil.getAssociation() is not empty %}
+                                            </ul>
+                                        </li>
+                                        {% endif %}
+                                    {% endif %}
 
-                                    <div class="d-flex flex-row-reverse">
-                                        {% for association in app.user.profil.getAssociation() %}
-                                            <div class="p-2">  
-                                            {% if association.getImage() is null %}
-                                                {{association.getSigle()}} 
-                                            {% else %} 
-                                                <a><img src="{{asset(association.getImage())}}" height="60" class="rounded-circle" alt="{{association.getSigle()}}"> </a>
-                                            {% endif %} 
-                                            </div>
-                                        {% endfor %}
-                                    </div>
-                                {% endif %}
-                            
-                                
-                            {% endif %}
+                                </ul>
+                        {% endif %}
 
-                             <ul class="justify-content-end">
-                            <li><a class="nav-link " href="/account/">{% if app.user is null %} non connectée {% else %} {{app.user.getUserIdentifier()}} {% endif %}</a></li>
+
+
+                        <div class="d-flex justify-content-end">
+                                {% if app.user is not null %}
+                                    {% if  app.user.profil.getEquipeElu() is not empty %}
+                                            <table>
+                                                <thead>
+                                                    <tr><th>Equipe d'élu </th></tr>
+                                                </thead>
+                                                <tbody>
+                                                {% for equipeElu in app.user.profil.getEquipeElu() %}
+                                                    <tr><td> {{equipeElu.getName()}}</td></tr>
+                                                {% endfor %}
+                                                </tbody>
+                                            </table>
+                                    {% endif %}
+                                    {% if  app.user.profil.getAssociation() is not empty %}
+
+                                        <div class="d-flex flex-row-reverse">
+                                            {% for association in app.user.profil.getAssociation() %}
+                                                <div class="p-2">
+                                                {% if association.getImage() is null %}
+                                                    {{association.getSigle()}}
+                                                {% else %}
+                                                    <a><img src="{{asset(association.getImage())}}" height="60" class="rounded-circle" alt="{{association.getSigle()}}"> </a>
+                                                {% endif %}
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                {% endif %}
+                        
+                         <div class="d-flex justify-content-end">
+                             <ul>
+                            <li>{% if app.user is null %} <a class="nav-link " href="/register/"> s'inscrire </a> {% else %} {{app.user.getUserIdentifier()}} {% endif %}</a></li>
                             </ul>
-                             <ul class="justify-content-end">
+                             <ul >
                                 <li><a class="nav-link " href="/logout/"><i color="dark" height="80" class="fa-solid fa-power-off"></i></a></li>
                             </ul>
-                        <div>
+                        </div>
 
-                            
+
                     </div>
                 </nav>
              </header>
@@ -128,14 +183,14 @@
                             <p class="text-light justify-content-center"></p>
                             <p class="text-light justify-content-center"></p>
                         </div>
-                       
+
                         <div class="col-lg-4 mt-2 mb-2 justify-content-end">
                             <img src="{{asset('build/images/logo_FAGE.png')}}"  height="60" class="d-inline-block " alt="logo FAGE">
                             <img src="{{asset('build/images/logo_FEDEB.png')}}"  height="60" class="d-inline-block " alt="logo Fédé B">
                         </div>
                     </div>
                 </div>
-            </footer> 
+            </footer>
         {% endblock %}
     </body>
 </html>

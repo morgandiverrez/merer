@@ -6,9 +6,10 @@
 {% block body %}
     <div class="container-fluid">
         <div class="corps mx-auto">
-
+            {% if is_granted('ROLE_BF')%}
             <a href="/catalogue/new"><i class="fa-solid fa-plus align-left"></i></a>
-
+            {% endif %}
+            
             <p class="display-6 no-wrap text-center mb-5">Catalogue des formations <a href="/catalogue/new"><i class="fa-solid fa-plus align-left"></i></a></p>
 
              <form class="d-flex" role="search">

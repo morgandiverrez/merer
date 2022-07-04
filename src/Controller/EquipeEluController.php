@@ -15,54 +15,54 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 
  #[Route('/equipeElu', name: 'equipeElu_')]
-#[IsGranted('ROLE_ADMIN')]
+
 class EquipeEluController extends AbstractController
 {
     #[Route('/', name: 'showAll')]
-    #[IsGranted('ROLE_ADMIN')]
+    #[IsGranted('ROLE_FORMATEURICE')]
     public function showAll(EntityManagerInterface $entityManager): Response
     {
         $equipeElus = $entityManager->getRepository(EquipeElu::class)->findAll();
-        $user = $this->getUser();
+        
         return $this->render('equipe_elu/showAll.html.twig', [
             'equipeElus' => $equipeElus,
-            'user' => $user,
+            
         ]);
     }
     
     #[Route('/show/{equipeEluID}', name: 'show')]
-    #[IsGranted('ROLE_ADMIN')]
+    #[IsGranted('ROLE_FORMATEURICE')]
     public function show(EntityManagerInterface $entityManager, $equipeEluID): Response
     {
         // find renvoi tjr un array (tableau), donc faut mettre [0] pour enlever l'array, si on veut plus d'une valeur s'il y en a, on met pas ou [nombre]
         $equipeElu = $entityManager->getRepository(EquipeElu::class)->findById($equipeEluID)[0];
-        $user = $this->getUser();
+        
         return $this->render('equipe_elu/show.html.twig', [
             'equipeElu' => $equipeElu,
-            'user' => $user,
+            
         ]);
     }
 
     #[Route('/new', name: 'new')]
-    #[IsGranted('ROLE_ADMIN')]
+    #[IsGranted('ROLE_BF')]
     public function new(EntityManagerInterface $entityManager, Request $request): Response
     {
         $equipeElu = new EquipeElu();
         $form = $this->createForm(EquipeEluType::class, $equipeElu);
         $form->handleRequest($request);
-        $user = $this->getUser();
+       
 
         if ($form->isSubmitted() && $form->isValid()) {
 
             $entityManager->persist($equipeElu);
             $entityManager->flush();
-            return $this->redirectToRoute('equipeElu_showAll', []);
+            return $this->redirectToRoute('equipeElu_show', ['equipeEluID' => $equipeElu -> getId()]);
         }
 
         return $this->render('equipe_elu/new.html.twig', [
             'equipeElu' => $equipeElu,
             'form' => $form->createView(),
-            'user' => $user,
+            
 
         ]);
     }
@@ -70,25 +70,25 @@ class EquipeEluController extends AbstractController
 
 
     #[Route('/edit/{equipeEluID}', name: 'edit')]
-    #[IsGranted('ROLE_ADMIN')]
+    #[IsGranted('ROLE_BF')]
     public function edit(EntityManagerInterface $entityManager, Request $request, $equipeEluID): Response
     {
         $equipeElu = $entityManager->getRepository(EquipeElu::class)->findById($equipeEluID)[0];
         $form = $this->createForm(EquipeEluType::class, $equipeElu);
         $form->handleRequest($request);
-        $user = $this->getUser();
+        
 
         if ($form->isSubmitted() && $form->isValid()) {
 
             $entityManager->persist($equipeElu);
             $entityManager->flush();
-            return $this->redirectToRoute('equipeElu_showAll');
+            return $this->redirectToRoute('equipeElu_show', ['equipeEluID' => $equipeEluID]);
         }
 
         return $this->render('equipe_elu/edit.html.twig', [
             'equipeElu' => $equipeElu,
             'form' => $form->createView(),
-            'user' => $user,
+            
         ]);
     }
 
@@ -102,7 +102,7 @@ class EquipeEluController extends AbstractController
         $equipeElu = $entityManager->getRepository(EquipeElu::class)->findById($equipeEluID)[0];
         $entityManager->remove($equipeElu);
         $entityManager->flush();
-        $user = $this->getUser();
+        
         return $this->redirectToRoute('equipeElu_showAll');
     }
 
@@ -113,7 +113,7 @@ class EquipeEluController extends AbstractController
         return $this->render('equipe_elu/signature_crous.html.twig');   
     }
 
-    #[Route('/signature/CentrauxUBO', name: 'signatureCentrauxUBO')]
+    #[Route('/signature/centrauxUBO', name: 'signatureCentrauxUBO')]
     #[IsGranted('ROLE_USER')]
     public function signatureCentrauxUBO(): Response
     {

@@ -24,18 +24,21 @@
                             
                         </ul>
                         <div class="card-body">
-                            <a href="/lieux/edit/{{ lieu.getId() }}" class="card-link"><i class="fa-solid fa-pen-to-square"></i></a>
-                            <a href="/lieux/delete/{{ lieu.getId()}}" class="card-link"><i class="fa-solid fa-trash-can"></i></a>
-                            <a href="/lieux/" class="card-link"><i class="fa-solid fa-list"></i></a>
-                           
+                         {% if is_granted('ROLE_USER') %}
+                            {% if is_granted('ROLE_BF') %}
+                                <a href="/lieux/edit/{{ lieu.getId() }}" class="card-link"><i class="fa-solid fa-pen-to-square"></i></a>
+                               {% if is_granted('ROLE_ADMIN') %}
+                                     <a href="/lieux/delete/{{ lieu.getId()}}" class="card-link"><i class="fa-solid fa-trash-can"></i></a>
+                                {% endif %}
+                            {% endif %}
+                             <a href="/lieux/" class="card-link"><i class="fa-solid fa-list"></i></a>
+                        {% endif %}
                         </div>
                     </div>
                 </div>
  
 
-            {# <div class="text-center">
-                <a href="/chlidren/childrenToCamp/{{camp.campId}}"><button class="btn btn-success mt-3 mb-3"><i class = "fa text-light fa-plus-square me-2"></i>{{ button_label|default('Nouveau') }}</button></a>
-            </div> #}
+   
 
         </div>
     </div>

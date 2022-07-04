@@ -21,19 +21,19 @@ class Formation
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $name;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(type: 'string', length: 2048, nullable: true)]
     private $description;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(type: 'string', length: 1024, nullable: true)]
     private $pre_requis;
 
     #[ORM\Column(type: 'time', nullable: true)]
     private $duration;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(type: 'string', length: 1024, nullable: true)]
     private $public_cible;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(type: 'string', length: 2048, nullable: true)]
     private $opg;
 
     #[ORM\OneToMany(mappedBy: 'formation', targetEntity: Seance::class)]

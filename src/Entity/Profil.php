@@ -25,7 +25,7 @@ class Profil
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $last_name;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(type: 'array', length: 255, nullable: true)]
     private $pronom;
 
     #[ORM\Column(type: 'date', nullable: true)]

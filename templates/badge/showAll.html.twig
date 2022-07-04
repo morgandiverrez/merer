@@ -8,8 +8,10 @@
         <div class="corps mx-auto">
 
             <p class="display-6 no-wrap text-center">Liste des Badges</p>
-            <a href="/badge/new"><i class="fa-solid fa-plus align-right"></i></i></i></a>
-
+            {% if is_granted('ROLE_BF')%}
+                 <a href="/badge/new"><i class="fa-solid fa-plus align-right"></i></i></i></a>
+            {% endif %}
+            
             <table class="table table-striped">
                 <thead>
                 <tr>

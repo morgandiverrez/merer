@@ -10,8 +10,10 @@
    <div class="container-fluid">
         <div class="corps mx-auto">
             <p class="table"> Liste des lieux</p>
-            <a href="/lieux/new"><i class="fa-solid fa-plus align-right"></i></i></i></a>
-
+            {% if is_granted('ROLE_BF') %}
+                 <a href="/lieux/new"><i class="fa-solid fa-plus align-right"></i></i></i></a>
+            {% endif %}
+            
             <table class="table table-striped">
                 <thead>
                 <tr>

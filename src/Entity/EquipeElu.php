@@ -21,10 +21,10 @@ class EquipeElu
     #[ORM\Column(type: 'string', length: 255)]
     private $name;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(type: 'array', length: 255, nullable: true)]
     private $categorie;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(type: 'string', length: 2048, nullable: true)]
     private $description;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
@@ -41,6 +41,9 @@ class EquipeElu
 
     #[ORM\Column(type: 'integer', nullable: true)]
     private $duree_mandat;
+
+    #[ORM\Column(type: 'array', nullable: true)]
+    private $Fede_filliere = [];
 
     public function __construct()
     {
@@ -173,6 +176,18 @@ class EquipeElu
     public function setDureeMandat(?int $duree_mandat): self
     {
         $this->duree_mandat = $duree_mandat;
+
+        return $this;
+    }
+
+    public function getFedeFilliere(): ?array
+    {
+        return $this->Fede_filliere;
+    }
+
+    public function setFedeFilliere(?array $Fede_filliere): self
+    {
+        $this->Fede_filliere = $Fede_filliere;
 
         return $this;
     }

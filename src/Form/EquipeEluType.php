@@ -18,7 +18,7 @@ class EquipeEluType extends AbstractType
             ->add('code')
             ->add('name')
             ->add('categorie', ChoiceType::class, [
-                'choice' => [
+                'choices' => [
                     'UBO' => 'UBO',
                     'UFR' =>  'UFR',
                     'Rennes 1' =>  'Rennes 1',
