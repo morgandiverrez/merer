@@ -30,7 +30,12 @@
                             
                         </ul>
                         <div class="card-body">
-                            <a href="/account/edit/{{ profil.getId() }}" class="card-link"><i class="fa-solid fa-pen-to-square"></i></a>
+                            {% if is_granted('ROLE_BF') %}
+                                  <a href="/account/edit/{{ profil.getId() }}" class="card-link"><i class="fa-solid fa-pen-to-square"></i></a>
+                                {# {% if is_granted('ROLE_ADMIN')%}
+                                     <a href="/account/delete/{{ profil.getId()}}" class="card-link"><i class="fa-solid fa-trash-can"></i></a>
+                                {% endif %} #}
+                            {% endif %}
                             <a href="/account/showAll" class="card-link"><i class="fa-solid fa-list"></i></a>
                            
                         </div>

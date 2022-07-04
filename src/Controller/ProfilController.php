@@ -21,31 +21,31 @@ class ProfilController extends AbstractController
     public function showAll(EntityManagerInterface $entityManager): Response
     {
         $profils = $entityManager->getRepository(Profil::class)->findAll();
-        $user = $this->getUser();
+       
 
         return $this->render('profil/showAll.html.twig', [
             'profils' => $profils,
-            'user' => $user,
+            
         ]);
     }
 
-    #[Route('/', name: 'show')]
+    #[Route('/', name: 'show')] // afficheur profil perso pour user
     #[IsGranted('ROLE_USER')] 
     public function show(): Response
     {
-        // find renvoi tjr un array (tableau), donc faut mettre [0] pour enlever l'array, si on veut plus d'une valeur s'il y en a, on met pas ou [nombre]
+        
         return $this->render('profil/show.html.twig', [           
         ]);
     }
 
 
-    #[Route('/show/{profilID}', name: 'showByAdmin')]
+    #[Route('/show/{profilID}', name: 'showForFormateurice')]
     #[IsGranted('ROLE_FORMATEURICE')] 
-    public function showProfilAdmin(EntityManagerInterface $entityManager, $profilID): Response
+    public function showForFormateurice(EntityManagerInterface $entityManager, $profilID): Response
     {
-        // find renvoi tjr un array (tableau), donc faut mettre [0] pour enlever l'array, si on veut plus d'une valeur s'il y en a, on met pas ou [nombre]
+        
         $profil = $entityManager->getRepository( Profil::class)->findByID($profilID)[0];
-        return $this->render('profil/showByAdmin.html.twig', [
+        return $this->render('profil/showForFormateurice.html.twig', [
             'profil' => $profil,
         ]);
     }
@@ -54,7 +54,7 @@ class ProfilController extends AbstractController
 
 
     #[Route('/edit/{profilID}', name: 'editByAdmin')]
-    #[IsGranted('ROLE_ADMIN')]
+    #[IsGranted('ROLE_BF')]
     public function editByAdmin(EntityManagerInterface $entityManager, Request $request, $profilID): Response
     {
         $user = $this->getUser();
@@ -108,13 +108,13 @@ class ProfilController extends AbstractController
             $entityManager->persist($profil);
             $entityManager->flush();
 
-            return $this->redirectToRoute('profil_showByAdmin', ['profilID' => $profil->getID()]);
+            return $this->redirectToRoute('profil_showForFormateurice', ['profilID' => $profil->getID()]);
         }
 
         return $this->render('profil/edit.html.twig', [
             'profil' => $profil,
             'form' => $form->createView(),
-            'user' => $user,
+            
         ]);
     }
 
@@ -189,5 +189,19 @@ class ProfilController extends AbstractController
             'profil' => $profil,
         ]);
     }
+
+    #[Route('/delete/{profilID}', name: 'delete')]
+    #[IsGranted('ROLE_ADMIN')]
+    public function delete(EntityManagerInterface $entityManager, $profilID): Response
+    {
+
+        $profil = $entityManager->getRepository(Profil::class)->findById($profilID)[0];
+        $entityManager->remove($profil);
+        $entityManager->flush();
+
+
+        return $this->redirectToRoute('profil_showAll', []);
+    }
+
     
 }

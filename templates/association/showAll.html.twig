@@ -6,9 +6,12 @@
 {% block body %}
     <div class="container-fluid">
         <div class="corps mx-auto">
-            <p class="display-6 no-wrap text-center">Liste des associations</p>
-            <a href="/association/new"><i class="fa-solid fa-plus align-right"></i></i></i></a>
-
+            <p class="display-6 no-wrap text-center">Liste des associations
+            {% if is_granted('ROLE_BF')%}
+                 <a href="/association/new"><i class="fa-solid fa-plus align-right"></i></i></i></a>
+            {% endif %}
+            </p>
+            
             <table class="table table-striped">
                 <thead>
                 <tr>

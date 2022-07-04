@@ -22,10 +22,9 @@ class FormationController extends AbstractController
     public function showAll(EntityManagerInterface $entityManager): Response
     {
         $formations = $entityManager->getRepository(Formation::class)->findAll();
-        $user = $this->getUser();
+
         return $this->render('formation/showAll.html.twig', [     
             'formations' => $formations,
-            'user' => $user,
         ]);
     }
 
@@ -33,25 +32,25 @@ class FormationController extends AbstractController
     #[IsGranted('ROLE_USER')]
     public function show(EntityManagerInterface $entityManager, $formationID): Response
     {
-        // find renvoi tjr un array (tableau), donc faut mettre [0] pour enlever l'array, si on veut plus d'une valeur s'il y en a, on met pas ou [nombre]
+        
         $formation = $entityManager->getRepository(Formation::class)->findById($formationID)[0];
-        $user = $this->getUser();
+       
         return $this->render('formation/show.html.twig', [
             'formation'=>$formation,
-            'user' => $user,
+            
         ]);
     }
 
 
 
     #[Route('/new', name: 'new')]
-    #[IsGranted('ROLE_ADMIN')]
+    #[IsGranted('ROLE_BF')]
     public function new(EntityManagerInterface $entityManager, Request $request): Response
     {
         $formation = new Formation();
         $form = $this->createForm(FormationType::class, $formation);
         $form->handleRequest($request);
-        $user = $this->getUser();
+      
 
         if ($form->isSubmitted() && $form->isValid()) {
             
@@ -64,18 +63,18 @@ class FormationController extends AbstractController
         return $this->render('formation/new.html.twig', [
             'formation' => $formation,
             'form' => $form->createView(),
-            'user' => $user,
+            
         ]);
     }
 
     #[Route('/edit/{formationID}', name: 'edit')]
-    #[IsGranted('ROLE_ADMIN')]
+    #[IsGranted('ROLE_BF')]
     public function edit(EntityManagerInterface $entityManager, Request $request, $formationID): Response
     {
         $formation = $entityManager->getRepository(Formation::class)->findById($formationID)[0];
         $form = $this->createForm(FormationType::class, $formation);
         $form->handleRequest($request);
-        $user = $this->getUser();
+        
 
         if ($form->isSubmitted() && $form->isValid()) {
             
@@ -87,7 +86,7 @@ class FormationController extends AbstractController
         return $this->render('formation/edit.html.twig', [
             'formation' => $formation,
             'form' => $form->createView(),
-            'user' => $user,
+            
         ]);
     }
 
@@ -100,7 +99,7 @@ class FormationController extends AbstractController
         $formation = $entityManager->getRepository(Formation::class)->findById($formationID)[0];
         $entityManager->remove($formation);
         $entityManager->flush();
-        $user = $this->getUser();
+        
         return $this->redirectToRoute('catalogue_showAll', [
         ]);
     }

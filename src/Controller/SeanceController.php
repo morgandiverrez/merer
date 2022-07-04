@@ -50,22 +50,22 @@ class SeanceController extends AbstractController
 
     #[Route('/showForFormateurice/{seanceID}', name: 'showForFormateurice')]
     #[IsGranted('ROLE_FORMATEURICE')]
-    public function show(EntityManagerInterface $entityManager, $seanceID): Response
+    public function showForFormateurice(EntityManagerInterface $entityManager, $seanceID): Response
     {
         $seance = $entityManager->getRepository(Seance::class)->findByID($seanceID)[0];
 
-        return $this->render('seance/show.html.twig', [
+        return $this->render('seance/showForFormateurice.html.twig', [
             'seance' => $seance,
         ]);
     }
 
     #[Route('/show/{seanceID}', name: 'show')]
     #[IsGranted('ROLE_USER')]
-    public function showForUser(EntityManagerInterface $entityManager, $seanceID): Response
+    public function show(EntityManagerInterface $entityManager, $seanceID): Response
     {
         $seance = $entityManager->getRepository(Seance::class)->findByID($seanceID)[0];
 
-        return $this->render('seance/showForUser.html.twig', [
+        return $this->render('seance/show.html.twig', [
             'seance' => $seance,
         ]);
     }

@@ -6,8 +6,10 @@
    <div class="container-fluid">
         <div class="corps mx-auto">
             <p class="display-6 no-wrap text-center mb-5"> Liste des Séances</p>
-            <a href="/seance/new"><i class="fa-solid fa-plus align-right"></i></i></i></a>
-
+            {% if is_granted('ROLE_BF')%}
+                <a href="/seance/new"><i class="fa-solid fa-plus align-right"></i></i></i></a>
+            {% endif %}
+            
             <table class="table table-striped">
                 <thead>
                 <tr>
@@ -35,7 +37,7 @@
                         -
                     {% endif %}
                     </th>
-                    <th><a href="/seance/show/{{seance.getId()}}"><i class="fa-solid fa-eye"></i></a></th>
+                    <th><a href="/seance/showForFormateurice/{{seance.getId()}}"><i class="fa-solid fa-eye"></i></a></th>
                </tr> {% endfor %}
                 </tbody>
             </table>

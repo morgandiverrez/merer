@@ -13,10 +13,10 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 class LoginController extends AbstractController
 {
     #[Route('/login', name: 'login')]
-    public function login(EntityManagerInterface $entityManager, AuthenticationUtils $authenticationUtils): Response
+    public function login( AuthenticationUtils $authenticationUtils): Response
     {
 
-        $user = $this->getUser();
+        //$user = $this->getUser();
 
         // get the login error if there is one
          $error = $authenticationUtils->getLastAuthenticationError();
@@ -26,7 +26,7 @@ class LoginController extends AbstractController
 
           return $this->render('login/index.html.twig', [
              'last_username' => $lastUsername,
-             'user'         => $user,
+            // 'user'         => $user,
              'error'         => $error,
         ]);
     }
@@ -38,11 +38,5 @@ class LoginController extends AbstractController
         throw new \Exception('Don\'t forget to activate logout in security.yaml');
     }
 
-    // #[Route('/account', name: 'account')]
-    // public function account(EntityManagerInterface $entityManager)
-    // {
-    //     $user = $this->getUser();
-    //     // $profil = $entityManager->getRepository(Profil::class)->findByUser($user);
-    //     return $this->redirectToRoute('profil_show', ['profilID' => $user->getProfil()->getID()]);
-    // }
+    
 }
