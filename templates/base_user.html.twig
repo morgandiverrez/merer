@@ -60,35 +60,54 @@
                                     </li>
                                     
                                     
-                                    
+                                    {% if is_granted('ROLE_FORMATEURICE') %}
+                                        <li class="nav-item dropdown">
+                                            <a class="nav-link dropdown-toggle"  id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            Espace Formateurice </a>
+                                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                            
+                                                <li class="nav-item">
+                                                    <a class="nav-link" href="/account/showAll">Liste des profils</a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link" href="/association/">Liste des associations</a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link" href="/equipeElu/">Liste des equipes d'élu.e.s</a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link" href="/lieux/">Liste des Lieux </a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link" href="/seance/showAllForFormateurice"> Liste des séances </a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link" href="/badge/">Liste des badges</a>
+                                                </li>
+                                            
+                                            </ul>
+                                        </li>
+                                    {% endif %}
+
+                                    {% if is_granted('ROLE_FORMATEURICE') %}
                                     <li class="nav-item dropdown">
-                                        <a class="nav-link dropdown-toggle"  id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                        Espace Formateurice </a>
-                                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                        {% if is_granted('ROLE_FORMATEURICE') %}
-                                            <li class="nav-item">
-                                                <a class="nav-link" href="/account/showAll">Liste des profils</a>
-                                            </li>
-                                            <li class="nav-item">
-                                                 <a class="nav-link" href="/association/">Liste des associations</a>
-                                            </li>
-                                            <li class="nav-item">
-                                                 <a class="nav-link" href="/equipeElu/">Liste des equipes d'élu.e.s</a>
-                                            </li>
-                                            <li class="nav-item">
-                                                 <a class="nav-link" href="/lieux/">Liste des Lieux </a>
-                                            </li>
-                                            <li class="nav-item">
-                                                 <a class="nav-link" href="/seance/showAllForFormateurice"> Liste des séances </a>
-                                            </li>
-                                            <li class="nav-item">
-                                                 <a class="nav-link" href="/badge/">Liste des badges</a>
-                                            </li>
-                                        {% endif %}
-                                        </ul>
-                                    </li>
-                                    
-                                    
+                                            <a class="nav-link dropdown-toggle"  id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            Espace BF </a>
+                                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                            
+                                                <li class="nav-item">
+                                                    <a class="nav-link" href="/account/liste_formateurice">Liste des Formateurice</a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link" href="/signature/showAll">signature de mail BF</a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link" href="/account/showAll">gestionnaire des role</a>
+                                                </li>
+
+                                            </ul>
+                                        </li>
+                                    {% endif %}
                                     
 
 
@@ -101,12 +120,12 @@
                                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                                     {% if equipeElu == 'Centraux UBO' or is_granted('ROLE_BF') %}
                                                         <li >
-                                                            <a class="dropdown-item" href="/equipeElu/signature/centrauxUBO">Signature Centraux UBO </a>
+                                                            <a class="dropdown-item" href="/signature/centrauxUBO">Signature Centraux UBO </a>
                                                         </li>
                                                     {% endif %}
                                                     {% if equipeElu == 'CROUS Rennes-Bretagne' or is_granted('ROLE_BF') %}
                                                         <li >
-                                                            <a class="dropdown-item" href="/equipeElu/signature/CROUS">Signature CROUS  BZH</a>
+                                                            <a class="dropdown-item" href="/signature/CROUS">Signature CROUS  BZH</a>
                                                         </li>
                                                     {% endif %}
                                                 </ul>
