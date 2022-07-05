@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
 use App\Entity\Profil;
 use App\Form\ProfilType;
 use App\Entity\EquipeElu;
@@ -216,6 +217,19 @@ class ProfilController extends AbstractController
         return $this->render('profil/listeFormationSuivie.html.twig', [
             'profil' => $profil,
             'inscriptions' => $inscriptions,
+        ]);
+    }
+
+    #[Route('/showFormateurice', name: 'formateurice')]
+    #[IsGranted('ROLE_BF')]
+    public function formateurice(EntityManagerInterface $entityManager): Response
+    {
+
+        $users = $entityManager->getRepository(User::class)->findAll();
+
+        return $this->render('profil/ListeFormateurice.html.twig', [
+            'users' => $users,
+            
         ]);
     }
 
