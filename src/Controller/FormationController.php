@@ -80,7 +80,7 @@ class FormationController extends AbstractController
             
             $entityManager->persist($formation);
             $entityManager->flush();
-            return $this->redirectToRoute('catalogue_showAll');
+            return $this->redirectToRoute('catalogue_show', [ 'formationID' => $formationID]);
         }
 
         return $this->render('formation/edit.html.twig', [

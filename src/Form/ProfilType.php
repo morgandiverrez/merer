@@ -20,7 +20,13 @@ class ProfilType extends AbstractType
         $builder
             ->add('name')
             ->add('last_name')
-            ->add('pronom')
+            ->add('pronom', ChoiceType::class,[
+               'choices' => [
+                    'il' => 'il',
+                    'elle' => 'elle',
+                    'iel' => 'iel'
+               ],
+            ])
             ->add('telephone', TelType::class)    
             ->add('date_of_birth', BirthdayType::class)
             ->add('equipeElu', EntityType::class,[

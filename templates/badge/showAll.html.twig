@@ -7,10 +7,11 @@
     <div class="container-fluid">
         <div class="corps mx-auto">
 
-            <p class="display-6 no-wrap text-center">Liste des Badges</p>
+            <p class="display-6 no-wrap text-center">Liste des Badges
             {% if is_granted('ROLE_BF')%}
-                 <a href="/badge/new"><i class="fa-solid fa-plus align-right"></i></i></i></a>
+                 <a href="/badge/new"><i class="fa-solid fa-plus align-right"></i></a>
             {% endif %}
+            </p>
             
             <table class="table table-striped">
                 <thead>
@@ -28,8 +29,8 @@
                     {% for badge in badges %} 
                         <tr>
                             <th>{{badge.getName()}}</th>
-                            <th>{{badge.getCategorie()}}</th>
                             <th>{{badge.getDescription()}}</th>
+                            <th>{{badge.getCategorie()}}</th>
                             <th><a href="/badge/show/{{badge.getId()}}"><i class="fa-solid fa-eye"></i></i></a></th> 
                         </tr> 
                     {% endfor %}

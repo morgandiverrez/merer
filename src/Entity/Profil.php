@@ -25,8 +25,9 @@ class Profil
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $last_name;
 
-    #[ORM\Column(type: 'array', length: 255, nullable: true)]
-    private $pronom;
+    #[ORM\Column(type: 'array', nullable: true)]
+    private $pronom = [];
+
 
     #[ORM\Column(type: 'date', nullable: true)]
     private $date_of_birth;
@@ -58,6 +59,7 @@ class Profil
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $telephone;
 
+  
     public function __construct()
     {
         $this->retour = new ArrayCollection();
@@ -115,12 +117,24 @@ class Profil
         return $this;
     }
 
-    public function getPronom(): ?string
+    public function getTelephone(): ?string
+    {
+        return $this->telephone;
+    }
+
+    public function setTelephone(?string $telephone): self
+    {
+        $this->telephone = $telephone;
+
+        return $this;
+    }
+
+    public function getPronom(): ?array
     {
         return $this->pronom;
     }
 
-    public function setPronom(?string $pronom): self
+    public function setPronom(?array $pronom): self
     {
         $this->pronom = $pronom;
 
@@ -333,15 +347,5 @@ class Profil
         return $this;
     }
 
-    public function getTelephone(): ?string
-    {
-        return $this->telephone;
-    }
-
-    public function setTelephone(?string $telephone): self
-    {
-        $this->telephone = $telephone;
-
-        return $this;
-    }
+    
 }

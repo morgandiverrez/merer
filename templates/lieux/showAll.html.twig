@@ -9,11 +9,11 @@
 {% block body %}
    <div class="container-fluid">
         <div class="corps mx-auto">
-            <p class="table"> Liste des lieux</p>
+            <p class="display-6 no-wrap text-center"> Liste des lieux
             {% if is_granted('ROLE_BF') %}
-                 <a href="/lieux/new"><i class="fa-solid fa-plus align-right"></i></i></i></a>
+                 <a href="/lieux/new"><i class="fa-solid fa-plus align-right"></i></a>
             {% endif %}
-            
+            </p>
             <table class="table table-striped">
                 <thead>
                 <tr>

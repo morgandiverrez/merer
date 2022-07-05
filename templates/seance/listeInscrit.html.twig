@@ -21,6 +21,9 @@
                     <th scope="col">Association</th>
                     <th scope="col">Equipe d'élu</th>
                     <th scope="col">Détails</th>
+                    {% if is_granted('ROLE_BF')%}
+                            <th scope="col">Désinscrire</th>
+                        {% endif %}
                     
                  </tr>
                 </thead>
@@ -41,8 +44,11 @@
                             {{equipeElu }}
                         {% endfor %}
                         </th>
-                        <th><a href="/account/show/{{seanceProfil.profil.getId()}}"><i class="fa-solid fa-eye"></i></i></a></th> 
-                     </tr>
+                        <th><a href="/account/show/{{seanceProfil.profil.getId()}}"><i class="fa-solid fa-eye"></i></a></th>
+                        {% if is_granted('ROLE_BF')%}
+                            <th><a href="/account/show/{{seanceProfil.profil.getId()}}"><i class="fa-solid fa-trash-can"></i></a></th> 
+                        {% endif %}
+                    </tr>
                 {% endfor %}
                 </tbody>
             </table>

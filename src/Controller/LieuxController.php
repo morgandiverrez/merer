@@ -54,7 +54,7 @@ class LieuxController extends AbstractController
 
             $entityManager->persist($lieu);
             $entityManager->flush();
-            return $this->redirectToRoute('lieux_showAll');
+            return $this->redirectToRoute('lieux_show', ['lieuID' => $lieuID]);
         }
 
         return $this->render('lieux/edit.html.twig', [
