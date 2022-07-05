@@ -33,8 +33,11 @@ class InscriptionController extends AbstractController
                 if ($testProfil->getUser() == $user) {
                     $profil = $testProfil;
                 }
-            $seanceProfil->setHorrodateur(new DateTime());
             }
+
+            
+            $seanceProfil->setHorrodateur(new DateTime());
+            
             $profil->addSeanceProfil($seanceProfil);
 
             $seance = $entityManager->getRepository(Seance::class)->findByID(strval($seanceID))[0];

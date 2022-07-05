@@ -158,8 +158,8 @@ class SeanceController extends AbstractController
             while ($go) {
                 if (isset($form->get('profil')->getData()[$i])) {
                     $nameLastNameProfil = $form->get('profil')->getData()[$i];
-                    list($nameProfil, $lastNameProfil) = explode(" ", $nameLastNameProfil);
-                    $profil = $entityManager->getRepository(Profil::class)->findByName(strval($nameProfil), strval($lastNameProfil))[0];
+                    $namelastname = explode(" ", $nameLastNameProfil);
+                    $profil = $entityManager->getRepository(Profil::class)->findByName($namelastname[0], $namelastname[1])[0];
                     $profil->addSeance($seance);
                     $entityManager->persist($profil);
 

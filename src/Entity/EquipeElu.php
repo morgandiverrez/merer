@@ -21,8 +21,8 @@ class EquipeElu
     #[ORM\Column(type: 'string', length: 255)]
     private $name;
 
-    #[ORM\Column(type: 'array', length: 255, nullable: true)]
-    private $categorie;
+    #[ORM\Column(type: 'array', nullable: true)]
+    private $categorie = [];
 
     #[ORM\Column(type: 'string', length: 2048, nullable: true)]
     private $description;
@@ -84,12 +84,12 @@ class EquipeElu
         return $this;
     }
 
-    public function getCategorie(): ?string
+    public function getCategorie(): ?array
     {
         return $this->categorie;
     }
 
-    public function setCategorie(?string $categorie): self
+    public function setCategorie(?array $categorie): self
     {
         $this->categorie = $categorie;
 

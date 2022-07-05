@@ -16,7 +16,9 @@
                         <div class=" card-body ">
                             <h5 class="card-title">{{app.user.profil.getName()}}</h5>
                             <p class="card-text">{{app.user.profil.getLastName()}}</p>
-                            <p class="card-text">{{app.user.profil.getPronom()}}</p>
+                            {% for pronom in app.user.profil.getPronom()  %}
+                                <p class="card-text">{{pronom}}</p>
+                            {% endfor %}
                         </div>
                         <ul class="list-group list-group-flush">
                             <li class="list-group-item">Code : {{app.user.profil.getCode()}}</li>

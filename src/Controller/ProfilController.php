@@ -203,5 +203,21 @@ class ProfilController extends AbstractController
         return $this->redirectToRoute('profil_showAll', []);
     }
 
+
+    #[Route('/show/seances/{profilID}', name: 'seances')]
+    #[IsGranted('ROLE_USER')]
+    public function listeFormationsSuivies(EntityManagerInterface $entityManager, $profilID): Response
+    {
+
+        $profil = $entityManager->getRepository(Profil::class)->findById($profilID)[0];
+        $inscriptions = $profil-> getSeanceProfil();
+
+
+        return $this->render('profil/listeFormationSuivie.html.twig', [
+            'profil' => $profil,
+            'inscriptions' => $inscriptions,
+        ]);
+    }
+
     
 }

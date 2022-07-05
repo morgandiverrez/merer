@@ -18,8 +18,12 @@
                     </div>
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item">Code : {{equipeElu.getCode()}}</li>
-                        <li class="list-group-item">Catégorie : {{equipeElu.getCategorie()}}</li>
-                        <li class="list-group-item">Fédération fillière : {{equipeElu.getFedeFilliere()}}</li>
+                        {% for categorie in equipeElu.getCategorie() %}
+                        <li class="list-group-item">Catégorie : {{categorie}}</li>
+                        {% endfor %}
+                        {% for fede_fi in equipeElu.getFedeFilliere() %}
+                            <li class="list-group-item">Fédération fillière : {{fede_fi}}</li>
+                        {% endfor %}
                         <li class="list-group-item">Adresse mail : {{equipeElu.getAdresseMail()}} </li>
                         <li class="list-group-item">Etablissement : {{equipeElu.getEtablissement()}}</li>
                         <li class="list-group-item">Date d'élection : {{equipeElu.getDateElection().format("Y-m-d")}}</li>
@@ -39,9 +43,7 @@
                     </div>
                 </div>
 
-                <div > {# div pour espacer les 2 items#}
                 
-                </div>
 
                 <div>
                     <table class="table table-striped">
@@ -70,7 +72,7 @@
                                         </th>
                                         {% if is_granted('ROLE_FORMATEURICE') %}
                                             <th> {{profil.user.getEMail()}} </th>
-                                            <th><a href="/profil/show/{{profil.getId()}}"><i class="fa-solid fa-eye"></i></a></th> 
+                                            <th><a href="/account/show/{{profil.getId()}}"><i class="fa-solid fa-eye"></i></a></th> 
                                         {% endif %}
                                     </tr> 
                                 {% endfor %}

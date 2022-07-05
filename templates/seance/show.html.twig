@@ -30,7 +30,8 @@
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item">Pré-requis : {{seance.formation.getPreRequis()}}</li>
                         <li class="list-group-item">Durée : {%if seance.formation.getDuration() is null %}0 {% else %} {{seance.formation.getDuration().format("H:i")}} {% endif %} </li>
-                        <li class="list-group-item">Public Cible : {{seance.formation.getPublicCible()}}</li>                         
+                        <li class="list-group-item">Public Cible : {{seance.formation.getPublicCible()}}</li>   
+                        <li class="list-group-item"><button class="btn btn-primary" href="/inscription/{{seance.getId()}}">s'inscrire </button> </li>                         
                     </ul>
                 </div>  {# fin information formation #}
 
@@ -50,9 +51,7 @@
             </div>
         </div>
     </div>
-    <footer "d-flex justify-content-center" >
-        <a  href="/inscription/{{seance.getId()}}"><i class="fa-solid fa-pen-to-square"></i></a>
-    </footer>
+ 
 
 
 {% endblock %}

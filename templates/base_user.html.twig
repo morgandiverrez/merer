@@ -33,125 +33,122 @@
 
     </head>
 
-    <body>
+    <body style="height: 100%">
         {% block header %}
             <header>
                 <nav height="60" style="background-color:#2B9D7D ;" class="navbar navbar-expand-lg ">
                     <div class="container-fluid">
                         <a class="navbar-brand" href="https://fedeb.net/"><img src="{{asset('build/images/logo_FEDEB.png')}}" height="60" alt="logo Fédé B"></a>
-                        {# <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                            <span class="navbar-toggler-icon"></span>
-                        </button> #}
+
 
                         {% if is_granted('ROLE_USER') %}
                             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                                    <li class="nav-item">
-                                        <a class="nav-link active" aria-current="page" href="/account/">Mon Profil</a>
-                                    </li>
+                                    {% if is_granted('ROLE_ADMIN')%}
+
+                                    {% else %}
+                                        <li class="nav-item">
+                                            <a class="nav-link active" aria-current="page" href="/account/">Mon Profil</a>
+                                        </li>
+                                    {% endif %}
 
                                     <li class="nav-item">
                                         <a class="nav-link" href="/seance/">Séance</a>
                                     </li>
-
-                                    {% if is_granted('ROLE_FORMATEURICE') %}
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="/account/showAll">Liste des profils</a>
-                                        </li>
-                                    {% endif %}
-
-                                    {% if is_granted('ROLE_FORMATEURICE') %}
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="/association/">Liste des associations</a>
-                                        </li>
-                                    {% endif %}
-
-
-
-                                    {% if is_granted('ROLE_FORMATEURICE') %}
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="/equipeElu/">Liste des equipes d'élu.e.s</a>
-                                        </li>
-                                    {% endif %}
-
-
-                                    {% if is_granted('ROLE_USER') %}
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="/badge/">Liste des badges</a>
-                                        </li>
-                                    {% endif %}
-                                    {% if is_granted('ROLE_USER') %}
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="/lieux/">Liste des Lieux </a>
-                                        </li>
-                                    {% endif %}
-
-                                    {% if is_granted('ROLE_USER') %}
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="/catalogue/">Catalogue de formation </a>
-                                        </li>
-                                    {% endif %}
-
-                                    {% if is_granted('ROLE_USER') %}
-                                        {% if app.user.profil.getEquipeElu() is not empty %}
-                                        <li class="nav-item dropdown">
-                                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                            Signature </a>
-                                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-
-                                            {% for equipeElu in app.user.profil.getEquipeElu() %}
-                                                {% if equipeElu == 'Centraux-UBO' or is_granted('ROLE_BF') %}
-                                                    <li >
-                                                        <a class="dropdown-item" href="/equipeElu/signature/centrauxUBO">Signature Centraux UBO </a>
-                                                    </li>
-                                                {% endif %}
-                                                {% if equipeElu == 'CROUS' or is_granted('ROLE_BF') %}
-                                                    <li >
-                                                        <a class="dropdown-item" href="/equipeElu/signature/CROUS">Signature CROUS </a>
-                                                    </li>
-                                                {% endif %}
-
-                                            {% endfor %}
-                                            </ul>
-                                        </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="/catalogue/">Catalogue de formation </a>
+                                    </li>
+                                    
+                                    
+                                    
+                                    <li class="nav-item dropdown">
+                                        <a class="nav-link dropdown-toggle"  id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Espace Formateurice </a>
+                                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                        {% if is_granted('ROLE_FORMATEURICE') %}
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="/account/showAll">Liste des profils</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                 <a class="nav-link" href="/association/">Liste des associations</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                 <a class="nav-link" href="/equipeElu/">Liste des equipes d'élu.e.s</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                 <a class="nav-link" href="/lieux/">Liste des Lieux </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                 <a class="nav-link" href="/seance/showAllForFormateurice"> Liste des séances </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                 <a class="nav-link" href="/badge/">Liste des badges</a>
+                                            </li>
                                         {% endif %}
-                                    {% endif %}
+                                        </ul>
+                                    </li>
+                                    
+                                    
+                                    
+
+
+                                   
+                                        {% for equipeElu in app.user.profil.getEquipeElu() %}
+                                            {% if equipeElu == 'Centraux UBO' or equipeElu == 'CROUS Rennes-Bretagne' or is_granted('ROLE_BF') %}
+                                            <li class="nav-item dropdown">
+                                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                Signature </a>
+                                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                                    {% if equipeElu == 'Centraux UBO' or is_granted('ROLE_BF') %}
+                                                        <li >
+                                                            <a class="dropdown-item" href="/equipeElu/signature/centrauxUBO">Signature Centraux UBO </a>
+                                                        </li>
+                                                    {% endif %}
+                                                    {% if equipeElu == 'CROUS Rennes-Bretagne' or is_granted('ROLE_BF') %}
+                                                        <li >
+                                                            <a class="dropdown-item" href="/equipeElu/signature/CROUS">Signature CROUS  BZH</a>
+                                                        </li>
+                                                    {% endif %}
+                                                </ul>
+                                            </li>
+                                            {% endif %}
+                                        {% endfor %}
+                                    
 
                                 </ul>
-                        {% endif %}
+                        
 
-
+                        {# deuxième partie de la navbar #}
 
                         <div class="d-flex justify-content-end">
-                                {% if app.user is not null %}
-                                    {% if  app.user.profil.getEquipeElu() is not empty %}
-                                            <table>
-                                                <thead>
-                                                    <tr><th>Equipe d'élu </th></tr>
-                                                </thead>
-                                                <tbody>
-                                                {% for equipeElu in app.user.profil.getEquipeElu() %}
-                                                    <tr><td> {{equipeElu.getName()}}</td></tr>
-                                                {% endfor %}
-                                                </tbody>
-                                            </table>
-                                    {% endif %}
-                                    {% if  app.user.profil.getAssociation() is not empty %}
-
-                                        <div class="d-flex flex-row-reverse">
-                                            {% for association in app.user.profil.getAssociation() %}
-                                                <div class="p-2">
-                                                {% if association.getImage() is null %}
-                                                    {{association.getSigle()}}
-                                                {% else %}
-                                                    <a><img src="{{asset(association.getImage())}}" height="60" class="rounded-circle" alt="{{association.getSigle()}}"> </a>
-                                                {% endif %}
-                                                </div>
+                                {% if  app.user.profil.getEquipeElu() is not empty %}
+                                        <table>
+                                            <thead>
+                                                <tr><th>Equipe d'élu </th></tr>
+                                            </thead>
+                                            <tbody>
+                                            {% for equipeElu in app.user.profil.getEquipeElu() %}
+                                                <tr><td> {{equipeElu.getName()}}</td></tr>
                                             {% endfor %}
-                                        </div>
-                                    {% endif %}
+                                            </tbody>
+                                        </table>
                                 {% endif %}
-                        
+                                {% if  app.user.profil.getAssociation() is not empty %}
+
+                                    <div class="d-flex flex-row-reverse">
+                                        {% for association in app.user.profil.getAssociation() %}
+                                            <div class="p-2">
+                                            {% if association.getImage() is null %}
+                                                {{association.getSigle()}}
+                                            {% else %}
+                                                <a><img src="{{asset(association.getImage())}}" height="60" class="rounded-circle" alt="{{association.getSigle()}}"> </a>
+                                            {% endif %}
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                                
+                        {% endif %}
                          <div class="d-flex justify-content-end">
                              <ul>
                             <li>{% if app.user is null %} <a class="nav-link " href="/register/"> s'inscrire </a> {% else %} {{app.user.getUserIdentifier()}} {% endif %}</a></li>
@@ -171,7 +168,9 @@
         {% endblock %}
 
         {% block footer %}
-            <footer  height="60" style="background-color:#2B9D7D ;"  class="fixed-bottom">
+        <br>
+        <br><br><br><br>
+            <footer  height="60" style="background-color:#2B9D7D ;">
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-lg-4 mt-2 mb-2">

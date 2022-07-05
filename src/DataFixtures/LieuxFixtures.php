@@ -22,8 +22,6 @@ class LieuxFixtures extends Fixture
             $lieux->setAdresse($faker->sentence());
             $lieux->setCodePostale($faker->numerify('#####'));
             $lieux->setVille($faker->randomElement(['Brest', 'Quimper', 'Lannion', 'St Brieuc', 'Plouzané', 'Morlaix']));
-            
-            
 
             $manager->persist($lieux);
             $manager->flush();
