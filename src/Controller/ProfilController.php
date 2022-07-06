@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Entity\Profil;
+use App\Form\UserType;
 use App\Form\ProfilType;
 use App\Entity\EquipeElu;
 use App\Entity\Association;
@@ -13,6 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+
 
 #[Route('/account', name: 'profil_')]
 class ProfilController extends AbstractController
@@ -230,6 +232,43 @@ class ProfilController extends AbstractController
         return $this->render('profil/ListeFormateurice.html.twig', [
             'users' => $users,
             
+        ]);
+    }
+
+    #[Route('/roles', name: 'roles')]
+    #[IsGranted('ROLE_ADMIN')]
+    public function roles(EntityManagerInterface $entityManager, Request $request): Response
+    {
+        $users = $entityManager->getRepository(User::class)->findAll();
+
+
+        if ($request->isMethod('post')) {
+            $posts = $request->request->all();
+
+            foreach( $users as $user){
+                if($user->getEmail() == "admin@fedeb.net" or $user->getEmail() == "formation@fedeb.net" ){
+                    $user->setRoles(["ROLE_ADMIN"]);  
+                }
+                elseif(isset($posts[$user->getId() . '_bf'])){
+                        $user->setRoles(["ROLE_BF"]);
+                }       
+                elseif(isset($posts[$user->getId() . '_formateurice'])){
+                                $user->setRoles(["ROLE_FORMATEURICE"]);           
+                }
+                else{ 
+                    $user->setRoles([]);
+                } 
+            }   
+            $entityManager->persist($user);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('profil_roles');
+        }
+
+
+        return $this->render('profil/gestionRoles.html.twig', [
+            'users' => $users,  
+
         ]);
     }
 
