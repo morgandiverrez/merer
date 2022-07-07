@@ -59,6 +59,12 @@ class Profil
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $telephone;
 
+    #[ORM\Column(type: 'array', nullable: true)]
+    private $regime_alimentaire = [];
+
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private $allergie_alimentaire;
+
   
     public function __construct()
     {
@@ -343,6 +349,30 @@ class Profil
         }
 
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getRegimeAlimentaire(): ?array
+    {
+        return $this->regime_alimentaire;
+    }
+
+    public function setRegimeAlimentaire(?array $regime_alimentaire): self
+    {
+        $this->regime_alimentaire = $regime_alimentaire;
+
+        return $this;
+    }
+
+    public function getAllergieAlimentaire(): ?string
+    {
+        return $this->allergie_alimentaire;
+    }
+
+    public function setAllergieAlimentaire(?string $allergie_alimentaire): self
+    {
+        $this->allergie_alimentaire = $allergie_alimentaire;
 
         return $this;
     }

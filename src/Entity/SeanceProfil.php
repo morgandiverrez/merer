@@ -29,6 +29,16 @@ class SeanceProfil
     #[ORM\JoinColumn(nullable: false)]
     private $lieu;
 
+    #[ORM\Column(type: 'boolean', nullable: true)]
+    private $autorisation_photo;
+
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private $mode_paiement;
+
+    #[ORM\Column(type: 'boolean', nullable: true)]
+    private $covoiturage;
+    
+
     
     public function getHorrodateur(): ?\DateTimeInterface
     {
@@ -89,4 +99,42 @@ class SeanceProfil
 
         return $this;
     }
+
+    public function isAutorisationPhoto(): ?bool
+    {
+        return $this->autorisation_photo;
+    }
+
+    public function setAutorisationPhoto(?bool $autorisation_photo): self
+    {
+        $this->autorisation_photo = $autorisation_photo;
+
+        return $this;
+    }
+
+    public function getModePaiement(): ?string
+    {
+        return $this->mode_paiement;
+    }
+
+    public function setModePaiement(?string $mode_paiement): self
+    {
+        $this->mode_paiement = $mode_paiement;
+
+        return $this;
+    }
+
+    public function isCovoiturage(): ?bool
+    {
+        return $this->covoiturage;
+    }
+
+    public function setCovoiturage(?bool $covoiturage): self
+    {
+        $this->covoiturage = $covoiturage;
+
+        return $this;
+    }
+
+   
 }

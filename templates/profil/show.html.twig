@@ -30,10 +30,10 @@
                             <li class="list-group-item">Association :{% for association in app.user.profil.getAssociation() %}{{association.getSigle()}} {% endfor %} </li
                         </ul>
                         <div class="card-body ">
-                            <button class="btn btn-primary" href="/account/edit">modifier mon profil </button> 
+                            <button class="btn btn-primary" href="/account/edit">Modifier</button> 
                         </div>
                         <div class="card-body ">
-                            <button class="btn btn-primary" href="/account/show/seances/{{app.user.profil.getId()}}">liste des formations suivies </button> 
+                            <button class="btn btn-primary" href="/account/show/seances/{{app.user.profil.getId()}}">Formations suivies</button> 
                            
                         </div>
                     </div>
