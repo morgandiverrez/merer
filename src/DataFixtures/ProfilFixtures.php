@@ -55,7 +55,7 @@ class ProfilFixtures extends Fixture
         $profil2->setCode($faker->regexify('[A-Z]{3}-[0-9]{2}'));
         $profil2->setLastName('FORMATION');
         $profil2->setName('VP');
-        $profil2->setPronom($faker->randomElements(['il', 'iel', 'elle']));
+       
         $profil2->setDateOfBirth($faker->dateTime());
         $profil2->setScore($faker->numberBetween(0, 400));
         $profil2->setTelephone($faker->phoneNumber());
@@ -76,7 +76,7 @@ class ProfilFixtures extends Fixture
         $profil6->setCode($faker->regexify('[A-Z]{3}-[0-9]{2}'));
         $profil6->setLastName('DIVERREZ');
         $profil6->setName('Morgan');
-        $profil6->setPronom(['il']);
+       
         $profil6->setDateOfBirth($faker->dateTime());
         $profil6->setScore($faker->numberBetween(0, 400));
         $profil6->setTelephone('0651812671');
@@ -98,7 +98,7 @@ class ProfilFixtures extends Fixture
         $profil3->setCode($faker->regexify('[A-Z]{2}-[0-9]{2}'));
         $profil3->setLastName('DIVERREZ');
         $profil3->setName('Morgan');
-        $profil3->setPronom(['il']);
+        
         $profil3->setDateOfBirth($faker->dateTime());
         $profil3->setScore($faker->numberBetween(0, 400));
         $profil3->setTelephone('0651812671');
@@ -120,7 +120,7 @@ class ProfilFixtures extends Fixture
         $profil4->setCode($faker->regexify('[A-Z]{2}-[0-9]{2}'));
         $profil4->setLastName('DIVERREZ');
         $profil4->setName('Morgan');
-        $profil4->setPronom(['il']);
+       
         $profil4->setDateOfBirth($faker->dateTime());
         $profil4->setScore($faker->numberBetween(0, 400));
         $profil4->setTelephone('0651812671');
@@ -143,7 +143,7 @@ class ProfilFixtures extends Fixture
             $association->setImage($faker->mimeType());
             $association->setName('Association' . $i);
             $association->setSigle($faker->regexify('[A-Z]{6}'));
-            $association->setCategorie($faker->randomElement(['wefalors', 'representation', 'gestion projet', 'administratif', 'gestion equipe']));
+            $association->setCategorie($faker->randomElement(['fillière', 'inter asso', 'trandversale']));
             $association->setDescription($faker->paragraph());
             $association->setFedeFilliere($faker->randomElement(['ARES', 'ANEMF', 'AFNEUS', 'BNEI', 'FNAEL', 'UNECD']));
             $association->setFedeTerritoire('Fédé B');
@@ -166,7 +166,7 @@ class ProfilFixtures extends Fixture
             $equipeElu = new EquipeElu();
             $equipeElu->setCode($faker->regexify('[A-Z]{3}-[0-9]{2}'));
             $equipeElu->setName('EquipeElu' . $i);
-            $equipeElu->setCategorie($faker->randomElements(['wefalors', 'representation', 'gestion projet', 'administratif', 'gestion equipe']));
+            $equipeElu->setCategorie($faker->randomElements(['Composante',  'école Ingénieur', 'Centraux', 'CROUS']));
             $equipeElu->setDescription($faker->sentence(1));
             $equipeElu->setAdresseMail($faker->email());
             $equipeElu->setEtablissement($faker->randomElement(['UBO', 'Rennes 1', 'Rennes 2', 'UFR ALLSHS UBO', 'ENIB']));

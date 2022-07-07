@@ -92,8 +92,6 @@ class EquipeEluController extends AbstractController
         ]);
     }
 
-
-
     #[Route('/delete/{equipeEluID}', name: 'delete')]
     #[IsGranted('ROLE_ADMIN')]
     public function delete(EntityManagerInterface $entityManager, $equipeEluID): Response
@@ -106,18 +104,21 @@ class EquipeEluController extends AbstractController
         return $this->redirectToRoute('equipeElu_showAll');
     }
 
-    #[Route('/signature/CROUS', name: 'signatureCROUS')]
-    #[IsGranted('ROLE_USER')]
-    public function signatureCROUS(): Response
+    #[Route('/remove/{equipeEluID}', name: 'remove')]
+    #[IsGranted('ROLE_ADMIN')]
+    public function remove(EntityManagerInterface $entityManager, $equipeEluID): Response
     {
-        return $this->render('equipe_elu/signature_crous.html.twig');   
-    }
 
-    #[Route('/signature/centrauxUBO', name: 'signatureCentrauxUBO')]
-    #[IsGranted('ROLE_USER')]
-    public function signatureCentrauxUBO(): Response
-    {
-        return $this->render('equipe_elu/signature_centrauxUBO.html.twig');
+        $equipeElu = $entityManager->getRepository(EquipeElu::class)->findById($equipeEluID)[0];
+        $profils = $equipeElu -> getProfil();
+        //print_r($profils);
+        foreach ($profils as $profil){
+            $equipeElu->removeProfil($profil);
+        }
+        $entityManager->persist($equipeElu);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('equipeElu_show',['equipeEluID' => $equipeEluID]);
     }
       
 }

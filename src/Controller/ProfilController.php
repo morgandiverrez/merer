@@ -262,7 +262,7 @@ class ProfilController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
 
-            return $this->redirectToRoute('profil_roles');
+            return $this->redirectToRoute('profil_showAll');
         }
 
 
