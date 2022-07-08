@@ -15,7 +15,7 @@
                         <h5 class="card-title">{{seance.getName()}}</h5>
                     </div>
                     <ul class="list-group list-group-flush">
-                        <li class="list-group-item">Code : {{seance.getCode()}}</li>
+                        <li class="list-group-item">Groupe : {{seance.getGroupe()}}</li>
                         <li class="list-group-item">Date et Heure : {% if seance.getDateTime() is null %} - {% else %} {{seance.getDatetime().format("Y-m-d H:i")}} {% endif %}</li>
                         <li class="list-group-item">Nombre de Place Maximum : {{seance.getNombrePlace()}}</li>   
                     </ul>  
@@ -30,8 +30,23 @@
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item">Pré-requis : {{seance.formation.getPreRequis()}}</li>
                         <li class="list-group-item">Durée : {%if seance.formation.getDuration() is null %}0 {% else %} {{seance.formation.getDuration().format("H:i")}} {% endif %} </li>
-                        <li class="list-group-item">Public Cible : {{seance.formation.getPublicCible()}}</li>   
-                        <li class="list-group-item"><button class="btn btn-primary" href="/inscription/{{seance.getId()}}">s'inscrire </button> </li>                         
+                        <li class="list-group-item">Public Cible : {{seance.formation.getPublicCible()}}</li>
+                        {% if seance.getDateTime() >= dateActuelle %}
+                            {% if not app.user.profil.getSeanceProfil() in inscrits  %}
+                                <li class="list-group-item"><a class="btn btn-primary" href="/inscription/ponctuelle/{{seance.getId()}}">s'inscrire </a> </li>                         
+                            {% else %}
+                                <li class="list-group-item">Vous etes déjà inscrit.e </li>
+                            {% endif %}
+                        {% else %}
+                            {% if app.user.profil.getSeanceProfil() in inscrits and not app.user.getProfil()  in retours %}
+                                <li class="list-group-item"><a class="btn btn-primary" href="/retour/new/{{seance.getId()}}"> formulaire de retour </a> </li>                         
+                            {% else %}
+                                <li class="list-group-item">La formation est passée </li>
+                            {% endif %}
+                        {% endif %}
+                        {% if is_granted('ROLE_FORMATEURICE') %}
+                            <li class="list-group-item"><a class="btn btn-primary" href="/seance/showForFormateurice/{{seance.getId()}}"> côté Formateurice </a> </li>
+                        {% endif %}
                     </ul>
                 </div>  {# fin information formation #}
 
@@ -44,7 +59,7 @@
                         <li class="list-group-item">Salle : {{lieu.getSalle()}}</li>
                         <li class="list-group-item">Adresse : {{lieu.getAdresse()}}</li>
                         <li class="list-group-item">Code Postale : {{lieu.getCodePostale()}}</li>
-                        <li class="list-group-item">ville : {{lieu.getVille()}}</li>                          
+                        <li class="list-group-item">Ville : {{lieu.getVille()}}</li>                          
                     </ul>
                     {% endfor %}
                 </div>{# fin information lieux #}

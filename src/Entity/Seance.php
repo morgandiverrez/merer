@@ -22,6 +22,9 @@ class Seance
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $name;
 
+    #[ORM\Column(type: 'string', nullable: true)]
+    private $groupe;
+
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $datetime;
 
@@ -81,6 +84,18 @@ class Seance
     public function setName(?string $name): self
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    public function getGroupe(): ?string
+    {
+        return $this->groupe;
+    }
+
+    public function setGroupe(?string $groupe): self
+    {
+        $this->groupe = $groupe;
 
         return $this;
     }
