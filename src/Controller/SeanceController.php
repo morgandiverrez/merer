@@ -2,12 +2,16 @@
 
 namespace App\Controller;
 
+use DateTime;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 use App\Entity\Lieux;
 use App\Entity\Profil;
+use App\Entity\Retour;
 use App\Entity\Seance;
 use App\Form\SeanceType;
 use App\Entity\Formation;
-use DateTime;
+use App\Entity\SeanceProfil;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -64,15 +68,20 @@ class SeanceController extends AbstractController
     public function show(EntityManagerInterface $entityManager, $seanceID): Response
     {
         $seance = $entityManager->getRepository(Seance::class)->findByID($seanceID)[0];
-
+        $inscrits = $entityManager->getRepository(SeanceProfil::class)->findAllBySeance($seance);
+        $retours = $entityManager->getRepository(Retour::class)->findBySeance($seance);
+        $dateActuelle = new DateTime();
         return $this->render('seance/show.html.twig', [
             'seance' => $seance,
-        ]);
+            'inscrits' => $inscrits,
+            'dateActuelle' => $dateActuelle,
+            'retours' => $retours,
+       ]);
     }
 
     #[Route('/liste_inscrit/{seanceID}', name: 'liste_inscrit')]
     #[IsGranted('ROLE_FORMATEURICE')]
-    public function menu(EntityManagerInterface $entityManager, $seanceID): Response
+    public function listeInscrit(EntityManagerInterface $entityManager, $seanceID): Response
     {
         $seance = $entityManager->getRepository(Seance::class)->findByID($seanceID)[0];
 
@@ -80,6 +89,41 @@ class SeanceController extends AbstractController
             'seance' => $seance,
         ]);
     }
+
+    #[Route('/liste_inscrit/pdf/{seanceID}', name: 'liste_inscrit_pdf')]
+    #[IsGranted('ROLE_FORMATEURICE')]
+    public function inscriptionPDF(EntityManagerInterface $entityManager, $seanceID)
+    {
+
+        $seance = $entityManager->getRepository(Seance::class)->findByID($seanceID)[0];
+
+        $pdfOptions = new Options();
+      //  $pdfOptions->set('defaultFont', 'Arial');
+
+        $dompdf = new Dompdf($pdfOptions);
+
+        $dompdf->set_option('isHtml5ParserEnabled', true);
+
+        $html = $this->renderView('seance/listeInscritPDF.html.twig', [
+            'title' => "Welcome to our PDF Test",
+            'seance' => $seance,
+        ]);
+
+        $dompdf->loadHtml($html);
+
+        $dompdf->setPaper('A4', 'portrait');
+
+        $dompdf->render();
+
+        $dompdf->stream("inscription.pdf", [
+            "Attachment" => true
+        ]);
+    }
+
+       
+
+       
+    
 
     #[Route('/edit/{seanceID}', name: 'edit')]
     #[IsGranted('ROLE_BF')]

@@ -8,7 +8,9 @@
         <div class="corps mx-auto">
 
 
-            <p class="display-6 no-wrap text-center mb-5">Liste des inscrits pour la formation {{seance.getName()}} du {{seance.getDatetime().format("Y-m-d H:i")}}</p>
+            <p class="display-6 no-wrap text-center mb-5">Liste des inscrits pour la formation {{seance.getName()}} du {{seance.getDatetime().format("Y-m-d H:i")}} 
+            <a  href="/seance/liste_inscrit/pdf/{{seance.getId()}}"><i class="fa-solid fa-download"></i></a>
+            </p>
 
             <table class="table table-striped">
                 
