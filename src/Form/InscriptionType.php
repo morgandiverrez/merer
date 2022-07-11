@@ -4,8 +4,6 @@ namespace App\Form;
 
 use App\Entity\Lieux;
 use App\Entity\SeanceProfil;
-use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\PersistentCollection;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -21,15 +19,10 @@ class InscriptionType extends AbstractType
             ->add('lieu', EntityType::class,[
                 'class' => Lieux::class,
                'choices' => $options['liste_lieu'],
-                // 'query_builder' => function (EntityRepository $er) {
-                //     return $er->createQueryBuilder('lieu')
-                //         ->andWhere('lieu.id = :val')
-                //         ->setParameter('val', $value)
-                //         ->setMaxResults(50)
-                //         ->getQuery()
-                //         ->getResult();
-                // },
             ])
+            ->add('autorisation_photo')
+            ->add('mode_paiement')
+            ->add('covoiturage')
         ;
     }
 
