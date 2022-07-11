@@ -28,6 +28,17 @@ class FormationController extends AbstractController
         ]);
     }
 
+    #[Route('/{argument}/{type}', name: 'showByArg')]
+    #[IsGranted('ROLE_USER')]
+    public function showByArg(EntityManagerInterface $entityManager): Response
+    {
+        $formations = $entityManager->getRepository(Formation::class)->findAll();
+
+        return $this->render('formation/showAll.html.twig', [
+            'formations' => $formations,
+        ]);
+    }
+
     #[Route('/show/{formationID}', name: 'show')]
     #[IsGranted('ROLE_USER')]
     public function show(EntityManagerInterface $entityManager, $formationID): Response

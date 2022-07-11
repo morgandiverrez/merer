@@ -164,9 +164,21 @@
                                         {% endfor %}
                                     </div>
                                 {% endif %}
+
+                                
                                 
                         {% endif %}
                          <div class="d-flex justify-content-end">
+                           {% if is_granted('ROLE_USER')%}
+                                 {% if is_granted('ROLE_FORMATEURICE')%}
+                                    <ul>
+                                        <li><a class="nav-link " href="https://drive.google.com/drive/folders/0APJ8vkXug6tXUk9PVA9"><i color="dark" height="80" class="fa-brands fa-google-drive"></i></a></li>
+                                    </ul>
+                                {% endif %}
+                                <ul>
+                                      <li><a class="nav-link " href=" https://discord.gg/6PR3h3mtp9"> <i class="fa-brands fa-discord"></i></a> <li>
+                                </ul>
+                            {% endif %}
                              <ul>
                             <li>{% if app.user is null %} <a class="nav-link " href="/register/"> s'inscrire </a> {% else %} {{app.user.getUserIdentifier()}} {% endif %}</a></li>
                             </ul>

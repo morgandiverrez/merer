@@ -88,7 +88,7 @@
                         </tbody>
                         <tfoot>
                             <th></th>
-                            <th><a href="/seance/liste_inscrit/{{seance.getID()}}"><i class="fa-solid fa-list"></i></a></th> 
+                            <th><a  href="/seance/liste_inscrit/{{seance.getID()}}"><i class="fa-solid fa-list"></i></a></th> 
                             <th></th>
                         </tfoot>
                     </table>
@@ -96,9 +96,14 @@
             </div>
         </div>
     </div>
-    <footer "d-flex justify-content-center" >
+    <footer class="d-flex justify-content-center" >
         {% if is_granted('ROLE_BF')%}
-            <a  href="/seance/edit/{{seance.getId()}}"><i class="fa-solid fa-pen-to-square"></i></a>
+            <a  class="btn btn-primary" href="/seance/edit/{{seance.getId()}}">Modifier la Seance</i></a>
+        {% endif %}
+        <br>    
+        <br>
+        {% if app.user.getProfil() in seance.getProfil() or is_granted("ROLE_BF")%}
+            <a  class="btn btn-primary" href="/retour/resultat/{{seance.getId()}}">voir les retours</i></a>
         {% endif %}
     </footer>
 
