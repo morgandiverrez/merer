@@ -87,4 +87,16 @@ class SeanceRepository extends ServiceEntityRepository
                ->getResult()
            ;
        }
+
+    public function findAllByYear($datedebut, $datefin): array
+    {
+        return $this->createQueryBuilder('seance')
+        ->Where('seance.datetime >=:datedebut')
+        ->andWhere('seance.datetime <:datefin')
+        ->setParameter('datedebut', $datedebut)
+        ->setParameter('datefin', $datefin)
+            //->orderBy('seance.', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
 }

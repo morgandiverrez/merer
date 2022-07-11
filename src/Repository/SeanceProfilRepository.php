@@ -73,4 +73,6 @@ class SeanceProfilRepository extends ServiceEntityRepository
            ->getResult()
        ;
    }
+
+   
 }
