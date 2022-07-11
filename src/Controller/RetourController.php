@@ -43,8 +43,9 @@ class RetourController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            
-            $profil -> addBadge($seance-> getFormation() -> getBadge());
+            if($seance->getFormation()->getBadge()){
+                $profil -> addBadge($seance-> getFormation() -> getBadge());
+            }
             $entityManager->persist($retour);
             $entityManager->flush();
             return $this->redirectToRoute('profil_show', []);
@@ -55,6 +56,76 @@ class RetourController extends AbstractController
             'form' => $form->createView(),
            
         ]);
+    }
+
+
+     #[Route('/sdf', name: 'sdf')]
+    #[IsGranted('ROLE_ADMIN')]
+    public function edit(EntityManagerInterface $entityManager)
+    {
+    $seances = $entityManager->getRepository(Seance::class)->findAllByYear(date("Y")."-01-01", strval(intval(date("Y"))+1)."-01-01");
+    $inputFileName = 'C:\wamp64\www\Formation_FedeB\public\public\files\SDF\SDF_vierge.xlsx';
+    /** Load $inputFileName to a Spreadsheet object **/
+    $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($inputFileName);
+
+    foreach( $seances as $seance){
+           
+
+            $clonedWorksheet = clone $spreadsheet->getSheetByName('Modèle vierge');
+            $clonedWorksheet->setTitle($seance->getName() . strval($seance->getDatetime()->format("Y-m-d")));
+            $spreadsheet->addSheet($clonedWorksheet);
+            $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, "Xlsx");
+
+            $colonne= ['G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','AA','AB','AC','AD','AE','AF','AG','AH','AI','AJ', 'AK', 'AL', 'AM', 'AN', 'AO', 'AP', 'AQ', 'AR', 'AS', 'AT', 'AU', 'AV', 'AW', 'AX', 'AY', 'AZ', 'BA', 'BB', 'BC', 'BD', 'BE'];
+            
+            $spreadsheet->getActiveSheet()->getCell('L8')->setValue($seance->getDatetime()->format("Y-m-d"));
+            $spreadsheet->getActiveSheet()->getCell('N10')->setValue($seance->getGroupe());
+
+            $n = 0;
+            $liste = ['F','G', 'H', 'I'];
+            foreach( $seance->getProfil() as $formateurice){
+                $spreadsheet->getActiveSheet()->getCell($liste[$n].'10')->setValue($formateurice->getName()." ".$formateurice->getLastname());
+                $n++;
+            }
+
+            $m = 0;
+            $liste = ['F', 'G', 'H', 'I', 'J'];
+            foreach ($seance->getLieux() as $lieu) {
+                $spreadsheet->getActiveSheet()->getCell($liste[$m] . '10')->setValue($lieu->getName());
+                $n++;
+            }
+
+            $i = 0;
+            foreach( $seance->getRetour() as $retour){
+                $spreadsheet->getActiveSheet()->getCell($colonne[$i].'15')->setValue( $retour->getNoteContenu());
+                $spreadsheet->getActiveSheet()->getCell($colonne[$i].'16')->setValue( $retour->getNoteAnimation());
+                $spreadsheet->getActiveSheet()->getCell($colonne[$i].'17')->setValue( $retour->getNoteImplication());
+                $spreadsheet->getActiveSheet()->getCell($colonne[$i].'18')->setValue( $retour->getNoteReponseAtente());
+                $spreadsheet->getActiveSheet()->getCell($colonne[$i].'19')->setValue($retour->getNoteNivCompetence());
+                $spreadsheet->getActiveSheet()->getCell($colonne[$i].'20')->setValue( $retour->getNoteUtilite());
+                $spreadsheet->getActiveSheet()->getCell($colonne[$i].'21')->setValue( $retour->getNoteGenerale());
+
+                $i++;
+            }
+
+    }
+
+        $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, "Xlsx");
+        $writer->save("SDF_" . date("Y").".xlsx");
+        $finaleFile = "C:\wamp64\www\Formation_FedeB\public\SDF_2022.xlsx";
+        
+        header('Content-Description: File Transfer');
+        header('Content-Type: application/octet-stream');
+        header('Content-Disposition: attachment; filename="' . basename($finaleFile) . '"');
+        header('Expires: 0');
+        header('Cache-Control: must-revalidate');
+        header('Pragma: public');
+        header('Content-Length: ' . filesize($finaleFile));
+        readfile($finaleFile);
+       
+        
+        
+        
     }
 
     #[Route('/resultat/{seanceID}', name: 'resultat')]

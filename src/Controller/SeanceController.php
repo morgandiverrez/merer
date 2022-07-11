@@ -98,7 +98,7 @@ class SeanceController extends AbstractController
         $seance = $entityManager->getRepository(Seance::class)->findByID($seanceID)[0];
 
         $pdfOptions = new Options();
-      //  $pdfOptions->set('defaultFont', 'Arial');
+        $pdfOptions->set('defaultFont', 'Arial');
 
         $dompdf = new Dompdf($pdfOptions);
 
