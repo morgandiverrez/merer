@@ -21,9 +21,21 @@ class AssociationController extends AbstractController
 {
     #[Route('/', name: 'showAll')]
     #[IsGranted('ROLE_FORMATEURICE')]
-    public function showAll(EntityManagerInterface $entityManager): Response
+    public function showAll(EntityManagerInterface $entityManager, Request $request): Response
     {
         $associations = $entityManager->getRepository(Association::class)->findAll();
+        if ($request->isMethod('post')) {
+            $posts = $request->request->all();
+            if ($posts['name']) {
+                $associations = array_intersect($associations, $entityManager->getRepository(Association::class)->findAllByName($posts['name']));
+            }
+            if ($posts['categorie']) {
+                $associations = array_intersect($associations, $entityManager->getRepository(Association::class)->findAllByCategorie($posts['categorie']));
+            }
+            if ($posts['fedefi']) {
+                $associations = array_intersect($associations, $entityManager->getRepository(Association::class)->findAllByFedeFi($posts['fedefi']));
+            }
+        }
         return $this->render('association/showAll.html.twig', [
             'associations' => $associations,
            

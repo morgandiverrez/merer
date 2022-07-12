@@ -30,19 +30,19 @@
                             <li class="list-group-item">Association :{% for association in app.user.profil.getAssociation() %}{{association.getSigle()}} {% endfor %} </li
                         </ul>
                         <div class="card-body ">
-                            <button class="btn btn-primary" href="/account/edit">Modifier</button> 
+                            <a class="btn btn-primary" href={{path('profil_edit')}}>Modifier</a> 
                         </div>
                         <div class="card-body ">
-                            <button class="btn btn-primary" href="/account/show/seances/{{app.user.profil.getId()}}">Formations suivies</button> 
+                            <a class="btn btn-primary" href="/account/show/seances/{{app.user.profil.getId()}}">Formations suivies</a> 
                            
                         </div>
                     </div>
                     <div class="d-flex align-content-start flex-wrap">
                             {% for badge in app.user.profil.getBadge() %} 
-                            <div class="p-2">
-                                 <img class="card-img-top" href='/badge/{{badge.getId()}}'src="{{badge.getImage}}" alt="badge :{{badge.getName()}}" >
-                                      {{badge.getName()}}
-                            </div>                       
+                                <div class="p-2">
+                                    <img class="card-img-top" href='/badge/{{badge.getId()}}'src="{{badge.getImage}}" alt="badge :{{badge.getName()}}" >
+                                        {{badge.getName()}}
+                                </div>                       
                             {% endfor %}
                     </div>
                 </div>

@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Entity\Badge;
 use App\Entity\Profil;
 use App\Form\UserType;
 use App\Form\ProfilType;
@@ -21,10 +22,62 @@ class ProfilController extends AbstractController
 {
     #[Route('/showAll', name: 'showAll')]
     #[IsGranted('ROLE_FORMATEURICE')]
-    public function showAll(EntityManagerInterface $entityManager): Response
+    public function showAll(EntityManagerInterface $entityManager, Request $request): Response
     {
         $profils = $entityManager->getRepository(Profil::class)->findAll();
-       
+
+        if ($request->isMethod('post')) {
+            $posts = $request->request->all();
+
+            if ($posts['name']) {
+                $profils = array_intersect($profils, $entityManager->getRepository(Profil::class)->findAllByName($posts['name']));
+            }
+            if ($posts['last_name']) {
+                $profils = array_intersect($profils, $entityManager->getRepository(Profil::class)->findAllByLastName($posts['last_name']));
+            }
+            if ($posts['scoreMax']) {
+                $profils = array_intersect($profils, $entityManager->getRepository(Profil::class)->findAllScoreInferior($posts['scoreMax']));
+            }
+            if ($posts['scoreMin']) {
+                $profils = array_intersect($profils, $entityManager->getRepository(Profil::class)->findAllScoreSuperior($posts['scoreMin']));
+            }
+            if ($posts['DOBmin']) {
+                $profils = array_intersect($profils, $entityManager->getRepository(Profil::class)->findAllDobSuperior($posts['DOBmin']));
+            }
+            if ($posts['DOBmax']) {
+                $profils = array_intersect($profils, $entityManager->getRepository(Profil::class)->findAllDobInferior($posts['DOBmax']));
+            }
+            if ($posts['badge']) {
+                $badges = $entityManager->getRepository(Badge::class)->findAllByName($posts['badge']);
+                $badgeProfils = array();
+                foreach ($badges as $badge) {
+                    foreach ($badge->getProfil() as $profil) {
+                        array_push($badgeProfils, $profil);
+                    }
+                }
+                $profils = array_intersect($profils, $badgeProfils);
+            }
+            if ($posts['association']) {
+                $associations = $entityManager->getRepository(Association::class)->findAllByName($posts['association']);
+                $associationProfils = array();
+                foreach ($associations as $association) {
+                    foreach ($association->getProfil() as $profil) {
+                        array_push($associationProfils, $profil);
+                    }
+                }
+                $profils = array_intersect($profils, $associationProfils);
+            }
+            if ($posts['equipeElu']) {
+                $equipeElus = $entityManager->getRepository(EquipeElu::class)->findAllByName($posts['equipeElu']);
+                $equipeEluProfils = array();
+                foreach ($equipeElus as $equipeElu) {
+                    foreach ($equipeElu->getProfil() as $profil) {
+                        array_push($equipeEluProfils, $profil);
+                    }
+                }
+                $profils = array_intersect($profils, $equipeEluProfils);
+            }
+        }
 
         return $this->render('profil/showAll.html.twig', [
             'profils' => $profils,

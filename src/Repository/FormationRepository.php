@@ -85,4 +85,66 @@ class FormationRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function findAllByName( $value): ?array
+    {
+        return $this->createQueryBuilder('formation')
+        ->andWhere('formation.name LIKE :val')
+        ->setParameter('val', '%'.$value.'%')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findAllByOPG($value): ?array
+    {
+        return $this->createQueryBuilder('formation')
+        ->andWhere('formation.opg LIKE :val')
+        ->setParameter('val', '%'.$value.'%')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findAllByPublicCible($value): ?array
+    {
+        return $this->createQueryBuilder('formation')
+        ->andWhere('formation.public_cible LIKE :val')
+        ->setParameter('val', '%'.$value.'%')
+        ->getQuery()
+            ->getResult();
+    }
+
+    public function findAllByPreRequis($value): ?array
+    {
+        return $this->createQueryBuilder('formation')
+        ->andWhere('formation.pre_requis LIKE :val')
+        ->setParameter('val', '%'.$value.'%')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findAllByCategorie($value): ?array
+    {
+        return $this->createQueryBuilder('formation')
+        ->andWhere('formation.categorie LIKE :val')
+        ->setParameter('val', '%'.$value.'%')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findAllDurationInferior( $value): ?array
+    {
+        return $this->createQueryBuilder('formation')
+        ->andWhere('formation.duration <= :val')
+            ->setParameter('val', $value)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findAllDurationSuperior( $value): ?array
+    {
+        return $this->createQueryBuilder('formation')
+        ->andWhere('formation.duration >= :val')
+            ->setParameter('val', $value)
+            ->getQuery()
+            ->getResult();
+    }
 }

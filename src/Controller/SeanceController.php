@@ -41,13 +41,50 @@ class SeanceController extends AbstractController
 
     #[Route('/showAllForFormateurice', name: 'showAllForFormateurice')]
     #[IsGranted('ROLE_FORMATEURICE')]
-    public function showAllForFormateurice(EntityManagerInterface $entityManager): Response
+    public function showAllForFormateurice(EntityManagerInterface $entityManager, Request $request): Response
     {
         $seances = $entityManager->getRepository(Seance::class)->findAll();
+        if ($request->isMethod('post')) {
+            $posts = $request->request->all();
+            if ($posts['name']) {
+                $seances = array_intersect($seances, $entityManager->getRepository(Seance::class)->findAllByName($posts['name']));
+            }
+            if ($posts['groupe']) {
+                $seances = array_intersect($seances, $entityManager->getRepository(Seance::class)->findAllByGroupe($posts['groupe']));
+            }
+            if ($posts['formation']) {
+                $seances = array_intersect($seances, $entityManager->getRepository(Formation::class)->findAllByName($posts['formation']));
+            }
+            if ($posts['nom_lieu']) {
+                $lieux = $entityManager->getRepository(Lieux::class)->findAllByName($posts['nom_lieu']);
+                $lieuNameSeance = array();
+                foreach ($lieux as $lieu) {
+                    foreach ($lieu->getSeance() as $seance) {
+                        array_push($lieuNameSeance, $seance);
+                    }
+                }
+                $seances = array_intersect($seances, $lieuNameSeance);
+            }
+            if ($posts['ville']) {
+                $lieux = $entityManager->getRepository(Lieux::class)->findAllByVille($posts['ville']);
+                $lieuSeance = array();
+                foreach ($lieux as $lieu) {
+                    foreach ($lieu->getSeance() as $seance) {
+                        array_push($lieuSeance, $seance);
+                    }
+                }
+                $seances = array_intersect($seances, $lieuSeance);
+            }
+            if ($posts['datedebut']) {
+                $seances = array_intersect($seances, $entityManager->getRepository(Seance::class)->findAllByDateTimeSuperior($posts['datedebut']));
+            }
+            if ($posts['datefin']) {
+                $seances = array_intersect($seances, $entityManager->getRepository(Seance::class)->findAllByDateTimeInferior($posts['datefin']));
+            }      
+        }
 
         return $this->render('seance/showAllForFormateurice.html.twig', [
             'seances' => $seances,
-
         ]);
     }
 

@@ -46,7 +46,9 @@ class RetourController extends AbstractController
             if($seance->getFormation()->getBadge()){
                 $profil -> addBadge($seance-> getFormation() -> getBadge());
             }
+            $profil -> setScores( $profil->getScores() + ( 10 *(intval($seance->getFormation()->getDuration()))));
             $entityManager->persist($retour);
+            $entityManager->persist($profil);
             $entityManager->flush();
             return $this->redirectToRoute('profil_show', []);
         }

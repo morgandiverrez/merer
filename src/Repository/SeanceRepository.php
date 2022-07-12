@@ -99,4 +99,52 @@ class SeanceRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function findByGroupe($value): array
+    {
+        return $this->createQueryBuilder('seance')
+        ->Where('seance.groupe = :val')
+        ->setParameter('val', $value)
+            ->orderBy('seance.datetime', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findAllByName($value): ?array
+    {
+        return $this->createQueryBuilder('seance')
+        ->andWhere('seance.name LIKE :val')
+        ->setParameter('val', '%' . $value . '%')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findAllByGroupe($value): ?array
+    {
+        return $this->createQueryBuilder('seance')
+        ->andWhere('seance.groupe LIKE :val')
+        ->setParameter('val', '%' . $value . '%')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findAllByDateTimeSuperior($value): array
+    {
+        return $this->createQueryBuilder('seance')
+        ->Where('seance.datetime >= :val')
+        ->setParameter('val', $value)
+            ->orderBy('seance.datetime', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findAllByDateTimeInferior($value): array
+    {
+        return $this->createQueryBuilder('seance')
+        ->Where('seance.datetime <= :val')
+        ->setParameter('val', $value)
+            ->orderBy('seance.datetime', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
 }

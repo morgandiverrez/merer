@@ -10,6 +10,20 @@
                     <a href="/seance/new"><i class="fa-solid fa-plus align-right"></i></a>
                 {% endif %}
             </p>
+            <form action="{{ path('seance_showAllForFormateurice') }}" method="post">
+                <p class="text-center">
+                    <input type="text" id="name" name="name" placeholder="Nom"/>
+                    <input type="text" id="groupe" name="groupe" placeholder="groupe"/>
+                    <input type="text" id="formation" name="formation" placeholder="formation"/>
+                    <input type="text" id="lieu" name="lieu" placeholder="nom lieu"/>
+                    <input type="text" id="ville" name="ville" placeholder="ville"/>
+                   <br> 
+                   <br>
+                     date de début : <input type="date" id="datedebut" name="datedebut"/>
+                     date de fin : <input type="date" id="datefin" name="datefin"/>
+                    <button class="btn btn-primary" type="submit" >Rechercher</button>
+                </p>
+            </form>
             <table class="table table-striped">
                 <thead>
                 <tr>

@@ -22,9 +22,9 @@ class ProfilType extends AbstractType
             ->add('last_name')
             ->add('pronom', ChoiceType::class,[
                'choices' => [
-                    'il' => 'il',
-                    'elle' => 'elle',
-                    'iel' => 'iel'
+                    'il' => ['il'],
+                    'elle' => ['elle'],
+                    'iel' => ['iel']
                ],
             ])
             ->add('telephone', TelType::class)    

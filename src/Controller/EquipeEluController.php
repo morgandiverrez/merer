@@ -20,10 +20,25 @@ class EquipeEluController extends AbstractController
 {
     #[Route('/', name: 'showAll')]
     #[IsGranted('ROLE_FORMATEURICE')]
-    public function showAll(EntityManagerInterface $entityManager): Response
+    public function showAll(EntityManagerInterface $entityManager, Request $request): Response
     {
         $equipeElus = $entityManager->getRepository(EquipeElu::class)->findAll();
-        
+        if ($request->isMethod('post')) {
+            $posts = $request->request->all();
+            if ($posts['name']) {
+
+                $equipeElus = array_intersect($equipeElus, $entityManager->getRepository(EquipeElu::class)->findAllByName($posts['name']));
+            }
+            if ($posts['categorie']) {
+                $equipeElus = array_intersect($equipeElus, $entityManager->getRepository(EquipeElu::class)->findAllByCategorie($posts['categorie']));
+            }
+            if ($posts['etablissement']) {
+                $equipeElus = array_intersect($equipeElus, $entityManager->getRepository(EquipeElu::class)->findAllByEtablissement($posts['etablissement']));
+            }
+            if ($posts['fedeFi']) {
+                $equipeElus = array_intersect($equipeElus, $entityManager->getRepository(EquipeElu::class)->findAllByFedeFi($posts['fedeFi']));
+            }
+        }
         return $this->render('equipe_elu/showAll.html.twig', [
             'equipeElus' => $equipeElus,
             
@@ -32,9 +47,8 @@ class EquipeEluController extends AbstractController
     
     #[Route('/show/{equipeEluID}', name: 'show')]
     #[IsGranted('ROLE_FORMATEURICE')]
-    public function show(EntityManagerInterface $entityManager, $equipeEluID): Response
+    public function show(EntityManagerInterface $entityManager,   $equipeEluID): Response
     {
-        // find renvoi tjr un array (tableau), donc faut mettre [0] pour enlever l'array, si on veut plus d'une valeur s'il y en a, on met pas ou [nombre]
         $equipeElu = $entityManager->getRepository(EquipeElu::class)->findById($equipeEluID)[0];
         
         return $this->render('equipe_elu/show.html.twig', [
@@ -111,7 +125,6 @@ class EquipeEluController extends AbstractController
 
         $equipeElu = $entityManager->getRepository(EquipeElu::class)->findById($equipeEluID)[0];
         $profils = $equipeElu -> getProfil();
-        //print_r($profils);
         foreach ($profils as $profil){
             $equipeElu->removeProfil($profil);
         }

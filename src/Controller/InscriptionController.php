@@ -46,22 +46,24 @@ class InscriptionController extends AbstractController
             return $this->redirectToRoute('seance_show', ['seanceID' => $seance->getID()]);
         }
 
-        return $this->render('inscription/inscription.html.twig', [
+        return $this->render('inscription/ponctuelle.html.twig', [
             'seanceProfil' => $seanceProfil,
             'form' => $form->createView(),
             'seance' => $seance ,
         ]);
     }
 
-    #[Route('/petitWEF/{seanceID}', name: 'petitWEF')]
+    #[Route('/petitWEF/{groupe}', name: 'petitWEF')]
     #[IsGranted('ROLE_USER')]
-    public function petit(EntityManagerInterface $entityManager, Request $request, $seanceID): Response
+    public function petit(EntityManagerInterface $entityManager, Request $request, $groupe): Response
     {
         $seanceProfil = new SeanceProfil();
-
-        $seance = $entityManager->getRepository(Seance::class)->findByID(strval($seanceID))[0];
-        $form = $this->createForm(InscriptionType::class, $seanceProfil, ['liste_lieu' => $seance->getLieux()]);
-        $form->handleRequest($request);
+        $seances = $entityManager->getRepository(Seance::class)->findByGroupe($groupe);
+        $form =[];
+        foreach( $seances as $seance){
+        $form[$seance->getName()] = $this->createForm(InscriptionType::class, $seanceProfil, ['liste_lieu' => $seance->getLieux()]);
+        $form[$seance->getName()]->handleRequest($request);
+        }
 
         if ($form->isSubmitted() && $form->isValid()) {
             $user = $this->getUser();
@@ -85,7 +87,7 @@ class InscriptionController extends AbstractController
 
         return $this->render('inscription/inscription.html.twig', [
             'seanceProfil' => $seanceProfil,
-            'form' => $form->createView(),
+            //'form' => $form[]->createView(),
             'seance' => $seance,
         ]);
     }
@@ -124,5 +126,17 @@ class InscriptionController extends AbstractController
             'form' => $form->createView(),
             'seance' => $seance,
         ]);
+    }
+
+    #[Route('/delete/{seanceID}/{profilID}', name: 'delete')]
+    #[IsGranted('ROLE_ADMIN')]
+    public function delete(EntityManagerInterface $entityManager, $seanceID, $profilID): Response
+    {
+        
+        $seanceProfil = $entityManager->getRepository(SeanceProfil::class)->findBy2Id($seanceID, $profilID)[0];
+        $entityManager->remove($seanceProfil);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('seance_liste_inscrit', ['seanceID' => $seanceID]);
     }
 }

@@ -87,4 +87,59 @@ class ProfilRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function findAllByName($value): ?array
+    {
+        return $this->createQueryBuilder('profil')
+        ->andWhere('profil.name LIKE :val')
+        ->setParameter('val', '%' . $value . '%')
+        ->getQuery()
+            ->getResult();
+    }
+
+    public function findAllByLastName($value): ?array
+    {
+        return $this->createQueryBuilder('profil')
+        ->andWhere('profil.last_name LIKE :val')
+        ->setParameter('val', '%' . $value . '%')
+        ->getQuery()
+            ->getResult();
+    }
+
+    public function findAllDobSuperior($value): ?array
+    {
+        return $this->createQueryBuilder('profil')
+        ->andWhere('profil.date_of_birth >= :val')
+        ->setParameter('val',  $value )
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findAllDobInferior($value): ?array
+    {
+        return $this->createQueryBuilder('profil')
+        ->andWhere('profil.date_of_birth <= :val')
+        ->setParameter('val',  $value )
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findAllScoreInferior($value): ?array
+    {
+        return $this->createQueryBuilder('profil')
+        ->andWhere('profil.score <= :val')
+        ->setParameter('val', $value)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findAllScoreSuperior($value): ?array
+    {
+        return $this->createQueryBuilder('profil')
+        ->andWhere('profil.score >= :val')
+        ->setParameter('val',  $value )
+            ->getQuery()
+            ->getResult();
+    }
+
+
 }
