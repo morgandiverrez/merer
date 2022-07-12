@@ -73,13 +73,22 @@ class LieuxRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    public function findByName($value): ?array
+    public function findAllByName($value): ?array
     {
-        return $this->createQueryBuilder('lieux')
-        ->andWhere('lieux.name LIKE :val')
-        ->setParameter('val', $value)
-            ->setMaxResults(1)
+        return $this->createQueryBuilder('lieu')
+        ->andWhere('lieu.name LIKE :val')
+        ->setParameter('val', '%' . $value . '%')
             ->getQuery()
             ->getResult();
     }
+
+    public function findAllByVille($value): ?array
+    {
+        return $this->createQueryBuilder('lieu')
+        ->andWhere('lieu.ville LIKE :val')
+        ->setParameter('val', '%' . $value . '%')
+            ->getQuery()
+            ->getResult();
+    }
+
 }

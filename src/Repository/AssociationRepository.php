@@ -83,5 +83,41 @@ class AssociationRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function findAllByName($value): ?array
+    {
+        return $this->createQueryBuilder('association')
+        ->andWhere('association.sigle LIKE :val')
+        ->setParameter('val', '%' . $value . '%')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findAllByFedeFi($value): ?array
+    {
+        return $this->createQueryBuilder('equipeElu')
+        ->andWhere('equipeElu.fede_filliere LIKE :val')
+        ->setParameter('val', '%' . $value . '%')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findAllByFedeT($value): ?array
+    {
+        return $this->createQueryBuilder('equipeElu')
+        ->andWhere('equipeElu.fede_territoire LIKE :val')
+        ->setParameter('val', '%' . $value . '%')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findAllByCategorie($value): ?array
+    {
+        return $this->createQueryBuilder('equipeElu')
+        ->andWhere('equipeElu.categorie LIKE :val')
+        ->setParameter('val', '%' . $value . '%')
+            ->getQuery()
+            ->getResult();
+    }
+
     
 }

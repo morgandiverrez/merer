@@ -18,9 +18,19 @@ class LieuxController extends AbstractController
 {
     #[Route('/', name: 'showAll')]
     #[IsGranted('ROLE_USER')]
-    public function showAll(EntityManagerInterface $entityManager): Response
+    public function showAll(EntityManagerInterface $entityManager, Request $request): Response
     {
         $lieux = $entityManager->getRepository(Lieux::class)->findAll();
+       
+        if ($request->isMethod('post')) {
+            $posts = $request->request->all();
+            if ($posts['name']) {
+                $lieux = array_intersect($lieux, $entityManager->getRepository(Lieux::class)->findAllByName($posts['name']));
+            }
+            if ($posts['ville']) {
+                $lieux = array_intersect($lieux, $entityManager->getRepository(Lieux::class)->findAllByVille($posts['ville']));
+            }
+        }
         
         return $this->render('lieux/showAll.html.twig', [
             'lieux' => $lieux,

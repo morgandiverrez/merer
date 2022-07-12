@@ -74,5 +74,17 @@ class SeanceProfilRepository extends ServiceEntityRepository
        ;
    }
 
+    public function findBy2ID($seanceID, $profilID): array
+    {
+        return $this->createQueryBuilder('seanceProfil')
+        ->Where('seanceProfil.seance = :seanceID')
+        ->setParameter('seanceID', $seanceID)
+        ->andWhere('seanceProfil.profil = :profilID')
+        ->setParameter('profilID', $profilID)
+            
+            ->getQuery()
+            ->getResult();
+    }
+
    
 }

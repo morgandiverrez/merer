@@ -110,26 +110,28 @@
                                         </li>
                                     {% endif %}
                                     
-                                    {% for equipeElu in app.user.profil.getEquipeElu() %}
-                                        {% if equipeElu == 'Centraux UBO' or equipeElu == 'CROUS Rennes-Bretagne' or is_granted('ROLE_BF') %}
-                                        <li class="nav-item dropdown">
-                                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                            Signature </a>
-                                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                                {% if equipeElu == 'Centraux UBO' or is_granted('ROLE_BF') %}
-                                                    <li >
-                                                        <a class="dropdown-item" href="/signature/centrauxUBO">Signature Centraux UBO </a>
-                                                    </li>
-                                                {% endif %}
-                                                {% if equipeElu == 'CROUS Rennes-Bretagne' or is_granted('ROLE_BF') %}
-                                                    <li >
-                                                        <a class="dropdown-item" href="/signature/CROUS">Signature CROUS  BZH</a>
-                                                    </li>
-                                                {% endif %}
-                                            </ul>
-                                        </li>
-                                        {% endif %}
-                                    {% endfor %}
+                                    {% if app.user.profil.getEquipeElu() is not empty %}
+                                        {% for equipeElu in app.user.profil.getEquipeElu() %}
+                                            {% if equipeElu == 'Centraux UBO' or equipeElu == 'CROUS Rennes-Bretagne' or is_granted('ROLE_BF') %}
+                                            <li class="nav-item dropdown">
+                                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                Signature </a>
+                                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                                    {% if equipeElu == 'Centraux UBO' or is_granted('ROLE_BF') %}
+                                                        <li >
+                                                            <a class="dropdown-item" href="/signature/centrauxUBO">Signature Centraux UBO </a>
+                                                        </li>
+                                                    {% endif %}
+                                                    {% if equipeElu == 'CROUS Rennes-Bretagne' or is_granted('ROLE_BF') %}
+                                                        <li >
+                                                            <a class="dropdown-item" href="/signature/CROUS">Signature CROUS  BZH</a>
+                                                        </li>
+                                                    {% endif %}
+                                                </ul>
+                                            </li>
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% endif %}
                                     
 
                                 </ul>
@@ -176,14 +178,14 @@
                                     </ul>
                                 {% endif %}
                                 <ul>
-                                      <li><a class="nav-link " href=" https://discord.gg/6PR3h3mtp9"> <i class="fa-brands fa-discord"></i></a> <li>
+                                      <li><a class="nav-link " href=" https://discord.gg/6PR3h3mtp9"> <i class="fa-brands fa-discord"></i></a> </li>
                                 </ul>
                             {% endif %}
                              <ul>
-                            <li>{% if app.user is null %} <a class="nav-link " href="/register/"> s'inscrire </a> {% else %} {{app.user.getUserIdentifier()}} {% endif %}</a></li>
+                                <li>{% if app.user is null %} <a class="nav-link " href="/register/"> s'inscrire </a> {% else %} {{app.user.getUserIdentifier()}} {% endif %}</a></li>
                             </ul>
                              <ul >
-                                <li><a class="nav-link " href="/logout/"><i color="dark" height="80" class="fa-solid fa-power-off"></i></a></li>
+                                <li><a class="nav-link " href="/logout/"><i color="dark" height="140" class="fa-solid fa-power-off"></i></a></li>
                             </ul>
                         </div>
 
@@ -198,7 +200,7 @@
 
         {% block footer %}
         <br>
-        <br><br><br><br>
+        <br><br><br><br><br><br><br><br>
             <footer  height="60" style="background-color:#2B9D7D ;">
                 <div class="container-fluid">
                     <div class="row">

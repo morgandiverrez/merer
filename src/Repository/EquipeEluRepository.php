@@ -75,10 +75,46 @@ class EquipeEluRepository extends ServiceEntityRepository
 
     public function findByName($value): ?array
     {
-        return $this->createQueryBuilder('EquipeElu')
-            ->where('EquipeElu.name LIKE :val')
+        return $this->createQueryBuilder('equipeElu')
+            ->where('equipeElu.name LIKE :val')
             ->setParameter('val', $value)
             ->setMaxResults(1)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findAllByName($value): ?array
+    {
+        return $this->createQueryBuilder('equipeElu')
+        ->andWhere('equipeElu.name LIKE :val')
+        ->setParameter('val', '%' . $value . '%')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findAllByCategorie($value): ?array
+    {
+        return $this->createQueryBuilder('equipeElu')
+        ->andWhere('equipeElu.categorie LIKE :val')
+        ->setParameter('val', '%' . $value . '%')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findAllByEtablissement($value): ?array
+    {
+        return $this->createQueryBuilder('equipeElu')
+        ->andWhere('equipeElu.etablissement LIKE :val')
+        ->setParameter('val', '%' . $value . '%')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findAllByFedeFi($value): ?array
+    {
+        return $this->createQueryBuilder('equipeElu')
+        ->andWhere('equipeElu.Fede_filliere LIKE :val')
+        ->setParameter('val', '%' . $value . '%')
             ->getQuery()
             ->getResult();
     }

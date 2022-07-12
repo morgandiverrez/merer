@@ -73,4 +73,13 @@ class BadgeRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function findAllByName($value): ?array
+    {
+        return $this->createQueryBuilder('badge')
+        ->andWhere('badge.name LIKE :val')
+        ->setParameter('val', '%' . $value . '%')
+        ->getQuery()
+            ->getResult();
+    }
+
 }
