@@ -24,6 +24,13 @@
                     {{ form_help(form.name) }}
                 </div>
 
+                 <div class="groupe my-5">
+                    {{ form_label(form.groupe, 'groupe (ex : WEF_parcour1, WEF-elu) ', {'label_attr': {'class': 'foo'}}) }}
+                    {{ form_errors(form.groupe) }}
+                    {{ form_widget(form.groupe) }}
+                    {{ form_help(form.groupe) }}
+                </div>
+
                 <div class="datetime my-5">
                     {{ form_label(form.datetime, 'Date et Horaire de début ', {'label_attr': {'class': 'foo'}}) }}
                     {{ form_errors(form.datetime) }}
