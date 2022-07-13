@@ -16,7 +16,7 @@
                         <h5 class="card-title">{{seance.getName()}}</h5>
                     </div>
                     <ul class="list-group list-group-flush">
-                        <li class="list-group-item">Code : {{seance.getCode()}}</li>
+                        <li class="list-group-item">Groupe : {{seance.getGroupe()}}</li>
                         <li class="list-group-item">Date et Heure : {% if seance.getDateTime() is null %} - {% else %} {{seance.getDatetime().format("Y-m-d H:i")}} {% endif %}</li>
                         <li class="list-group-item">Nombre de Place Maximum : {{seance.getNombrePlace()}}</li>   
                         {% for formateurice in seance.getProfil() %}

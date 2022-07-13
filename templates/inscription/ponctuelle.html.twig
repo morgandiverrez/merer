@@ -10,15 +10,13 @@
             {{ form_start(form) }}
             <div class="mx-auto mt-5 mb-5">
 
-                
-               {% if  seance.getLieux()[1] %}
                 <div class="lieu my-5">
                     {{ form_label(form.lieu, ' Ou voulez vous participer à la formation ?', {'label_attr': {'class': 'foo'}}) }}
                     {{ form_errors(form.lieu) }}
                     {{ form_widget(form.lieu) }}
                     {{ form_help(form.lieu) }}
                 </div>
-               {% endif %}
+               
 
                 <div class="attente my-5">
                     {{ form_label(form.attente, ' Attentes vis à vis de la formation  ', {'label_attr': {'class': 'foo'}}) }}
@@ -27,7 +25,6 @@
                     {{ form_help(form.attente) }}
                 </div>
  
-               
                 <button class="btn btn-success mt-3 mb-3">{{ button_label|default('Valider ') }}<i class = "fa text-light fa-save me-2"></i></button>
             </div>
             {{ form_end(form) }}
