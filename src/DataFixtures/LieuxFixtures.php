@@ -12,16 +12,17 @@ class LieuxFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
-        $faker = Factory::create();
+        $this->faker = Factory::create();
 
         for ($i = 0; $i<20; $i++){
             $lieux = new Lieux();
-            $lieux ->setCode($faker->regexify('[A-Z]{3}-[0-9]{2}'));
+            $lieux ->setCode($this->faker->regexify('[A-Z]{3}-[0-9]{2}'));
             $lieux->setName('Lieux' . $i);
-            $lieux->setSalle($faker->regexify('[A-Z]{1}-[0-9]{2}'));
-            $lieux->setAdresse($faker->sentence());
-            $lieux->setCodePostale($faker->numerify('#####'));
-            $lieux->setVille($faker->randomElement(['Brest', 'Quimper', 'Lannion', 'St Brieuc', 'Plouzané', 'Morlaix']));
+            $lieux->setSalle($this->faker->regexify('[A-Z]{1}-[0-9]{2}'));
+            $lieux->setAdresse($this->faker->sentence());
+            $lieux->setCodePostale($this->faker->numerify('#####'));
+            $lieux->setVille($this->faker->randomElement(['Brest', 'Quimper', 'Lannion', 'St Brieuc', 'Plouzané', 'Morlaix']));
+            $this->addReference('LIEU_'.$i, $lieux);
 
             $manager->persist($lieux);
             $manager->flush();

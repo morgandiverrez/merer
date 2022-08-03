@@ -10,15 +10,18 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 
-class InscriptionType extends AbstractType
+class PonctuelleType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
 
         $builder
-            ->add('indisponible', CheckboxType::class, ['mapped' => false])
+           
             ->add('attente')
-            
+            ->add('lieu', EntityType::class,[
+                'class' => Lieux::class,
+               'choices' => $options['liste_lieu'],
+            ])
 
         ;
     }
@@ -27,10 +30,10 @@ class InscriptionType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => SeanceProfil::class,
-           
+            'liste_lieu' => false,
         ]);
 
-       
+        $resolver->setAllowedTypes('liste_lieu', 'Doctrine\ORM\PersistentCollection');
     }
 
 }
