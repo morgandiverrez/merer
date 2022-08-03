@@ -66,13 +66,23 @@ class SeanceProfilRepository extends ServiceEntityRepository
     public function findAllBySeance($value): array
    {
        return $this->createQueryBuilder('inscrit')
-           ->Where('inscrit.seance = :val')
+           ->Where('inscrit.seance = :val ')
            ->setParameter('val', $value)
-           ->orderBy('inscrit.profil', 'ASC')
            ->getQuery()
            ->getResult()
        ;
    }
+
+    public function CountBySeance($value): int
+    {
+        return $this->createQueryBuilder('inscrit')
+        ->select("COUNT('inscrit')")
+        ->Where('inscrit.seance = :val')
+        ->setParameter('val', $value)
+            ->orderBy('inscrit.profil', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
 
     public function findBy2ID($seanceID, $profilID): array
     {

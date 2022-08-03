@@ -141,5 +141,14 @@ class ProfilRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function findAllByInscription($value): ?array
+    {
+        return $this->createQueryBuilder('profil')
+        ->andWhere('profil.seanceProfil LIKE :val')
+        ->setParameter('val',  $value )
+        ->getQuery()
+            ->getResult();
+    }
+
 
 }

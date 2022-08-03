@@ -3,62 +3,80 @@
 namespace App\DataFixtures;
 
 use Faker\Factory;
-use App\Entity\Profil;
 use App\Entity\Retour;
-use App\Entity\Seance;
+use App\Entity\SeanceProfil;
 use Doctrine\Persistence\ObjectManager;
+use App\DataFixtures\SeanceProfilFixtures;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
-class RetourFixtures extends Fixture
+class RetourFixtures extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager): void
     {
-        $faker = Factory::create();
+        $this->faker = Factory::create();
+       
 
         for ($i = 0; $i<20; $i++){
             $retour = new Retour();
 
-            $retour ->setNoteContenu($faker->numberBetween(1,5));
-            $retour->setRemarqueContenu($faker -> sentence());
+            $seanceProfil = $this->getRandomReference('SEANCEPROFIL');
 
-            $retour->setNoteAnimation($faker->numberBetween(1, 5));
-            $retour->setRemarqueAnimation($faker->sentence());
+            $seance = $seanceProfil->getSeance();
+            $retour->setSeance($seance); 
+            $profil = $seanceProfil->getProfil();    
+            $retour->setProfil($profil);
 
-            $retour->setNoteImplication($faker->numberBetween(1, 5));
-            $retour->setRemarqueImplication($faker->sentence());
 
-            $retour->setNoteReponseAtente($faker->numberBetween(1, 5));
-            $retour->setRemarqueReponseAttente($faker->sentence());
+            $profil->addBadge($seance->getFormation()->getBadge());
 
-            $retour->setNoteNivCompetence($faker->numberBetween(1, 5));
-            $retour->setRemarqueNivCompetence($faker->sentence());
+            $retour ->setNoteContenu($this->faker->numberBetween(1,5));
+            $retour->setRemarqueContenu($this->faker -> sentence());
 
-            $retour->setNoteUtilite($faker->numberBetween(1, 5));
-            $retour->setRemarqueUtilite($faker->sentence());
+            $retour->setNoteAnimation($this->faker->numberBetween(1, 5));
+            $retour->setRemarqueAnimation($this->faker->sentence());
 
-            $retour->setNoteGenerale($faker->numberBetween(1, 5));
-            $retour->setRemarqueGenerale($faker->sentence());
+            $retour->setNoteImplication($this->faker->numberBetween(1, 5));
+            $retour->setRemarqueImplication($this->faker->sentence());
 
-            $retour->setApportGenerale($faker->sentence());
+            $retour->setNoteReponseAtente($this->faker->numberBetween(1, 5));
+            $retour->setRemarqueReponseAttente($this->faker->sentence());
 
-            $retour->setPlusAimer($faker->sentence());
+            $retour->setNoteNivCompetence($this->faker->numberBetween(1, 5));
+            $retour->setRemarqueNivCompetence($this->faker->sentence());
 
-            $retour->setMoinsAimer($faker->sentence());
+            $retour->setNoteUtilite($this->faker->numberBetween(1, 5));
+            $retour->setRemarqueUtilite($this->faker->sentence());
 
-            $retour->setAimerVoir($faker->sentence());
+            $retour->setNoteGenerale($this->faker->numberBetween(1, 5));
+            $retour->setRemarqueGenerale($this->faker->sentence());
 
-            $retour->setMotFin($faker->sentence());
+            $retour->setApportGenerale($this->faker->sentence());
 
-            $profils = $manager->getRepository(Profil::class)->findAll();
-            $retour->setProfil($faker->randomElement($profils));
+            $retour->setPlusAimer($this->faker->sentence());
 
-            $seances = $manager->getRepository(Seance::class)->findAll();
-            $retour->setSeance($faker->randomElement($seances));
-            
-            
+            $retour->setMoinsAimer($this->faker->sentence());
+
+            $retour->setAimerVoir($this->faker->sentence());
+
+            $retour->setMotFin($this->faker->sentence());
+
+
+            $this->addReference('RETOUR_'.$i, $retour);
             
             $manager->persist($retour);
-            $manager->flush();
         }
+
+        $manager->flush();
+    }
+
+    public function getDependencies()
+    {
+        return [
+
+            SeanceProfilFixtures::class,
+            
+
+        ];
     }
 }
