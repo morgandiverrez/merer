@@ -46,6 +46,9 @@ class Seance
     #[ORM\OneToMany(mappedBy: 'seance', targetEntity: SeanceProfil::class)]
     private $seanceProfil;
 
+    #[ORM\OneToOne(mappedBy: 'seance', targetEntity: Conducteur::class, cascade: ['persist', 'remove'])]
+    private $conducteur;
+
     public function __construct()
     {
         $this->lieux = new ArrayCollection();
@@ -246,6 +249,23 @@ class Seance
                 $seanceProfil->setSeance(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getConducteur(): ?Conducteur
+    {
+        return $this->conducteur;
+    }
+
+    public function setConducteur(Conducteur $conducteur): self
+    {
+        // set the owning side of the relation if necessary
+        if ($conducteur->getSeance() !== $this) {
+            $conducteur->setSeance($this);
+        }
+
+        $this->conducteur = $conducteur;
 
         return $this;
     }

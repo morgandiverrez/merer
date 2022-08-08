@@ -1,0 +1,59 @@
+{% extends 'base_user.html.twig' %}
+
+{% block title %}Conducteur {{seance.getName()}}{% endblock %}
+
+
+{% block body %}
+    <div class="container-fluid">
+        <div class="corps mx-auto">
+            <p class="display-6 no-wrap text-center">Conducteur de {{seance.getName()}}  </p>
+            <form action="{{ path('equipeElu_showAll') }}" method="post">
+                <p class="text-center">
+                    <input type="text" id="name" name="name" placeholder="Nom"/>
+                    <input type="text" id="categorie" name="categorie" placeholder="categorie"/>
+                    <input type="text" id="etablissement" name="etablissement" placeholder="etablissement"/>
+                    <input type="text" id="fedeFi" name="fedeFi" placeholder="fede fi"/>
+                    <button class="btn btn-primary" type="submit" >Rechercher</button>
+                </p>
+            </form>
+            <table class="table table-striped">
+                
+                
+                <thead>
+                <tr>
+                    <th scope="col">Durée</th>
+                    <th scope="col">Horaire de début du module</th>
+                    <th scope="col">Nom du module</th>
+                    <th scope="col">Objectifs du module</th>
+                    <th scope="col">Activités pédagogiques du module</th>
+                    <th scope="col">Contenu du module</th>
+                    <th scope="col">Moyens logistiques nécessaires</th>
+                    <th scope="col">Observations</th>
+                 </tr>
+                </thead>
+
+                <tbody>
+                {% set i = 1 %}
+                {% for activite in activites %}
+                    <tr>
+                    <form action="{{ path('conducteur_edit', { 'seanceID': 'seance.getId()'}) }}" method="post">
+                        <th><input type="time"  name="duree_{{i}}" min="00:01" max="12:00"  /></th>
+                        <th> {% if i == 1  %} {{seance.getDatetime().format('H:i:s') }} {% else %} </th>
+                        <th><input type="text" name="name_{{i}}" /></th>
+                        <th><input type="text" name="objectif_{{i}}" /></th>
+                        <th><input type="text"  name="activite_{{i}}" /></th>
+                        <th><input type="text" name="contenu_{{i}}" /></th>
+                        <th><input type="text" name="logistique_{{i}}" /></th>
+                        <th><input type="text"  name="observation_{{i}}" /></th>
+                        <th><button class="btn btn-primary" type="submit" >Valider</button></th>
+                    </form>
+                    {% i = i + 1 %}
+                {% endfor %}
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+
+
+{% endblock %}
