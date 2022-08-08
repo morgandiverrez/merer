@@ -36,7 +36,7 @@ class ProfilFixtures extends Fixture implements DependentFixtureInterface
             $user = new User();
             $profil ->setCode($this->faker->regexify('[A-Z]{3}-[0-9]{2}'));
             $profil->setLastName($this->faker -> lastName());
-            $profil->setName($this->faker -> lastname());
+            $profil->setName($this->faker -> lastName());
             $profil->setPronom($this->faker->randomElements(['il', 'iel', 'elle']));
             $profil->setDateOfBirth($this->faker->dateTime());
             $profil->setScore($this->faker->numberBetween(0, 400));
