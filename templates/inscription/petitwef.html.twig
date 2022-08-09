@@ -4,58 +4,44 @@
 
 {% block body %}
     <div class="container-fluid">
-        <p class="display-6 no-wrap text-center">S'inscrire au {{seances[0].getGroupe()}} </p>
-        
-        <div class="form-control form-control-lg mx-auto corps text-center">
-            {{ form_start(form) }}
-            <div class="mx-auto mt-5 mb-5">
-                {% set i=0 %}
-                {% for inscription in form.inscriptions %}
-                    <div>
-                         <div class=" card-body ">
-                            <h5 class="card-title">{{seances[i].getName()}}</h5>
-                            <p class="card-text"> {{seances[i].formation.getDescription()}}p>
-                        </div> 
-
-                        <div class="attente">
-                            {{ form_label(inscription.attente, 'Attentes vis à vis du WEF ', {'label_attr': {'class': 'foo'}}) }}
-                            {{ form_errors(inscription.attente) }}
-                            {{ form_widget(inscription.attente)}}
-                            {{ form_help(inscription.attente) }}
-                        </div>
-
-                        <div class="indisponible">
-                            {{ form_label(inscription.indisponible, 'êtes vous indisponible pour cette formation ', {'label_attr': {'class': 'foo'}}) }}
-                            {{ form_errors(inscription.indisponible) }}
-                            {{ form_widget(inscription.indisponible)}}
-                            {{ form_help(inscription.indisponible) }}
-                        </div>
-                    </div>
-                    {% set i = i + 1 %}
-                {% endfor %} 
-
-                 <div class="autorisation_photo my-5">
-                    {{ form_label(form.autorisation_photo, ' autorisation de photographie  ', {'label_attr': {'class': 'foo'}}) }}
-                    {{ form_errors(form.autorisation_photo) }}
-                    {{ form_widget(form.autorisation_photo) }}
-                    {{ form_help(form.autorisation_photo) }}
-                </div>
-                 <div class="mode_paiement my-5">
-                    {{ form_label(form.mode_paiement, ' mode de paiement  ', {'label_attr': {'class': 'foo'}}) }}
-                    {{ form_errors(form.mode_paiement) }}
-                    {{ form_widget(form.mode_paiement) }}
-                    {{ form_help(form.mode_paiement) }}
-                </div>
-                 <div class="covoiturage my-5">
-                    {{ form_label(form.covoiturage, ' souhaite tu participer au  covoiturage ?  ', {'label_attr': {'class': 'foo'}}) }}
-                    {{ form_errors(form.covoiturage) }}
-                    {{ form_widget(form.covoiturage) }}
-                    {{ form_help(form.covoiturage) }}
-                </div>
-
-                <button class="btn btn-success mt-3 mb-3">{{ button_label|default('Valider ') }}<i class = "fa text-light fa-save me-2"></i></button>
-            </div>
-            {{ form_end(form) }}
+        <div class="corps mx-auto">
+            <p class="display-6 no-wrap text-center"> Inscription WEF </p>
+            {% set i = 0 %}
+            <form action="{{ path('inscription_petitWEF',{'groupe' : seances[0].getGroupe() } ) }}" method="post">
+                <table class="table table-borderless"> 
+                    <tbody>
+                        {% for seance in seances %}    
+                            <tr>
+                                <th>       
+                                    <div class=" card-body ">
+                                        <h5 class="card-title"> {{seances[i].getName()}} </h5>
+                                        <p class="card-text"> {{seances[i].formation.getDescription()}} </p>
+                                    </div>
+                                </th>
+                                <th><input type="text" id="attente" name="attentes_{{ i }}" placeholder="Attentes vis à vis de cette formation"/></th>
+                                <th><input type="checkbox" id="indisponibilite" name="indisponibilite_{{ i }}" placeholder="êtes vous indisponible pour cette formation"/></th>
+                            </tr>
+                            {% set i = i + 1 %}
+                        {% endfor %}
+                         </tbody> 
+                </table>
+                <table class="table table-borderless"> 
+                    <tbody>          
+                        <tr>
+                            <th> Autorisation de photographie <input type="checkbox" id="autorisation_photo" name="autorisation_photo" /></th>
+                            <th> Mode de paiement <input type="text" id="mode_paiement" name="mode_paiement" placeholder="Mode de paiement"/></th>
+                            <th> Souhaite tu participer au  covoiturage ? 
+                                 <input type="checkbox" id="covoiturage" name="covoiturage" />
+                            </th>
+                        </tr>       
+                        <tr>
+                            <th></th>
+                            <th><button class="btn btn-primary" type="submit" >Valider</button></th>
+                             <th></th>
+                        </tr>
+                    </tbody> 
+                </table>
+            </form>
         </div>
     </div>
 

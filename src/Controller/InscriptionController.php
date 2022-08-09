@@ -56,12 +56,9 @@ class InscriptionController extends AbstractController
 
     #[Route('/petitWEF/{groupe}', name: 'petitWEF')]
     #[IsGranted('ROLE_USER')]
-    public function petit(EntityManagerInterface $entityManager, Request $request, $groupe): Response
+    public function petit( EntityManagerInterface $entityManager, Request $request, $groupe): Response
     {
-
         $seances = $entityManager->getRepository(Seance::class)->findAllByGroupe($groupe);
-        $form = $this->createForm(WEFType::class);
-        $form->handleRequest($request);
         $user = $this->getUser();
         $profils = $entityManager->getRepository(Profil::class)->findAll();
             foreach ($profils as $testProfil) {
@@ -69,27 +66,29 @@ class InscriptionController extends AbstractController
                     $profil = $testProfil;
                 }
             }
-        
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($request->isMethod('post')) {
+            $posts = $request->request->all();
+            $i = 0;
             foreach($seances as $seance){
-                $seanceProfil = new SeanceProfil();
-                $seanceProfil->setAutorisationPhoto( $form-> get('autorisation_photo')->getData());
-                $seanceProfil->setModePaiement($form->get('mode_paiement')->getData());
-                $seanceProfil->setCovoiturage($form->get('covoiturage')->getData());
-                $seanceProfil->setHorrodateur(new DateTime());
-
-                $profil->addSeanceProfil($seanceProfil);
-                $seance->addSeanceProfil($seanceProfil);
-
-                $entityManager->persist($seanceProfil);
+                if(isset($posts['indisponibilite_'.$i])){
+                    $seanceProfil = new SeanceProfil();
+                    $seanceProfil-> setSeance($seance);
+                    $seanceProfil-> setProfil($profil);
+                    $seanceProfil-> setHorrodateur(new DateTime());
+                    $seanceProfil -> setAttente($posts['attentes_'.$i]);
+                    $seanceProfil-> setLieu( $seance->getLieux()[0]);
+                    $seanceProfil-> isAutorisationPhoto($posts['autorisation_photo']);
+                    $seanceProfil-> setModePaiement($posts['mode_paiement']);
+                    $seanceProfil-> setCovoiturage($posts['covoiturage']);
+                    $entityManager-> persist($seanceProfil);   
+                }  
+                $i++;
             }
-
             $entityManager->flush();
-            return $this->redirectToRoute('seance_show', ['seanceID' => $seance->getID()]);
+            return  $this->redirectToRoute('profil_show',[]);
         }
 
         return $this->render('inscription/petitwef.html.twig', [
-            'form' => $form->createView(),
             'seances'=> $seances
         ]);
     }
