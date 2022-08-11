@@ -39,9 +39,9 @@ class SeanceController extends AbstractController
         ]);
     }
 
-    #[Route('/showAllForFormateurice', name: 'showAllForFormateurice')]
+    #[Route('/archivage', name: 'archivage')]
     #[IsGranted('ROLE_FORMATEURICE')]
-    public function showAllForFormateurice(EntityManagerInterface $entityManager, Request $request): Response
+    public function archivagee(EntityManagerInterface $entityManager, Request $request): Response
     {
         $seances = $entityManager->getRepository(Seance::class)->findAll();
         if ($request->isMethod('post')) {
@@ -83,7 +83,7 @@ class SeanceController extends AbstractController
             }      
         }
 
-        return $this->render('seance/showAllForFormateurice.html.twig', [
+        return $this->render('seance/archivage.html.twig', [
             'seances' => $seances,
         ]);
     }
@@ -157,10 +157,7 @@ class SeanceController extends AbstractController
         ]);
     }
 
-       
 
-       
-    
 
     #[Route('/edit/{seanceID}', name: 'edit')]
     #[IsGranted('ROLE_BF')]

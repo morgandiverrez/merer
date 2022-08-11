@@ -6,11 +6,9 @@
    <div class="container-fluid">
         <div class="corps mx-auto">
             <p class="display-6 no-wrap text-center mb-5"> Liste des Séances
-                {% if is_granted('ROLE_BF')%}
-                    <a href="/seance/new"><i class="fa-solid fa-plus align-right"></i></a>
-                {% endif %}
+               
             </p>
-            <form action="{{ path('seance_showAllForFormateurice') }}" method="post">
+            <form action="{{ path('seance_archivage') }}" method="post">
                 <p class="text-center">
                     <input type="text" id="name" name="name" placeholder="Nom"/>
                     <input type="text" id="groupe" name="groupe" placeholder="groupe"/>
@@ -37,8 +35,19 @@
                 </thead>
 
                 <tbody>
+                {% set verif = false %}
                 {% for seance in seances %} 
-                <tr>
+                    {% if seance.getDatetime() <= date() and verif == false %}
+                        <tr class="item-center">
+                            <th></th>
+                            <th></th>
+                            <th> Séance passée </th>
+                            <th></th>
+                            <th></th> 
+                        <tr>
+                        {% set verif = true %}
+                    {% endif %}
+                <tr> 
                     <th>{{seance.getDatetime().format("Y-m-d H:i")}}</th>
                     <th>{{seance.getName()}}</th>
                     <th>{{seance.formation.getDuration().format("H:i")}}</th>

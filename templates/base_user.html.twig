@@ -79,7 +79,7 @@
                                                     <a class="nav-link" href="/lieux/">Liste des Lieux </a>
                                                 </li>
                                                 <li class="nav-item">
-                                                    <a class="nav-link" href="/seance/showAllForFormateurice"> Liste des séances </a>
+                                                    <a class="nav-link" href="/seance/archivage"> Liste des séances </a>
                                                 </li>
                                                 <li class="nav-item">
                                                     <a class="nav-link" href="/badge/">Liste des badges</a>
@@ -89,7 +89,7 @@
                                         </li>
                                     {% endif %}
 
-                                    {% if is_granted('ROLE_FORMATEURICE') %}
+                                    {% if is_granted('ROLE_BF') %}
                                     <li class="nav-item dropdown">
                                             <a class="nav-link dropdown-toggle"  id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                             Espace BF </a>
@@ -101,10 +101,18 @@
                                                 <li class="nav-item">
                                                     <a class="nav-link" href="/signature/BF">signature de mail BF</a>
                                                 </li>
+                                                {% if is_granted('ROLE_ADMIN') %}
                                                 <li><hr class="dropdown-divider">Espace admin</li>
                                                 <li class="nav-item">
                                                     <a class="nav-link" href="/account/roles">gestionnaire des rôles</a>
                                                 </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link" href="/seance/new">créateur de formation ponctuelle </a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link" href="/seance/new">créateur de formation ponctuelle </a>
+                                                </li>
+                                                {% endif %}
 
                                             </ul>
                                         </li>
