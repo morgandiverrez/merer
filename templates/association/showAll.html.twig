@@ -23,7 +23,6 @@
             <table class="table table-striped">
                 <thead>
                 <tr>
-                    <th scope="col">Code</th>
                     <th scope="col">Sigle</th>
                     <th scope="col">Fédération fillière</th>
                     <th scope="col">Adresse mail</th>
@@ -35,7 +34,6 @@
                 <tbody>
                     {% for association in associations %} 
                         <tr>
-                            <th>{{association.getCode()}}</th>
                             <th>{{association.getSigle()}}</th>
                             <th>{{association.getFedeFilliere()}}</th>
                             <th>{{association.getAdresseMail()}}</th>

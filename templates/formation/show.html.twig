@@ -17,7 +17,6 @@
                         <p class="card-text">OPG :{{formation.getOpg()}}</p>
                     </div>
                     <ul class="list-group list-group-flush">
-                        <li class="list-group-item">Code : {{formation.getCode()}}</li>
                         <li class="list-group-item">Pré-requis : {{formation.getPreRequis()}}</li>
                         <li class="list-group-item">Durée : {%if formation.getDuration() is null %}0 {% else %} {{formation.getDuration().format("H:i")}} {% endif %} </li>
                         <li class="list-group-item">Public Cible : {{formation.getPublicCible()}}</li>
