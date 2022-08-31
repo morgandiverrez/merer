@@ -39,7 +39,6 @@ class ProfilFixtures extends Fixture implements DependentFixtureInterface
             $profil->setName($this->faker -> lastName());
             $profil->setPronom($this->faker->randomElements(['il', 'iel', 'elle']));
             $profil->setDateOfBirth($this->faker->dateTime());
-            $profil->setScore($this->faker->numberBetween(0, 400));
             $profil->setTelephone($this->faker->phoneNumber());
             for($k=0; $k <= $this->faker->numberBetween(0, 3); $k++){
                  $profil->addEquipeElu($this->getRandomReference('EQUIPEELU'));

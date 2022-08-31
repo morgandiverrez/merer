@@ -10,13 +10,6 @@
             {{ form_start(form) }}
             <div class="mx-auto mt-5 mb-5">
 
-                <div class="code my-5">
-                    {{ form_label(form.code, 'Code', {'label_attr': {'class': 'foo'}}) }}
-                    {{ form_errors(form.code) }}
-                    {{ form_widget(form.code) }}
-                    {{ form_help(form.code) }}
-                </div>
-
                 <div class="name my-5">
                     {{ form_label(form.name, 'Nom de la Seance ', {'label_attr': {'class': 'foo'}}) }}
                     {{ form_errors(form.name) }}
@@ -24,13 +17,25 @@
                     {{ form_help(form.name) }}
                 </div>
 
-                <div class="groupe my-5">
-                    {{ form_label(form.groupe, 'groupe (ex : WEF_parcour1, WEF-elu) ', {'label_attr': {'class': 'foo'}}) }}
+                
+                    <p class="text-center">
+                        <input type="text" name="name_groupe" placeholder="Nom du groupe (ex : WEF, WE2F)"/>
+                        <input type="text" id="categorie" name="categorie" placeholder="categorie"/>
+                        <input type="text" id="etablissement" name="etablissement" placeholder="etablissement"/>
+                        <input type="text" id="fedeFi" name="fedeFi" placeholder="fede fi"/>
+                        <button class="btn btn-primary" type="submit" >Rechercher</button>
+                    </p>
+                 </form>
+
+                 <div class="groupe my-5">
+                    {{ form_label(form.groupe, 'Code )', {'label_attr': {'class': 'foo'}}) }}
                     {{ form_errors(form.groupe) }}
                     {{ form_widget(form.groupe) }}
                     {{ form_help(form.groupe) }}
                 </div>
 
+
+               
                 <div class="datetime my-5">
                     {{ form_label(form.datetime, 'Date et Horaire de début ', {'label_attr': {'class': 'foo'}}) }}
                     {{ form_errors(form.datetime) }}
