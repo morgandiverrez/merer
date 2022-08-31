@@ -32,8 +32,10 @@ class Profil
     #[ORM\Column(type: 'date', nullable: true)]
     private $date_of_birth;
 
-    #[ORM\Column(type: 'integer', nullable: true)]
-    private $score;
+    #[ORM\Column(type: 'date', nullable: true)]
+    private $WE2F;
+
+
 
     #[ORM\OneToMany(mappedBy: 'profil', targetEntity: Retour::class)]
     private $retour;
@@ -159,17 +161,19 @@ class Profil
         return $this;
     }
 
-    public function getScore(): ?int
+    public function getWE2F(): ?\DateTimeInterface
     {
-        return $this->score;
+        return $this->WE2F;
     }
 
-    public function setScore(?int $score): self
+    public function setWE2F(?\DateTimeInterface $WE2F): self
     {
-        $this->score = $score;
+        $this->WE2F = $WE2F;
 
         return $this;
     }
+
+
 
     /**
      * @return Collection<int, Retour>

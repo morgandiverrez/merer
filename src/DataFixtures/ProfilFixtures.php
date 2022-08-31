@@ -39,7 +39,6 @@ class ProfilFixtures extends Fixture implements DependentFixtureInterface
             $profil->setName($this->faker -> lastName());
             $profil->setPronom($this->faker->randomElements(['il', 'iel', 'elle']));
             $profil->setDateOfBirth($this->faker->dateTime());
-            $profil->setScore($this->faker->numberBetween(0, 400));
             $profil->setTelephone($this->faker->phoneNumber());
             for($k=0; $k <= $this->faker->numberBetween(0, 3); $k++){
                  $profil->addEquipeElu($this->getRandomReference('EQUIPEELU'));
@@ -67,7 +66,6 @@ class ProfilFixtures extends Fixture implements DependentFixtureInterface
         $profil2->setLastName('FORMATION');
         $profil2->setName('VP');
         $profil2->setDateOfBirth($this->faker->dateTime());
-        $profil2->setScore($this->faker->numberBetween(0, 400));
         $profil2->setTelephone($this->faker->phoneNumber());
         for ($k = 0; $k <= $this->faker->numberBetween(0, 3); $k++) {
             $profil2->addEquipeElu($this->getRandomReference('EQUIPEELU'));
@@ -95,7 +93,6 @@ class ProfilFixtures extends Fixture implements DependentFixtureInterface
         $profil3->setLastName('DIVERREZ');
         $profil3->setName('Formateur');
         $profil3->setDateOfBirth($this->faker->dateTime());
-        $profil3->setScore($this->faker->numberBetween(0, 400));
         $profil3->setTelephone('0651812671');
         for ($k = 0; $k <= $this->faker->numberBetween(0, 3); $k++) {
             $profil3->addEquipeElu($this->getRandomReference('EQUIPEELU'));
@@ -123,7 +120,6 @@ class ProfilFixtures extends Fixture implements DependentFixtureInterface
         $profil4->setLastName('DIVERREZ');
         $profil4->setName('Morgan');
         $profil4->setDateOfBirth($this->faker->dateTime());
-        $profil4->setScore($this->faker->numberBetween(0, 400));
         $profil4->setTelephone('0651812671');
         for ($k = 0; $k <= $this->faker->numberBetween(0, 3); $k++) {
             $profil4->addEquipeElu($this->getRandomReference('EQUIPEELU'));
@@ -150,7 +146,6 @@ class ProfilFixtures extends Fixture implements DependentFixtureInterface
         $profil5->setLastName('DIVERREZ');
         $profil5->setName('BF');
         $profil5->setDateOfBirth($this->faker->dateTime());
-        $profil5->setScore($this->faker->numberBetween(0, 400));
         $profil5->setTelephone('0651812671');
         for ($k = 0; $k <= $this->faker->numberBetween(0, 3); $k++) {
             $profil5->addEquipeElu($this->getRandomReference('EQUIPEELU'));
