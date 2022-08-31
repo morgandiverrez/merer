@@ -17,7 +17,6 @@
                         <p class="card-text">{{association.getSigle()}}</p>
                     </div>
                     <ul class="list-group list-group-flush ">
-                        <li class="list-group-item">Catégorie : {{association.getCategorie()}}</li>
                         <li class="list-group-item">Description : {{association.getDescription()}}</li>
                         <li class="list-group-item">Fédération de fillière : {{association.getFedeFilliere()}}</li>
                         <li class="list-group-item">Fédération de territoire : {{association.getFedeTerritoire()}}</li>
@@ -52,7 +51,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                            {%if association.getProfil() is null %} 
+                            {% if association.getProfil() is null %} 
                                     Aucun membre inscrit sur la plateforme
                             {% else %} 
                                 {% for profil in association.getProfil() %}
@@ -71,8 +70,16 @@
                                     </tr> 
                                 {% endfor %}
                             {% endif %}
-                        
                         </tbody>
+                         {% if is_granted('ROLE_ADMIN') %}
+                            <tfoot>
+                                <th></th>
+                                <th></th>
+                                <th> <a class="btn btn-primary" href="/association/remove/{{ association.getId() }}">vider l'association</a> </th>
+                                <th></th>
+                                <th></th>
+                            </tfoot>
+                        {% endif %}
                     </table>
                 </div>               
             </div>

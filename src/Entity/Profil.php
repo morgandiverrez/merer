@@ -25,8 +25,8 @@ class Profil
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $last_name;
 
-    #[ORM\Column(type: 'array', nullable: true)]
-    private $pronom = [];
+    #[ORM\Column(type: 'string',length: 255, nullable: true)]
+    private $pronom;
 
 
     #[ORM\Column(type: 'date', nullable: true)]
@@ -137,12 +137,12 @@ class Profil
         return $this;
     }
 
-    public function getPronom(): ?array
+    public function getPronom(): ?string
     {
         return $this->pronom;
     }
 
-    public function setPronom(?array $pronom): self
+    public function setPronom(?string $pronom): self
     {
         $this->pronom = $pronom;
 
@@ -172,7 +172,6 @@ class Profil
 
         return $this;
     }
-
 
 
     /**

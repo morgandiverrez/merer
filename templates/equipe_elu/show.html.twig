@@ -58,7 +58,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                            {%if equipeElu.getProfil() is null %} 
+                            {% if equipeElu.getProfil() is null %} 
                                     Aucun membre inscrit sur la plateforme
                             {% else %} 
                                 {% for profil in equipeElu.getProfil() %}
@@ -78,14 +78,15 @@
                                 {% endfor %}
                             {% endif %}
                         </tbody>
-                        <tfoot>
-                        <th></th>
-                        <th></th>
-                        <th> <a class="btn btn-primary" href="/equipeElu/remove/{{equipeElu.getId()}}">vider l'équipe</a> </th>
-                        <th></th>
-                        <th></th>
-                        </tfoot>
-
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <tfoot>
+                                <th></th>
+                                <th></th>
+                                <th> <a class="btn btn-primary" href="/equipeElu/remove/{{equipeElu.getId()}}">vider l'équipe</a> </th>
+                                <th></th>
+                                <th></th>
+                            </tfoot>
+                        {% endif %}
                     </table>
                 </div>
             </div>
