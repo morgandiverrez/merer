@@ -27,9 +27,6 @@ class Association
     #[ORM\Column(type: 'string', length: 255)]
     private $sigle;
 
-    #[ORM\Column(type: 'array', length: 255, nullable: true)]
-    private $categorie;
-
     #[ORM\Column(type: 'string', length: 2048, nullable: true)]
     private $description;
 
@@ -115,17 +112,6 @@ class Association
         return $this;
     }
     
-    public function getCategorie(): ?string
-    {
-        return $this->categorie;
-    }
-
-    public function setCategorie(?string $categorie): self
-    {
-        $this->categorie = $categorie;
-
-        return $this;
-    }
 
     public function getDescription(): ?string
     {
