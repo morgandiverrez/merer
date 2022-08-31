@@ -15,7 +15,7 @@ class EquipeEluType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('code')
+            
             ->add('name')
             ->add('categorie', ChoiceType::class, [
                 'choices' => [

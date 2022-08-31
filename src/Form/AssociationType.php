@@ -17,7 +17,7 @@ class AssociationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('code')
+
             ->add('image', FileType::class, [
                 'required' => false,
                 'mapped' => false,
@@ -25,7 +25,7 @@ class AssociationType extends AbstractType
                 ])
             ->add('sigle')
             ->add('name')
-            ->add('categorie')
+   
             ->add('description', TextareaType::class)
             ->add('fede_filliere')
             ->add('fede_territoire')

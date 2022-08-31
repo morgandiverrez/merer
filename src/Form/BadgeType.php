@@ -15,7 +15,6 @@ class BadgeType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('code')
             ->add('image', FileType::class, [
                 'required' => false,
                 'mapped' => false,
