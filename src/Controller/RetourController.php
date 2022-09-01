@@ -153,9 +153,8 @@ class RetourController extends AbstractController
             
             $remarque = $retour->getRemarqueGenerale();
             $dataRemarque[$critere] .= ',' . $remarque;
-        }
-
-        foreach ($retours as $retour) { // indentation pour passer par chaque retour
+        
+            // indentation pour passer par chaque retour
             $note = $retour->getNoteUtilite();
             $critere = 1;
             $dataSomme[$note - 1][$critere] += 1; // ajout d'un 1 en fonction de la valeur du retour
@@ -163,9 +162,8 @@ class RetourController extends AbstractController
 
             $remarque = $retour->getRemarqueUtilite();
             $dataRemarque[$critere] .= ',' . $remarque;
-        }
-
-        foreach ($retours as $retour) { // indentation pour passer par chaque retour
+        
+            // indentation pour passer par chaque retour
             $note = $retour->getNoteNivCompetence();
             $critere = 2;
             $dataSomme[$note - 1][$critere] += 1; // ajout d'un 1 en fonction de la valeur du retour
@@ -173,9 +171,8 @@ class RetourController extends AbstractController
 
             $remarque = $retour->getRemarqueNivCompetence();
             $dataRemarque[$critere] .= ',' . $remarque;
-        }
-
-        foreach ($retours as $retour) { // indentation pour passer par chaque retour
+        
+            // indentation pour passer par chaque retour
             $note = $retour->getNoteReponseAtente();
             $critere = 3;
             $dataSomme[$note - 1][$critere] += 1; // ajout d'un 1 en fonction de la valeur du retour
@@ -183,9 +180,8 @@ class RetourController extends AbstractController
 
             $remarque = $retour->getRemarqueReponseAttente();
             $dataRemarque[$critere] .= ',' . $remarque;
-        }
-
-        foreach ($retours as $retour) { // indentation pour passer par chaque retour
+        
+            // indentation pour passer par chaque retour
             $note = $retour->getNoteImplication();
             $critere = 4;
             $dataSomme[$note - 1][$critere] += 1; // ajout d'un 1 en fonction de la valeur du retour
@@ -193,9 +189,8 @@ class RetourController extends AbstractController
 
             $remarque = $retour->getRemarqueImplication();
             $dataRemarque[$critere] .= ',' . $remarque;
-        }
-
-        foreach ($retours as $retour) { // indentation pour passer par chaque retour
+        
+                                // indentation pour passer par chaque retour
             $note = $retour->getNoteAnimation();
             $critere = 5;
             $dataSomme[$note - 1][$critere] += 1; // ajout d'un 1 en fonction de la valeur du retour
@@ -204,9 +199,8 @@ class RetourController extends AbstractController
 
             $remarque = $retour->getRemarqueAnimation();
             $dataRemarque[$critere] .= ',' . $remarque;
-        }
-
-        foreach ($retours as $retour) { // indentation pour passer par chaque retour
+       
+            // indentation pour passer par chaque retour
             $note = $retour->getNoteContenu();
             $critere = 6;
             $dataSomme[$note - 1][$critere] += 1; // ajout d'un 1 en fonction de la valeur du retour
@@ -214,22 +208,21 @@ class RetourController extends AbstractController
 
             $remarque = $retour->getRemarqueContenu();
             $dataRemarque[$critere] .= ',' . $remarque;
-        }
         
-        $remarque = $retour->getPlusAimer();
-        $dataRemarque[7] .= ',' . $remarque;
+        
+            $remarque = $retour->getPlusAimer();
+            $dataRemarque[7] .= ',' . $remarque;
 
-        $remarque = $retour->getMoinsAimer();
-        $dataRemarque[8] .= ',' . $remarque;
+            $remarque = $retour->getMoinsAimer();
+            $dataRemarque[8] .= ',' . $remarque;
 
-        $remarque = $retour->getAimerVoir();
-        $dataRemarque[9] .= ',' . $remarque;
+            $remarque = $retour->getAimerVoir();
+            $dataRemarque[9] .= ',' . $remarque;
 
-        $remarque = $retour->getMotFin();
-        $dataRemarque[10] .= ',' . $remarque;
-
-
-        foreach ($retours as $retour) { // indentation pour passer par chaque retour
+            $remarque = $retour->getMotFin();
+            $dataRemarque[10] .= ',' . $remarque;
+        
+            // indentation pour passer par chaque retour
             $choix = $retour->getApportGenerale();
 
             switch ($choix) {
@@ -255,7 +248,7 @@ class RetourController extends AbstractController
            
         }
         
-
+        
         $chart = $chartBuilder->createChart(Chart::TYPE_BAR);
 
         $chartApport = $chartBuilder->createChart(Chart::TYPE_BAR);
