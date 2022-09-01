@@ -103,9 +103,37 @@ class SeanceRepository extends ServiceEntityRepository
     public function findByGroupe($value): array
     {
         return $this->createQueryBuilder('seance')
+        
         ->Where('seance.groupe = :val')
         ->setParameter('val', $value)
             ->orderBy('seance.datetime', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
+
+    public function findAllGroupe(): array
+    {
+        return $this->createQueryBuilder('seance')
+        ->select('seance.groupe')
+        ->Where('seance.groupe IS NOT NULL')
+        ->andWhere('seance.datetime >= :now')
+        ->setParameter('now', date('y-m-d h:i:s'))
+            ->orderBy('seance.datetime', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findAllSousGroupe($groupe): array
+    {
+        return $this->createQueryBuilder('seance')
+        ->select('seance.groupe')
+        ->Where('seance.groupe IS NOT NULL ')
+        ->andWhere('seance.groupe LIKE :groupe')
+        ->andWhere('seance.datetime >= :now')
+        ->setParameter('now', date('d-m-y h:i:s'))
+        ->setParameter('groupe', $groupe . '%')
+        ->orderBy('seance.datetime', 'ASC')
             ->getQuery()
             ->getResult();
     }
