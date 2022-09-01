@@ -1,0 +1,25 @@
+{% extends 'base_user.html.twig' %}
+
+{% block title %}Choix Sous Groupe{% endblock %}
+
+{% block body %}
+    <div class="container-fluid">
+        <p class="display-6 no-wrap text-center">Choisir le sous groupe de la Seance :{{seance.getName()}} du {{seance.getDatetime().format("Y-m-d H:i")}}</p>
+        <div class="form-control form-control-lg mx-auto corps text-center">
+            <div class="groupe my-5">
+                <form action="/seance/sous_groupe/{{seance.getID()}}/{{groupe}}" method="post">
+                    <p class="text-center ">
+                    <select name="sousGroupe" id="sousGroupe">
+                        {% for event in listeSousGroupes %}
+                            <option value={{event['groupe']}}>{{event['groupe']}}</option>
+                        {% endfor %}
+                        <option value=''>autre</option>
+                    </select>
+                    <input type="text" id="newSousGroupe" name="newSousGroupe" placeholder="Groupe"/>
+                    <button class="btn btn-primary" type="submit" >Valider</button>
+                </form>  
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

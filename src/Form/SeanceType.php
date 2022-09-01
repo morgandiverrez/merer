@@ -19,7 +19,7 @@ class SeanceType extends AbstractType
         $builder
         
             ->add('name')
-            ->add('groupe')
+            
             ->add('datetime', DateTimeType::class,[
             // 'widget' => 'single_text',
             // this is actually the default format for single_text
@@ -40,6 +40,8 @@ class SeanceType extends AbstractType
             'class' => Profil::class,
             'multiple' => true, 
         ])
+
+        
 
         ;
     }

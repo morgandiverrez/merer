@@ -17,25 +17,6 @@
                     {{ form_help(form.name) }}
                 </div>
 
-                
-                    <p class="text-center">
-                        <input type="text" name="name_groupe" placeholder="Nom du groupe (ex : WEF, WE2F)"/>
-                        <input type="text" id="categorie" name="categorie" placeholder="categorie"/>
-                        <input type="text" id="etablissement" name="etablissement" placeholder="etablissement"/>
-                        <input type="text" id="fedeFi" name="fedeFi" placeholder="fede fi"/>
-                        <button class="btn btn-primary" type="submit" >Rechercher</button>
-                    </p>
-                 </form>
-
-                 <div class="groupe my-5">
-                    {{ form_label(form.groupe, 'Code )', {'label_attr': {'class': 'foo'}}) }}
-                    {{ form_errors(form.groupe) }}
-                    {{ form_widget(form.groupe) }}
-                    {{ form_help(form.groupe) }}
-                </div>
-
-
-               
                 <div class="datetime my-5">
                     {{ form_label(form.datetime, 'Date et Horaire de début ', {'label_attr': {'class': 'foo'}}) }}
                     {{ form_errors(form.datetime) }}
@@ -71,7 +52,6 @@
                     {{ form_help(form.profil) }}
                 </div>
  
-               
                 <button class="btn btn-success mt-3 mb-3">{{ button_label|default('Valider ') }}<i class = "fa text-light fa-save me-2"></i></button>
             </div>
             {{ form_end(form) }}

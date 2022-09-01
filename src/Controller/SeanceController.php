@@ -41,7 +41,7 @@ class SeanceController extends AbstractController
 
     #[Route('/archivage', name: 'archivage')]
     #[IsGranted('ROLE_FORMATEURICE')]
-    public function archivagee(EntityManagerInterface $entityManager, Request $request): Response
+    public function archivage(EntityManagerInterface $entityManager, Request $request): Response
     {
         $seances = $entityManager->getRepository(Seance::class)->findAll();
         if ($request->isMethod('post')) {
@@ -166,9 +166,21 @@ class SeanceController extends AbstractController
         $seance = $entityManager->getRepository(Seance::class)->findById($seanceID)[0];
         $form = $this->createForm(SeanceType::class, $seance);
         $form->handleRequest($request);
+     
+        $listeArrayGroupes = $entityManager->getRepository(Seance::class)->findAllGroupe();
+
+        foreach($listeArrayGroupes as $groupe){
+            $listeGroupes[$groupe['groupe']] = $groupe['groupe'];
+        }
+
+        if ($request->isMethod('post')) {
+            $posts = $request->request->all();
+            if ($posts['choixEvenement']){
+                $seance->setGroupe(mb_strtoupper($posts["choixEvenement"]));   
+            }  
+        }
 
         if ($form->isSubmitted() && $form->isValid()) {
-
             $go = true;
             $i = 0;
             while ($go) {
@@ -209,6 +221,8 @@ class SeanceController extends AbstractController
                 $i++;
             }
 
+        
+
             $entityManager->persist($seance);
             $entityManager->flush();
             return $this->redirectToRoute('seance_showForFormateurice', ['seanceID' => $seance->getID()]);
@@ -217,6 +231,77 @@ class SeanceController extends AbstractController
         return $this->render('seance/edit.html.twig', [
             'seance' => $seance,
             'form' => $form->createView(),
+            'listeGroupes' => $listeGroupes,
+        ]);
+    }
+   
+    #[Route('/groupe/{seanceID}', name: 'groupe')]
+    #[IsGranted('ROLE_BF')]
+    public function choiceGroupe(EntityManagerInterface $entityManager, Request $request,  $seanceID): Response
+    {
+        $seance = $entityManager->getRepository(Seance::class)->findById($seanceID)[0];
+        $listesGroupes = $entityManager->getRepository(Seance::class)->findAllGroupe();
+        $arrayGroupes = array() ;
+        foreach($listesGroupes as $groupe){ 
+            $groupeExplode = explode("_", $groupe['groupe']);
+            if(! in_array($groupeExplode[0], $arrayGroupes)){
+                array_push($arrayGroupes, $groupeExplode[0]);
+            } 
+        }
+
+        if ($request->isMethod('post')) {
+            $posts = $request->request->all();
+            if ($posts['groupe'] and $posts['groupe']!='') {
+                $groupeSelect = $posts['groupe'];
+            }elseif($posts['newGroupe']){
+                $groupeSelect = $posts['newGroupe'];
+            }else{
+                return $this->redirectToRoute('seance_showForFormateurice', ['seanceID' => $seance->getID()]);
+            }
+            return $this->redirectToRoute('seance_sousGroupe', ['seanceID' => $seance->getID(), 'groupe' => $groupeSelect]);
+        }
+        return $this->render('seance/choiceGroupe.html.twig', [
+            'seance' => $seance,
+            'listeGroupes' => $arrayGroupes,
+
+        ]);
+    }
+
+     #[Route('/sous_groupe/{seanceID}/{groupe}', name: 'sousGroupe')]
+    #[IsGranted('ROLE_BF')]
+    public function choiceSousGroupe(EntityManagerInterface $entityManager, $groupe, $seanceID ,Request $request): Response
+    {
+        $seance = $entityManager->getRepository(Seance::class)->findById($seanceID)[0];
+        $listesGroupes = $entityManager->getRepository(Seance::class)->findAllSousGroupe($groupe);
+        $arraySousGroupes = [];
+        foreach ($listesGroupes as $sousGroupe) {
+            print_r($sousGroupe);
+            $sousGroupeExplode = explode("_", $sousGroupe['groupe']);
+
+            if (isset($sousGroupeExplode[1]) and ! in_array($sousGroupeExplode[1], $arraySousGroupes)){
+                array_push($arraySousGroupes, $sousGroupeExplode[1]);
+            }
+        }
+
+        if ($request->isMethod('post')) {
+            $posts = $request->request->all();
+            if ($posts['sousGroupe'] and $posts['sousGroupe']!='') {
+                $seance->setGroupe($groupe.'_'.$posts['sousGroupe']);
+            } elseif ($posts['newSousGroupe']) {
+                $seance->setGroupe($groupe.'_'.$posts['newSousGroupe']);
+            } else {
+                $seance->setGroupe($groupe);
+            }
+            $entityManager->persist($seance);
+            $entityManager->flush();
+            return $this->redirectToRoute('seance_showForFormateurice', ['seanceID' => $seance->getID()]);
+        }
+        print_r($arraySousGroupes);
+        return $this->render('seance/choiceSousGroupe.html.twig', [
+            'seance' => $seance,
+            'groupe'=> $groupe,
+            'listeSousGroupes' => $arraySousGroupes,
+
         ]);
     }
 
@@ -227,39 +312,23 @@ class SeanceController extends AbstractController
         $seance = new Seance();
         $form = $this->createForm(SeanceType::class, $seance);
         $form->handleRequest($request);
+
         
-
         if ($form->isSubmitted() && $form->isValid()) {
-
-            $go = true;
-            $i = 0;
-            while ($go) {
-                if (isset($form->get('profil')->getData()[$i])) {
-                    $nameLastNameProfil = $form->get('profil')->getData()[$i];
-                    $namelastname = explode(" ", $nameLastNameProfil);
-                    $profil = $entityManager->getRepository(Profil::class)->findByName($namelastname[0], $namelastname[1])[0];
-                    $profil->addSeance($seance);
-                    $entityManager->persist($profil);
-
-                    $i++;
-                } else {
-                    $go = false;
-                }
+         
+           foreach($form->get('profil')->getData() as  $formateurice){
+                $nameLastNameFormateurice = $formateurice;
+                $namelastname = explode(" ", $nameLastNameFormateurice);
+                $profil = $entityManager->getRepository(Profil::class)->findByName($namelastname[0], $namelastname[1])[0];
+                $profil->addSeance($seance);
+                $entityManager->persist($profil);
             }
 
-            $go = true;
-            $i = 0;
-            while ($go) {
-                if (isset($form->get('lieux')->getData()[$i])) {
-                    $nameLieux = $form->get('lieux')->getData()[$i];
+            foreach ($form->get('lieux')->getData() as  $lieu) {
+                    $nameLieux = $lieu;
                     $lieux = $entityManager->getRepository(Lieux::class)->findByName(strval($nameLieux))[0];
                     $lieux->addSeance($seance);
                     $entityManager->persist($lieux);
-
-                    $i++;
-                } else {
-                    $go = false;
-                }
             }
            
             if ($form->get('formation')->getData()) {
@@ -267,18 +336,17 @@ class SeanceController extends AbstractController
                 $formation = $entityManager->getRepository(Formation::class)->findByName(strval($nameFormation))[0];
                 $formation->addSeance($seance);
                 $entityManager->persist($formation);
-
-                $i++;
             } 
     
             $entityManager->persist($seance);
             $entityManager->flush();
-            return $this->redirectToRoute('seance_showForFormateurice', ['seanceID' => $seance->getID()]);
+            return $this->redirectToRoute('seance_groupe', ['seanceID' => $seance->getID()]);
         }
 
         return $this->render('seance/new.html.twig', [
             'seance' => $seance,
             'form' => $form->createView(),
+           
             
         ]);
     }
