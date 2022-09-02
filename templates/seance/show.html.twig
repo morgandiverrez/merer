@@ -33,7 +33,7 @@
                         <li class="list-group-item">Public Cible : {{seance.formation.getPublicCible()}}</li>
                         {% if seance.getDateTime() >= dateActuelle %}
                             {% if not app.user.profil.getSeanceProfil() in inscrits  %}
-                                <li class="list-group-item"><a class="btn btn-primary" href="/inscription/ponctuelle/{{seance.getId()}}">s'inscrire </a> </li>                         
+                                <li class="list-group-item"><a class="btn btn-primary" href="/inscription/{{seance.getId()}}">s'inscrire </a> </li>                         
                             {% else %}
                                 <li class="list-group-item">Vous etes déjà inscrit.e </li>
                             {% endif %}
