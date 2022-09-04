@@ -88,6 +88,7 @@ class SeanceRepository extends ServiceEntityRepository
            ;
        }
 
+
     public function findAllByYear($datedebut, $datefin): array
     {
         return $this->createQueryBuilder('seance')
@@ -151,8 +152,9 @@ class SeanceRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('seance')
         ->andWhere('seance.groupe LIKE :val')
-        ->setParameter('val', '%' . $value . '%')
-            ->getQuery()
+        ->setParameter('val', $value.'%')
+            ->orderBy('seance.datetime', 'ASC')   
+        ->getQuery()
             ->getResult();
     }
 
