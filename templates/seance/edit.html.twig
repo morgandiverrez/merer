@@ -17,19 +17,6 @@
                     {{ form_help(form.name) }}
                 </div>
 
-
-                <form action="{{ path('seance_edit', {'seanceID': seance.getId()}) }}" method="post">
-                    {{evenement}}
-                        <select size="1"  name='choixEvenement'>
-                            <option value='null'>Aucun</option>
-                            {% for groupe in listeGroupes %}
-                                <option value={{groupe}}> {{groupe}} </option>
-                            {% endfor %}
-                        </select>
-                        nouveau événement (en un mot, sans '_') <input type="text" name="newNameEvenement" placeholder="nouveau événement (en un mot, sans '_')"/>                
-                    <button class="btn btn-primary" type="submit" >Valider</button>
-                </form> 
-
                 <div class="datetime my-5">
                     {{ form_label(form.datetime, 'Date et Horaire de début ', {'label_attr': {'class': 'foo'}}) }}
                     {{ form_errors(form.datetime) }}

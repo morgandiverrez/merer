@@ -1,0 +1,74 @@
+{% extends 'base_user.html.twig' %}
+
+{% block title %}Inscription WEF{% endblock %}
+
+{% block body %}
+    <div class="container-fluid">
+        <div class="corps mx-auto">
+            <p class="display-6 no-wrap text-center"> Inscription WEF </p>
+            {% set i = 0 %}
+            <form action="{{ path('inscription_WEF',{'group' : seances[0].getGroupe() } ) }}" method="post">
+                <table class="table " style="flex-direction: column-reverse;"> 
+                    <thead>
+                        <tr>
+                            <th>
+                            {% for subGroup in listSubGroups %}
+                                <tr scope="col">{{subGroup }}</tr>
+                            {% endfor %}
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% set length = 1 %}
+                        {% for subGroup in subGroups %}   
+                            <tr>     
+                                {% set x = true %}           
+                                {% for nomSubGroup in listSubGroups %}
+                                    {% if x %}
+                                        {% set c = group ~ "_" ~ nomSubGroup %}
+                                        {% if "_" not in subGroup[c].getGroupe() %}
+                                            {% set length =  listSubGroups|length + 1 %}
+                                            {% set x = false %}  
+                                        {% endif %}  
+                                        <td colspan="{{length}}">
+                                        {% if subGroup[c] is defined %}
+                                                <div class=" card-body ">
+                                                    <h5 class="card-title">{{subGroup[c].getGroupe()}} </h5>
+                                                    <p class="card-text"> {{subGroup[c].formation.getDescription()}} </p>
+                                                    <p class="card-text"> {{subGroup[c].getDatetime().format('H:i')}} </p>
+                                                </div>
+                                            </td>
+                                            <td colspan="{{length}}"><input type="text" id="attente" name="attentes_{{subGroup[c].getId()}}"   placeholder="Attentes vis à vis de cette formation"/></td>
+                                            <td colspan="{{length}}"><input type="checkbox" id="indisponibilite" name="indisponibilite_{{subGroup[c].getId()}}"/>êtes vous indisponible pour cette formation</td>
+                                        {% endif %}
+                                    {% endif %}
+                                {% endfor %}
+                            </tr>
+                        {% endfor %}
+                    </tbody> 
+               
+                    <tfoot>
+                    {% set length = 2 * (listSubGroups|length + 1) %}   
+                        <tr style="justify-content: center;">       
+                            <th colspan="{{length}}" style="justify-content: center;">
+                                <input type="checkbox" id="autorisation_photo" name="autorisation_photo" />
+                                autoriser vous l'organisation à prendre des photos durant l'événement
+                            </th> 
+                        </tr>
+                         <tr style="justify-content: center;">       
+                            <th colspan="{{length}}" style="justify-content: center;">
+                                <input type="checkbox" id="autorisation_photo" name="autorisation_photo" />
+                                souhaitez vous participer au covoiturage
+                            </th> 
+                        </tr>
+                        <tr>       
+                            <th colspan="{{length}}" style="justify-content: center;"><button class="btn btn-primary" type="submit" >Valider</button></th> 
+                        </tr>
+                    </tfoot> 
+                </table>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}
+

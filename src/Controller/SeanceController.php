@@ -247,7 +247,7 @@ class SeanceController extends AbstractController
             }else{
                 return $this->redirectToRoute('seance_showForFormateurice', ['seanceID' => $seance->getID()]);
             }
-            return $this->redirectToRoute('seance_subGroup', ['seanceID' => $seance->getID(), 'group' => $groupSelect]);
+            return $this->redirectToRoute('seance_subGroup', ['seanceID' => $seance->getID(), 'group' => strtoupper($groupSelect)]);
         }
         return $this->render('seance/choiceGroup.html.twig', [
             'seance' => $seance,
@@ -279,9 +279,9 @@ class SeanceController extends AbstractController
         if ($request->isMethod('post')) {
             $posts = $request->request->all();
             if ($posts['subGroup'] and $posts['subGroup']!='0') {
-                $seance->setGroupe($group.'_'.$posts['subGroup']);
+                $seance->setGroupe($group.'_'.strtoupper($posts['subGroup']));
             } elseif ($posts['newSubGroup']) {
-                $seance->setGroupe($group.'_'.$posts['newSubGroup']);
+                $seance->setGroupe($group.'_'.strtoupper($posts['newSubGroup']));
             } else {
                 $seance->setGroupe($group);
             }
