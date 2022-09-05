@@ -9,16 +9,16 @@
                
             </p>
             <form action="{{ path('seance_archivage') }}" method="post">
-                <p class="text-center">
+                <p style="flex-wrap : wrap;" class="text-center justify-content-center">
                     <input type="text" id="name" name="name" placeholder="Nom"/>
                     <input type="text" id="groupe" name="groupe" placeholder="groupe"/>
                     <input type="text" id="formation" name="formation" placeholder="formation"/>
                     <input type="text" id="nom_lieu" name="nom_lieu" placeholder="nom lieu"/>
                     <input type="text" id="ville" name="ville" placeholder="ville"/>
-                   <br> 
-                   <br>
+                   
                      date de début : <input type="date" id="datedebut" name="datedebut"/>
                      date de fin : <input type="date" id="datefin" name="datefin"/>
+                     <br>
                     <button class="btn btn-primary" type="submit" >Rechercher</button>
                 </p>
             </form>
@@ -38,33 +38,31 @@
                 {% set verif = false %}
                 {% for seance in seances %} 
                     {% if seance.getDatetime() <= date() and verif == false %}
-                        <tr class="item-center">
-                            <th></th>
-                            <th></th>
-                            <th> Séance passée </th>
-                            <th></th>
-                            <th></th> 
+                        <tr>
+                            <td colspan="5" align="center"> Séance passée </td>
                         <tr>
                         {% set verif = true %}
                     {% endif %}
-                <tr> 
-                    <th>{{seance.getDatetime().format("Y-m-d H:i")}}</th>
-                    <th>{{seance.getName()}}</th>
-                    <th>{{seance.formation.getDuration().format("H:i")}}</th>
-                    <th>
-                    {% if seance.getLieux() is not null %}
-                        {% for lieu in seance.getLieux() %}
-                            {{lieu.getVille()}} 
-                        {% endfor %}
-                    {% else %}
-                        -
+                    {% if seance.isVisible() %}
+                        <tr> 
+                            <td>{{seance.getDatetime().format("Y-m-d H:i")}}</td>
+                            <td>{{seance.getName()}}</td>
+                            <td>{{seance.formation.getDuration().format("H:i")}}</td>
+                            <td>
+                            {% if seance.getLieux() is not null %}
+                                {% for lieu in seance.getLieux() %}
+                                    {{lieu.getVille()}} 
+                                {% endfor %}
+                            {% else %}
+                                -
+                            {% endif %}
+                            </td>
+                            <td><a href="/seance/showForFormateurice/{{seance.getId()}}"><i class="fa-solid fa-eye"></i></a></td>
+                        </tr>
                     {% endif %}
-                    </th>
-                    <th><a href="/seance/showForFormateurice/{{seance.getId()}}"><i class="fa-solid fa-eye"></i></a></th>
-               </tr> {% endfor %}
+               {% endfor %}
                 </tbody>
             </table>
-
         </div>
     </div>
 {% endblock %}
