@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-    <head>
+    <head style="margin: 0; padding: 0;">
         <meta charset="UTF-8">
         <title>{% block title %} Welcome!{% endblock %}</title>
         {# favicon du site#}
@@ -33,9 +33,9 @@
 
     </head>
 
-    <body style="height: 100%">
+    <body style="height: 100%; width:100%;">
         {% block header %}
-            <header>
+            <header >
                 <nav height="60" style="background-color:#2B9D7D ;" class="navbar navbar-expand-lg ">
                     <div class="container-fluid">
                         <a class="navbar-brand" href="https://fedeb.net/"><img src="{{asset('build/images/logo_FEDEB.png')}}" height="60" alt="logo Fédé B"></a>
@@ -209,9 +209,8 @@
         {% endblock %}
 
         {% block footer %}
-        <br>
-        <br><br><br><br><br><br><br><br>
-            <footer  height="60" style="background-color:#2B9D7D ;">
+            <br><br><br><br><br><br><br>
+            <footer  height="60" style="background-color: #2B9D7D;">
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-lg-4 mt-2 mb-2">
@@ -224,7 +223,7 @@
                             <p class="text-light justify-content-center"></p>
                         </div>
 
-                        <div class="col-lg-4 mt-2 mb-2 justify-content-end">
+                        <div class="col-lg-4 mt-2 mb-2" style"display: flex; justify-content: flex-end;">
                             <img src="{{asset('build/images/logo_FAGE.png')}}"  height="60" class="d-inline-block " alt="logo FAGE">
                             <img src="{{asset('build/images/logo_FEDEB.png')}}"  height="60" class="d-inline-block " alt="logo Fédé B">
                         </div>

@@ -46,6 +46,9 @@ class Seance
     #[ORM\OneToMany(mappedBy: 'seance', targetEntity: SeanceProfil::class)]
     private $seanceProfil;
 
+    #[ORM\Column(type: 'boolean', nullable: true)]
+    private $visible;
+
     public function __construct()
     {
         $this->lieux = new ArrayCollection();
@@ -246,6 +249,18 @@ class Seance
                 $seanceProfil->setSeance(null);
             }
         }
+
+        return $this;
+    }
+
+    public function isVisible(): ?bool
+    {
+        return $this->visible;
+    }
+
+    public function setVisible(?bool $visible): self
+    {
+        $this->visible = $visible;
 
         return $this;
     }
