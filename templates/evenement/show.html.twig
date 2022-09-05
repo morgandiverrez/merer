@@ -1,0 +1,69 @@
+{% extends 'base_user.html.twig' %}
+
+{% block title %}Détails évènement {% endblock %}
+
+
+
+{% block body %}
+    <div class="container-fluid">
+        <div class="corps mx-auto">
+            <p class="display-6 no-wrap text-center mb-5">Détails de l'évènement {{evenement.getName()}}</p>
+            <div class=" d-flex justify-content-center text-center align-center">
+                <div class="card" style="width: 18rem;">
+            
+                    <div class=" card-body ">
+                        <p class="card-text">{{evenement.getName()}}</p>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Catégorie : {{evenement.getDescription()}}</li>
+                        <li class="list-group-item">Description : {{evenement.getURL()}}</li>
+                        <li class="list-group-item">Date de Debut : {{evenement.getDateDebut().format("Y/m/d H:i")}}</li>
+                        <li class="list-group-item">Date de Fin : {{evenement.getDateFin().format("Y/m/d H:i")}}</li>
+                        <li class="list-group-item">Date de Fin : {{evenement.getURL()}}</li>
+                    </ul>
+                    <div class="card-body">
+                        {% if is_granted('ROLE_BF')%}
+                            <a href="/evenement/edit/{{ evenement.getId() }}" class="card-link"><i class="fa-solid fa-pen-to-square"></i></a>
+                            {% if is_granted('ROLE_ADMIN') %}
+                                <a href="/evenement/delete/{{ evenement.getId()}}" class="card-link"><i class="fa-solid fa-trash-can"></i></a>
+                            {% endif %}
+                        {% endif %}
+                        <a href="/evenement/" class="card-link"><i class="fa-solid fa-list"></i></a>
+
+                    </div>
+                </div>
+                  <div >
+                    <table class="table table-striped  ">
+                        <thead>
+                        <tr>
+                            <th scope="col">Nom</th>
+                            <th scope="col">Date et heure</th>
+                            <th scope="col">Durée</th>
+                            <th scope="col">Details</th>
+                            
+                        </tr>
+                        </thead>
+                        <tbody>
+                            {% if evenement.getSeance() is null %} 
+                                   <tr> <td colspan="5" align="center">Aucune séance enregistrée</td></tr>
+                            {% else %} 
+                                {% for seance in evenement.getSeance() %}
+                                    <tr>
+                                        <td>{{seance.getName()}}</td>
+                                        <td>{{seance.getDatetime().format('Y/m/d H:i')}}</td>
+                                        <td>{{seance.getFormation().getDuration().format('H:i')}}</td>
+                                         {% if is_granted('ROLE_FORMATEURICE') %}
+                                            <td><a href="/account/show/{{seance.getId()}}"><i class="fa-solid fa-eye"></i></a></td> 
+                                        {% endif %}
+                                    </tr> 
+                                {% endfor %}
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>                  
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}

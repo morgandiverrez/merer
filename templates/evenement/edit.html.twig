@@ -1,0 +1,54 @@
+{% extends 'base_user.html.twig' %}
+
+{% block title %}Nouvel Evènement{% endblock %}
+
+{% block body %}
+    <div class="container-fluid">
+        <p class="display-6 no-wrap text-center">Programmer un nouvel évènement</p>
+        
+        <div class="form-control form-control-lg mx-auto corps text-center">
+            {{ form_start(form) }}
+            <div class="mx-auto mt-5 mb-5">
+
+                <div class="name my-5">
+                    {{ form_label(form.name, 'Nom de l\'évènement', {'label_attr': {'class': 'foo'}}) }}
+                    {{ form_errors(form.name) }}
+                    {{ form_widget(form.name) }}
+                    {{ form_help(form.name) }}
+                </div>
+                
+                <div class="dateDebut my-5">
+                    {{ form_label(form.dateDebut, 'Date de début de de l\'évènement ', {'label_attr': {'class': 'foo'}}) }}
+                    {{ form_errors(form.dateDebut) }}
+                    {{ form_widget(form.dateDebut) }}
+                    {{ form_help(form.dateDebut) }}
+                </div>
+
+                 <div class="dateFin my-5">
+                    {{ form_label(form.dateFin, 'Date de fin de de l\'évènement ', {'label_attr': {'class': 'foo'}}) }}
+                    {{ form_errors(form.dateFin) }}
+                    {{ form_widget(form.dateFin) }}
+                    {{ form_help(form.dateFin) }}
+                </div>
+                <div class="description my-5">
+                    {{ form_label(form.description, 'Description de l\'évènement ', {'label_attr': {'class': 'foo'}}) }}
+                    {{ form_errors(form.description) }}
+                    {{ form_widget(form.description) }}
+                    {{ form_help(form.description) }}
+                </div>
+
+                <div class="URL my-5">
+                    {{ form_label(form.URL, ' URL de redirection (s\'il y a un formulaire complémentaire) ', {'label_attr': {'class': 'foo'}}) }}
+                    {{ form_errors(form.URL) }}
+                    {{ form_widget(form.URL) }}
+                    {{ form_help(form.URL) }}
+                </div>
+ 
+                <button class="btn btn-success mt-3 mb-3">{{ button_label|default('Valider ') }}<i class = "fa text-light fa-save me-2"></i></button>
+            </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+
+{% endblock %}
+
