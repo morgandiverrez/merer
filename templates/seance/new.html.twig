@@ -51,6 +51,13 @@
                     {{ form_widget(form.profil) }}
                     {{ form_help(form.profil) }}
                 </div>
+
+                <div class="evenement my-5">
+                    {{ form_label(form.evenement, ' Evénement ', {'label_attr': {'class': 'foo'}}) }}
+                    {{ form_errors(form.evenement) }}
+                    {{ form_widget(form.evenement) }}
+                    {{ form_help(form.evenement) }}
+                </div>
  
                 <button class="btn btn-success mt-3 mb-3">{{ button_label|default('Valider ') }}<i class = "fa text-light fa-save me-2"></i></button>
             </div>

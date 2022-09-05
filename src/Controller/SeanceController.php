@@ -34,8 +34,7 @@ class SeanceController extends AbstractController
         $seances = $entityManager->getRepository(Seance::class)->findAllByDatetime($dateActuelle);
         
         return $this->render('seance/showAll.html.twig', [
-            'seances' => $seances,
-            
+            'seances' => $seances, 
         ]);
     }
 
@@ -43,14 +42,15 @@ class SeanceController extends AbstractController
     #[IsGranted('ROLE_FORMATEURICE')]
     public function archivage(EntityManagerInterface $entityManager, Request $request): Response
     {
-        $seances = $entityManager->getRepository(Seance::class)->findAll();
+        $seances = $entityManager->getRepository(Seance::class)->findAllOrderByDate();
+
         if ($request->isMethod('post')) {
             $posts = $request->request->all();
             if ($posts['name']) {
                 $seances = array_intersect($seances, $entityManager->getRepository(Seance::class)->findAllByName($posts['name']));
             }
-            if ($posts['group']) {
-                $seances = array_intersect($seances, $entityManager->getRepository(Seance::class)->findAllByGroup($posts['group']));
+            if ($posts['groupe']) {
+                $seances = array_intersect($seances, $entityManager->getRepository(Seance::class)->findAllByGroupe($posts['groupe']));
             }
             if ($posts['formation']) {
                 $seances = array_intersect($seances, $entityManager->getRepository(Formation::class)->findAllByName($posts['formation']));
@@ -212,7 +212,7 @@ class SeanceController extends AbstractController
 
             $entityManager->persist($seance);
             $entityManager->flush();
-            return $this->redirectToRoute('seance_group', ['seanceID' => $seance->getID()]);
+            return $this->redirectToRoute('seance_show', ['seanceID' => $seance->getID()]);
         }
 
         return $this->render('seance/edit.html.twig', [
@@ -222,82 +222,82 @@ class SeanceController extends AbstractController
         ]);
     }
    
-    #[Route('/group/{seanceID}', name: 'group')]
-    #[IsGranted('ROLE_BF')]
-    public function choiceGroup(EntityManagerInterface $entityManager, Request $request,  $seanceID): Response
-    {
-        $seance = $entityManager->getRepository(Seance::class)->findById($seanceID)[0];
-        $currentGroup = explode("_", $seance->getGroupe())[0];
+    // #[Route('/group/{seanceID}', name: 'group')]
+    // #[IsGranted('ROLE_BF')]
+    // public function choiceGroup(EntityManagerInterface $entityManager, Request $request,  $seanceID): Response
+    // {
+    //     $seance = $entityManager->getRepository(Seance::class)->findById($seanceID)[0];
+    //     $currentGroup = explode("_", $seance->getGroupe())[0];
 
-        $listesGroups = $entityManager->getRepository(Seance::class)->findAllGroupe();
-        $arrayGroups = array() ;
-        foreach($listesGroups as $group){ 
-            $groupxplode = explode("_", $group['groupe']);
-            if(! in_array($groupxplode[0], $arrayGroups)){
-                array_push($arrayGroups, $groupxplode[0]);
-            } 
-        }
+    //     $listesGroups = $entityManager->getRepository(Seance::class)->findAllGroupe();
+    //     $arrayGroups = array() ;
+    //     foreach($listesGroups as $group){ 
+    //         $groupxplode = explode("_", $group['groupe']);
+    //         if(! in_array($groupxplode[0], $arrayGroups)){
+    //             array_push($arrayGroups, $groupxplode[0]);
+    //         } 
+    //     }
 
-        if ($request->isMethod('post')) {
-            $posts = $request->request->all();
-            if ($posts['groupe'] and $posts['groupe']!='') {
-                $groupSelect = $posts['groupe'];
-            }elseif($posts['newGroup']){
-                $groupSelect = $posts['newGroup'];
-            }else{
-                return $this->redirectToRoute('seance_showForFormateurice', ['seanceID' => $seance->getID()]);
-            }
-            return $this->redirectToRoute('seance_subGroup', ['seanceID' => $seance->getID(), 'group' => strtoupper($groupSelect)]);
-        }
-        return $this->render('seance/choiceGroup.html.twig', [
-            'seance' => $seance,
-            'listeGroups' => $arrayGroups,
-            'currentGroup' => $currentGroup,
+    //     if ($request->isMethod('post')) {
+    //         $posts = $request->request->all();
+    //         if ($posts['groupe'] and $posts['groupe']!='') {
+    //             $groupSelect = $posts['groupe'];
+    //         }elseif($posts['newGroup']){
+    //             $groupSelect = $posts['newGroup'];
+    //         }else{
+    //             return $this->redirectToRoute('seance_showForFormateurice', ['seanceID' => $seance->getID()]);
+    //         }
+    //         return $this->redirectToRoute('seance_subGroup', ['seanceID' => $seance->getID(), 'group' => strtoupper($groupSelect)]);
+    //     }
+    //     return $this->render('seance/choiceGroup.html.twig', [
+    //         'seance' => $seance,
+    //         'listeGroups' => $arrayGroups,
+    //         'currentGroup' => $currentGroup,
 
-        ]);
-    }
+    //     ]);
+    // }
 
-     #[Route('/sub_group/{seanceID}/{group}', name: 'subGroup')]
-    #[IsGranted('ROLE_BF')]
-    public function choiceSubGroup(EntityManagerInterface $entityManager, $group, $seanceID ,Request $request): Response
-    {
-        $seance = $entityManager->getRepository(Seance::class)->findById($seanceID)[0];
-        $currentSubGroup ="";
-        if(isset(explode("_", $seance->getGroupe())[1])) {
-            $currentSubGroup = explode("_", $seance->getGroupe())[1];
-        }
-        $listesGroups = $entityManager->getRepository(Seance::class)->findAllSousGroupe($group);
-        $arraySubGroups = [];
-        foreach ($listesGroups as $subGroup) {
-            $subGroupxplode = explode("_", $subGroup['groupe']);
+    //  #[Route('/sub_group/{seanceID}/{group}', name: 'subGroup')]
+    // #[IsGranted('ROLE_BF')]
+    // public function choiceSubGroup(EntityManagerInterface $entityManager, $group, $seanceID ,Request $request): Response
+    // {
+    //     $seance = $entityManager->getRepository(Seance::class)->findById($seanceID)[0];
+    //     $currentSubGroup ="";
+    //     if(isset(explode("_", $seance->getGroupe())[1])) {
+    //         $currentSubGroup = explode("_", $seance->getGroupe())[1];
+    //     }
+    //     $listesGroups = $entityManager->getRepository(Seance::class)->findAllSousGroupe($group);
+    //     $arraySubGroups = [];
+    //     foreach ($listesGroups as $subGroup) {
+    //         $subGroupxplode = explode("_", $subGroup['groupe']);
 
-            if (isset($subGroupxplode[1]) and ! in_array($subGroupxplode[1], $arraySubGroups)){
-                array_push($arraySubGroups, $subGroupxplode[1]);
-            }
-        }
+    //         if (isset($subGroupxplode[1]) and ! in_array($subGroupxplode[1], $arraySubGroups)){
+    //             array_push($arraySubGroups, $subGroupxplode[1]);
+    //         }
+    //     }
 
-        if ($request->isMethod('post')) {
-            $posts = $request->request->all();
-            if ($posts['subGroup'] and $posts['subGroup']!='0') {
-                $seance->setGroupe($group.'_'.strtoupper($posts['subGroup']));
-            } elseif ($posts['newSubGroup']) {
-                $seance->setGroupe($group.'_'.strtoupper($posts['newSubGroup']));
-            } else {
-                $seance->setGroupe($group);
-            }
-            $entityManager->persist($seance);
-            $entityManager->flush();
-            return $this->redirectToRoute('seance_showForFormateurice', ['seanceID' => $seance->getID()]);
-        }
-        print_r($arraySubGroups);
-        return $this->render('seance/choiceSubGroup.html.twig', [
-            'seance' => $seance,
-            'group'=> $group,
-            'listeSubGroups' => $arraySubGroups,
-            'currentSubGroup' => $currentSubGroup,
+    //     if ($request->isMethod('post')) {
+    //         $posts = $request->request->all();
+    //         if ($posts['subGroup'] and $posts['subGroup']!='0') {
+    //             $seance->setGroupe($group.'_'.strtoupper($posts['subGroup']));
+    //         } elseif ($posts['newSubGroup']) {
+    //             $seance->setGroupe($group.'_'.strtoupper($posts['newSubGroup']));
+    //         } else {
+    //             $seance->setGroupe($group);
+    //         }
+    //         $entityManager->persist($seance);
+    //         $entityManager->flush();
+    //         return $this->redirectToRoute('seance_showForFormateurice', ['seanceID' => $seance->getID()]);
+    //     }
+    //     print_r($arraySubGroups);
+    //     return $this->render('seance/choiceSubGroup.html.twig', [
+    //         'seance' => $seance,
+    //         'group'=> $group,
+    //         'listeSubGroups' => $arraySubGroups,
+    //         'currentSubGroup' => $currentSubGroup,
 
-        ]);
-    }
+    //     ]);
+    // }
 
     #[Route('/new', name: 'new')]
     #[IsGranted('ROLE_BF')]
@@ -334,14 +334,12 @@ class SeanceController extends AbstractController
     
             $entityManager->persist($seance);
             $entityManager->flush();
-            return $this->redirectToRoute('seance_group', ['seanceID' => $seance->getID()]);
+            return $this->redirectToRoute('seance_show', ['seanceID' => $seance->getID()]);
         }
 
         return $this->render('seance/new.html.twig', [
             'seance' => $seance,
-            'form' => $form->createView(),
-           
-            
+            'form' => $form->createView(), 
         ]);
     }
 }

@@ -17,7 +17,7 @@
                     </div>
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item">Groupe : {{seance.getGroupe()}}</li>
-                        <li class="list-group-item">Date et Heure : {% if seance.getDateTime() is null %} - {% else %} {{seance.getDatetime().format("Y-m-d H:i")}} {% endif %}</li>
+                        <li class="list-group-item">Date et Heure : {% if seance.getDateTime() is null %} - {% else %} {{seance.getDatetime().format("d/m/Y H:i")}} {% endif %}</li>
                         <li class="list-group-item">Nombre de Place Maximum : {{seance.getNombrePlace()}}</li>   
                         {% for formateurice in seance.getProfil() %}
                             <li class="list-group-item">Formateurice : {{formateurice.getName()}} {{formateurice.getLastName()}}</li>
@@ -33,7 +33,7 @@
                     </div>
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item">Pré-requis : {{seance.formation.getPreRequis()}}</li>
-                        <li class="list-group-item">Durée : {%if seance.formation.getDuration() is null %}0 {% else %} {{seance.formation.getDuration().format("H:i")}} {% endif %} </li>
+                        <li class="list-group-item">Durée : {% if seance.formation.getDuration() is null %}0 {% else %} {{seance.formation.getDuration().format("H:i")}} {% endif %} </li>
                         <li class="list-group-item">Public Cible : {{seance.formation.getPublicCible()}}</li>                         
                     </ul>
                     <div class="card-body">

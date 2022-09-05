@@ -202,7 +202,7 @@
     </header>
     
     <div  class="center" >
-        <p >Liste des inscrits pour la formation {{seance.getName()}} du {{seance.getDatetime().format("Y-m-d H:i")}}  </p>
+        <p >Liste des inscrits pour la formation {{seance.getName()}} du {{seance.getDatetime().format("d/m/Y H:i")}}  </p>
         <br>
         <br>
         <table  >
@@ -220,7 +220,7 @@
             <tbody>
                 {% for inscrit in seance.getSeanceProfil() %} 
                     <tr>
-                        <th style="  border: 1px solid black; padding: 10px;">{{inscrit.getHorrodateur().format("Y-m-d H:i")}}
+                        <th style="  border: 1px solid black; padding: 10px;">{{inscrit.getHorrodateur().format("d/m/Y H:i")}}
                         <th style="  border: 1px solid black; padding: 10px;">{{inscrit.profil.getLastName()}}</th>
                         <th style="  border: 1px solid black; padding: 10px;">{{inscrit.profil.getName()}}</th>
                         <th style="  border: 1px solid black; padding: 10px;">
