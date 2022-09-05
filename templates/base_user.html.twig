@@ -65,7 +65,12 @@
                                             <a class="nav-link dropdown-toggle"  id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                             Espace Formateurice </a>
                                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                            
+                                                <li class="nav-item">
+                                                    <a class="nav-link" href="/seance/archivage"> Liste des séances </a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link" href="/evenement/"> Liste des évènements </a>
+                                                </li>
                                                 <li class="nav-item">
                                                     <a class="nav-link" href="/account/showAll">Liste des profils</a>
                                                 </li>
@@ -77,9 +82,6 @@
                                                 </li>
                                                 <li class="nav-item">
                                                     <a class="nav-link" href="/lieux/">Liste des Lieux </a>
-                                                </li>
-                                                <li class="nav-item">
-                                                    <a class="nav-link" href="/seance/archivage"> Liste des séances </a>
                                                 </li>
                                                 <li class="nav-item">
                                                     <a class="nav-link" href="/badge/">Liste des badges</a>
@@ -107,13 +109,6 @@
                                                     <a class="nav-link" href="/account/roles">gestionnaire des rôles</a>
                                                 </li>
                                                 <li class="nav-item">
-                                                    <a class="nav-link" href="/seance/new">créateur de formation ponctuelle </a>
-                                                </li>
-                                                <li class="nav-item">
-                                                    <a class="nav-link" href="/seance/new">créateur de formation ponctuelle </a>
-                                                </li>
-
-                                                <li class="nav-item">
                                                     <a class="nav-link" href="/retour/sdf">générer le fichier SDF </a>
                                                 </li>
                                                 {% endif %}
@@ -123,7 +118,7 @@
                                     {% endif %}
                                     
                                     {% if app.user.profil.getEquipeElu() is not empty %}
-                                        {% if  'Centraux UBO' in app.user.profil.getEquipeElu() or  'CROUS Rennes-Bretagne' in app.user.profil.getEquipeElu() or is_granted('ROLE_BF') %}   
+                                        {% if 'Centraux UBO' in app.user.profil.getEquipeElu() or 'CROUS Rennes-Bretagne' in app.user.profil.getEquipeElu() or is_granted('ROLE_BF') %}   
                                             <li class="nav-item dropdown">
                                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                                 Signature </a>
@@ -135,7 +130,7 @@
                                                     {% endif %}
                                                     {% if 'CROUS Rennes-Bretagne' in app.user.profil.getEquipeElu() or is_granted('ROLE_BF') %}
                                                         <li >
-                                                            <a class="dropdown-item" href="/signature/CROUS">Signature CROUS  BZH</a>
+                                                            <a class="dropdown-item" href="/signature/CROUS">Signature CROUS BZH</a>
                                                         </li>
                                                     {% endif %}
                                                 </ul>

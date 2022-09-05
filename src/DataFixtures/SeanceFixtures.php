@@ -30,6 +30,7 @@ class SeanceFixtures extends Fixture implements DependentFixtureInterface
             for ($k = 0; $k <= $this->faker->numberBetween(1, 2); $k++){
                 $seance->addProfil($this->getRandomReference('PROFIL'));
             }
+            $seance->setEvenement($this->getRandomReference('EVENEMENT'));
             $this->addReference('SEANCE_'.$i, $seance);
             $seance->setVisible(true);
             $manager->persist($seance);
@@ -45,6 +46,7 @@ class SeanceFixtures extends Fixture implements DependentFixtureInterface
             FormationFixtures::class,
             LieuxFixtures::class,
             ProfilFixtures::class,
+            EvenementFixtures::class,
 
         ];
     }

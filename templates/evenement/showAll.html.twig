@@ -1,0 +1,53 @@
+{% extends 'base_user.html.twig' %}
+
+{% block title %}Liste Evenement{% endblock %}
+
+
+{% block body %}
+    <div class="container-fluid">
+        <div class="corps mx-auto">
+
+            <p class="display-6 no-wrap text-center">Liste des Evènements
+            {% if is_granted('ROLE_BF')%}
+                 <a href="/evenement/new"><i class="fa-solid fa-plus align-right"></i></a>
+            {% endif %}
+            </p>
+            
+            <table class="table table-striped">
+                <thead>
+                <tr>
+
+                    <th scope="col">Nom</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Date début</th>
+                     <th scope="col">Date fin</th>
+                    <th scope="col">Détails</th>       
+                    
+                 </tr>
+                </thead>
+
+                <tbody>
+                {% set verif= false %}
+                    {% for evenement in evenements %} 
+                        {% if evenement.getDateFin() <= date() and verif == false %}
+                            <tr>
+                                <td colspan="5" align="center"> Evénement passé </td>
+                            <tr>
+                            {% set verif = true %}
+                        {% endif %}
+                        <tr>
+                            <th>{{evenement.getName()}}</th>
+                            <th>{{evenement.getDescription()}}</th>
+                            <th>{{evenement.getDateDebut().format('d/m/Y H:i')}}</th>
+                            <th>{{evenement.getDateFin().format('d/m/Y H:i')}}</th>
+                            <th><a href="/evenement/show/{{evenement.getId()}}"><i class="fa-solid fa-eye"></i></i></a></th> 
+                        </tr> 
+                    {% endfor %}
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+
+
+{% endblock %}

@@ -49,6 +49,9 @@ class Seance
     #[ORM\Column(type: 'boolean', nullable: true)]
     private $visible;
 
+    #[ORM\ManyToOne(targetEntity: Evenement::class, inversedBy: 'seance')]
+    private $evenement;
+
     public function __construct()
     {
         $this->lieux = new ArrayCollection();
@@ -261,6 +264,18 @@ class Seance
     public function setVisible(?bool $visible): self
     {
         $this->visible = $visible;
+
+        return $this;
+    }
+
+    public function getEvenement(): ?Evenement
+    {
+        return $this->evenement;
+    }
+
+    public function setEvenement(?Evenement $evenement): self
+    {
+        $this->evenement = $evenement;
 
         return $this;
     }
