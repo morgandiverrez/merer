@@ -8,9 +8,9 @@
         <div class="corps mx-auto">
 
             <p class="display-6 no-wrap text-center">Liste des Evènements
-            {% if is_granted('ROLE_BF')%}
-                 <a href="/evenement/new"><i class="fa-solid fa-plus align-right"></i></a>
-            {% endif %}
+                {% if is_granted('ROLE_BF')%}
+                    <a href="/evenement/new"><i class="fa-solid fa-plus align-right"></i></a>
+                {% endif %}
             </p>
             
             <table class="table table-striped">

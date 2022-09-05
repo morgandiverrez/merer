@@ -41,6 +41,10 @@ class SeanceType extends AbstractType
             'multiple' => true, 
         ])
 
+            ->add('evenement', EntityType::class, [
+                'class' => Evenement::class,
+            ])
+
         
 
         ;

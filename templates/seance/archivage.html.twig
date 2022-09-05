@@ -6,7 +6,9 @@
    <div class="container-fluid">
         <div class="corps mx-auto">
             <p class="display-6 no-wrap text-center mb-5"> Liste des Séances
-               
+               {% if is_granted('ROLE_BF')%}
+                    <a href="/seance/new"><i class="fa-solid fa-plus align-left"></i></a>
+                {% endif %}
             </p>
             <form action="{{ path('seance_archivage') }}" method="post">
                 <p style="flex-wrap : wrap;" class="text-center justify-content-center">
@@ -45,7 +47,7 @@
                     {% endif %}
                     {% if seance.isVisible() %}
                         <tr> 
-                            <td>{{seance.getDatetime().format("Y-m-d H:i")}}</td>
+                            <td>{{seance.getDatetime().format("d/m/Y H:i")}}</td>
                             <td>{{seance.getName()}}</td>
                             <td>{{seance.formation.getDuration().format("H:i")}}</td>
                             <td>

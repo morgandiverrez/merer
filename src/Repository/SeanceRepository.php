@@ -64,6 +64,13 @@ class SeanceRepository extends ServiceEntityRepository
     //        ;
     //    }
 
+    public function findAllOrderByDate(): array
+    {
+        return $this->createQueryBuilder('seance')
+            ->orderBy('seance.datetime', 'DESC')
+            ->getQuery()
+            ->getResult();;
+    }
 
     public function findByID($value): ?array
     {

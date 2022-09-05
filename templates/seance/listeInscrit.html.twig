@@ -8,7 +8,7 @@
         <div class="corps mx-auto">
 
 
-            <p class="display-6 no-wrap text-center mb-5">Liste des inscrits pour la formation {{seance.getName()}} du {{seance.getDatetime().format("Y-m-d H:i")}} 
+            <p class="display-6 no-wrap text-center mb-5">Liste des inscrits pour la formation {{seance.getName()}} du {{seance.getDatetime().format("d/m/Y H:i")}} 
             <a  href="/seance/liste_inscrit/pdf/{{seance.getId()}}"><i class="fa-solid fa-download"></i></a>
             </p>
 
@@ -33,7 +33,7 @@
                 <tbody>
                 {% for seanceProfil in seance.getSeanceProfil() %} 
                     <tr>
-                        <th>{{seanceProfil.getHorrodateur().format("Y-m-d H:i")}}
+                        <th>{{seanceProfil.getHorrodateur().format("d/m/Y H:i")}}
                         <th>{{seanceProfil.profil.getLastName()}}</th>
                         <th>{{seanceProfil.profil.getName()}}</th>
                         <th>
