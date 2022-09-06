@@ -30,10 +30,10 @@ class SeanceController extends AbstractController
     #[IsGranted('ROLE_USER')]
     public function showAll(EntityManagerInterface $entityManager): Response
     {
-        $dateActuelle =new DateTime();
+
         
-        $seances = $entityManager->getRepository(Seance::class)->findAllSuperiorByDatetimeAndVisibleAndWithoutEvenement($dateActuelle);
-        $evenements = $entityManager->getRepository(Evenement::class)->findAllSuperiorByDatetimeAndVisible($dateActuelle);
+        $seances = $entityManager->getRepository(Seance::class)->findAllSuperiorByDatetimeAndVisibleAndWithoutEvenement(date('y/m/d H:i:s'));
+        $evenements = $entityManager->getRepository(Evenement::class)->findAllSuperiorByDatetimeAndVisible(date('y/m/d H:i:s'));
        
         return $this->render('seance/showAll.html.twig', [
             'seances' => $seances,
@@ -224,14 +224,18 @@ class SeanceController extends AbstractController
    
     #[Route('/parcours/{seanceID}', name: 'parcours')]
     #[IsGranted('ROLE_BF')]
-    public function choiceGroup(EntityManagerInterface $entityManager, Request $request,  $seanceID): Response
+    public function choiceEvenement(EntityManagerInterface $entityManager, Request $request,  $seanceID): Response
     {
         $seance = $entityManager->getRepository(Seance::class)->findById($seanceID)[0];
 
         if ($request->isMethod('post')) {
             $posts = $request->request->all();
             if ($posts['parcours'] ) {
-                $seance->setParcours($posts['groupe']);
+                $seance->setParcours($posts['parcours']);
+            }
+            if ($posts['newParcours']) {
+                $seance->getEvenement()->addParcours($posts['newParcours']);
+                $seance->setParcours($posts['newParcours']);
             }
             $entityManager->persist($seance);
             $entityManager->flush();

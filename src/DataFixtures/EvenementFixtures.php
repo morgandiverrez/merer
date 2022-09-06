@@ -32,7 +32,7 @@ class EvenementFixtures extends Fixture implements DependentFixtureInterface
             $evenement->setVisible(true);
             $evenement->setDateFinInscription($evenement->getDateDebut());
             $evenement->setLieu($this->getRandomReference('LIEU'));
-            
+            $evenement->setNombrePlace($this->faker->numberBetween(40,150));
             $this->addReference('EVENEMENT_' . $k, $evenement);
 
             $manager->persist($evenement);

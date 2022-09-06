@@ -75,8 +75,8 @@ class SeanceRepository extends ServiceEntityRepository
     public function findByID($value): array
     {
         return $this->createQueryBuilder('seance')
-        ->andWhere('seance.id = :val')
-        ->setParameter('val', $value)
+            ->andWhere('seance.id = :val')
+            ->setParameter('val', $value)
             ->setMaxResults(1)
             ->getQuery()
             ->getResult();
@@ -85,33 +85,33 @@ class SeanceRepository extends ServiceEntityRepository
     public function findAllByParcours($value): ?array
     {
         return $this->createQueryBuilder('seance')
-        ->andWhere('seance.parcours = :val')
-        ->setParameter('val', $value)
+            ->andWhere('seance.parcours = :val')
+            ->setParameter('val', $value)
             ->getQuery()
             ->getResult();
     }
 
     public function findAllSuperiorByDatetimeAndVisibleAndWithoutEvenement($value): array
-       {
-           return $this->createQueryBuilder('seance')
-                ->where('seance.visible = true')
-                ->andWhere('seance.datetime >= :val')
-                ->andWhere('seance.evenement IS NULL ')
-                ->setParameter('val', $value)
-                ->orderBy('seance.datetime', 'ASC')
-                ->getQuery()
-                ->getResult()
-           ;
-       }
+    {
+        return $this->createQueryBuilder('seance')
+            ->where('seance.visible = true')
+            ->andWhere('seance.datetime >= :val')
+            ->andWhere('seance.evenement IS NULL ')
+            ->setParameter('val', $value)
+            ->orderBy('seance.datetime', 'ASC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 
 
     public function findAllByYear($datedebut, $datefin): array
     {
         return $this->createQueryBuilder('seance')
-        ->Where('seance.datetime >=:datedebut')
-        ->andWhere('seance.datetime <:datefin')
-        ->setParameter('datedebut', $datedebut)
-        ->setParameter('datefin', $datefin)
+            ->Where('seance.datetime >=:datedebut')
+            ->andWhere('seance.datetime <:datefin')
+            ->setParameter('datedebut', $datedebut)
+            ->setParameter('datefin', $datefin)
             ->orderBy('seance.datetime', 'ASC')
             ->getQuery()
             ->getResult();
@@ -120,9 +120,8 @@ class SeanceRepository extends ServiceEntityRepository
     public function findAllByEvenement($value): array
     {
         return $this->createQueryBuilder('seance')
-        
-        ->Where('seance.evenement LIKE :val')
-        ->setParameter('val', $value)
+            ->Where('seance.evenement LIKE :val')
+            ->setParameter('val', $value)
             ->orderBy('seance.datetime', 'ASC')
             ->getQuery()
             ->getResult();
@@ -131,8 +130,8 @@ class SeanceRepository extends ServiceEntityRepository
     public function findAllByName($value): ?array
     {
         return $this->createQueryBuilder('seance')
-        ->andWhere('seance.name LIKE :val')
-        ->setParameter('val', '%' . $value . '%')
+            ->andWhere('seance.name LIKE :val')
+            ->setParameter('val', '%' . $value . '%')
             ->getQuery()
             ->getResult();
     }
@@ -140,18 +139,18 @@ class SeanceRepository extends ServiceEntityRepository
     public function findAllByGroupe($value): ?array
     {
         return $this->createQueryBuilder('seance')
-        ->andWhere('seance.groupe LIKE :val')
-        ->setParameter('val', $value.'%')
+            ->andWhere('seance.groupe LIKE :val')
+            ->setParameter('val', $value.'%')
             ->orderBy('seance.datetime', 'ASC')   
-        ->getQuery()
+            ->getQuery()
             ->getResult();
     }
 
     public function findAllByDateTimeSuperior($value): array
     {
         return $this->createQueryBuilder('seance')
-        ->Where('seance.datetime >= :val')
-        ->setParameter('val', $value)
+            ->Where('seance.datetime >= :val')
+            ->setParameter('val', $value)
             ->orderBy('seance.datetime', 'ASC')
             ->getQuery()
             ->getResult();
@@ -160,12 +159,10 @@ class SeanceRepository extends ServiceEntityRepository
     public function findAllByDateTimeInferior($value): array
     {
         return $this->createQueryBuilder('seance')
-        ->Where('seance.datetime <= :val')
-        ->setParameter('val', $value)
+            ->Where('seance.datetime <= :val')
+            ->setParameter('val', $value)
             ->orderBy('seance.datetime', 'ASC')
             ->getQuery()
             ->getResult();
     }
-
-    
 }

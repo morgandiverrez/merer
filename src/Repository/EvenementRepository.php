@@ -68,7 +68,7 @@ class EvenementRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('evenement')
             ->andWhere('evenement.id = :val')
             ->setParameter('val', $value)
-            ->orderBy('formation.id', 'ASC')
+            ->orderBy('evenement.id', 'ASC')
             ->setMaxResults(1)
             ->getQuery()
             ->getResult();

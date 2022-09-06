@@ -59,6 +59,9 @@ class Evenement
     #[ORM\ManyToOne(targetEntity: lieux::class, inversedBy: 'evenements')]
     private $lieu;
 
+    #[ORM\Column(type: 'integer', nullable: true)]
+    private $nombrePlace;
+
 
 
    
@@ -68,6 +71,11 @@ class Evenement
       
     }
 
+    public function  __toString()
+    {
+        return $this->getName();
+    }
+    
     public function getId(): ?int
     {
         return $this->id;
@@ -176,6 +184,13 @@ class Evenement
         return $this;
     }
 
+    public function addParcours(?string $parcours): self
+    {
+        $this->parcours =array_push($this->getParcours(),$parcours);
+
+        return $this;
+    }
+
     public function isAutorisationPhoto(): ?bool
     {
         return $this->autorisationPhoto;
@@ -256,6 +271,18 @@ class Evenement
     public function setLieu(?lieux $lieu): self
     {
         $this->lieu = $lieu;
+
+        return $this;
+    }
+
+    public function getNombrePlace(): ?int
+    {
+        return $this->nombrePlace;
+    }
+
+    public function setNombrePlace(?int $nombrePlace): self
+    {
+        $this->nombrePlace = $nombrePlace;
 
         return $this;
     }

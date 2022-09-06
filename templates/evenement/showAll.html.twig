@@ -38,8 +38,8 @@
                         <tr>
                             <th>{{evenement.getName()}}</th>
                             <th>{{evenement.getDescription()}}</th>
-                            <th>{{evenement.getDateDebut().format('d/m/Y H:i')}}</th>
-                            <th>{{evenement.getDateFin().format('d/m/Y H:i')}}</th>
+                            <th>{% if evenement.getDateDebut() is null %} - {% else %} {{evenement.getDateDebut().format('d/m/Y H:i')}} {% endif %}</th>
+                            <th>{% if evenement.getDateFin() is null %} - {% else %}{{evenement.getDateFin().format('d/m/Y H:i')}}{% endif %}</th>
                             <th><a href="/evenement/show/{{evenement.getId()}}"><i class="fa-solid fa-eye"></i></i></a></th> 
                         </tr> 
                     {% endfor %}
