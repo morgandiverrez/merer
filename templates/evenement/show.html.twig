@@ -19,7 +19,7 @@
                         <li class="list-group-item">Description : {{evenement.getURL()}}</li>
                         <li class="list-group-item">Date de Debut : {{evenement.getDateDebut().format("Y/m/d H:i")}}</li>
                         <li class="list-group-item">Date de Fin : {{evenement.getDateFin().format("Y/m/d H:i")}}</li>
-                        <li class="list-group-item">Date de Fin : {{evenement.getURL()}}</li>
+                        <li class="list-group-item">Date de Fin Inscription: {{evenement.getDateFinInscription().format("Y/m/d H:i")}}</li>
                     </ul>
                     <div class="card-body">
                         {% if is_granted('ROLE_BF')%}
@@ -31,36 +31,57 @@
                         <a href="/evenement/" class="card-link"><i class="fa-solid fa-list"></i></a>
 
                     </div>
-                </div>
-                  <div >
-                    <table class="table table-striped  ">
+                </div> 
+                <div align="bottom">
+                    <table style="justify-content:center align-items-bottom"  class=" table align-middle table-success table-striped-columns" > 
                         <thead>
-                        <tr>
-                            <th scope="col">Nom</th>
-                            <th scope="col">Date et heure</th>
-                            <th scope="col">Durée</th>
-                            <th scope="col">Details</th>
-                            
-                        </tr>
+                            <tr>
+                                {% for parcours in evenement.getParcours() %}
+                                    <th scope="col">{{parcours}}</th>
+                                {% endfor %}
+                            </tr>
                         </thead>
                         <tbody>
-                            {% if evenement.getSeance() is null %} 
-                                   <tr> <td colspan="5" align="center">Aucune séance enregistrée</td></tr>
-                            {% else %} 
-                                {% for seance in evenement.getSeance() %}
-                                    <tr>
-                                        <td>{{seance.getName()}}</td>
-                                        <td>{{seance.getDatetime().format('Y/m/d H:i')}}</td>
-                                        <td>{{seance.getFormation().getDuration().format('H:i')}}</td>
-                                         {% if is_granted('ROLE_FORMATEURICE') %}
-                                            <td><a href="/account/show/{{seance.getId()}}"><i class="fa-solid fa-eye"></i></a></td> 
+                            {% for formation in seanceByCreneauAndParcours %} 
+                                {% set length = 1 %}
+                                {% set x = true %}
+                                {# on itere tt les horaires  #}
+                                <tr>              
+                                    {% for  parcours in evenement.getParcours() %}
+                                    {# on itere tt les parcours #}
+                                        {% if x %}      
+                                            {% if formation[parcours] is defined %}
+                                                {% if formation[parcours].getParcours() == null %}
+                                                    {% set length = evenement.getParcours()|length %}
+                                                    {% set x = false %}  
+                                                {% endif %} 
+                                                <td colspan="{{length}}" >
+                                                     <div class="card" style="width: 18rem;">
+                                                        <div class=" card-body ">
+                                                            <h5 class="card-title">{{formation[parcours].getFormation().getName()}}</h5>
+                                                            <p class="card-text">{{formation[parcours].getFormation().getDescription()}}</p>
+                                                            <p class="card-text">OPG :{{formation[parcours].getFormation().getOpg()}}</p>
+                                                        </div>
+                                                        <ul class="list-group list-group-flush">
+                                                            <li class="list-group-item">Pré-requis : {{formation[parcours].getFormation().getPreRequis()}}</li>
+                                                            <li class="list-group-item">Durée : {% if formation[parcours].getFormation().getDuration() is null %}0 {% else %} {{formation[parcours].getFormation().getDuration().format("H:i")}} {% endif %} </li>
+                                                            <li class="list-group-item">Public Cible : {{formation[parcours].getFormation().getPublicCible()}}</li>
+                                                            {% if formation[parcours].getFormation().getBadge() is not null %}
+                                                                <li class="list-group-item"> <img  src="{{asset(formation[parcours].getFormation().badge.getImage())}}" alt="image de {{formation[parcours].getFormation().badge.getName()}}" ></li>
+                                                            {% endif %}                 
+                                                            
+                                                        </ul>        
+                                                    </div>
+                                                </td >
+                                            {% else %}
+                                                <td></td>
+                                            {% endif %}
                                         {% endif %}
-                                    </tr> 
-                                {% endfor %}
-                            {% endif %}
-                        </tbody>
-                    </table>
-                </div>                  
+                                    {% endfor %}
+                                </tr>
+                            {% endfor %}
+                        </tbody> 
+                    </table>                 
             </div>
         </div>
     </div>

@@ -9,6 +9,7 @@ use App\Entity\Evenement;
 use App\Entity\SeanceProfil;
 use App\Form\PonctuelleType;
 use App\Form\InscriptionType;
+use App\Form\SeanceProfilType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,7 +25,7 @@ class InscriptionController extends AbstractController
     #[IsGranted('ROLE_USER')]
     public function distribution(EntityManagerInterface $entityManager, Request $request, $seanceID): Response
     {
-        $seance = $entityManager->getRepository(Seance::class)->findByID(strval($seanceID))[0];
+        $seance = $entityManager->getRepository(Seance::class)->findByID($seanceID)[0];
         if(empty($seance->getEvenement())){
             return $this->redirectToRoute('inscription_ponctuelle', ['seanceID' => $seance->getId()]);
         }else{
@@ -37,16 +38,30 @@ class InscriptionController extends AbstractController
     public function ponctuelle(EntityManagerInterface $entityManager, Request $request, $seanceID): Response
     {
         $seance = $entityManager->getRepository(Seance::class)->findByID($seanceID)[0];
-        if ($seance->isVisible()) {
+
+        // on verifie que la seance est sensé etre visible (sinon, on renvoi vers le profil de l'utilisateur)
+        if (! $seance->isVisible()) {
             return $this->redirectToRoute('profil_show', []);
         }
+
+        //on verifie que cette seance n'est pas dans un evenement (si oui, on renvoie vers le formulaire approprié)
         if( null != $seance->getEvenement()){
             return $this->redirectToRoute('inscription_evenement', ['evenementID' => $seance->getEvenement()->getId()]);
+        }
+
+        //on verifie qu'il reste des places
+        
+        if( $seance->getNombrePlace() <= $entityManager->getRepository(SeanceProfil::class)->CountBySeance($seance)[0][1]){
+            return $this->render('inscription/noPlace.html.twig');
+        }
+
+        if($seance->getDatetime() <= date('d/m/y H:i:s')){
+            return $this->render('inscription/close.html.twig');
         }
         
 
         $seanceProfil = new SeanceProfil();
-        $form = $this->createForm(PonctuelleType::class, $seanceProfil, [ 'liste_lieu' => $seance->getLieux()]);
+        $form = $this->createForm(InscriptionType::class, $seanceProfil, [ 'liste_lieu' => $seance->getLieux()]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -77,25 +92,44 @@ class InscriptionController extends AbstractController
 
     #[Route('/evenement/{evenementID}', name: 'evenement')]
     #[IsGranted('ROLE_USER')]
-    public function wef( EntityManagerInterface $entityManager, Request $request, $evenementID): Response
+    public function evenement( EntityManagerInterface $entityManager, Request $request, $evenementID): Response
     {
         $seanceByCreneauAndParcours = [];
-
+        $restePlace =[];
         $evenement = $entityManager->getRepository(Evenement::class)->findById($evenementID)[0];
-        if ( $evenement->isVisible()) {
+        //on verifie que l'evenement est visible
+        if ( ! $evenement->isVisible()) {
             return $this->redirectToRoute('profil_show', []);
         }
+         // on verifie qu'il reste des places
+        if (  $entityManager->getRepository(SeanceProfil::class)->CountByEvenement($evenement)[0][1] >= $evenement->getNombrePlace()) {
+            return $this->render('inscription/noPlace.html.twig');
+        }
+
+        //on verifie que les inscriptions ne sont pas cloturé
+        if ($evenement->getDateFinInscription() <= date('y/m/d H:i:s')) {
+            return $this->render('inscription/close.html.twig');
+        }
+
         $seances = $evenement->getSeance(); //on recup tt les seances qui ont un groupe qui commence par la variable groupe
 
        
 
         foreach($seances as $seance){   
+            //rangé par parcours et horaire
             if( $seance->getParcours() != null ){ 
                 $seanceByCreneauAndParcours[strval($seance->getDatetime()->format("d/m/Y H:i"))][$seance->getParcours()] = $seance;
             }else{ //si pas de parcours (donc formation pour tt les parcours si plusieur parcours)
                 foreach($evenement->getParcours() as $parcours){ // on itere les parcours pour les remplir tous de cette seance
                     $seanceByCreneauAndParcours[$seance->getDatetime()->format("d/m/Y H:i")][$parcours] = $seance;
                 }
+            }
+
+            // verifié s'il reste des places
+            if ($entityManager->getRepository(SeanceProfil::class)->CountBySeance($seance) < $seance->getNombrePlace() ) {
+                $restePlace[$seance->getId()] = true;
+            }else{
+                $restePlace[$seance->getId()] = false;
             }
         }
 
@@ -107,19 +141,21 @@ class InscriptionController extends AbstractController
             }
         }
         
+
+
         if ($request->isMethod('post')) {
             $posts = $request->request->all();
             foreach ($seances as $seance) {
-                if (isset($posts['indisponibilite_' . $seance->getId()])) {
+                if ($posts['inscription_' . $seance->getId()]) {
                     $seanceProfil = new SeanceProfil();
                     $seanceProfil->setSeance($seance);
                     $seanceProfil->setProfil($profil);
                     $seanceProfil->setHorrodateur(new DateTime());
                     $seanceProfil->setAttente($posts['attentes_'.$seance->getId()]);
-                    $seanceProfil->setLieu($seance->getLieux()[0]);
+                    $seanceProfil->setLieu($seance->getEvenement()->getLieux());
                     $seanceProfil->isAutorisationPhoto($posts['autorisation_photo']);
                     $seanceProfil->setModePaiement($posts['mode_paiement']);
-                    $seanceProfil->setCovoiturage($posts['covoiturage']);
+                    $seanceProfil->setCovoiturage($posts['participation_covoiturage']);
                     $entityManager->persist($seanceProfil);
                 }
             }
@@ -140,7 +176,7 @@ class InscriptionController extends AbstractController
             'seances'=> $seances,
             'evenement'=>$evenement,
             'seanceByCreneauAndParcours'=> $seanceByCreneauAndParcours,
-           
+           'restePlace'=> $restePlace,
         ]);
         
     }

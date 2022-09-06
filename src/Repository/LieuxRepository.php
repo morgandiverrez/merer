@@ -66,7 +66,7 @@ class LieuxRepository extends ServiceEntityRepository
     public function findByID($value): ?array
     {
         return $this->createQueryBuilder('lieux')
-        ->andWhere('lieux.id = :val')
+            ->andWhere('lieux.id = :val')
             ->setParameter('val', $value)
             ->setMaxResults(1)
             ->getQuery()
@@ -76,8 +76,8 @@ class LieuxRepository extends ServiceEntityRepository
     public function findAllByName($value): ?array
     {
         return $this->createQueryBuilder('lieu')
-        ->andWhere('lieu.name LIKE :val')
-        ->setParameter('val', '%' . $value . '%')
+            ->andWhere('lieu.name LIKE :val')
+            ->setParameter('val', '%' . $value . '%')
             ->getQuery()
             ->getResult();
     }

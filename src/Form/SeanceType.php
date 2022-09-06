@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\Lieux;
 use App\Entity\Profil;
 use App\Entity\Seance;
+use App\Entity\Evenement;
 use App\Entity\Formation;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;

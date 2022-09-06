@@ -1,10 +1,10 @@
 {% extends 'base_user.html.twig' %}
 
-{% block title %}Nouvel Evènement{% endblock %}
+{% block title %}Modifier Evènement{% endblock %}
 
 {% block body %}
     <div class="container-fluid">
-        <p class="display-6 no-wrap text-center">Programmer un nouvel évènement</p>
+        <p class="display-6 no-wrap text-center">Modifier un évènement</p>
         
         <div class="form-control form-control-lg mx-auto corps text-center">
             {{ form_start(form) }}
@@ -16,7 +16,14 @@
                     {{ form_widget(form.name) }}
                     {{ form_help(form.name) }}
                 </div>
-                
+
+                   <div class="description my-5">
+                    {{ form_label(form.description, 'Description de l\'évènement ', {'label_attr': {'class': 'foo'}}) }}
+                    {{ form_errors(form.description) }}
+                    {{ form_widget(form.description) }}
+                    {{ form_help(form.description) }}
+                </div>
+
                 <div class="dateDebut my-5">
                     {{ form_label(form.dateDebut, 'Date de début de de l\'évènement ', {'label_attr': {'class': 'foo'}}) }}
                     {{ form_errors(form.dateDebut) }}
@@ -30,15 +37,8 @@
                     {{ form_widget(form.dateFin) }}
                     {{ form_help(form.dateFin) }}
                 </div>
-                <div class="description my-5">
-                    {{ form_label(form.description, 'Description de l\'évènement ', {'label_attr': {'class': 'foo'}}) }}
-                    {{ form_errors(form.description) }}
-                    {{ form_widget(form.description) }}
-                    {{ form_help(form.description) }}
-                </div>
-
                 <div class="dateFinInscription my-5">
-                    {{ form_label(form.dateFinInscription, ' Quand souhaitez vous fermer les inscriptions ', {'label_attr': {'class': 'foo'}}) }}
+                    {{ form_label(form.dateFinInscription, 'date de fin des inscriptions pour l\'évènement ', {'label_attr': {'class': 'foo'}}) }}
                     {{ form_errors(form.dateFinInscription) }}
                     {{ form_widget(form.dateFinInscription) }}
                     {{ form_help(form.dateFinInscription) }}
@@ -52,8 +52,16 @@
                 </div>
 
                 
+
+                <div class="autorisationPhoto my-5">
+                    {{ form_label(form.autorisationPhoto, ' il y a t\'il besoin de demander l\'autorisation de prendre des photos durant l\'évènement ', {'label_attr': {'class': 'foo'}}) }}
+                    {{ form_errors(form.autorisationPhoto) }}
+                    {{ form_widget(form.autorisationPhoto) }}
+                    {{ form_help(form.autorisationPhoto) }}
+                </div>
+
                 <div class="modePaiement my-5">
-                    {{ form_label(form.modePaiement, 'mode de paiement disponible pour l\évènement ', {'label_attr': {'class': 'foo'}}) }}
+                    {{ form_label(form.modePaiement, 'mode de paiement disponible pour l\'évènement ', {'label_attr': {'class': 'foo'}}) }}
                     {{ form_errors(form.modePaiement) }}
                     {{ form_widget(form.modePaiement) }}
                     {{ form_help(form.modePaiement) }}
@@ -66,18 +74,25 @@
                     {{ form_help(form.covoiturage) }}
                 </div>
 
-                <div class="autorisationPhoto my-5">
-                    {{ form_label(form.autorisationPhoto, ' il y a t\'il besoin de demander l\'autorisation de prendre des photos durant l\'évènement ', {'label_attr': {'class': 'foo'}}) }}
-                    {{ form_errors(form.autorisationPhoto) }}
-                    {{ form_widget(form.autorisationPhoto) }}
-                    {{ form_help(form.autorisationPhoto) }}
+                  <div class="parcoursObligatoire my-5">
+                    {{ form_label(form.parcoursObligatoire, ' est-il obligatoire de choisir un parcours pour l\'évènement ', {'label_attr': {'class': 'foo'}}) }}
+                    {{ form_errors(form.parcoursObligatoire) }}
+                    {{ form_widget(form.parcoursObligatoire) }}
+                    {{ form_help(form.parcoursObligatoire) }}
                 </div>
 
                 <div class="visible my-5">
-                    {{ form_label(form.visible, ' souhaitez vous rendre visible cet événement ', {'label_attr': {'class': 'foo'}}) }}
+                    {{ form_label(form.visible, ' souhaitez vous rendre visible cet évènement ', {'label_attr': {'class': 'foo'}}) }}
                     {{ form_errors(form.visible) }}
                     {{ form_widget(form.visible) }}
                     {{ form_help(form.visible) }}
+                </div>
+
+                <div class="lieu my-5">
+                    {{ form_label(form.lieu, ' ou aura lieu l\'évènement ', {'label_attr': {'class': 'foo'}}) }}
+                    {{ form_errors(form.lieu) }}
+                    {{ form_widget(form.lieu) }}
+                    {{ form_help(form.lieu) }}
                 </div>
 
  

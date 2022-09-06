@@ -28,6 +28,12 @@ class Seance
     #[ORM\Column(type: 'integer', nullable: true)]
     private $nombreplace;
 
+    #[ORM\Column(type: 'boolean', nullable: true)]
+    private $visible;
+
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private $parcours;
+
     #[ORM\ManyToOne(targetEntity: Formation::class, inversedBy: 'seance')]
     private $formation;
 
@@ -43,14 +49,9 @@ class Seance
     #[ORM\OneToMany(mappedBy: 'seance', targetEntity: SeanceProfil::class)]
     private $seanceProfil;
 
-    #[ORM\Column(type: 'boolean', nullable: true)]
-    private $visible;
-
+  
     #[ORM\ManyToOne(targetEntity: Evenement::class, inversedBy: 'seance')]
     private $evenement;
-
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $parcours;
 
     public function __construct()
     {

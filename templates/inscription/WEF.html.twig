@@ -42,7 +42,9 @@
                                                             <li class="list-group-item">{{formation[parcours].formation.getDescription()}}</li>
                                                             <li class="list-group-item">Début de la séance :   {{formation[parcours].getDatetime().format('d/m/y H:i')}}</li>
                                                             <li style="justify-content:center" class="list-group-item">Attentes vis à vis de cette formation :   <input type="text" id="attente" name="attentes_{{formation[parcours].getId()}}"   placeholder="Attentes "/></li>
-                                                            <li class="list-group-item">êtes vous indisponible pour cette formation :   <input type="checkbox" id="indisponibilite" name="indisponibilite_{{formation[parcours].getId()}}"/></li>
+                                                            {% if restePlace[formation[parcours].getId()]  %}
+                                                                 <li class="list-group-item">S'inscrire :   <input type="checkbox" id="inscription" value=true name="inscription_{{formation[parcours].getId()}}"/></li>
+                                                            {% endif %}
                                                         </ul>
                                                     </div> 
                                                 </td >
@@ -78,7 +80,7 @@
                             {% if evenement.getModePaiement() != [] %}>
                                 <tr >       
                                     <th colspan="{{length}}" >Comment souhaitez vous payer l'évènement ?
-                                        <select name="groupe" id="groupe"> 
+                                        <select name="mode_paiement" id="mode_paiement"> 
                                             {% for modePaiement in evenement.getModePaiement() %}
                                                 <option value={{modePaiement}}>{{modePaiement}}</option>
                                             {% endfor %}

@@ -30,12 +30,27 @@ class EvenementController extends AbstractController
     #[IsGranted('ROLE_BF')]
     public function show(EntityManagerInterface $entityManager, $evenementID): Response
     {
-        
+        $seanceByCreneauAndParcours = [];
+
         $evenement = $entityManager->getRepository(Evenement::class)->findById($evenementID)[0];
+        
+        $seances = $evenement->getSeance(); //on recup tt les seances qui ont un groupe qui commence par la variable groupe
+
+        foreach ($seances as $seance) {
+            if ($seance->getParcours() != null) {
+                $seanceByCreneauAndParcours[strval($seance->getDatetime()->format("d/m/Y H:i"))][$seance->getParcours()] = $seance;
+            } else { //si pas de parcours (donc formation pour tt les parcours si plusieur parcours)
+                foreach ($evenement->getParcours() as $parcours) { // on itere les parcours pour les remplir tous de cette seance
+                    $seanceByCreneauAndParcours[$seance->getDatetime()->format("d/m/Y H:i")][$parcours] = $seance;
+                }
+            }
+        }
+
+        
 
         return $this->render('evenement/show.html.twig', [
             'evenement' => $evenement,
-
+            'seanceByCreneauAndParcours'=> $seanceByCreneauAndParcours,
         ]);
     }
 

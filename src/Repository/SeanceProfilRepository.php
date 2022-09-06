@@ -2,9 +2,11 @@
 
 namespace App\Repository;
 
+use App\Entity\Seance;
+use App\Entity\Evenement;
 use App\Entity\SeanceProfil;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @extends ServiceEntityRepository<SeanceProfil>
@@ -63,7 +65,7 @@ class SeanceProfilRepository extends ServiceEntityRepository
     //            ->getOneOrNullResult()
     //        ;
     //    }
-    public function findAllBySeance($value): array
+    public function findAllBySeance(Seance $value): array
    {
        return $this->createQueryBuilder('inscrit')
            ->Where('inscrit.seance = :val ')
@@ -73,13 +75,23 @@ class SeanceProfilRepository extends ServiceEntityRepository
        ;
    }
 
-    public function CountBySeance($value): int
+    public function CountBySeance(Seance $value): array
     {
         return $this->createQueryBuilder('inscrit')
         ->select("COUNT('inscrit')")
         ->Where('inscrit.seance = :val')
         ->setParameter('val', $value)
-            ->orderBy('inscrit.profil', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function CountByEvenement(Evenement $evenement): array
+    {
+        return $this->createQueryBuilder('inscrit')
+        ->select("COUNT('inscrit')")
+        ->innerJoin('inscrit.seance', 'seance')
+        ->Where('seance.evenement = :evenement')
+        ->setParameter('evenement', $evenement)
             ->getQuery()
             ->getResult();
     }
@@ -91,9 +103,8 @@ class SeanceProfilRepository extends ServiceEntityRepository
         ->setParameter('seanceID', $seanceID)
         ->andWhere('seanceProfil.profil = :profilID')
         ->setParameter('profilID', $profilID)
-            
-            ->getQuery()
-            ->getResult();
+        ->getQuery()
+        ->getResult();
     }
 
    
