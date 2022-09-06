@@ -127,9 +127,9 @@ class InscriptionController extends AbstractController
 
             // verifié s'il reste des places
             if ($entityManager->getRepository(SeanceProfil::class)->CountBySeance($seance) < $seance->getNombrePlace() ) {
-                $restePlace[$seance->getId()] = true;
-            }else{
                 $restePlace[$seance->getId()] = false;
+            }else{
+                $restePlace[$seance->getId()] = true;
             }
         }
 
@@ -146,7 +146,7 @@ class InscriptionController extends AbstractController
         if ($request->isMethod('post')) {
             $posts = $request->request->all();
             foreach ($seances as $seance) {
-                if ($posts['inscription_' . $seance->getId()]) {
+                if ($posts['inscription_' . $seance->getDatetime()->format('d/m/y H:i:s')] == $seance->getId()) {
                     $seanceProfil = new SeanceProfil();
                     $seanceProfil->setSeance($seance);
                     $seanceProfil->setProfil($profil);

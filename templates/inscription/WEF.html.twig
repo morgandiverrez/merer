@@ -43,7 +43,7 @@
                                                             <li class="list-group-item">Début de la séance :   {{formation[parcours].getDatetime().format('d/m/y H:i')}}</li>
                                                             <li style="justify-content:center" class="list-group-item">Attentes vis à vis de cette formation :   <input type="text" id="attente" name="attentes_{{formation[parcours].getId()}}"   placeholder="Attentes "/></li>
                                                             {% if restePlace[formation[parcours].getId()]  %}
-                                                                 <li class="list-group-item">S'inscrire :   <input type="checkbox" id="inscription" value=true name="inscription_{{formation[parcours].getId()}}"/></li>
+                                                                 <li class="list-group-item">S'inscrire :   <input type="radio" id="inscription" value='{{formation[parcours].getId()}}' name="inscription_{{formation[parcours].getDatetime().format('d/m/y H:i:s')}}"/></li>
                                                             {% endif %}
                                                         </ul>
                                                     </div> 
