@@ -30,7 +30,7 @@ class EvenementController extends AbstractController
     #[IsGranted('ROLE_BF')]
     public function show(EntityManagerInterface $entityManager, $evenementID): Response
     {
-
+        
         $evenement = $entityManager->getRepository(Evenement::class)->findById($evenementID)[0];
 
         return $this->render('evenement/show.html.twig', [
@@ -49,7 +49,9 @@ class EvenementController extends AbstractController
 
 
         if ($form->isSubmitted() && $form->isValid()) {
-
+            if ($evenement->getDateFinInscription() == null) {
+                $evenement->setDateFinInscription($evenement->getDateFin());
+            }
             
             $entityManager->persist($evenement);
             $entityManager->flush();
@@ -75,7 +77,9 @@ class EvenementController extends AbstractController
 
 
         if ($form->isSubmitted() && $form->isValid()) {
-
+            if($evenement->getDateFinInscription() == null){
+                $evenement->setDateFinInscription($evenement->getDateFin());
+            }
            
             $entityManager->persist($evenement);
             $entityManager->flush();

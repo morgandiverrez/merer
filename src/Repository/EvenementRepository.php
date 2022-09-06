@@ -63,13 +63,35 @@ class EvenementRepository extends ServiceEntityRepository
     //            ->getOneOrNullResult()
     //        ;
     //    }
+    public function findByID($value): array
+    {
+        return $this->createQueryBuilder('evenement')
+            ->andWhere('evenement.id = :val')
+            ->setParameter('val', $value)
+            ->orderBy('formation.id', 'ASC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getResult();
+    }
 
     public function findAllOrderByDate(): array
    {
-       return $this->createQueryBuilder('e')
-           ->orderBy('e.dateDebut', 'DESC')
+       return $this->createQueryBuilder('evenement')
+           ->orderBy('evenement.dateDebut', 'DESC')
            ->getQuery()
             ->getResult();
        ;
    }
+
+
+    public function findAllSuperiorByDatetimeAndVisible($value): array
+    {
+        return $this->createQueryBuilder('evenement')
+        ->where('evenement.visible = true')
+        ->andWhere('evenement.dateFin >= :val')
+        ->setParameter('val', $value)
+            ->orderBy('evenement.dateDebut', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
 }

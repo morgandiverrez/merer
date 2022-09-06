@@ -31,6 +31,7 @@ class SeanceFixtures extends Fixture implements DependentFixtureInterface
                 $seance->addProfil($this->getRandomReference('PROFIL'));
             }
             $seance->setEvenement($this->getRandomReference('EVENEMENT'));
+            $seance->setParcours($this->faker->randomElement($seance->getEvenement()->getParcours(), 1));
             $this->addReference('SEANCE_'.$i, $seance);
             $seance->setVisible(true);
             $manager->persist($seance);

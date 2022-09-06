@@ -1,72 +1,98 @@
 {% extends 'base_user.html.twig' %}
 
-{% block title %}Inscription WEF{% endblock %}
+{% block title %}Inscription évènement{% endblock %}
 
 {% block body %}
     <div class="container-fluid">
         <div class="corps mx-auto">
-            <p class="display-6 no-wrap text-center"> Inscription WEF </p>
-            {% set i = 0 %}
-            <form action="{{ path('inscription_WEF',{'group' : seances[0].getGroupe() } ) }}" method="post">
-                <table class="table " style="flex-direction: column-reverse;"> 
-                    <thead>
-                        <tr>
-                            <th>
-                            {% for subGroup in listSubGroups %}
-                                <tr scope="col">{{subGroup }}</tr>
-                            {% endfor %}
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% set length = 1 %}
-                        {% for subGroup in subGroups %}   
-                            <tr>     
-                                {% set x = true %}           
-                                {% for nomSubGroup in listSubGroups %}
-                                    {% if x %}
-                                        {% set c = group ~ "_" ~ nomSubGroup %}
-                                        {% if "_" not in subGroup[c].getGroupe() %}
-                                            {% set length =  listSubGroups|length + 1 %}
-                                            {% set x = false %}  
-                                        {% endif %}  
-                                        <td colspan="{{length}}">
-                                        {% if subGroup[c] is defined %}
-                                                <div class=" card-body ">
-                                                    <h5 class="card-title">{{subGroup[c].getGroupe()}} </h5>
-                                                    <p class="card-text"> {{subGroup[c].formation.getDescription()}} </p>
-                                                    <p class="card-text"> {{subGroup[c].getDatetime().format('H:i')}} </p>
-                                                </div>
-                                            </td>
-                                            <td colspan="{{length}}"><input type="text" id="attente" name="attentes_{{subGroup[c].getId()}}"   placeholder="Attentes vis à vis de cette formation"/></td>
-                                            <td colspan="{{length}}"><input type="checkbox" id="indisponibilite" name="indisponibilite_{{subGroup[c].getId()}}"/>êtes vous indisponible pour cette formation</td>
-                                        {% endif %}
-                                    {% endif %}
+            <p class="display-6 no-wrap text-center"> Inscription {{evenement.getName()}} </p>
+          <div>
+          {{evenement.getDescription()}}
+          </div > 
+          <div class="table-responsive ">
+                <form action="{{ path('inscription_evenement',{'evenementID' : evenement.getId()})}}" method="post">
+                    <table style="justify-content:center"  class=" table align-middle table-success table-striped-columns" > 
+                        <thead>
+                            <tr>
+                                {% for parcours in evenement.getParcours() %}
+                                    <th scope="col">{{parcours}}</th>
                                 {% endfor %}
                             </tr>
-                        {% endfor %}
-                    </tbody> 
-               
-                    <tfoot>
-                    {% set length = 2 * (listSubGroups|length + 1) %}   
-                        <tr style="justify-content: center;">       
-                            <th colspan="{{length}}" style="justify-content: center;">
-                                <input type="checkbox" id="autorisation_photo" name="autorisation_photo" />
-                                autoriser vous l'organisation à prendre des photos durant l'événement
-                            </th> 
-                        </tr>
-                         <tr style="justify-content: center;">       
-                            <th colspan="{{length}}" style="justify-content: center;">
-                                <input type="checkbox" id="autorisation_photo" name="autorisation_photo" />
-                                souhaitez vous participer au covoiturage
-                            </th> 
-                        </tr>
-                        <tr>       
-                            <th colspan="{{length}}" style="justify-content: center;"><button class="btn btn-primary" type="submit" >Valider</button></th> 
-                        </tr>
-                    </tfoot> 
-                </table>
-            </form>
+                        </thead>
+                        <tbody>
+                            {% for formation in seanceByCreneauAndParcours %} 
+                                {% set length = 1 %}
+                                {% set x = true %}
+                                {# on itere tt les horaires  #}
+                                <tr>              
+                                    {% for  parcours in evenement.getParcours() %}
+                                    {# on itere tt les parcours #}
+                                        {% if x %}      
+                                            {% if formation[parcours] is defined %}
+                                                {% if formation[parcours].getParcours() == null %}
+                                                    {% set length = evenement.getParcours()|length %}
+                                                    {% set x = false %}  
+                                                {% endif %} 
+                                                <td colspan="{{length}}" >
+                                                    <div class="card" style=" justify-content-center width: 18rem;">
+                                                        <div class="card-header">
+                                                        {{formation[parcours].getName()}} 
+                                                        </div>
+                                                        <ul class="list-group list-group-flush">
+                                                            <li class="list-group-item">{{formation[parcours].formation.getDescription()}}</li>
+                                                            <li class="list-group-item">Début de la séance :   {{formation[parcours].getDatetime().format('d/m/y H:i')}}</li>
+                                                            <li style="justify-content:center" class="list-group-item">Attentes vis à vis de cette formation :   <input type="text" id="attente" name="attentes_{{formation[parcours].getId()}}"   placeholder="Attentes "/></li>
+                                                            <li class="list-group-item">êtes vous indisponible pour cette formation :   <input type="checkbox" id="indisponibilite" name="indisponibilite_{{formation[parcours].getId()}}"/></li>
+                                                        </ul>
+                                                    </div> 
+                                                </td >
+                                            {% else %}
+                                                <td></td>
+                                            {% endif %}
+                                        {% endif %}
+                                    {% endfor %}
+                                </tr>
+                            {% endfor %}
+                        </tbody> 
+                
+                        <tfoot>
+                            {% set length = 3 * (evenement.getParcours()|length) %}   
+                            {% if evenement.isAutorisationPhoto() %}>
+                            <tr >       
+                                <th colspan="{{length}}" >
+                                     Autoriser vous l'organisation à prendre des photos durant l'évènement ?    
+                                    <input type="checkbox" id="autorisation_photo" name="autorisation_photo" />
+                                   
+                                </th> 
+                            </tr>
+                            {% endif %}
+                            {% if evenement.isCovoiturage() %}>
+                            <tr >       
+                                <th colspan="{{length}}" >
+                                    Souhaitez vous participez au covoiturage ?  
+                                    <input type="checkbox" id="participation_covoiturage" name="participation_covoiturage" />
+                                    
+                                </th> 
+                            </tr>
+                            {% endif %}
+                            {% if evenement.getModePaiement() != [] %}>
+                                <tr >       
+                                    <th colspan="{{length}}" >Comment souhaitez vous payer l'évènement ?
+                                        <select name="groupe" id="groupe"> 
+                                            {% for modePaiement in evenement.getModePaiement() %}
+                                                <option value={{modePaiement}}>{{modePaiement}}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </th> 
+                                </tr>
+                            {% endif %}
+                            <tr >       
+                                <th colspan="{{length}}" ><button class="btn btn-primary" type="submit" >Valider</button></th> 
+                            </tr>
+                        </tfoot> 
+                    </table>
+                </form>
+            </div>
         </div>
     </div>
 

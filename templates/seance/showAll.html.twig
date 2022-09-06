@@ -30,42 +30,61 @@
                             <td colspan="5" align="center"> Aucune formation n'est programmée pour le moment</td>
                         </tr>
                     {% else %}
-                    {% set listeWEFAffiché = [] %}
-                        {% for seance in seances %} 
-                            {% if seance.getGroupe() is defined and seance.getGroupe() not in listeWEFAffiché %}
-                                {% set listeWEFAffiché = listeWEFAffiché|merge([seance.getGroupe()]) %}
+                        {% for seance in seances %}        
+                            <tr>
+                                <td>{{seance.getDatetime().format("d/m/Y H:i")}}</td>
+                                <td>{{seance.getName()}}</td>
+                                <td>{{seance.formation.getDuration().format("H:i")}}</td>
+                                <td>
+                                {% if seance.getLieux() is not null %}
+                                    {% for lieu in seance.getLieux() %}
+                                        {{lieu.getVille()}}
+                                    {% endfor %}
+                                {% else %}
+                                    -
+                                {% endif %}
+                                </td>
+                                <td><a href="/seance/show/{{seance.getId()}}"><i class="fa-solid fa-eye"></i></i></a></td>
+                            </tr>
+                        {% endfor %}
+                    {% endif %}
+                </tbody>
+            </table>
+
+            <p class="display-6 no-wrap text-center mb-5">Evenement de Formation à venir
+                {% if is_granted('ROLE_BF') %}
+                    <a href="/evenement/new"><i class="fa-solid fa-plus align-left"></i></a>
+                {% endif %}
+            </p>
+             <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th scope="col">Nom</th>
+                    <th scope="col">Début</th>
+                    <th scope="col">Fin</th>
+                    <th scope="col">Fin des Inscriptions</th>
+                    <th scope="col">Ville</th>
+                    <th scope="col">Détails</th>
+                    
+                 </tr>
+                </thead>
+
+                <tbody>
+                    {% if evenements is empty %}
+                        <tr>
+                            <td colspan="5" align="center"> Aucun évènement de formation n'est programmé pour le moment</td>
+                        </tr>
+                    {% else %}
+                        {% for evenement in evenements %} 
                                 <tr>
-                                    <td>{{seance.getDatetime().format("d/m/Y")}}</td>
-                                    <td colspan="2">{{(seance.getGroupe()|split('_'))[0]}}</td>
-                                    
-                                    <td>
-                                    {% if seance.getLieux() is not null %}
-                                        {% for lieu in seance.getLieux() %}
-                                            {{lieu.getVille()}}
-                                        {% endfor %}
-                                    {% else %}
-                                        -
-                                    {% endif %}
-                                    </td>
-                                    <td><a href="/seance/show/{{seance.getId()}}"><i class="fa-solid fa-eye"></i></i></a></td>
+                                    <td>{{evenement.getName()}}</td>
+                                    <td>{{evenement.getDateDebut().format("d/m/y H:i")}}</td>
+                                    <td>{{evenement.getDateFin().format("d/m/y H:i")}}</td>
+                                    <td>{{evenement.getDateFinInscription().format("d/m/y H:i")}}</td>
+                                    <td>{{evenement.getLieu().getVille()}}</td>
+                                    <td><a href="/evenement/show/{{evenement.getId()}}"><i class="fa-solid fa-eye"></i></i></a></td>
                                 </tr>
-                            {% else %}
-                                <tr>
-                                    <td>{{seance.getDatetime().format("d/m/Y H:i")}}</td>
-                                    <td>{{seance.getName()}}</td>
-                                    <td>{{seance.formation.getDuration().format("H:i")}}</td>
-                                    <td>
-                                    {% if seance.getLieux() is not null %}
-                                        {% for lieu in seance.getLieux() %}
-                                            {{lieu.getVille()}}
-                                        {% endfor %}
-                                    {% else %}
-                                        -
-                                    {% endif %}
-                                    </td>
-                                    <td><a href="/seance/show/{{seance.getId()}}"><i class="fa-solid fa-eye"></i></i></a></td>
-                                </tr>
-                            {% endif %}
+                            
                         {% endfor %}
                     {% endif %}
                 </tbody>
