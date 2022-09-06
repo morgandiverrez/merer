@@ -63,16 +63,25 @@ class ProfilRepository extends ServiceEntityRepository
     //            ->getOneOrNullResult()
     //        ;
     //    }
-        public function findByID($value): ?array
-        {
-            return $this->createQueryBuilder('profil')
-                ->andWhere('profil.id = :val')
-                ->setParameter('val', $value)
-                // ->orderBy('formation.id', 'ASC')
-                ->setMaxResults(1)
-                ->getQuery()
-                ->getResult();
-        }
+    public function findByID($value): ?array
+    {
+        return $this->createQueryBuilder('profil')
+            ->andWhere('profil.id = :val')
+            ->setParameter('val', $value)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findByUser($value): ?Profil
+    {
+        return $this->createQueryBuilder('profil')
+        ->andWhere('profil.user = :val')
+        ->setParameter('val', $value)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getResult();
+    }
 
 
     public function findByName($name, $lastName): ?array
@@ -123,23 +132,7 @@ class ProfilRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    public function findAllScoreInferior($value): ?array
-    {
-        return $this->createQueryBuilder('profil')
-        ->andWhere('profil.score <= :val')
-        ->setParameter('val', $value)
-            ->getQuery()
-            ->getResult();
-    }
-
-    public function findAllScoreSuperior($value): ?array
-    {
-        return $this->createQueryBuilder('profil')
-        ->andWhere('profil.score >= :val')
-        ->setParameter('val',  $value )
-            ->getQuery()
-            ->getResult();
-    }
+    
 
     public function findAllByInscription($value): ?array
     {

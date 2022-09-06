@@ -2,10 +2,12 @@
 
 namespace App\Entity;
 
-use App\Repository\EvenementRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use App\Entity\Lieu;
+use App\Entity\Lieux;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\EvenementRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 #[ORM\Entity(repositoryClass: EvenementRepository::class)]
 class Evenement
@@ -33,12 +35,37 @@ class Evenement
     #[ORM\OneToMany(mappedBy: 'evenement', targetEntity: seance::class)]
     private $seance;
 
+    #[ORM\Column(type: 'array', nullable: true)]
+    private $parcours = [];
+
+    #[ORM\Column(type: 'boolean', nullable: true)]
+    private $autorisationPhoto;
+
+    #[ORM\Column(type: 'array', nullable: true)]
+    private $modePaiement = [];
+
+    #[ORM\Column(type:'boolean', nullable: true)]
+    private $covoiturage = false;
+
+    #[ORM\Column(type:'boolean', nullable: true)]
+    private $parcoursObligatoire = false;
+
+    #[ORM\Column(type: 'boolean', nullable: true)]
+    private $visible =false;
+
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private $dateFinInscription;
+
+    #[ORM\ManyToOne(targetEntity: lieux::class, inversedBy: 'evenements')]
+    private $lieu;
+
 
 
    
     public function __construct()
     {
         $this->seance = new ArrayCollection();
+      
     }
 
     public function getId(): ?int
@@ -133,6 +160,102 @@ class Evenement
                 $seance->setEvenement(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getParcours(): ?array
+    {
+        return $this->parcours;
+    }
+
+    public function setParcours(?array $parcours): self
+    {
+        $this->parcours = $parcours;
+
+        return $this;
+    }
+
+    public function isAutorisationPhoto(): ?bool
+    {
+        return $this->autorisationPhoto;
+    }
+
+    public function setAutorisationPhoto(?bool $autorisationPhoto): self
+    {
+        $this->autorisationPhoto = $autorisationPhoto;
+
+        return $this;
+    }
+
+    public function getModePaiement(): ?array
+    {
+        return $this->modePaiement;
+    }
+
+    public function setModePaiement(?array $modePaiement): self
+    {
+        $this->modePaiement = $modePaiement;
+
+        return $this;
+    }
+
+    public function isCovoiturage(): ?bool
+    {
+        return $this->covoiturage;
+    }
+
+    public function setCovoiturage(bool $covoiturage): self
+    {
+        $this->covoiturage = $covoiturage;
+
+        return $this;
+    }
+
+    public function isParcoursObligatoire(): ?bool
+    {
+        return $this->parcoursObligatoire;
+    }
+
+    public function setParcoursObligatoire(bool $parcoursObligatoire): self
+    {
+        $this->parcoursObligatoire = $parcoursObligatoire;
+
+        return $this;
+    }
+
+    public function isVisible(): ?bool
+    {
+        return $this->visible;
+    }
+
+    public function setVisible(?bool $visible): self
+    {
+        $this->visible = $visible;
+
+        return $this;
+    }
+
+    public function getDateFinInscription(): ?\DateTimeInterface
+    {
+        return $this->dateFinInscription;
+    }
+
+    public function setDateFinInscription(?\DateTimeInterface $dateFinInscription): self
+    {
+        $this->dateFinInscription = $dateFinInscription;
+
+        return $this;
+    }
+
+    public function getLieu(): ?lieux
+    {
+        return $this->lieu;
+    }
+
+    public function setLieu(?lieux $lieu): self
+    {
+        $this->lieu = $lieu;
 
         return $this;
     }

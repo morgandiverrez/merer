@@ -22,9 +22,6 @@ class Seance
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $name;
 
-    #[ORM\Column(type: 'string', nullable: true)]
-    private $groupe;
-
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $datetime;
 
@@ -51,6 +48,9 @@ class Seance
 
     #[ORM\ManyToOne(targetEntity: Evenement::class, inversedBy: 'seance')]
     private $evenement;
+
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private $parcours;
 
     public function __construct()
     {
@@ -90,18 +90,6 @@ class Seance
     public function setName(?string $name): self
     {
         $this->name = $name;
-
-        return $this;
-    }
-
-    public function getGroupe(): ?string
-    {
-        return $this->groupe;
-    }
-
-    public function setGroupe(?string $groupe): self
-    {
-        $this->groupe = $groupe;
 
         return $this;
     }
@@ -276,6 +264,18 @@ class Seance
     public function setEvenement(?Evenement $evenement): self
     {
         $this->evenement = $evenement;
+
+        return $this;
+    }
+
+    public function getParcours(): ?string
+    {
+        return $this->parcours;
+    }
+
+    public function setParcours(?string $parcours): self
+    {
+        $this->parcours = $parcours;
 
         return $this;
     }

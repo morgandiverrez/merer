@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Evenement;
 use DateTime;
 use Dompdf\Dompdf;
 use Dompdf\Options;
@@ -31,10 +32,12 @@ class SeanceController extends AbstractController
     {
         $dateActuelle =new DateTime();
         
-        $seances = $entityManager->getRepository(Seance::class)->findAllByDatetime($dateActuelle);
-        
+        $seances = $entityManager->getRepository(Seance::class)->findAllSuperiorByDatetimeAndVisibleAndWithoutEvenement($dateActuelle);
+        $evenements = $entityManager->getRepository(Evenement::class)->findAllSuperiorByDatetimeAndVisible($dateActuelle);
+       
         return $this->render('seance/showAll.html.twig', [
-            'seances' => $seances, 
+            'seances' => $seances,
+            'evenements'=> $evenements,
         ]);
     }
 
@@ -204,15 +207,12 @@ class SeanceController extends AbstractController
                 $formation = $entityManager->getRepository(Formation::class)->findByName(strval($nameFormation))[0];
                 $formation->addSeance($seance);
                 $entityManager->persist($formation);
-
                 $i++;
             }
 
-        
-
             $entityManager->persist($seance);
             $entityManager->flush();
-            return $this->redirectToRoute('seance_show', ['seanceID' => $seance->getID()]);
+            return $this->redirectToRoute('seance_parcours', ['seanceID' => $seance->getID()]);
         }
 
         return $this->render('seance/edit.html.twig', [
@@ -222,40 +222,26 @@ class SeanceController extends AbstractController
         ]);
     }
    
-    // #[Route('/group/{seanceID}', name: 'group')]
-    // #[IsGranted('ROLE_BF')]
-    // public function choiceGroup(EntityManagerInterface $entityManager, Request $request,  $seanceID): Response
-    // {
-    //     $seance = $entityManager->getRepository(Seance::class)->findById($seanceID)[0];
-    //     $currentGroup = explode("_", $seance->getGroupe())[0];
+    #[Route('/parcours/{seanceID}', name: 'parcours')]
+    #[IsGranted('ROLE_BF')]
+    public function choiceGroup(EntityManagerInterface $entityManager, Request $request,  $seanceID): Response
+    {
+        $seance = $entityManager->getRepository(Seance::class)->findById($seanceID)[0];
 
-    //     $listesGroups = $entityManager->getRepository(Seance::class)->findAllGroupe();
-    //     $arrayGroups = array() ;
-    //     foreach($listesGroups as $group){ 
-    //         $groupxplode = explode("_", $group['groupe']);
-    //         if(! in_array($groupxplode[0], $arrayGroups)){
-    //             array_push($arrayGroups, $groupxplode[0]);
-    //         } 
-    //     }
+        if ($request->isMethod('post')) {
+            $posts = $request->request->all();
+            if ($posts['parcours'] ) {
+                $seance->setParcours($posts['groupe']);
+            }
+            $entityManager->persist($seance);
+            $entityManager->flush();
+            return $this->redirectToRoute('seance_show', ['seanceID' => $seance->getID()]);
+        }
+    return $this->render('seance/choiceParcours.html.twig', [
+        'seance' => $seance,
 
-    //     if ($request->isMethod('post')) {
-    //         $posts = $request->request->all();
-    //         if ($posts['groupe'] and $posts['groupe']!='') {
-    //             $groupSelect = $posts['groupe'];
-    //         }elseif($posts['newGroup']){
-    //             $groupSelect = $posts['newGroup'];
-    //         }else{
-    //             return $this->redirectToRoute('seance_showForFormateurice', ['seanceID' => $seance->getID()]);
-    //         }
-    //         return $this->redirectToRoute('seance_subGroup', ['seanceID' => $seance->getID(), 'group' => strtoupper($groupSelect)]);
-    //     }
-    //     return $this->render('seance/choiceGroup.html.twig', [
-    //         'seance' => $seance,
-    //         'listeGroups' => $arrayGroups,
-    //         'currentGroup' => $currentGroup,
-
-    //     ]);
-    // }
+    ]);
+    }
 
     //  #[Route('/sub_group/{seanceID}/{group}', name: 'subGroup')]
     // #[IsGranted('ROLE_BF')]

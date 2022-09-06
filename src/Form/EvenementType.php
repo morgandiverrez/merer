@@ -17,6 +17,9 @@ class EvenementType extends AbstractType
             ->add('dateDebut')
             ->add('dateFin')
             ->add('URL')
+            ->add('autorisationPhoto')
+            ->add('covoiturage')
+            ->add('modePaiement')
         ;
     }
 

@@ -5,6 +5,7 @@ namespace App\Controller;
 use DateTime;
 use App\Entity\Profil;
 use App\Entity\Seance;
+use App\Entity\Evenement;
 use App\Entity\SeanceProfil;
 use App\Form\PonctuelleType;
 use App\Form\InscriptionType;
@@ -24,10 +25,10 @@ class InscriptionController extends AbstractController
     public function distribution(EntityManagerInterface $entityManager, Request $request, $seanceID): Response
     {
         $seance = $entityManager->getRepository(Seance::class)->findByID(strval($seanceID))[0];
-        if(empty($seance->getGroupe())){
+        if(empty($seance->getEvenement())){
             return $this->redirectToRoute('inscription_ponctuelle', ['seanceID' => $seance->getId()]);
         }else{
-             return $this->redirectToRoute('inscription_WEF', ['groupe' => $seance->getGroupe()]);
+             return $this->redirectToRoute('inscription_evenement', ['evenementID' => $seance->getEvenement()->getId()]);
         }
     }
 
@@ -35,10 +36,14 @@ class InscriptionController extends AbstractController
     #[IsGranted('ROLE_USER')]
     public function ponctuelle(EntityManagerInterface $entityManager, Request $request, $seanceID): Response
     {
-        $seance = $entityManager->getRepository(Seance::class)->findByID(strval($seanceID))[0];
-        if( null != $seance->getGroupe()){
-            return $this->redirectToRoute('inscription_WEF', ['groupe' => $seance->getGroupe()]);
+        $seance = $entityManager->getRepository(Seance::class)->findByID($seanceID)[0];
+        if ($seance->isVisible()) {
+            return $this->redirectToRoute('profil_show', []);
         }
+        if( null != $seance->getEvenement()){
+            return $this->redirectToRoute('inscription_evenement', ['evenementID' => $seance->getEvenement()->getId()]);
+        }
+        
 
         $seanceProfil = new SeanceProfil();
         $form = $this->createForm(PonctuelleType::class, $seanceProfil, [ 'liste_lieu' => $seance->getLieux()]);
@@ -70,15 +75,30 @@ class InscriptionController extends AbstractController
         ]);
     }
 
-    #[Route('/WEF/{group}', name: 'WEF')]
+    #[Route('/evenement/{evenementID}', name: 'evenement')]
     #[IsGranted('ROLE_USER')]
-    public function wef( EntityManagerInterface $entityManager, Request $request, $group): Response
+    public function wef( EntityManagerInterface $entityManager, Request $request, $evenementID): Response
     {
-        $listSubGroups= [];
-        $subGroups = [];
-        $seanceObligatoires = [];
+        $seanceByCreneauAndParcours = [];
 
-        $seances = $entityManager->getRepository(Seance::class)->findAllByGroupe($group); //on recup tt les seances qui ont un groupe qui commence par la variable groupe
+        $evenement = $entityManager->getRepository(Evenement::class)->findById($evenementID)[0];
+        if ( $evenement->isVisible()) {
+            return $this->redirectToRoute('profil_show', []);
+        }
+        $seances = $evenement->getSeance(); //on recup tt les seances qui ont un groupe qui commence par la variable groupe
+
+       
+
+        foreach($seances as $seance){   
+            if( $seance->getParcours() != null ){ 
+                $seanceByCreneauAndParcours[strval($seance->getDatetime()->format("d/m/Y H:i"))][$seance->getParcours()] = $seance;
+            }else{ //si pas de parcours (donc formation pour tt les parcours si plusieur parcours)
+                foreach($evenement->getParcours() as $parcours){ // on itere les parcours pour les remplir tous de cette seance
+                    $seanceByCreneauAndParcours[$seance->getDatetime()->format("d/m/Y H:i")][$parcours] = $seance;
+                }
+            }
+        }
+
         $user = $this->getUser(); //on recup l'user 
         $profils = $entityManager->getRepository(Profil::class)->findAll(); // on recup tt les profils
         foreach ($profils as $testProfil) { // on itere pour trouver le bon profil
@@ -86,29 +106,7 @@ class InscriptionController extends AbstractController
                 $profil = $testProfil;
             }
         }
-
-        foreach($seances as $seance){  // pour chaque seance
-            if (! isset($subGroups[$seance->getDatetime()->format('Y-m-d H:i')])) { //si il y a bien un sous groupe
-                $subGroups[$seance->getDatetime()->format('Y-m-d H:i')] =[];
-            }
-
-            if (isset(explode("_", $seance->getGroupe())[1])) {//si il y a bien un sous groupe
-                if(! in_array(explode("_", $seance->getGroupe())[1], $listSubGroups)) { //et s'il n'est pas dans la liste
-                    array_push($listSubGroups, explode("_", $seance->getGroupe())[1]); // on ajoute ce sousGroupes
-                }
-                
-                $subGroups[$seance->getDatetime()->format('Y-m-d H:i')][$seance->getGroupe()]= $seance; // on tri les seances par sousGroupes
-            }else{
-                array_push($seanceObligatoires, $seance); // on ajoute cette seance à la liste des seance obligatoire s'il n'ont pas se sous_groupe
-            }            
-        }
-
-        foreach($seanceObligatoires as $seanceObligatoire){
-            foreach($listSubGroups as $subGroup){
-                $subGroups[$seanceObligatoire->getDatetime()->format('Y-m-d H:i')][$group."_".$subGroup] = $seance;
-            }
-        }
-            
+        
         if ($request->isMethod('post')) {
             $posts = $request->request->all();
             foreach ($seances as $seance) {
@@ -117,28 +115,34 @@ class InscriptionController extends AbstractController
                     $seanceProfil->setSeance($seance);
                     $seanceProfil->setProfil($profil);
                     $seanceProfil->setHorrodateur(new DateTime());
-                    $seanceProfil->setAttente($posts['attentes_' . $seance->getId()]);
+                    $seanceProfil->setAttente($posts['attentes_'.$seance->getId()]);
                     $seanceProfil->setLieu($seance->getLieux()[0]);
-                   // $seanceProfil->isAutorisationPhoto($posts['autorisation_photo']);
-                    //  $seanceProfil->setModePaiement($posts['mode_paiement']);
-                    // $seanceProfil->setCovoiturage($posts['covoiturage']);
+                    $seanceProfil->isAutorisationPhoto($posts['autorisation_photo']);
+                    $seanceProfil->setModePaiement($posts['mode_paiement']);
+                    $seanceProfil->setCovoiturage($posts['covoiturage']);
                     $entityManager->persist($seanceProfil);
                 }
             }
-          
             $entityManager->flush();
-            return  $this->redirectToRoute('profil_show',[]);
+
+            if($evenement->getURL() != null){
+                return  $this->redirect($evenement->getURL());
+               
+            }else {
+                return  $this->redirectToRoute('profil_show', []);
+            }
+           
+            
         }
 
+       
+        return $this->render('inscription/WEF.html.twig', [
+            'seances'=> $seances,
+            'evenement'=>$evenement,
+            'seanceByCreneauAndParcours'=> $seanceByCreneauAndParcours,
+           
+        ]);
         
-        else{
-            return $this->render('inscription/WEF.html.twig', [
-                'seances'=> $seances,
-                'group'=>$group,
-                'subGroups' => $subGroups,
-                'listSubGroups' => $listSubGroups,
-            ]);
-        }
     }
    
 

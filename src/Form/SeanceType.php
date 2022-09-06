@@ -45,8 +45,6 @@ class SeanceType extends AbstractType
                 'class' => Evenement::class,
             ])
 
-        
-
         ;
     }
 

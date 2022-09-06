@@ -1,0 +1,26 @@
+{% extends 'base_user.html.twig' %}
+
+{% block title %}Choix parcours{% endblock %}
+
+{% block body %}
+    <div class="container-fluid">
+        <p class="display-6 no-wrap text-center">Choisir un parcours pour  la Seance :{{seance.getName()}} du {{seance.getDatetime().format("Y-m-d H:i")}}</p>
+        <div class="form-control form-control-lg mx-auto corps text-center">
+            <div class="groupe my-5">
+                <form action="/seance/parcours/{{seance.getID()}}" method="post">
+                    <p class="text-center ">
+                    <select name="parcours" id="parcours">
+                            <option  value={{seance.getParcours()}} selected>{{seance.getParcours()}}</option>
+                        {% for parcours in seance.getEvenement().getParcours() %}
+                            <option value={{parcours}}>{{parcours}}</option>
+                        {% endfor %}
+                        <option value=''>obligatoire</option>
+                    </select>
+                    <button class="btn btn-primary" type="submit" >Valider</button>
+                </form>  
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
