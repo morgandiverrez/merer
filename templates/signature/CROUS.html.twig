@@ -35,6 +35,10 @@
                     <input class="form-check-input" type="radio" name="poste" id="sup" value="sup">
                     <label class="form-check-label" for="sup">Suppléant(e)</label>
                 </div>
+                      <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="poste" id="membre" value="membre">
+                    <label class="form-check-label" for="sup">Membre de la liste</label>
+                </div>
             </div>
             <div class="form-group">
                 <label for="filliere">Fillière</label>
@@ -88,8 +92,6 @@
             for (var i = 0 ; i < 3 ; i++) {
                 if (radioGenre[i].checked)
                     genre = i;
-            }
-            for (var i=0; i< 2 ; i++){
                if (radioPoste[i].checked)
                     poste = i;
             }
@@ -98,26 +100,35 @@
                 if (poste == 0){        //titulaire
                     posteFR = "Élu titulaire au Conseil d'Administration"
                     posteBZH = "Dilennad entitled e Kuzul-merañ"
-                }else{                  //suppléant
+                }else if(poste == 1){                  //suppléant
                     posteFR = "Élu suppléant au Conseil d'Administration"
                     posteBZH = "Dilennad erlec'hier e Kuzul-merañ"
-                } 
+                } else{
+                    posteFR = "Membre de l'équipe Bouge Ton CROUS"
+                    posteBZH = "ezel ar skipailh BOUGE TON CROUS"
+                }
             }else if(genre==1){  //femme
                 if (poste == 0){        //titulaire
                     posteFR = "Élue titulaire au Conseil d'Administration"
                     posteBZH = "Dilennad.idi entitled.dlidi e Kuzul-merañ"
-                }else{                  //suppléante
+                }else if(poste == 1){                  //suppléante
                     posteFR = "Élue suppléante au Conseil d'Administration"
                     posteBZH = "Dilennad.idi eilerien e Kuzul-merañ"
+                }else{
+                    posteFR = "Membre de l'équipe Bouge Ton CROUS"
+                    posteBZH = "ezel ar skipailh BOUGE TON CROUS"
                 }
 
             }else{                      //non-genré
                 if (poste == 0){        //titulaire
                     posteFR = "Élu.e titulaire au Conseil d'Administration"
                     posteBZH = "Dilennad.idi entidlidi e Kuzul-merañ"
-                }else{                  //suppléant.e
+                }else if(poste == 1){                  //suppléant.e
                     posteFR = "Élu.e suppléant.e au Conseil d'Administration"
-                    posteBZH = "Dilennad.idi erlec'hier/eilerien e Kuzul-merañ"
+                    posteBZH = "ezel ar skipailh BOUGE TON CROUS"
+                }else{
+                    posteFR = "Membre de l'équipe Bouge Ton CROUS"
+                    posteBZH = "ezel ar skipailh BOUGE TON CROUS"
                 }
                 
             }
