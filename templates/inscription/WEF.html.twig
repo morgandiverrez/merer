@@ -15,7 +15,11 @@
                         <thead>
                             <tr>
                                 {% for parcours in evenement.getParcours() %}
-                                    <th scope="col">{{parcours}}</th>
+                                    <th scope="col">{{parcours}}
+                                        {% if  evenement.isParcoursObligatoire()  %}
+                                            <li class="list-group-item"> S'inscrire :   <input type="radio" id="inscription" value='{{parcours}}' name="inscription"/></li>
+                                        {% endif %}
+                                    </th>
                                 {% endfor %}
                             </tr>
                         </thead>
@@ -42,7 +46,7 @@
                                                             <li class="list-group-item">{{formation[parcours].formation.getDescription()}}</li>
                                                             <li class="list-group-item">Début de la séance :   {{formation[parcours].getDatetime().format('d/m/y H:i')}}</li>
                                                             <li style="justify-content:center" class="list-group-item">Attentes vis à vis de cette formation :   <input type="text" id="attente" name="attentes_{{formation[parcours].getId()}}"   placeholder="Attentes "/></li>
-                                                            {% if restePlace[formation[parcours].getId()]  %}
+                                                            {% if restePlace[formation[parcours].getId()] and not evenement.isParcoursObligatoire()  %}
                                                                  <li class="list-group-item">S'inscrire :   <input type="radio" id="inscription" value='{{formation[parcours].getId()}}' name="inscription_{{formation[parcours].getDatetime().format('d/m/y H:i:s')}}"/></li>
                                                             {% endif %}
                                                         </ul>
@@ -63,7 +67,7 @@
                             <tr >       
                                 <th colspan="{{length}}" >
                                      Autoriser vous l'organisation à prendre des photos durant l'évènement ?    
-                                    <input type="checkbox" id="autorisation_photo" name="autorisation_photo" />
+                                    <input type="checkbox" id="autorisation_photo" name="autorisation_photo"  />
                                    
                                 </th> 
                             </tr>

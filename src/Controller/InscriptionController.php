@@ -145,18 +145,40 @@ class InscriptionController extends AbstractController
 
         if ($request->isMethod('post')) {
             $posts = $request->request->all();
-            foreach ($seances as $seance) {
-                if ($posts['inscription_' . $seance->getDatetime()->format('d/m/y H:i:s')] == $seance->getId()) {
+            if($evenement->isParcoursObligatoire()){
+                 $parcoursSeance = $entityManager->getRepository(Seance::class)->findAllByParcours($evenement, $posts['inscription']);
+                 foreach( $parcoursSeance as $seance){
                     $seanceProfil = new SeanceProfil();
                     $seanceProfil->setSeance($seance);
                     $seanceProfil->setProfil($profil);
                     $seanceProfil->setHorrodateur(new DateTime());
-                    $seanceProfil->setAttente($posts['attentes_'.$seance->getId()]);
-                    $seanceProfil->setLieu($seance->getEvenement()->getLieux());
-                    $seanceProfil->isAutorisationPhoto($posts['autorisation_photo']);
-                    $seanceProfil->setModePaiement($posts['mode_paiement']);
-                    $seanceProfil->setCovoiturage($posts['participation_covoiturage']);
+                    $seanceProfil->setAttente($posts['attentes_' . $seance->getId()]);
+                    $seanceProfil->setLieu($evenement->getLieu());
+                    if($evenement->isAutorisationPhoto()){
+                        $seanceProfil->isAutorisationPhoto($posts['autorisation_photo']);
+                    }
+                    if($evenement->getModePaiement() != []){
+                        $seanceProfil->setModePaiement($posts['mode_paiement']);
+                    }
+                    if($evenement->isCovoiturage()){
+                        $seanceProfil->setCovoiturage($posts['participation_covoiturage']);
+                    }
                     $entityManager->persist($seanceProfil);
+                 }
+            }else{
+                foreach ($seances as $seance) {
+                    if (isset($posts['inscription_' . $seance->getDatetime()->format('d/m/y H:i:s')])  and $posts['inscription_' . $seance->getDatetime()->format('d/m/y H:i:s')] == $seance->getId()) {
+                        $seanceProfil = new SeanceProfil();
+                        $seanceProfil->setSeance($seance);
+                        $seanceProfil->setProfil($profil);
+                        $seanceProfil->setHorrodateur(new DateTime());
+                        $seanceProfil->setAttente($posts['attentes_'.$seance->getId()]);
+                        $seanceProfil->setLieu($seance->getEvenement()->getLieu());
+                        $seanceProfil->isAutorisationPhoto($posts['autorisation_photo']);
+                        $seanceProfil->setModePaiement($posts['mode_paiement']);
+                        $seanceProfil->setCovoiturage($posts['participation_covoiturage']);
+                        $entityManager->persist($seanceProfil);
+                    }
                 }
             }
             $entityManager->flush();

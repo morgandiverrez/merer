@@ -3,8 +3,9 @@
 namespace App\Repository;
 
 use App\Entity\Seance;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use App\Entity\Evenement;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @extends ServiceEntityRepository<Seance>
@@ -82,10 +83,12 @@ class SeanceRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    public function findAllByParcours($value): ?array
+    public function findAllByParcours(Evenement $event, String $value): ?array
     {
         return $this->createQueryBuilder('seance')
+            ->Where('seance.evenement = :event')
             ->andWhere('seance.parcours = :val')
+            ->setParameter('event', $event)
             ->setParameter('val', $value)
             ->getQuery()
             ->getResult();
