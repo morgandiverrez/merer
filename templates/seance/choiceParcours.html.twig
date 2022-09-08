@@ -5,20 +5,20 @@
 {% block body %}
     <div class="container-fluid">
         <p class="display-6 no-wrap text-center">Choisir un parcours pour  la Seance :{{seance.getName()}} du {{seance.getDatetime().format("Y-m-d H:i")}}</p>
-        <div class="form-control form-control-lg mx-auto corps text-center">
-            <form action="/seance/parcours/{{seance.getID()}}" method="post">
-                <p class="text-center ">
-                <select name="parcours" id="parcours">
-                        <option  value={{seance.getParcours()}} selected>{{seance.getParcours()}}</option>
-                    {% for parcours in seance.getEvenement().getParcours() %}
-                        <option value={{parcours}}>{{parcours}}</option>
-                    {% endfor %}
-                    <option value=''>obligatoire</option>
-                </select>
-                Nouveau parcours  <input type="text" id="newParcours" name="newParcours" placeholder="nouveau parcours"/>
-                <button class="btn btn-primary" type="submit" >Valider</button>
-            </form>  
-        </div>
+        <form action="/seance/parcours/{{seance.getID()}}" method="post">
+            <p class="text-center ">
+            <label for="parcours"> parcours existant </label>
+            <select name="parcours" id="parcours">
+                    <option  value={{seance.getParcours()}} selected>{{seance.getParcours()}}</option>
+                {% for parcours in seance.getEvenement().getParcours() %}
+                    <option value={{parcours}}>{{parcours}}</option>
+                {% endfor %}
+                <option value=''>obligatoire</option>
+            </select>
+            <label for="newParcours">Nouveau parcours</label>
+                <input type="text" id="newParcours" name="newParcours" placeholder="nouveau parcours"/>
+            <button class="btn btn-primary" type="submit" >Valider</button>
+        </form>  
     </div>
 
 {% endblock %}
