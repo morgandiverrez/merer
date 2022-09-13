@@ -102,12 +102,11 @@ class RetourController extends AbstractController
                 $spreadsheet->getSheetByName($clonedWorksheet->getTitle())->getCell($colonne[$i].'21')->setValue( strval($retour->getNoteGenerale()));
                 $i++;
             }
-
         }
 
         $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, "Xlsx");
         $writer->save("SDF_" . date("Y").".xlsx");
-        $finaleFile = "C:\wamp64\www\Formation_FedeB\public\SDF_2022.xlsx";
+        $finaleFile = "C:\wamp64\www\Formation_FedeB\public\SDF_". date("Y")."xlsx";
         
         header('Content-Description: File Transfer');
         header('Content-Type: application/octet-stream');
