@@ -27,7 +27,7 @@ class EvenementController extends AbstractController
     }
 
     #[Route('/show/{evenementID}', name: 'show')]
-    #[IsGranted('ROLE_BF')]
+    #[IsGranted('ROLE_USER')]
     public function show(EntityManagerInterface $entityManager, $evenementID): Response
     {
         $seanceByCreneauAndParcours = [];
@@ -67,7 +67,9 @@ class EvenementController extends AbstractController
             if ($evenement->getDateFinInscription() == null) {
                 $evenement->setDateFinInscription($evenement->getDateFin());
             }
-            
+            foreach($evenement->getSeance() as $seance){
+                $seance->setVisible($evenement->isVisible);
+            }
             $entityManager->persist($evenement);
             $entityManager->flush();
             return $this->redirectToRoute('evenement_show', ['evenementID' => $evenement->getId()]);
