@@ -48,10 +48,14 @@ class Association
     #[ORM\Column(type: 'date', nullable: true)]
     private $date_election;
 
+    #[ORM\ManyToMany(targetEntity: Demande::class, mappedBy: 'association')]
+    private $demandes;
+
  
     public function __construct()
     {
         $this->profil = new ArrayCollection();
+        $this->demandes = new ArrayCollection();
     }
 
     public function  __toString()
@@ -205,6 +209,33 @@ class Association
     public function setDateElection(?\DateTimeInterface $date_election): self
     {
         $this->date_election = $date_election;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Demande>
+     */
+    public function getDemandes(): Collection
+    {
+        return $this->demandes;
+    }
+
+    public function addDemande(Demande $demande): self
+    {
+        if (!$this->demandes->contains($demande)) {
+            $this->demandes[] = $demande;
+            $demande->addAssociation($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDemande(Demande $demande): self
+    {
+        if ($this->demandes->removeElement($demande)) {
+            $demande->removeAssociation($this);
+        }
 
         return $this;
     }

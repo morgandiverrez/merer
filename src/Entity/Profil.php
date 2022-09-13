@@ -67,6 +67,9 @@ class Profil
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $allergie_alimentaire;
 
+    #[ORM\OneToMany(mappedBy: 'profil', targetEntity: Demande::class)]
+    private $demandes;
+
   
     public function __construct()
     {
@@ -76,6 +79,7 @@ class Profil
         $this->badge = new ArrayCollection();
         $this->seance = new ArrayCollection();
         $this->seanceProfil = new ArrayCollection();
+        $this->demandes = new ArrayCollection();
     }
 
     public function  __toString()
@@ -376,6 +380,36 @@ class Profil
     public function setAllergieAlimentaire(?string $allergie_alimentaire): self
     {
         $this->allergie_alimentaire = $allergie_alimentaire;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Demande>
+     */
+    public function getDemandes(): Collection
+    {
+        return $this->demandes;
+    }
+
+    public function addDemande(Demande $demande): self
+    {
+        if (!$this->demandes->contains($demande)) {
+            $this->demandes[] = $demande;
+            $demande->setProfil($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDemande(Demande $demande): self
+    {
+        if ($this->demandes->removeElement($demande)) {
+            // set the owning side to null (unless already changed)
+            if ($demande->getProfil() === $this) {
+                $demande->setProfil(null);
+            }
+        }
 
         return $this;
     }

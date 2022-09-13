@@ -45,9 +45,13 @@ class EquipeElu
     #[ORM\Column(type: 'array', nullable: true)]
     private $Fede_filliere = [];
 
+    #[ORM\ManyToMany(targetEntity: Demande::class, mappedBy: 'EquipeElu')]
+    private $demandes;
+
     public function __construct()
     {
         $this->profil = new ArrayCollection();
+        $this->demandes = new ArrayCollection();
     }
 
     public function __toString()
@@ -188,6 +192,33 @@ class EquipeElu
     public function setFedeFilliere(?array $Fede_filliere): self
     {
         $this->Fede_filliere = $Fede_filliere;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Demande>
+     */
+    public function getDemandes(): Collection
+    {
+        return $this->demandes;
+    }
+
+    public function addDemande(Demande $demande): self
+    {
+        if (!$this->demandes->contains($demande)) {
+            $this->demandes[] = $demande;
+            $demande->addEquipeElu($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDemande(Demande $demande): self
+    {
+        if ($this->demandes->removeElement($demande)) {
+            $demande->removeEquipeElu($this);
+        }
 
         return $this;
     }

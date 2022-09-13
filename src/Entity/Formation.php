@@ -45,11 +45,15 @@ class Formation
     #[ORM\ManyToOne(targetEntity: Badge::class, inversedBy: 'formations')]
     private $badge;
 
+    #[ORM\ManyToMany(targetEntity: Demande::class, mappedBy: 'formation')]
+    private $demandes;
+
    
 
     public function __construct()
     {
         $this->Seance = new ArrayCollection();
+        $this->demandes = new ArrayCollection();
 
     }
 
@@ -197,6 +201,33 @@ class Formation
     public function setBadge(?Badge $badge): self
     {
         $this->badge = $badge;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Demande>
+     */
+    public function getDemandes(): Collection
+    {
+        return $this->demandes;
+    }
+
+    public function addDemande(Demande $demande): self
+    {
+        if (!$this->demandes->contains($demande)) {
+            $this->demandes[] = $demande;
+            $demande->addFormation($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDemande(Demande $demande): self
+    {
+        if ($this->demandes->removeElement($demande)) {
+            $demande->removeFormation($this);
+        }
 
         return $this;
     }

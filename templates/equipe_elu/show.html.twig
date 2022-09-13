@@ -26,8 +26,8 @@
                         {% endfor %}
                         <li class="list-group-item">Adresse mail : {{equipeElu.getAdresseMail()}} </li>
                         <li class="list-group-item">Etablissement : {{equipeElu.getEtablissement()}}</li>
-                        <li class="list-group-item">Date d'élection : {{equipeElu.getDateElection().format("Y-m-d")}}</li>
-                        <li class="list-group-item">Durée de mandat : {{equipeElu.getDureeMandat()}} ans</li>
+                        <li class="list-group-item">Date d'élection :  {% if equipeElu.getDateElection() is null %}  - {% else %} {{equipeElu.getDateElection().format("Y-m-d")}}{% endif %}</li>
+                        <li class="list-group-item">Durée de mandat : {% if equipeElu.getDureeMandat() is null %}  - {% else %} {{equipeElu.getDureeMandat()}} ans {% endif %}</li>
                                                 
                     </ul>
                     <div class="card-body">
