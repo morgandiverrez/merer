@@ -33,6 +33,7 @@ class SeanceController extends AbstractController
 
         
         $seances = $entityManager->getRepository(Seance::class)->findAllSuperiorByDatetimeAndVisibleAndWithoutEvenement(date('y/m/d H:i:s'));
+      
         $evenements = $entityManager->getRepository(Evenement::class)->findAllSuperiorByDatetimeAndVisible(date('y/m/d H:i:s'));
        
         return $this->render('seance/showAll.html.twig', [
