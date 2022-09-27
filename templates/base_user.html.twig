@@ -36,30 +36,20 @@
     <body style="height: 100%; width:100%;">
         {% block header %}
             <header >
-                <nav height="60" style="background-color:#2B9D7D ;" class="navbar navbar-expand-lg ">
+                <nav height="60" style="background-color:#F0AD42 ;" class="navbar navbar-expand-lg ">
                     <div class="container-fluid">
-                        <a class="navbar-brand" href="https://fedeb.net/"><img src="{{asset('build/images/logo_FEDEB.png')}}" height="60" alt="logo Fédé B"></a>
+                        <a class="navbar-brand" href="/account/"><img src="{{asset('build/images/logo_FEDEB_Noir.png')}}" height="60" alt="logo Fédé B"></a>
 
 
                         {% if is_granted('ROLE_USER') %}
                             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                                    {% if is_granted('ROLE_ADMIN')%}
-
-                                    {% else %}
-                                        <li class="nav-item">
-                                            <a class="nav-link active" aria-current="page" href="/account/">Mon Profil</a>
-                                        </li>
-                                    {% endif %}
-
                                     <li class="nav-item">
                                         <a class="nav-link" href="/seance/">Séance</a>
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link" href="/catalogue/">Catalogue de formation </a>
-                                    </li>
-                                    
-                                    
+                                    </li
                                     {% if is_granted('ROLE_FORMATEURICE') %}
                                         <li class="nav-item dropdown">
                                             <a class="nav-link dropdown-toggle"  id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -183,11 +173,6 @@
                         {% endif %}
                          <div class="d-flex justify-content-end">
                            {% if is_granted('ROLE_USER')%}
-                                 {% if is_granted('ROLE_FORMATEURICE')%}
-                                    <ul>
-                                        <li><a class="nav-link " href="https://drive.google.com/drive/folders/0APJ8vkXug6tXUk9PVA9"><i color="dark" height="80" class="fa-brands fa-google-drive"></i></a></li>
-                                    </ul>
-                                {% endif %}
                                 <ul>
                                       <li><a class="nav-link " href=" https://discord.gg/6PR3h3mtp9"> <i class="fa-brands fa-discord"></i></a> </li>
                                 </ul>
@@ -211,7 +196,7 @@
 
         {% block footer %}
             <br><br><br><br><br><br><br>
-            <footer  height="60" style="background-color: #2B9D7D;">
+            <footer  height="60" style="background-color:#F0AD42 ;">
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-lg-4 mt-2 mb-2">
@@ -224,9 +209,9 @@
                             <p class="text-light justify-content-center"></p>
                         </div>
 
-                        <div class="col-lg-4 mt-2 mb-2" style"display: flex; justify-content: flex-end;">
+                        <div class="col-lg-4 mt-2 mb-2" >
                             <img src="{{asset('build/images/logo_FAGE.png')}}"  height="60" class="d-inline-block " alt="logo FAGE">
-                            <img src="{{asset('build/images/logo_FEDEB.png')}}"  height="60" class="d-inline-block " alt="logo Fédé B">
+                            <img src="{{asset('build/images/logo_FEDEB_Noir.png')}}"  height="60" class="d-inline-block " alt="logo Fédé B">
                         </div>
                     </div>
                 </div>

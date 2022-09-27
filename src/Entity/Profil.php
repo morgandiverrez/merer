@@ -28,13 +28,8 @@ class Profil
     #[ORM\Column(type: 'string',length: 255, nullable: true)]
     private $pronom;
 
-
     #[ORM\Column(type: 'date', nullable: true)]
     private $date_of_birth;
-
-    #[ORM\Column(type: 'date', nullable: true)]
-    private $WE2F;
-
 
 
     #[ORM\OneToMany(mappedBy: 'profil', targetEntity: Retour::class)]
@@ -60,12 +55,6 @@ class Profil
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $telephone;
-
-    #[ORM\Column(type: 'array', nullable: true)]
-    private $regime_alimentaire = [];
-
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $allergie_alimentaire;
 
     #[ORM\OneToMany(mappedBy: 'profil', targetEntity: Demande::class)]
     private $demandes;
@@ -165,17 +154,7 @@ class Profil
         return $this;
     }
 
-    public function getWE2F(): ?\DateTimeInterface
-    {
-        return $this->WE2F;
-    }
 
-    public function setWE2F(?\DateTimeInterface $WE2F): self
-    {
-        $this->WE2F = $WE2F;
-
-        return $this;
-    }
 
 
     /**
@@ -356,30 +335,6 @@ class Profil
         }
 
         $this->user = $user;
-
-        return $this;
-    }
-
-    public function getRegimeAlimentaire(): ?array
-    {
-        return $this->regime_alimentaire;
-    }
-
-    public function setRegimeAlimentaire(?array $regime_alimentaire): self
-    {
-        $this->regime_alimentaire = $regime_alimentaire;
-
-        return $this;
-    }
-
-    public function getAllergieAlimentaire(): ?string
-    {
-        return $this->allergie_alimentaire;
-    }
-
-    public function setAllergieAlimentaire(?string $allergie_alimentaire): self
-    {
-        $this->allergie_alimentaire = $allergie_alimentaire;
 
         return $this;
     }
