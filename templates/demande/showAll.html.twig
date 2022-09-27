@@ -5,7 +5,7 @@
 
 {% block body %}
     <div class="container-fluid">
-        <div class="corps mx-auto">
+        <div style = "margin-left: auto ; margin-right: auto ; max-width : 900px;">
             <p class="display-6 no-wrap text-center">Liste des demandes de formation  </p>
        
             <table class="table table-striped">
@@ -25,7 +25,7 @@
                 {% for demande in demandes %} 
                  {% if demande.getDateDebut() <= date() and verif == false %}
                             <tr>
-                                <td colspan="5" align="center"> Demande passée </td>
+                                <td colspan="5" style=" font-weight: bold;" align="center"> Demande passée </td>
                             <tr>
                             {% set verif = true %}
                         {% endif %}
@@ -38,7 +38,7 @@
                             {% if demande.getDateDebut() is  null %} - {% else %} {{demande.getDateDebut().format('d/m/y H:i')}} {% endif %}   
                         </td>
                         <td>{% if demande.getDateFin() is null %}  - {% else %} {{demande.getDateFin().format('d/m/y H:i')}} {% endif %}  </td>
-                        <td>{{demande.getNombrePersonne()}}<td>
+                        <td>{{demande.getNombrePersonne()}}</td>
                         <td><a href="/demande/show/{{demande.getId()}}"><i class="fa-solid fa-eye"></i></a></td> 
                      </tr>
                 {% endfor %}
