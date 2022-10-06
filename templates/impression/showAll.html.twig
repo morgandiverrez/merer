@@ -1,0 +1,47 @@
+{% extends 'base_user.html.twig' %}
+
+{% block title %}Liste Impression {% endblock %}
+
+
+{% block body %}
+    <div class="container-lg">
+        <div >
+            <p class="display-6 no-wrap text-center">Liste des impressions </p>
+
+            <form action="{{ path('impression_showAll') }}" method="post">
+                <p class="text-center">
+                    <input type="text" id="association" name="association" placeholder="association"/>
+                    <input type="text" id="format" name="format" placeholder="format"/>
+                    <button class="btn btn-primary" type="submit" >Rechercher</button>
+                </p>
+            </form>
+
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">Association</th>
+                        <th scope="col">Nom</th>
+                        <th scope="col">Format</th>
+                        <th scope="col">Quantité</th>
+                        <th scope="col">Supprimé</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                {% for impression in impressions %} 
+                    <tr>
+                        <th>{{impression.getAssociation().getSigle()}}</th>   
+                        <th>{{impression.getName()}}</th>
+                        <th>{{impression.getFormat()}}{% if impression.isRectoVerso() %} RV {% endif %} {% if impression.isCouleur() %} Couleur {% endif %} </th>
+                         <th>{{impression.getQuantite()}}</th>
+                        <th><a href="/impression/delete/{{impression.getId()}}"><i class="fa-solid fa-trash-can"></i></i></a></th> 
+                     </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+
+
+{% endblock %}

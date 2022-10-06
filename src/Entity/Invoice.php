@@ -2,10 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\InvoiceRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use App\Entity\Impression;
+use App\Entity\InvoiceLine;
+use App\Entity\PaymentDeadline;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\InvoiceRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 #[ORM\Entity(repositoryClass: InvoiceRepository::class)]
 class Invoice
@@ -27,7 +30,7 @@ class Invoice
     #[ORM\Column(type: 'boolean', nullable: true)]
     private $confirm;
 
-    #[ORM\OneToMany(mappedBy: 'invoice', targetEntity: paymentDeadline::class)]
+    #[ORM\OneToMany(mappedBy: 'invoice', targetEntity: PaymentDeadline::class)]
     private $paymentDeadlines;
 
     #[ORM\OneToMany(mappedBy: 'invoice', targetEntity: InvoiceLine::class)]
@@ -36,10 +39,14 @@ class Invoice
     #[ORM\Column(type: 'boolean', nullable: true)]
     private $credit;
 
+    #[ORM\OneToMany(mappedBy: 'invoice', targetEntity: Impression::class)]
+    private $impressions;
+
     public function __construct()
     {
         $this->paymentDeadlines = new ArrayCollection();
         $this->invoiceLines = new ArrayCollection();
+        $this->impressions = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -163,6 +170,36 @@ class Invoice
     public function setCredit(?bool $credit): self
     {
         $this->credit = $credit;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Impression>
+     */
+    public function getImpressions(): Collection
+    {
+        return $this->impressions;
+    }
+
+    public function addImpression(Impression $impression): self
+    {
+        if (!$this->impressions->contains($impression)) {
+            $this->impressions[] = $impression;
+            $impression->setInvoice($this);
+        }
+
+        return $this;
+    }
+
+    public function removeImpression(Impression $impression): self
+    {
+        if ($this->impressions->removeElement($impression)) {
+            // set the owning side to null (unless already changed)
+            if ($impression->getInvoice() === $this) {
+                $impression->setInvoice(null);
+            }
+        }
 
         return $this;
     }
