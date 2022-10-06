@@ -11,17 +11,16 @@
                     <a href="/catalogue/new"><i class="fa-solid fa-plus align-left"></i></a>
                 {% endif %}
             </p>
-            <p class="text-center ">
                 <form action="{{ path('catalogue_showAll') }}" method="post">
+                <p style="flex-wrap : wrap;" class="text-center justify-content-center">
                     <input type="text" id="name" name="name" placeholder="Nom"/>
-                    <input type="text" id="categorie" name="categorie" placeholder="categorie"/>
-                    <input type="text" id="opg" name="opg" placeholder="OPG"/>
-                    <input type="text" id="preRequis" name="preRequis" placeholder="Pré - Requis"/>
-                    <input type="text" id="publicCible" name="publicCible" placeholder="Public cible"/>
-                    <input type="text" id="badge" name="badge" placeholder="badge"/>
-                    <br>
-                    durée minimum : <input type="time" id="durationMin" name="durationMin" min="00:10" max="48:00"  />
-                    durée maximum : <input type="time" id="durationMax" name="durationMax" min="00:15" max="48:00"  />
+                    <input  type="text" id="categorie" name="categorie" placeholder="categorie"/>
+                    <input  type="text" id="opg" name="opg" placeholder="OPG"/>
+                    <input  type="text" id="preRequis" name="preRequis" placeholder="Pré - Requis"/>
+                    <input  type="text" id="publicCible" name="publicCible" placeholder="Public cible"/>
+                    <input  type="text" id="badge" name="badge" placeholder="badge"/>
+                    durée minimum : <input type="time"  id="durationMin" name="durationMin" min="00:10" max="48:00"  />
+                    durée maximum : <input type="time"  id="durationMax" name="durationMax" min="00:15" max="48:00"  />
                     <button class="btn btn-primary" type="submit" >Rechercher</button>
                 </form>
             </p>

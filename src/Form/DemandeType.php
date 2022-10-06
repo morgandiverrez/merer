@@ -10,7 +10,9 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 
 class DemandeType extends AbstractType
 {
@@ -18,8 +20,14 @@ class DemandeType extends AbstractType
     {
         $builder
             ->add('name')
-            ->add('dateDebut')
-            ->add('dateFin')
+            ->add( 'dateDebut', DateTimeType::class, [
+            'date_widget' => 'single_text',
+            'time_widget' => 'single_text',
+        ])
+            ->add('dateFin', DateTimeType::class, [
+                'date_widget' => 'single_text',
+              'time_widget' => 'single_text',
+            ])
             ->add('nombrePersonne')
             ->add('planning', FileType::class, [
                 'required' => false,

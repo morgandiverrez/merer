@@ -8,6 +8,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\TimeType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 class FormationType extends AbstractType
@@ -19,7 +20,10 @@ class FormationType extends AbstractType
             ->add('name')
             ->add('description', TextareaType::class)
             ->add('pre_requis')
-            ->add('duration' )
+            ->add( 'duration', TimeType::class, [
+           
+            'widget' => 'single_text',
+        ]) 
             ->add('public_cible')
             ->add('opg', TextareaType::class)
             ->add('badge', EntityType::class,[

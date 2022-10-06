@@ -8,6 +8,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 class EquipeEluType extends AbstractType
@@ -32,7 +33,9 @@ class EquipeEluType extends AbstractType
             ->add('description' , TextareaType::class)
             ->add('adresse_mail', EmailType::class)
             ->add('etablissement')
-            ->add('date_election')
+            ->add( 'date_election', BirthdayType::class, [
+            'widget' => 'single_text',
+        ])
             -> add('duree_mandat')
         ;
     }

@@ -28,7 +28,9 @@ class ProfilType extends AbstractType
                ],
             ])
             ->add('telephone', TelType::class)    
-            ->add('date_of_birth', BirthdayType::class)
+            ->add('date_of_birth', BirthdayType:: class, [
+            'widget' => 'single_text',
+        ])
             ->add('equipeElu', EntityType::class,[
                  // looks for choices from this entity
                  'class' => EquipeElu::class,

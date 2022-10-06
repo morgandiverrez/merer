@@ -7,6 +7,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\Image;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
@@ -23,7 +24,9 @@ class BadgeType extends AbstractType
             ->add('name')
             ->add('categorie')
             ->add('description', TextareaType::class)
-            ->add('date_creation')
+            ->add( 'date_creation', DateType::class, [
+            'widget' => 'single_text',
+        ])
         ;
     }
 
