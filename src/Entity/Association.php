@@ -51,11 +51,15 @@ class Association
     #[ORM\ManyToMany(targetEntity: Demande::class, mappedBy: 'association')]
     private $demandes;
 
+    #[ORM\OneToMany(mappedBy: 'association', targetEntity: Impression::class)]
+    private $impressions;
+
  
     public function __construct()
     {
         $this->profil = new ArrayCollection();
         $this->demandes = new ArrayCollection();
+        $this->impressions = new ArrayCollection();
     }
 
     public function  __toString()
@@ -235,6 +239,36 @@ class Association
     {
         if ($this->demandes->removeElement($demande)) {
             $demande->removeAssociation($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Impression>
+     */
+    public function getImpressions(): Collection
+    {
+        return $this->impressions;
+    }
+
+    public function addImpression(Impression $impression): self
+    {
+        if (!$this->impressions->contains($impression)) {
+            $this->impressions[] = $impression;
+            $impression->setAssociation($this);
+        }
+
+        return $this;
+    }
+
+    public function removeImpression(Impression $impression): self
+    {
+        if ($this->impressions->removeElement($impression)) {
+            // set the owning side to null (unless already changed)
+            if ($impression->getAssociation() === $this) {
+                $impression->setAssociation(null);
+            }
         }
 
         return $this;
