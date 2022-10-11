@@ -33,11 +33,19 @@ class CatalogService
     #[ORM\OneToMany(mappedBy: 'CatalogService', targetEntity: InvoiceLine::class)]
     private $invoiceLines;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $code = null;
+
     public function __construct()
     {
         $this->invoiceLines = new ArrayCollection();
     }
 
+    public function  __toString()
+    {
+        return $this->getName();
+    }
+    
     public function getId(): ?int
     {
         return $this->id;
@@ -129,6 +137,18 @@ class CatalogService
                 $invoiceLine->setCatalogService(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCode(): ?string
+    {
+        return $this->code;
+    }
+
+    public function setCode(?string $code): self
+    {
+        $this->code = $code;
 
         return $this;
     }

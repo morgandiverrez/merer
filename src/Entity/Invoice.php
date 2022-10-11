@@ -22,13 +22,13 @@ class Invoice
     private $creationDate;
 
     #[ORM\Column(type: 'boolean', nullable: true)]
-    private $acquitted;
+    private $acquitted = false;
 
     #[ORM\Column(type: 'boolean', nullable: true)]
-    private $ready;
+    private $ready = false;
 
     #[ORM\Column(type: 'boolean', nullable: true)]
-    private $confirm;
+    private $confirm = false;
 
     #[ORM\OneToMany(mappedBy: 'invoice', targetEntity: PaymentDeadline::class)]
     private $paymentDeadlines;
@@ -37,10 +37,13 @@ class Invoice
     private $invoiceLines;
 
     #[ORM\Column(type: 'boolean', nullable: true)]
-    private $credit;
+    private $credit = false;
 
-    #[ORM\OneToMany(mappedBy: 'invoice', targetEntity: Impression::class)]
-    private $impressions;
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $code = null;
+
+    #[ORM\ManyToOne(inversedBy: 'invoices')]
+    private ?association $association = null;
 
     public function __construct()
     {
@@ -48,6 +51,8 @@ class Invoice
         $this->invoiceLines = new ArrayCollection();
         $this->impressions = new ArrayCollection();
     }
+
+
 
     public function getId(): ?int
     {
@@ -174,32 +179,27 @@ class Invoice
         return $this;
     }
 
-    /**
-     * @return Collection<int, Impression>
-     */
-    public function getImpressions(): Collection
+
+    public function getCode(): ?string
     {
-        return $this->impressions;
+        return $this->code;
     }
 
-    public function addImpression(Impression $impression): self
+    public function setCode(?string $code): self
     {
-        if (!$this->impressions->contains($impression)) {
-            $this->impressions[] = $impression;
-            $impression->setInvoice($this);
-        }
+        $this->code = $code;
 
         return $this;
     }
 
-    public function removeImpression(Impression $impression): self
+    public function getAssociation(): ?association
     {
-        if ($this->impressions->removeElement($impression)) {
-            // set the owning side to null (unless already changed)
-            if ($impression->getInvoice() === $this) {
-                $impression->setInvoice(null);
-            }
-        }
+        return $this->association;
+    }
+
+    public function setAssociation(?association $association): self
+    {
+        $this->association = $association;
 
         return $this;
     }

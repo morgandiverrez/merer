@@ -44,6 +44,11 @@ class Impression
     #[ORM\ManyToOne(targetEntity: Invoice::class, inversedBy: 'impressions')]
     private $invoice;
 
+    public function  __toString()
+    {
+        return $this->getName();
+    }
+    
     public function getId(): ?int
     {
         return $this->id;

@@ -71,5 +71,12 @@ class DemandeRepository extends ServiceEntityRepository
                ->getResult()
            ;
        }
-    
+    public function findByID($value): ?Demande
+    {
+        return $this->createQueryBuilder('demande')
+        ->andWhere('demande.id = :val')
+        ->setParameter('val', $value)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
 }

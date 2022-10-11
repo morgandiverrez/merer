@@ -39,28 +39,72 @@ class CatalogServiceRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return CatalogService[] Returns an array of CatalogService objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('c')
-//            ->andWhere('c.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('c.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    //    /**
+    //     * @return CatalogService[] Returns an array of CatalogService objects
+    //     */
+    //    public function findByExampleField($value): array
+    //    {
+    //        return $this->createQueryBuilder('c')
+    //            ->andWhere('c.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->orderBy('c.id', 'ASC')
+    //            ->setMaxResults(10)
+    //            ->getQuery()
+    //            ->getResult()
+    //        ;
+    //    }
 
-//    public function findOneBySomeField($value): ?CatalogService
-//    {
-//        return $this->createQueryBuilder('c')
-//            ->andWhere('c.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    //    public function findOneBySomeField($value): ?CatalogService
+    //    {
+    //        return $this->createQueryBuilder('c')
+    //            ->andWhere('c.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->getQuery()
+    //            ->getOneOrNullResult()
+    //        ;
+    //    }
+
+    public function findByCode($value): ?CatalogService
+    {
+        return $this->createQueryBuilder('catalogService')
+        ->Where('catalogService.code LIKE :val')
+        ->setParameter('val',  $value )
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+    public function findByID($value): ?CatalogService
+    {
+        return $this->createQueryBuilder('service')
+        ->andWhere('service.id = :val')
+        ->setParameter('val', $value)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+    public function findAllByCode($value): ?array
+    {
+        return $this->createQueryBuilder('service')
+        ->andWhere('service.code LIKE :val')
+        ->setParameter('val', '%' . $value . '%')
+            ->getQuery()
+            ->getResult();
+    }
+    public function findAllByName($value): ?array
+    {
+        return $this->createQueryBuilder('service')
+        ->andWhere('service.name LIKE :val')
+        ->setParameter('val', '%' . $value . '%')
+            ->getQuery()
+            ->getResult();
+    }
+    public function findAllByAmountTtc($value): ?array
+    {
+        return $this->createQueryBuilder('service')
+        ->andWhere('service.amountTtc = :val')
+        ->setParameter('val',  $value )
+            ->getQuery()
+            ->getResult();
+    }
+
 }

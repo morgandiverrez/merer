@@ -1,0 +1,52 @@
+{% extends 'base_user.html.twig' %}
+
+{% block title %}Liste Services{% endblock %}
+
+
+{% block body %}
+    <div class="container-lg">
+        <div >
+            <p class="display-6 no-wrap text-center">Liste des services
+                {% if is_granted('ROLE_BF') %}
+                    <a href="/service/new"><i class="fa-solid fa-plus align-right"></i></a>
+                {% endif %}
+            </p>
+            <form action="{{ path('service_showAll') }}" method="post">
+                <p class="text-center">
+                    <input type="text" id="code" name="code" placeholder="Code"/>
+                    <input type="text" id="name" name="name" placeholder="name"/>
+                    <input type="text" id="amountTtc" name="amountTtc" placeholder="montant TTC"/>
+                    <button class="btn btn-primary" type="submit" >Rechercher</button>
+                </p>
+            </form>
+            <table class="table table-striped">
+                
+                
+                <thead>
+                <tr>
+                    <th scope="col">Code</th>
+                    <th scope="col">Nom</th>
+                    <th scope="col">Amount TTC</th>
+                    <th scope="col">Détails</th>
+                    
+                 </tr>
+                </thead>
+
+                <tbody>
+                {% for service in services %} 
+                    <tr>
+                        
+                        <th>{{service.getCode()}}</th> 
+                        <th>{{service.getName()}}</th>   
+                        <th>{{service.amountTtc}}€</th>
+                        <th><a href="/service/show/{{service.getId()}}"><i class="fa-solid fa-eye"></i></a></th> 
+                     </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+
+
+{% endblock %}
