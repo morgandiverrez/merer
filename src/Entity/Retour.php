@@ -82,6 +82,8 @@ class Retour
         return $this->id;
     }
 
+   
+
     public function getNoteContenu(): ?int
     {
         return $this->note_contenu;

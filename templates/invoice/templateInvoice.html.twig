@@ -1,0 +1,172 @@
+{% extends 'base_user.html.twig' %}
+
+{% block title %}{% endblock %}
+
+    {% block stylesheets %}
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+        <style>
+            .tete{
+                width: 100%;
+            }
+            .pied{
+                position: absolute;
+                bottom: 0;
+            }
+            p{
+                margin: 0;
+                font-size: 11px;
+            }
+            th{
+                font-weight: 0;
+                font-size: 11px;
+            }
+            tr{
+                margin: 0;
+            }
+            li{
+                font-size: 11px;
+            }
+        </style>
+    {% endblock %}
+
+{% block body %}
+    <div class="container-fluid  my-3">
+
+        <table class="tete text-left">
+            <tbody>
+            <tr><th class="mx-5" ><img src="{{ asset('build/images/logo.jpg') }}" width="150" height="150"></th>
+                <th class="mx-5 align-text-top">
+                    {% if invoice.confirm==true and invoice.credit==false %}
+                    <h5 class="font-weight-bold">FACTURE</h5>
+                    <p>Fact-{{ invoice.code }}<p>
+                        {% elseif invoice.confirm==true and invoice.credit==true %}
+                    <h5 class="font-weight-bold">AVOIR</h5>
+                    <p>Avoir-{{ invoice.code }}<p>
+                        {% elseif invoice.confirm==false and invoice.credit==true %}
+                    <h5 class="font-weight-bold">AVOIR PRÉVISIONNEL</h5>
+                    <p>Avoir_P-{{ invoice.code }}<p>
+                        {% else %}
+                    <h5 class="font-weight-bold">DEVIS</h5>
+                    <p>Dev-{{ invoice.code }}<p>
+                        {% endif %}
+                    <p>En
+                        {% set i = invoice.paymentdeadlines.count %}
+                        {% if i==1 %}
+                            une
+                        {% elseif i==2 %}
+                            deux
+                        {% elseif i==3 %}
+                            trois
+                        {% elseif i==4 %}
+                            quatre
+                        {% elseif i==5 %}
+                            cinq
+                        {% elseif i==6 %}
+                            six
+                        {% elseif i==7 %}
+                            sept
+                        {% elseif i==8 %}
+                            huit
+                        {% elseif i==9 %}
+                            neuf
+                        {% elseif i==10 %}
+                            dix
+                        {% endif %}
+                        fois</p>
+                    <p>Émis le {{ invoice.creationDate.format("d/m/Y") }}</p>
+                </th></tr>
+            <tr><th class="mx-5">{{ federation.socialReason }}</th><th class="mx-5 ">Adresse de facturation :</th></tr>
+            <tr><th class="mx-5">{{ institution.location.address }}</th><th class="mx-5 ">{{ invoice.customer.contact[0].name }} <b>{{ invoice.customer.contact[0].lastName }}</b></th></tr>
+            <tr><th class="mx-5">{{ institution.location.zipCode }} {{ institution.location.city }}</th><th class="mx-5">{{ invoice.customer.location.address }}</th></tr>
+            <tr><th class="mx-5">Email : crionsdcouleurs@gmail.com</th><th class="mx-5 ">{{ invoice.customer.location.zipCode }} {{ invoice.customer.location.city }}</th></tr>
+            <tr><th class="mx-5">Tel : 06-52-32-97-64</th><th class="mx-5">  {% if invoice.customer.administrativeidentifier.administrativeidentifierId is defined %}
+                        {% set j = "E" %}
+                    {% else %}
+                        {% set j ="P" %}
+                    {% endif %}
+                    {{ j }}-{{  invoice.customer.chartofaccounts.code|slice(4) }}</th></tr>
+            <tr><th class="mx-5">Site web : <a href="https://crionsdcouleurs.fr/" class="text-decoration-none text-dark">crionsdcouleurs.fr</a></th><th></th></tr>
+            </tbody>
+        </table>
+
+        <div class="tableaux my-2">
+            <table class="table table-sm">
+                <thead class="font-weight-bold text-center thead-dark">
+                <tr>
+                    <th scope="col">Code article</th>
+                    <th scope="col">Nom</th>
+                    <th scope="col">Prix TTC</th>
+                    <th scope="col">Commentaire</th>
+                </tr>
+                </thead>
+
+                <tbody class="text-left table-secondary">
+                {% for invoiceline in invoice.invoicelines %} <tr>
+                    {% if invoiceline.catalogservice.code is defined %}
+                        <th>{{invoiceline.catalogservice.code}}</th>
+                        <th>{{invoiceline.catalogservice.name}}</th>
+                        <th>{{invoiceline.catalogservice.amountTtc}}{{ federation.currency }}</th>
+                        <th>{{invoiceline.quote}}</th>
+                    {% endif %}
+                    {% if invoiceline.catalogdiscount.code is defined %}
+                        <th>{{invoiceline.catalogdiscount.code}}</th>
+                        <th>{{invoiceline.catalogdiscount.name}}</th>
+                        <th>-{{invoiceline.discount}}{{ federation.currency }}</th>
+                        <th>{{invoiceline.quote}}</th>
+                    {% endif %}
+
+                </tr> {% endfor %}
+
+                <tr>
+                    <th>Total</th>
+                    <th>Nombre d'article : {{invoice.invoicelines.count}}</th>
+                    <th class="font-weight-bold">{{ total }}{{ federation.currency }}</th>
+                    <th></th>
+                </tr>
+
+                </tbody>
+            </table>
+        </div>
+
+        <div class="paymentdeadlines text-left">
+            <ul class="list-group-flush">
+                <h6>Échéancier de paiement :</h6>
+                {% for paymentdeadline in  invoice.paymentdeadlines %}
+                    <li class="list-group-item">
+                        {{ paymentdeadline.expectedAmount}}{{ institution.federation.currency }} le <b>{{ paymentdeadline.expectedPaymentDate.format("d/m/y") }}</b> en {{ paymentdeadline.expectedMeans }}
+                        {% if paymentdeadline.actualPaymentDate is not null %}
+                            ({{ paymentdeadline.actualAmount}}{{ institution.federation.currency }} payé {{ paymentdeadline.actualPaymentDate.format("d/m/y") }} en {{ paymentdeadline.actualMeans }})
+                            {% set total = total-paymentdeadline.actualAmount %}
+                        {% endif %}
+                    </li>
+                {% endfor %}
+                <li class="list-group-item">
+                    Reste à charge : <b>{{ total }}{{ institution.federation.currency }}</b>
+                </li>
+            </ul>
+        </div>
+
+
+
+        <div class="paye text-center">
+            {% if invoice.acquitted==1 %}
+                <img src="{{ asset('build/images/paye.png') }}" width="250" height="250">
+            {% endif %}
+        </div>
+
+
+        <div class="pied text-center">
+            <p>Siren : {{ institution.administrativeidentifier.siret|slice(0, 9) }} Siret : {{ institution.administrativeidentifier.siret }} APE/NAF : {{ institution.administrativeidentifier.ape }}</p>
+            <p>
+                En l’absence de règlement au lendemain de la date de paiement figurant sur la facture, des pénalités de retard au taux de 10.0% par an s'appliquent.
+                {% if j=="E" %}
+                    De plus, pour tout professionnel et conformément à l'article L. 441-6 du code de commerce, une indemnité de 40,00 € s'ajoute.
+                {% endif %}
+            </p>
+        </div>
+
+
+
+
+    </div>
+{% endblock %}

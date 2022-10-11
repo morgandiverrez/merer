@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use DateTime;
+use App\Entity\Invoice;
 use App\Entity\Impression;
+use App\Entity\InvoiceLine;
 use App\Form\ImpressionType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,15 +24,15 @@ class ImpressionController extends AbstractController
     {
         $impressions = $entityManager->getRepository(Impression::class)->findAll();
 
-        if ($request->isMethod('post')) {
-            $posts = $request->request->all();
-            if ($posts['association']) {
-                $impressions = array_intersect($impressions, $entityManager->getRepository(Impression::class)->findAllByAssociation($posts['association']));
-            }
-            if ($posts['format']) {
-                $impressions = array_intersect($impressions, $entityManager->getRepository(Impression::class)->findAllByFormat($posts['format']));
-            }
-        }
+         if ($request->isMethod('post')) {
+             $posts = $request->request->all();
+             if ($posts['association']) {
+                 $impressions = array_intersect($impressions, $entityManager->getRepository(Impression::class)->findAllByAssociation($posts['association']));
+             }
+             if ($posts['format']) {
+                 $impressions = array_intersect($impressions, $entityManager->getRepository(Impression::class)->findAllByFormat($posts['format']));
+             }
+         }
 
         return $this->render('impression/showAll.html.twig', [
             'impressions' => $impressions,
@@ -49,6 +51,61 @@ class ImpressionController extends AbstractController
             $impression->setDatetime(new DateTime());
             $entityManager->persist($impression);
             $entityManager->flush();
+
+            if(! $impression->isDejaPaye() &&  $impression->isFactureFinDuMois()){
+                $invoiceLine = new InvoiceLine();
+                if($impression->getFormat() == 'plastification'){
+                    $invoiceLine->setCatalogService($entityManager->getRepository(CatalogService::class)->findByCode('plastification')[0]);
+                } else {
+                    if($impression->isRectoVerso()){
+                        if($impression->isCouleur()){
+                            $invoiceLine->setCatalogService($entityManager->getRepository(CatalogService::class)->findByCode($impression->getFormat().'RV'.'couleur')[0]);
+                        }else{
+                            $invoiceLine->setCatalogService($entityManager->getRepository(CatalogService::class)->findByCode($impression->getFormat() . 'RV')[0]);
+                        }
+                    } else {
+                        if ($impression->isCouleur()) {
+                            $invoiceLine->setCatalogService($entityManager->getRepository(CatalogService::class)->findByCode($impression->getFormat() .'R' . 'couleur')[0]);
+                        } else {
+                            $invoiceLine->setCatalogService($entityManager->getRepository(CatalogService::class)->findByCode($impression->getFormat() . 'R')[0]);
+                        }
+                    }
+                }
+                $invoice = $entityManager->getRepository(Invoice::class)->findCurrentInvoiceImpressionOfAssociation($impression->getAssociation()->getSigle())[0];
+                if($invoice = null){
+                    $invoice = new Invoice();
+                    $invoice->setAssociation($impression->getAssociation());
+                    $invoice->setCreationDate(new Datetime());
+                }
+                $invoiceLine->setInvoice($invoice);
+            }else{
+                $invoiceLine = new InvoiceLine();
+                if ($impression->getFormat() == 'plastification') {
+                    $invoiceLine->setCatalogService($entityManager->getRepository(CatalogService::class)->findByCode('plastification')[0]);
+                } else {
+                    if ($impression->isRectoVerso()) {
+                        if ($impression->isCouleur()) {
+                            $invoiceLine->setCatalogService($entityManager->getRepository(CatalogService::class)->findByCode($impression->getFormat() . 'RV' . 'couleur')[0]);
+                        } else {
+                            $invoiceLine->setCatalogService($entityManager->getRepository(CatalogService::class)->findByCode($impression->getFormat() . 'RV')[0]);
+                        }
+                    } else {
+                        if ($impression->isCouleur()) {
+                            $invoiceLine->setCatalogService($entityManager->getRepository(CatalogService::class)->findByCode($impression->getFormat() . 'R' . 'couleur')[0]);
+                        } else {
+                            $invoiceLine->setCatalogService($entityManager->getRepository(CatalogService::class)->findByCode($impression->getFormat() . 'R')[0]);
+                        }
+                    }
+                }
+                $invoice = new Invoice();
+                $invoice->setAssociation($impression->getAssociation());
+                $invoice->setCreationDate(new Datetime());
+                $invoice->setCode($entityManager->getRepository(Invoice::class)->findLastFAEI() + 1);
+                if($impression->isDejaPaye()){
+                    $invoice->setAcquitted(true);
+                }
+                $invoiceLine->setInvoice($invoice);
+            }
             return $this->redirectToRoute('impression_validation', []);
         }
 

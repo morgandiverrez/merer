@@ -30,6 +30,8 @@ class InvoiceLine
         return $this->id;
     }
 
+
+
     public function getDiscount(): ?float
     {
         return $this->discount;

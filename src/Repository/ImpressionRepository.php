@@ -77,12 +77,21 @@ class ImpressionRepository extends ServiceEntityRepository
     public function findAllByFormat($value): ?array
     {
         return $this->createQueryBuilder('impression')
-        ->andWhere('impression.format = :val')
+        ->Where('impression.format LIKE :val')
         ->setParameter('val', '%' . $value . '%')
             ->getQuery()
             ->getResult();
     }
 
- 
+
+    public function findByID($value): ?Impression
+    {
+        return $this->createQueryBuilder('impression')
+        ->andWhere('impression.id = :val')
+        ->setParameter('val', $value)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
 
 }
