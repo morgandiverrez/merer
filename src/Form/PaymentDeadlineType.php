@@ -6,13 +6,16 @@ use App\Entity\PaymentDeadline;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\MoneyType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class PaymentDeadlineType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('extpectedAmount', MoneyType::class,[
+            ->add('expectedAmount', MoneyType::class,[
                 'label'=>"Montant", 
                 'attr' => array('class'=>'my-3')
             ])

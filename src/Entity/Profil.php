@@ -25,12 +25,14 @@ class Profil
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $last_name;
 
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private $telephone;
+    
     #[ORM\Column(type: 'string',length: 255, nullable: true)]
     private $pronom;
 
     #[ORM\Column(type: 'date', nullable: true)]
     private $date_of_birth;
-
 
     #[ORM\OneToMany(mappedBy: 'profil', targetEntity: Retour::class)]
     private $retour;
@@ -53,11 +55,9 @@ class Profil
     #[ORM\OneToOne(mappedBy: 'profil', targetEntity: User::class, cascade: ['persist', 'remove'])]
     private $user;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $telephone;
-
     #[ORM\OneToMany(mappedBy: 'profil', targetEntity: Demande::class)]
     private $demandes;
+
 
   
     public function __construct()
@@ -368,6 +368,6 @@ class Profil
 
         return $this;
     }
-
+ 
     
 }

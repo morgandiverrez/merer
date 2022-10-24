@@ -51,21 +51,15 @@ class Association
     #[ORM\ManyToMany(targetEntity: Demande::class, mappedBy: 'association')]
     private $demandes;
 
-    #[ORM\OneToMany(mappedBy: 'association', targetEntity: Impression::class)]
-    private $impressions;
 
-    #[ORM\OneToMany(mappedBy: 'association', targetEntity: Invoice::class)]
-    private Collection $invoices;
 
  
     public function __construct()
     {
         $this->profil = new ArrayCollection();
         $this->demandes = new ArrayCollection();
-        $this->impressions = new ArrayCollection();
-        $this->invoices = new ArrayCollection();
     }
-
+    
     public function  __toString()
     {
         return $this->getSigle();
@@ -248,66 +242,5 @@ class Association
         return $this;
     }
 
-    /**
-     * @return Collection<int, Impression>
-     */
-    public function getImpressions(): Collection
-    {
-        return $this->impressions;
-    }
-
-    public function addImpression(Impression $impression): self
-    {
-        if (!$this->impressions->contains($impression)) {
-            $this->impressions[] = $impression;
-            $impression->setAssociation($this);
-        }
-
-        return $this;
-    }
-
-    public function removeImpression(Impression $impression): self
-    {
-        if ($this->impressions->removeElement($impression)) {
-            // set the owning side to null (unless already changed)
-            if ($impression->getAssociation() === $this) {
-                $impression->setAssociation(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Invoice>
-     */
-    public function getInvoices(): Collection
-    {
-        return $this->invoices;
-    }
-
-    public function addInvoice(Invoice $invoice): self
-    {
-        if (!$this->invoices->contains($invoice)) {
-            $this->invoices->add($invoice);
-            $invoice->setAssociation($this);
-        }
-
-        return $this;
-    }
-
-    public function removeInvoice(Invoice $invoice): self
-    {
-        if ($this->invoices->removeElement($invoice)) {
-            // set the owning side to null (unless already changed)
-            if ($invoice->getAssociation() === $this) {
-                $invoice->setAssociation(null);
-            }
-        }
-
-        return $this;
-    }
-
- 
 
 }

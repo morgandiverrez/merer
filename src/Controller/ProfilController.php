@@ -113,7 +113,6 @@ class ProfilController extends AbstractController
     #[IsGranted('ROLE_BF')]
     public function editByAdmin(EntityManagerInterface $entityManager, Request $request, $profilID): Response
     {
-        $user = $this->getUser();
         $profil = $entityManager->getRepository(Profil::class)->findByID($profilID)[0];
         $form = $this->createForm(ProfilType::class, $profil);
 
@@ -247,7 +246,7 @@ class ProfilController extends AbstractController
     }
 
     #[Route('/delete/{profilID}', name: 'delete')]
-    #[IsGranted('ROLE_ADMIN')]
+    #[IsGranted('ROLE_FORMA')]
     public function delete(EntityManagerInterface $entityManager, $profilID): Response
     {
 
@@ -264,7 +263,7 @@ class ProfilController extends AbstractController
     #[IsGranted('ROLE_USER')]
     public function listeFormationsSuivies(EntityManagerInterface $entityManager, $profilID): Response
     {
-
+        
         $profil = $entityManager->getRepository(Profil::class)->findById($profilID)[0];
         $inscriptions = $profil-> getSeanceProfil();
 
@@ -275,6 +274,8 @@ class ProfilController extends AbstractController
         ]);
     }
 
+
+  
     #[Route('/showFormateurice', name: 'formateurice')]
     #[IsGranted('ROLE_BF')]
     public function formateurice(EntityManagerInterface $entityManager): Response

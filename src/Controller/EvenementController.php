@@ -113,7 +113,7 @@ class EvenementController extends AbstractController
 
 
     #[Route('/delete/{evenementID}', name: 'delete')]
-    #[IsGranted('ROLE_ADMIN')]
+    #[IsGranted('ROLE_FORMA')]
     public function delete(EntityManagerInterface $entityManager, $evenementID): Response
     {
 

@@ -38,7 +38,7 @@
                         
                         <th>{{service.getCode()}}</th> 
                         <th>{{service.getName()}}</th>   
-                        <th>{{service.amountTtc}}€</th>
+                        <th>{{service.getAmountTtc()}}€</th>
                         <th><a href="/service/show/{{service.getId()}}"><i class="fa-solid fa-eye"></i></a></th> 
                      </tr>
                 {% endfor %}

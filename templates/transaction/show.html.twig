@@ -1,0 +1,53 @@
+{% extends 'base_user.html.twig' %}
+
+{% block title %}Espace Gestion Document{% endblock %}
+
+
+
+
+{% block body %}
+    <div class="container-fluid">
+        <div class="corps mx-auto">
+            <p class="display-6 no-wrap text-center mb-5">Transaction {{ transaction.code }}</p>
+
+            <table class="table table-dark table-striped table-hover text-center">
+                <thead>
+                <tr>
+                    <th scope="col">Label</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Montant</th>
+                    <th scope="col">PCG</th>
+                    <th scope="col">Commentaire</th>
+                    <th scope="col">Document</th>
+                    <th scope="col">Edit</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                {% for transactionLine in transaction.transactionLines %} <tr>
+                    <th>{{transactionLine.label}}</th>
+                    <th>{{transactionLine.date.format("d/m/y")}}</th>
+                    <th>{{transactionLine.amount}}</th>
+                    <th>{{transactionLine.chartofaccounts.code}}</th>
+                    <th>{{transactionLine.quote}}</th>
+                    {% if transactionLine.urlProof !="null" %}
+                        <th><a href="/transactionLine/show/{{ transactionLine.id }}" target="_blank"><i class = "fa text-light fa-eye"></i></a></th>
+                    {% else %}
+                        <th></th>
+                    {% endif %}
+                    <th><a href="/transactionLine/edit/{{ transaction.id }}/{{ transactionLine.id }}"><i class = "fa text-light fa-pencil"></i></a></th>
+
+                </tr> {% endfor %}
+                </tbody>
+            </table>
+
+            <div class="text-center">
+                <a href="/transactionLine/new/{{ transaction.id }}"><button class="btn btn-success mt-3 mb-3" type="submit" name="show">{{ button_label|default('Ajouter une ligne ') }}<i class = "fa text-light fa-plus-square me-2"></i></button></a>
+            </div>
+
+        </div>
+    </div>
+
+
+{% endblock %}
+

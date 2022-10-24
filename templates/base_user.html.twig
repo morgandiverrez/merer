@@ -69,7 +69,7 @@
                                                     <a class="nav-link" href="/association/">Liste des associations</a>
                                                 </li>
                                                 <li class="nav-item">
-                                                    <a class="nav-link" href="/equipeElu/">Liste des equipes d'élu.e.s</a>
+                                                    <a class="nav-link" href="/equipeElu/">Liste des équipes d'élu.e.s</a>
                                                 </li>
                                                 <li class="nav-item">
                                                     <a class="nav-link" href="/lieux/">Liste des Lieux </a>
@@ -91,25 +91,85 @@
                                                     <a class="nav-link" href="/account/showFormateurice">Liste des Formateurices</a>
                                                 </li>
                                                 <li class="nav-item">
-                                                    <a class="nav-link" href="/demande/">liste des demandes de formation</a>
+                                                    <a class="nav-link" href="/demande/">Liste des demandes de formation</a>
                                                 </li>
                                                 <li class="nav-item">
-                                                    <a class="nav-link" href="/signature/BF">signature de mail BF</a>
+                                                    <a class="nav-link" href="/signature/BF">Signature de mail BF</a>
                                                 </li>
-                                                {% if is_granted('ROLE_ADMIN') %}
-                                                <li><hr class="dropdown-divider">Espace admin</li>
-                                                <li class="nav-item">
-                                                    <a class="nav-link" href="/account/roles">gestionnaire des rôles</a>
-                                                </li>
-                                                <li class="nav-item">
-                                                    <a class="nav-link" href="/retour/sdf">générer le fichier SDF </a>
-                                                </li>
-                                                {% endif %}
-
                                             </ul>
                                         </li>
                                     {% endif %}
-                                    
+                                    {% if is_granted('ROLE_TRESO') %}
+                                        <li class="nav-item dropdown">
+                                            <a class="nav-link dropdown-toggle"  id="navbarDropdown2" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            Espace Trésorerie </a>
+                                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown2">
+                                                
+                                                <li class="nav-item">
+                                                    <a class="nav-link" href="/transaction/">Listes des transactions </a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link" href="/impression/">Liste des impressions  </a>
+                                                </li>
+                                                 <li class="nav-item">
+                                                    <a class="nav-link" href="/expenseReport/">Liste des notes de frais</a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link" href="/invoice/">Liste des factures</a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link" href="/paymentDealine/">Echéancier des Créances </a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link" href="/chartOfAccounts/">Plan Comptable </a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link" href="/discount/">Liste des réductions</a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link" href="/service/">Liste des services </a>
+                                                </li>
+                                                 <li class="nav-item">
+                                                    <a class="nav-link" href="/cheque/">Liste des chèques </a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link" href="/fundBox/">Liste des caisses </a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link" href="/customer/">Liste des clients </a>
+                                                </li>
+                                                 <li class="nav-item">
+                                                    <a class="nav-link" href="/supplier/">Liste des fournisseurs </a>
+                                                </li>
+                                                
+                                            </ul>
+                                        </li>
+                                    {% endif %}
+                                    {% if is_granted('ROLE_FORMA') %}
+                                        <li class="nav-item dropdown">
+                                            <a class="nav-link dropdown-toggle"  id="navbarDropdown2" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            Espace Tortue </a>
+                                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown2">
+                                                 <li><hr class="dropdown-divider">Espace admin</li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link" href="/retour/sdf">Générer le fichier SDF </a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    {% endif %}
+                                    {% if is_granted('ROLE_ADMIN') %}
+                                        <li class="nav-item dropdown">
+                                            <a class="nav-link dropdown-toggle"  id="navbarDropdown2" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            Espace Admin </a>
+                                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown2">
+                                                 <li><hr class="dropdown-divider">Espace admin</li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link" href="/account/roles">Gestionnaire des rôles</a>
+                                                </li>
+                                               
+                                            </ul>
+                                        </li>
+                                    {% endif %}
                                     {% if app.user.profil.getEquipeElu() is not empty %}
                                         {% if 'Centraux UBO' in app.user.profil.getEquipeElu() or 'CROUS Rennes-Bretagne' in app.user.profil.getEquipeElu() or is_granted('ROLE_BF') %}   
                                             <li class="nav-item dropdown">

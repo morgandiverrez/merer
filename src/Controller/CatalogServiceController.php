@@ -15,7 +15,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class CatalogServiceController extends AbstractController
 {
     #[Route('/', name: 'showAll')]
-    #[IsGranted('ROLE_BF')]
+    #[IsGranted('ROLE_TRESO')]
     public function showAll(EntityManagerInterface $entityManager, Request $request): Response
     {
         $services = $entityManager->getRepository(CatalogService::class)->findAll();
@@ -42,7 +42,7 @@ class CatalogServiceController extends AbstractController
     }
 
     #[Route('/show/{serviceID}', name: 'show')]
-    #[IsGranted('ROLE_BF')]
+    #[IsGranted('ROLE_TRESO')]
     public function show(EntityManagerInterface $entityManager,   $serviceID): Response
     {
         $service = $entityManager->getRepository(CatalogService::class)->findById($serviceID);
@@ -54,7 +54,7 @@ class CatalogServiceController extends AbstractController
     }
 
     #[Route('/new', name: 'new')]
-    #[IsGranted('ROLE_BF')]
+    #[IsGranted('ROLE_TRESO')]
     public function new(EntityManagerInterface $entityManager, Request $request): Response
     {
         $service = new CatalogService();
@@ -80,7 +80,7 @@ class CatalogServiceController extends AbstractController
 
 
     #[Route('/edit/{serviceID}', name: 'edit')]
-    #[IsGranted('ROLE_BF')]
+    #[IsGranted('ROLE_TRESO')]
     public function edit(EntityManagerInterface $entityManager, Request $request, $serviceID): Response
     {
         $service = $entityManager->getRepository(CatalogService::class)->findById($serviceID);
@@ -103,7 +103,7 @@ class CatalogServiceController extends AbstractController
     }
 
     #[Route('/delete/{serviceID}', name: 'delete')]
-    #[IsGranted('ROLE_ADMIN')]
+    #[IsGranted('ROLE_TRESO')]
     public function delete(EntityManagerInterface $entityManager, $serviceID): Response
     {
 

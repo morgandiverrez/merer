@@ -43,6 +43,7 @@ class DemandeFixtures extends Fixture implements DependentFixtureInterface
         return [
             ProfilFixtures::class,
             EquipeEluFixtures::class,
+            FormationFixtures::class,
             AssociationFixtures::class,
         ];
     }

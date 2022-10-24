@@ -131,7 +131,7 @@ class FormationController extends AbstractController
 
 
     #[Route('/delete/{formationID}', name: 'delete')]
-    #[IsGranted('ROLE_ADMIN')]
+    #[IsGranted('ROLE_FORMA')]
     public function delete(EntityManagerInterface $entityManager, $formationID): Response
     {
 

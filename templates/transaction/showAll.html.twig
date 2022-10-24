@@ -1,0 +1,51 @@
+{% extends 'base_user.html.twig' %}
+
+{% block title %}Espace Gestion Document{% endblock %}
+
+
+
+
+{% block body %}
+    <div class="container-fluid">
+        <div class="corps mx-auto">
+            <p class="display-6 no-wrap text-center mb-5">Tables des Transactions</p>
+
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Code</th>
+                    <th scope="col">Cloturé</th>
+                    <th scope="col">Commentaire</th>
+                    <th scope="col">Show</th>
+                    <th scope="col">Edit</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                {% for transaction in transactions %} <tr>
+                    <th>{{transaction.id}}</th>
+                    <th>{{transaction.code}}</th>
+                    {% if transaction.closure==true %}
+                        <th>Oui</th>
+                    {% else %}
+                        <th>Non</th>
+                    {% endif %}
+                    <th>{{transaction.quote}}</th>
+                    <th><a href="/transaction/show/{{ transaction.id }}"><i class = "fa text-light fa-eye"></i></a></th>
+                    <th><a href="/transaction/edit/{{ transaction.id }}"><i class = "fa text-light fa-pencil"></i></a></th>
+
+                </tr> {% endfor %}
+                </tbody>
+            </table>
+
+            <div class="text-center">
+                <a href="/transaction/new/"><button class="btn btn-success mt-3 mb-3" type="submit" name="show">{{ button_label|default('Ajouter une transaction ') }}<i class = "fa text-light fa-plus-square me-2"></i></button></a>
+            </div>
+
+        </div>
+    </div>
+
+
+{% endblock %}
+

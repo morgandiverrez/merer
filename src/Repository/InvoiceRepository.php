@@ -74,30 +74,20 @@ class InvoiceRepository extends ServiceEntityRepository
             ->getOneOrNullResult();
     }
 
-    public function findCurrentInvoiceImpressionOfAssociation($sigle): array
+    public function findCurrentInvoiceImpressionOfCustomer($id): array
     {
         return $this->createQueryBuilder('invoice')
-            ->innerJoin('invoice.association', 'association')
-            ->Where('association.sigle LIKE :sigle')
-            ->andWhere('invoice.code LIKE :code')
-            ->andWhere('invoice.confirm LIKE TRUE')
-            ->setParameter('sigle', $sigle )
-            ->setParameter('code', 'FAEI%' )
+            ->innerJoin('invoice.customer', 'customer')
+            ->Where('customer.id LIKE :id')
+            ->andWhere('invoice.category LIKE :category')
+            ->andWhere('invoice.confirm LIKE FALSE')
+            ->setParameter('id', $id )
+            ->setParameter('category', 'Impression' )
             ->orderBy('invoice.creationDate', 'DESC')
             ->setMaxResults(10)
             ->getQuery()
             ->getOneOrNullResult();
     }
 
-    public function findLastFAEI()
-    {
-        return $this->createQueryBuilder('invoice')
-            ->select('t.code')
-            ->andWhere('invoice.code LIKE :code')
-            ->setParameter('code', 'FAEI%')
-            ->orderBy('invoice.code', 'DESC')
-            ->setMaxResults(1)
-            ->getQuery()
-            ->getOneOrNullResult()[0]['code'];
-    }
+ 
 }

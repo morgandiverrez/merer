@@ -28,13 +28,7 @@ class Invoice
     private $ready = false;
 
     #[ORM\Column(type: 'boolean', nullable: true)]
-    private $confirm = false;
-
-    #[ORM\OneToMany(mappedBy: 'invoice', targetEntity: PaymentDeadline::class)]
-    private $paymentDeadlines;
-
-    #[ORM\OneToMany(mappedBy: 'invoice', targetEntity: InvoiceLine::class)]
-    private $invoiceLines;
+    private $comfirm = false;
 
     #[ORM\Column(type: 'boolean', nullable: true)]
     private $credit = false;
@@ -42,8 +36,22 @@ class Invoice
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $code = null;
 
+    #[ORM\Column(length: 64, nullable: true)]
+    private ?string $category = null;
+
     #[ORM\ManyToOne(inversedBy: 'invoices')]
-    private ?association $association = null;
+    private ?Transaction $transaction = null;
+
+    #[ORM\ManyToOne(inversedBy: 'invoices')]
+    private ?Customer $customer = null;
+
+    #[ORM\OneToMany(mappedBy: 'invoice', targetEntity: PaymentDeadline::class)]
+    private $paymentDeadlines;
+
+    #[ORM\OneToMany(mappedBy: 'invoice', targetEntity: InvoiceLine::class)]
+    private $invoiceLines;
+
+
 
     public function __construct()
     {
@@ -51,6 +59,7 @@ class Invoice
         $this->invoiceLines = new ArrayCollection();
         $this->impressions = new ArrayCollection();
     }
+
 
 
 
@@ -95,14 +104,14 @@ class Invoice
         return $this;
     }
 
-    public function isConfirm(): ?bool
+    public function isComfirm(): ?bool
     {
-        return $this->confirm;
+        return $this->comfirm;
     }
 
-    public function setConfirm(?bool $confirm): self
+    public function setComfirm(?bool $comfirm): self
     {
-        $this->confirm = $confirm;
+        $this->comfirm = $comfirm;
 
         return $this;
     }
@@ -192,14 +201,38 @@ class Invoice
         return $this;
     }
 
-    public function getAssociation(): ?association
+    public function getTransaction(): ?Transaction
     {
-        return $this->association;
+        return $this->transaction;
     }
 
-    public function setAssociation(?association $association): self
+    public function setTransaction(?Transaction $transaction): self
     {
-        $this->association = $association;
+        $this->transaction = $transaction;
+
+        return $this;
+    }
+
+    public function getCustomer(): ?Customer
+    {
+        return $this->customer;
+    }
+
+    public function setCustomer(?Customer $customer): self
+    {
+        $this->customer = $customer;
+
+        return $this;
+    }
+
+    public function getCategory(): ?string
+    {
+        return $this->category;
+    }
+
+    public function setCategory(?string $category): self
+    {
+        $this->category = $category;
 
         return $this;
     }

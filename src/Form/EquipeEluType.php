@@ -20,13 +20,13 @@ class EquipeEluType extends AbstractType
             ->add('name')
             ->add('categorie', ChoiceType::class, [
                 'choices' => [
-                    'UBO' => 'UBO',
-                    'UFR' =>  'UFR',
-                    'Rennes 1' =>  'Rennes 1',
-                    'Rennes 2' =>    'Rennes 2',
-                    'CROUS'=> 'CROUS',
+                    'UFR' => 'UFR',
+                    'Departement' =>  'Departement',
                     'Centraux' =>  'Centraux',
-                    'Ecole Ingénieur' =>  'Ecole Ingénieur',
+                    'Ecole' =>    'Ecole',
+                    'CROUS'=> 'CROUS',
+                    'LBSU' =>  'LBSU',
+                    'Nationaux' =>  'Nationaux',
                 ],
                 'multiple' => true,
             ])

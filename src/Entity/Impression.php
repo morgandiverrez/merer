@@ -2,7 +2,7 @@
 
 namespace App\Entity;
 
-use App\Entity\Association;
+use App\Entity\Invoice;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\ImpressionRepository;
 
@@ -17,10 +17,7 @@ class Impression
     #[ORM\Column(type: 'datetime')]
     private $datetime;
 
-    #[ORM\ManyToOne(targetEntity: Association::class, inversedBy: 'impressions')]
-    private $association;
-
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(type: 'string', length: 255)]
     private $name;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
@@ -44,6 +41,10 @@ class Impression
     #[ORM\ManyToOne(targetEntity: Invoice::class, inversedBy: 'impressions')]
     private $invoice;
 
+    #[ORM\ManyToOne(inversedBy: 'impressions')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Customer $customer = null;
+
     public function  __toString()
     {
         return $this->getName();
@@ -62,18 +63,6 @@ class Impression
     public function setDatetime(\DateTimeInterface $datetime): self
     {
         $this->datetime = $datetime;
-
-        return $this;
-    }
-
-    public function getAssociation(): ?Association
-    {
-        return $this->association;
-    }
-
-    public function setAssociation(?Association $association): self
-    {
-        $this->association = $association;
 
         return $this;
     }
@@ -170,6 +159,18 @@ class Impression
     public function setInvoice(?Invoice $invoice): self
     {
         $this->invoice = $invoice;
+
+        return $this;
+    }
+
+    public function getCustomer(): ?Customer
+    {
+        return $this->customer;
+    }
+
+    public function setCustomer(?Customer $customer): self
+    {
+        $this->customer = $customer;
 
         return $this;
     }
