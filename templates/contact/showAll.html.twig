@@ -1,0 +1,56 @@
+{% extends 'base_user.html.twig' %}
+
+{% block title %}Liste contact{% endblock %}
+
+
+{% block body %}
+    <div class="container-lg">
+        <div >
+            <p class="display-6 no-wrap text-center">Liste des contacts
+                {% if is_granted('ROLE_BF') %}
+                    <a href="/contact/new"><i class="fa-solid fa-plus align-right"></i></a>
+                {% endif %}
+            </p>
+            <form action="{{ path('contact_showAll') }}" method="post">
+                <p class="text-center">
+                    <input type="text" id="name" name="name" placeholder="Nom"/>
+                    <input type="text" id="lastName" name="lastName" placeholder="lastName"/>
+                    <select name="civility" id="civility" placeholder="Civilité">
+                        <option  value=Femme>Femme</option>
+                        <option  value=Homme>Homme</option>
+                        <option  value=Neutre>Neutre</option>
+                   </select>
+                    <input type="text" id="mail" name="mail" placeholder="Mail"/>
+                    <button class="btn btn-primary" type="submit" >Rechercher</button>
+                </p>
+            </form>
+            <table class="table table-striped">
+                
+                
+                <thead>
+                <tr>
+                    <th scope="col">Nom</th>
+                    <th scope="col">Prénom</th>
+                    <th scope="col">Civility</th>
+                    <th scope="col">Détails</th>
+                    
+                 </tr>
+                </thead>
+
+                <tbody>
+                {% for contact in contacts %} 
+                    <tr>
+                        <th>{{contact.getName()}}</th>   
+                         <th>{{contact.getLastName()}}</th>   
+                        <th>{{contact.getCivility()}}</th>
+                        <th><a href="/contact/show/{{contact.getId()}}"><i class="fa-solid fa-eye"></i></i></a></th> 
+                     </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+
+
+{% endblock %}

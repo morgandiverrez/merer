@@ -72,4 +72,30 @@ class CatalogDiscountRepository extends ServiceEntityRepository
             ->getQuery()
             ->getOneOrNullResult();
     }
+
+    public function findAllByCode($value): ?array
+    {
+        return $this->createQueryBuilder('discount')
+        ->andWhere('discount.code LIKE :val')
+        ->setParameter('val', '%' . $value . '%')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findAllByDescription($value): ?array
+    {
+        return $this->createQueryBuilder('discount')
+        ->andWhere('discount.description LIKE :val')
+        ->setParameter('val', '%' . $value . '%')
+            ->getQuery()
+            ->getResult();
+    }
+    public function findAllByName($value): ?array
+    {
+        return $this->createQueryBuilder('discount')
+        ->andWhere('discount.name LIKE :val')
+        ->setParameter('val', '%' . $value . '%')
+            ->getQuery()
+            ->getResult();
+    }
 }

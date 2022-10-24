@@ -24,6 +24,9 @@ class CatalogDiscount
     #[ORM\OneToMany(mappedBy: 'catalogDiscount', targetEntity: InvoiceLine::class)]
     private $invoiceLines;
 
+    #[ORM\Column(length: 15, nullable: true)]
+    private ?string $code = null;
+
     public function __construct()
     {
         $this->invoiceLines = new ArrayCollection();
@@ -89,6 +92,18 @@ class CatalogDiscount
                 $invoiceLine->setCatalogDiscount(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCode(): ?string
+    {
+        return $this->code;
+    }
+
+    public function setCode(?string $code): self
+    {
+        $this->code = $code;
 
         return $this;
     }

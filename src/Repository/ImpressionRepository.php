@@ -64,12 +64,13 @@ class ImpressionRepository extends ServiceEntityRepository
     //        ;
     //    }
 
-    public function findAllByAssociation($value): ?array
+    public function findAllByCustomer($value): ?array
     {
         return $this->createQueryBuilder('impression')
-            ->innerJoin('impression.association', 'association')
-            ->Where('association.sigle = :val')
+            ->innerJoin('impression.customer', 'customer')
+            ->Where('customer.name LIKE :val')
             ->setParameter('val', '%' . $value . '%')
+            ->orderBy('impression.datetime', 'DESC')
             ->getQuery()
             ->getResult();
     }
@@ -79,6 +80,30 @@ class ImpressionRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('impression')
         ->Where('impression.format LIKE :val')
         ->setParameter('val', '%' . $value . '%')
+            ->orderBy('impression.datetime', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findAllIfRV($value): ?array
+    {
+        return $this->createQueryBuilder('impression')
+            ->Where('impression.format != plastification')
+        ->Where('impression.rectoVerso = :val')
+        ->setParameter('val', $value )
+            ->orderBy('impression.datetime', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
+
+    public function findAllIfCouleur($value): ?array
+    {
+        return $this->createQueryBuilder('impression')
+            ->Where('impression.format != plastification')
+        ->Where('impression.couleur = :val')
+        ->setParameter('val',  $value )
+            ->orderBy('impression.datetime', 'DESC')
             ->getQuery()
             ->getResult();
     }
@@ -93,5 +118,12 @@ class ImpressionRepository extends ServiceEntityRepository
             ->getOneOrNullResult();
     }
 
+    public function findAllinOrder(): ?array
+    {
+        return $this->createQueryBuilder('impression')
+            ->orderBy('impression.datetime', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
 
 }

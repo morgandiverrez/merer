@@ -28,8 +28,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $password;
 
     #[ORM\OneToOne(inversedBy: 'user', targetEntity: Profil::class, cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: false)]
     private $profil;
+
+    #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
+    private ?Customer $customer = null;
 
     public function getId(): ?int
     {
@@ -109,6 +111,28 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setProfil(profil $profil): self
     {
         $this->profil = $profil;
+
+        return $this;
+    }
+
+    public function getCustomer(): ?Customer
+    {
+        return $this->customer;
+    }
+
+    public function setCustomer(?Customer $customer): self
+    {
+        // unset the owning side of the relation if necessary
+        if ($customer === null && $this->customer !== null) {
+            $this->customer->setUser(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($customer !== null && $customer->getUser() !== $this) {
+            $customer->setUser($this);
+        }
+
+        $this->customer = $customer;
 
         return $this;
     }

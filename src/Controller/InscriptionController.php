@@ -205,7 +205,7 @@ class InscriptionController extends AbstractController
    
 
     #[Route('/delete/{seanceID}/{profilID}', name: 'delete')]
-    #[IsGranted('ROLE_ADMIN')]
+    #[IsGranted('ROLE_FORMA')]
     public function delete(EntityManagerInterface $entityManager, $seanceID, $profilID): Response
     {
         

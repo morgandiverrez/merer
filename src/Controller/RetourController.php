@@ -60,7 +60,7 @@ class RetourController extends AbstractController
 
 
      #[Route('/sdf', name: 'sdf')]
-    #[IsGranted('ROLE_ADMIN')]
+    #[IsGranted('ROLE_FORMA')]
     public function edit(EntityManagerInterface $entityManager)
     {
         $seances = $entityManager->getRepository(Seance::class)->findAllByYear(date("Y")."-01-01", strval(intval(date("Y"))+1)."-01-01");

@@ -67,12 +67,6 @@ class ProfilFixtures extends Fixture implements DependentFixtureInterface
         $profil2->setName('VP');
         $profil2->setDateOfBirth($this->faker->dateTime());
         $profil2->setTelephone($this->faker->phoneNumber());
-        for ($k = 0; $k <= $this->faker->numberBetween(0, 3); $k++) {
-            $profil2->addEquipeElu($this->getRandomReference('EQUIPEELU'));
-        }
-        for ($k = 0; $k <= $this->faker->numberBetween(0, 2); $k++) {
-            $profil2->addAssociation($this->getRandomReference('ASSOCIATION'));
-        }
         $this->addReference('PROFIL_2b', $profil2);
 
         $user2->setEMail('admin@fedeb.net');
@@ -94,12 +88,7 @@ class ProfilFixtures extends Fixture implements DependentFixtureInterface
         $profil3->setName('Formateur');
         $profil3->setDateOfBirth($this->faker->dateTime());
         $profil3->setTelephone('0651812671');
-        for ($k = 0; $k <= $this->faker->numberBetween(0, 3); $k++) {
-            $profil3->addEquipeElu($this->getRandomReference('EQUIPEELU'));
-        }
-        for ($k = 0; $k <= $this->faker->numberBetween(0, 2); $k++) {
-            $profil3->addAssociation($this->getRandomReference('ASSOCIATION'));
-        }
+  
         $this->addReference('PROFIL_3b', $profil3);
 
 
@@ -121,12 +110,7 @@ class ProfilFixtures extends Fixture implements DependentFixtureInterface
         $profil4->setName('Morgan');
         $profil4->setDateOfBirth($this->faker->dateTime());
         $profil4->setTelephone('0651812671');
-        for ($k = 0; $k <= $this->faker->numberBetween(0, 3); $k++) {
-            $profil4->addEquipeElu($this->getRandomReference('EQUIPEELU'));
-        }
-        for ($k = 0; $k <= $this->faker->numberBetween(0, 2); $k++) {
-            $profil4->addAssociation($this->getRandomReference('ASSOCIATION'));
-        }
+       
         $this->addReference('PROFIL_4b', $profil4);
 
 
@@ -147,12 +131,7 @@ class ProfilFixtures extends Fixture implements DependentFixtureInterface
         $profil5->setName('BF');
         $profil5->setDateOfBirth($this->faker->dateTime());
         $profil5->setTelephone('0651812671');
-        for ($k = 0; $k <= $this->faker->numberBetween(0, 3); $k++) {
-            $profil5->addEquipeElu($this->getRandomReference('EQUIPEELU'));
-        }
-        for ($k = 0; $k <= $this->faker->numberBetween(0, 2); $k++) {
-            $profil5->addAssociation($this->getRandomReference('ASSOCIATION'));
-        }
+      
         $this->addReference('PROFIL_5b', $profil5);
 
         $user5->setEMail('bf@fedeb.net');

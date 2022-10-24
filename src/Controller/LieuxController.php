@@ -17,7 +17,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class LieuxController extends AbstractController
 {
     #[Route('/', name: 'showAll')]
-    #[IsGranted('ROLE_USER')]
+    #[IsGranted('ROLE_FORMATEURICE')]
     public function showAll(EntityManagerInterface $entityManager, Request $request): Response
     {
         $lieux = $entityManager->getRepository(Lieux::class)->findAll();
@@ -99,7 +99,7 @@ class LieuxController extends AbstractController
     }
 
     #[Route('/delete/{lieuID}', name: 'delete')]
-    #[IsGranted('ROLE_ADMIN')]
+    #[IsGranted('ROLE_FORMA')]
     public function delete(EntityManagerInterface $entityManager, $lieuID): Response
     {
 

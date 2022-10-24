@@ -16,7 +16,7 @@ class ImpressionFixtures extends Fixture implements DependentFixtureInterface
         for ($i = 0; $i < 20; $i++) {
             $impression = new Impression();
             $impression->setDatetime($this->faker->dateTime());
-            $impression->setAssociation($this->getRandomReference('ASSOCIATION'));
+            $impression->setCustomer($this->getRandomReference('CUSTOMER'));
             $impression->setName($this->faker->lastName());
             $impression->setFormat($this->faker->randomElement(['A3', 'A4', 'A5', 'plastification']));
             $impression->setRectoVerso($this->faker->boolean());
@@ -24,6 +24,7 @@ class ImpressionFixtures extends Fixture implements DependentFixtureInterface
             $impression->setQuantite($this->faker->numberBetween(1, 100));
             $impression->setFactureFinDuMois($this->faker->boolean());
             $impression->setDejaPaye($this->faker->boolean());
+            $impression->setInvoice($this->getRandomReference('INVOICE'));
 
 
             $this->addReference('IMPRESSION_' . $i, $impression);
@@ -39,7 +40,8 @@ class ImpressionFixtures extends Fixture implements DependentFixtureInterface
     {
         return [
 
-            AssociationFixtures::class,
+            CustomerFixtures::class,
+            InvoiceFixtures::class,
 
 
         ];

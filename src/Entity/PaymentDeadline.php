@@ -17,12 +17,12 @@ class PaymentDeadline
     private $expectedPaymentDate;
 
     #[ORM\Column(type:'float', precision: 10, scale: 0)]
-    private $extpectedAmount;
+    private $expectedAmount;
 
     #[ORM\Column(type: 'string', length: 255)]
     private $expectedMeans;
 
-    #[ORM\Column(type: 'date')]
+    #[ORM\Column(type:'date',  nullable: true)]
     private $actualPaymentDate;
 
     #[ORM\Column(type: 'float', precision: 10, scale: 0 ,  nullable: true)]
@@ -52,14 +52,14 @@ class PaymentDeadline
         return $this;
     }
 
-    public function getExtpectedAmount(): ?float
+    public function getExpectedAmount(): ?float
     {
-        return $this->extpectedAmount;
+        return $this->expectedAmount;
     }
 
-    public function setExtpectedAmount(float $extpectedAmount): self
+    public function setExpectedAmount(float $expectedAmount): self
     {
-        $this->extpectedAmount = $extpectedAmount;
+        $this->expectedAmount = $expectedAmount;
 
         return $this;
     }

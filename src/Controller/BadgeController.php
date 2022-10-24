@@ -21,7 +21,7 @@ use Symfony\Component\HttpFoundation\File\Exception\FileException;
 class BadgeController extends AbstractController
 {
     #[Route('/', name: 'showAll')]
-    #[IsGranted('ROLE_USER')]
+    #[IsGranted('ROLE_FORMATEURICE')]
     public function showAll(EntityManagerInterface $entityManager): Response
     {
         $badges = $entityManager->getRepository(Badge::class)->findAll();
@@ -33,7 +33,7 @@ class BadgeController extends AbstractController
     }
 
     #[Route('/show/{badgeID}', name: 'show')]
-    #[IsGranted('ROLE_USER')]
+    #[IsGranted('ROLE_FORMATEURICE')]
     public function show(EntityManagerInterface $entityManager, $badgeID): Response
     {
 
@@ -127,7 +127,7 @@ class BadgeController extends AbstractController
 
 
     #[Route('/delete/{badgeID}', name: 'delete')]
-    #[IsGranted('ROLE_ADMIN')]
+    #[IsGranted('ROLE_FORMA')]
     public function delete(EntityManagerInterface $entityManager, $badgeID): Response
     {
 
