@@ -32,10 +32,7 @@ class InvoiceController extends AbstractController
         foreach ($invoices as $invoice) {
             array_push($totals, (new InvoiceController)->invoiceTotale($invoice));
         }
-        $totalsR = array();
-        foreach ($invoices as $invoice) {
-            array_push($totalsR, (new InvoiceController)->invoiceTotale($invoice));
-        }
+      
 
         return $this->render('invoice/showAll.html.twig', [
             'invoices' => $invoices,
