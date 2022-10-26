@@ -22,16 +22,16 @@ class ChartOfAccountsController extends AbstractController
         $accounts = $entityManager->getRepository(ChartOfAccounts::class)->findAllInOrder();
         if ($request->isMethod('post')) {
             $posts = $request->request->all();
-            if ($posts['name'] ) {         
+            if ($posts['name'] ) {
                 $accounts = array_intersect($accounts, $entityManager->getRepository(ChartOfAccounts::class)->findAllByName($posts['name']));
             }
-            if ($posts['code']) {     
+            if ($posts['code']) {
                 $accounts = array_intersect($accounts, $entityManager->getRepository(ChartOfAccounts::class)->findAllByCode($posts['code']));
             }
-            if ($posts['movable'] != 'null') {
-                
-                $accounts = array_intersect($accounts, $entityManager->getRepository(ChartOfAccounts::class)->findAllByMovable($posts['movable']));
-            }
+            // if ($posts['movable'] != 'null') {
+
+            //     $accounts = array_intersect($accounts, $entityManager->getRepository(ChartOfAccounts::class)->findAllByMovable($posts['movable']));
+            // }
         }
         return $this->render('chart_of_accounts/showAll.html.twig', [
             'accounts' => $accounts,

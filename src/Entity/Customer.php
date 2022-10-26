@@ -2,10 +2,11 @@
 
 namespace App\Entity;
 
-use App\Repository\CustomerRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use App\Entity\Contact;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\CustomerRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 #[ORM\Entity(repositoryClass: CustomerRepository::class)]
 class Customer
@@ -44,6 +45,9 @@ class Customer
     #[ORM\Column]
     private ?bool $impressionAccess = false;
 
+    #[ORM\OneToMany(mappedBy: 'customer', targetEntity: ExpenseReport::class)]
+    private Collection $expenseReports;
+
  
 
     public function __construct()
@@ -51,6 +55,7 @@ class Customer
         $this->invoices = new ArrayCollection();
         $this->contacts = new ArrayCollection();
         $this->impressions = new ArrayCollection();
+        $this->expenseReports = new ArrayCollection();
     }
 
     public function  __toString()
@@ -220,6 +225,36 @@ class Customer
     public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ExpenseReport>
+     */
+    public function getExpenseReports(): Collection
+    {
+        return $this->expenseReports;
+    }
+
+    public function addExpenseReport(ExpenseReport $expenseReport): self
+    {
+        if (!$this->expenseReports->contains($expenseReport)) {
+            $this->expenseReports->add($expenseReport);
+            $expenseReport->setCustomer($this);
+        }
+
+        return $this;
+    }
+
+    public function removeExpenseReport(ExpenseReport $expenseReport): self
+    {
+        if ($this->expenseReports->removeElement($expenseReport)) {
+            // set the owning side to null (unless already changed)
+            if ($expenseReport->getCustomer() === $this) {
+                $expenseReport->setCustomer(null);
+            }
+        }
 
         return $this;
     }

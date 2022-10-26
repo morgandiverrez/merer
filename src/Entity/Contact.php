@@ -2,10 +2,11 @@
 
 namespace App\Entity;
 
-use App\Repository\ContactRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use App\Entity\Customer;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\ContactRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 #[ORM\Entity(repositoryClass: ContactRepository::class)]
 class Contact
@@ -32,6 +33,9 @@ class Contact
 
     #[ORM\Column(length: 64, nullable: true)]
     private ?string $civility = null;
+
+    #[ORM\ManyToOne]
+    private ?Location $Location = null;
 
     public function __construct()
     {
@@ -129,6 +133,18 @@ class Contact
     public function setCivility(?string $civility): self
     {
         $this->civility = $civility;
+
+        return $this;
+    }
+
+    public function getLocation(): ?Location
+    {
+        return $this->Location;
+    }
+
+    public function setLocation(?Location $Location): self
+    {
+        $this->Location = $Location;
 
         return $this;
     }

@@ -15,10 +15,12 @@ class InstitutionFixtures extends Fixture implements DependentFixtureInterface
         $this->faker = Factory::create();
         for ($i = 0; $i < 20; $i++) {
             $institution = new Institution();
-            $institution->setHeadquarter($this->faker->boolean());
+            $institution->setHeadquarter(1);
             $institution->setOpen($this->faker->boolean());
 
             $institution->setAdministrativeIdentifier($this->getRandomReference('ADMINISTRATIVEIDENTIFIER'));
+            $institution->setLocation($this->getRandomReference('LOCATION'));
+            if($i==0)$institution->setFederation($this->getRandomReference('FEDERATION'));
 
             $this->addReference('INSTITUTION_' . $i, $institution);
 

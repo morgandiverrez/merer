@@ -23,7 +23,6 @@ class ImpressionFixtures extends Fixture implements DependentFixtureInterface
             $impression->setCouleur($this->faker->boolean());
             $impression->setQuantite($this->faker->numberBetween(1, 100));
             $impression->setFactureFinDuMois($this->faker->boolean());
-            $impression->setDejaPaye($this->faker->boolean());
             $impression->setInvoice($this->getRandomReference('INVOICE'));
 
 

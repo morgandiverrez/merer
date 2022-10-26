@@ -83,15 +83,15 @@ class ChartOfAccountsRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    public function findAllByMovable($value): ?array
-    {
-        return $this->createQueryBuilder('chartOfAccounts')
-            ->andWhere('chartOfAccounts.movable = :val')
-            ->setParameter('val',  $value )
-            -> orderBy('chartOfAccounts.code', 'DESC')
-            ->getQuery()
-            ->getResult();
-    }
+    // public function findAllByMovable($value): ?array
+    // {
+    //     return $this->createQueryBuilder('chartOfAccounts')
+    //         ->andWhere('chartOfAccounts.movable = :val')
+    //         ->setParameter('val',  $value )
+    //         -> orderBy('chartOfAccounts.code', 'DESC')
+    //         ->getQuery()
+    //         ->getResult();
+    // }
 
     public function findAllInOrder(): ?array
     {

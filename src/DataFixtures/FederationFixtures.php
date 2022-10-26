@@ -15,14 +15,16 @@ class FederationFixtures extends Fixture
         $this->faker = Factory::create();
 
         $federation = new Federation();
-        $federation->setSocialReason($this->faker->sentence());
+        $federation->setSocialReason('Fédé B');
         $federation->setStatutoryObject($this->faker->sentence());
         $federation->setCreationDate($this->faker->datetime());
         $federation->setRepresentedBy('Baptiste LE MASSON');
         $federation->setRna($this->faker->regexify('[0-9]{15}'));
         $federation->setVatNumber($this->faker->regexify('[0-9]{15}'));
         $federation->setRna($this->faker->regexify('[A-Z]{1}'));
-        $this->addReference('FEDERATION', $federation);
+        $federation->setCurrency("e");
+
+        $this->addReference('FEDERATION_', $federation);
         $manager->persist($federation);
         $manager->flush();
   

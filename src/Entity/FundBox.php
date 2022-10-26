@@ -28,12 +28,15 @@ class FundBox
     #[ORM\ManyToOne]
     private ?Location $location = null;
 
-    #[ORM\ManyToMany(targetEntity: FundType::class, mappedBy: 'fundBox')]
-    private Collection $fundTypes;
+    #[ORM\OneToMany(mappedBy: 'fundBox', targetEntity: FundTypeFundBox::class, orphanRemoval: true)]
+    private Collection $fundTypeJoin;
+
+    #[ORM\Column(length: 255)]
+    private ?string $name = null;
 
     public function __construct()
     {
-        $this->fundTypes = new ArrayCollection();
+        $this->fundTypeJoin = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -89,29 +92,45 @@ class FundBox
         return $this;
     }
 
+
     /**
-     * @return Collection<int, FundType>
+     * @return Collection<int, FundTypeFundBox>
      */
-    public function getFundTypes(): Collection
+    public function getFundTypeJoin(): Collection
     {
-        return $this->fundTypes;
+        return $this->fundTypeJoin;
     }
 
-    public function addFundType(FundType $fundType): self
+    public function addFundTypeJoin(FundTypeFundBox $fundTypeJoin): self
     {
-        if (!$this->fundTypes->contains($fundType)) {
-            $this->fundTypes->add($fundType);
-            $fundType->addFundBox($this);
+        if (!$this->fundTypeJoin->contains($fundTypeJoin)) {
+            $this->fundTypeJoin->add($fundTypeJoin);
+            $fundTypeJoin->setFundBox($this);
         }
 
         return $this;
     }
 
-    public function removeFundType(FundType $fundType): self
+    public function removeFundTypeJoin(FundTypeFundBox $fundTypeJoin): self
     {
-        if ($this->fundTypes->removeElement($fundType)) {
-            $fundType->removeFundBox($this);
+        if ($this->fundTypeJoin->removeElement($fundTypeJoin)) {
+            // set the owning side to null (unless already changed)
+            if ($fundTypeJoin->getFundBox() === $this) {
+                $fundTypeJoin->setFundBox(null);
+            }
         }
+
+        return $this;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): self
+    {
+        $this->name = $name;
 
         return $this;
     }

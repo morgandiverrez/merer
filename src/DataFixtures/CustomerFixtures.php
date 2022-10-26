@@ -20,7 +20,6 @@ class CustomerFixtures extends Fixture implements DependentFixtureInterface
             $customer = new Customer();
             $user = new User();
             $customer->setImpressionAccess($this->faker->boolean());
-            $customer->setUser($this->getRandomReference('USER'));
             $customer->setName('Customer' . $i);
             $customer->setChartOfAccounts($this->getRandomReference('CHARTOFACCOUNTS'));
             $customer->setLocation($this->getRandomReference('LOCATION'));
@@ -32,9 +31,56 @@ class CustomerFixtures extends Fixture implements DependentFixtureInterface
             $user->setRoles($this->faker->randomElements(['ROLE_FORMATEURICE', 'ROLE_BF', 'ROLE_USER'], 2));
             $user->setPassword($this->faker->password());
             $this->addReference('USER_' . $i+20, $user);
-
+            $entityManager->persist($user);
             $entityManager->persist($customer);
         }
+        $customer = new Customer();
+        $customer->setImpressionAccess($this->faker->boolean());
+        $customer->setUser($this->getReference('USER_FORMA'));
+        $customer->setName('Customer' . $i);
+        $customer->setChartOfAccounts($this->getRandomReference('CHARTOFACCOUNTS'));
+        $customer->setLocation($this->getRandomReference('LOCATION'));
+        $entityManager->persist($customer);
+        $this->addReference('CUSTOMER_FORMA', $customer);
+
+        $customer = new Customer();
+        $customer->setImpressionAccess($this->faker->boolean());
+        $customer->setUser($this->getReference('USER_FORMATEURICE'));
+        $customer->setName('Customer' . $i);
+        $customer->setChartOfAccounts($this->getRandomReference('CHARTOFACCOUNTS'));
+        $customer->setLocation($this->getRandomReference('LOCATION'));
+        $entityManager->persist($customer);
+        $this->addReference('CUSTOMER_FORMATEURICE' , $customer);
+
+        $customer = new Customer();
+        $customer->setImpressionAccess($this->faker->boolean());
+        $customer->setUser($this->getReference('USER_TRESO'));
+        $customer->setName('Customer' . $i);
+        $customer->setChartOfAccounts($this->getRandomReference('CHARTOFACCOUNTS'));
+        $customer->setLocation($this->getRandomReference('LOCATION'));
+        $entityManager->persist($customer);
+        $this->addReference('CUSTOMER_TRESO', $customer);
+        $entityManager->persist($customer);
+
+        $customer = new Customer();
+        $customer->setImpressionAccess($this->faker->boolean());
+        $customer->setUser($this->getReference('USER_PREZ'));
+        $customer->setName('Customer' . $i);
+        $customer->setChartOfAccounts($this->getRandomReference('CHARTOFACCOUNTS'));
+        $customer->setLocation($this->getRandomReference('LOCATION'));
+        $entityManager->persist($customer);
+        $this->addReference('CUSTOMER_PREZ', $customer);
+ 
+
+        $customer = new Customer();
+        $customer->setImpressionAccess($this->faker->boolean());
+        $customer->setUser($this->getReference('USER_BF'));
+        $customer->setName('Customer' . $i);
+        $customer->setChartOfAccounts($this->getRandomReference('CHARTOFACCOUNTS'));
+        $customer->setLocation($this->getRandomReference('LOCATION'));
+        $entityManager->persist($customer);
+        $this->addReference('CUSTOMER_BF', $customer);
+
         $entityManager->flush();
     }
     

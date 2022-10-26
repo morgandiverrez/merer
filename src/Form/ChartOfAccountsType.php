@@ -12,7 +12,7 @@ class ChartOfAccountsType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-        ->add('code')
+           ->add('code')
             ->add('name')
             ->add('movable')
             

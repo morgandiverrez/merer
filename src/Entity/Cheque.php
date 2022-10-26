@@ -20,8 +20,11 @@ class Cheque
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $dateOfCollection = null;
 
-    #[ORM\ManyToOne]
+    #[ORM\ManyToOne(inversedBy: 'cheques')]
+    #[ORM\JoinColumn(nullable: false)]
     private ?ChequeBox $chequeBox = null;
+
+    
 
     public function getId(): ?int
     {
@@ -63,4 +66,6 @@ class Cheque
 
         return $this;
     }
+
+   
 }

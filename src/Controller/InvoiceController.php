@@ -3,7 +3,12 @@
 namespace App\Controller;
 
 use DateTime;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 use App\Entity\Invoice;
+use App\Form\InvoiceType;
+use App\Entity\Federation;
+use App\Entity\Institution;
 use App\Entity\Transaction;
 use App\Entity\TransactionLine;
 use Doctrine\ORM\EntityManagerInterface;
@@ -21,37 +26,24 @@ class InvoiceController extends AbstractController
     #[IsGranted('ROLE_TRESO')]
     public function showAll(EntityManagerInterface $entityManager, Request $request): Response
     {
+
         $invoices = $entityManager->getRepository(Invoice::class)->findAll();
-        if ($request->isMethod('post')) {
-            $posts = $request->request->all();
-            if ($posts['name']) {
-                $invoices = array_intersect($invoices, $entityManager->getRepository(Invoice::class)->findAllByName($posts['name']));
-            }
-            if ($posts['categorie']) {
-                $invoices = array_intersect($invoices, $entityManager->getRepository(Invoice::class)->findAllByCategorie($posts['categorie']));
-            }
-            if ($posts['fedefi']) {
-                $invoices = array_intersect($invoices, $entityManager->getRepository(Invoice::class)->findAllByFedeFi($posts['fedefi']));
-            }
+        $totals = array();
+        foreach ($invoices as $invoice) {
+            array_push($totals, (new InvoiceController)->invoiceTotale($invoice));
         }
-        return $this->render('invoices/showAll.html.twig', [
+        $totalsR = array();
+        foreach ($invoices as $invoice) {
+            array_push($totalsR, (new InvoiceController)->invoiceTotale($invoice));
+        }
+
+        return $this->render('invoice/showAll.html.twig', [
             'invoices' => $invoices,
-
+            'totals' => $totals,
         ]);
     }
 
-    #[Route('/show/{invoiceID}', name: 'show')]
-    #[IsGranted('ROLE_TRESO')]
-    public function show(EntityManagerInterface $entityManager, $invoiceID): Response
-    {
-        // find renvoi tjr un array (tableau), donc faut mettre [0] pour enlever l'array, si on veut plus d'une valeur s'il y en a, on met pas ou [nombre]
-        $invoice = $entityManager->getRepository(Invoice::class)->findById($invoiceID)[0];
-
-        return $this->render('invoice/show.html.twig', [
-            'invoice' => $invoice,
-
-        ]);
-    }
+  
 
     #[Route('/new', name: 'new')]
     #[IsGranted('ROLE_TRESO')]
@@ -117,7 +109,7 @@ class InvoiceController extends AbstractController
             if ($diff == 0) {
                 $entityManager->persist($invoice);
                 $entityManager->flush();
-                return $this->redirectToRoute('customeaccount_invoiceTable');
+                return $this->redirectToRoute('profil_show');
             }
         }
 
@@ -130,7 +122,7 @@ class InvoiceController extends AbstractController
     }
 
 
-    #[Route('/confirm/{invoiceID}', name: 'confirm')]
+    #[Route('/comfirm/{invoiceID}', name: 'confirm')]
     #[IsGranted('ROLE_TRESO')]
     public function confirm(EntityManagerInterface $entityManager, Request $request, $invoiceId): Response
     {
@@ -165,18 +157,18 @@ class InvoiceController extends AbstractController
     }
 
 
-    #[Route('/invoicePDF/{invoiceID}', name: 'invoicePDF')]
-    #[IsGranted('ROLE_BF')]
+    #[Route('/pdf/{invoiceId}', name: 'invoicePDF')]
+    #[IsGranted('ROLE_USER')]
     public function invoicePDF(EntityManagerInterface $entityManager, $invoiceId){
         $invoice = $entityManager->getRepository(Invoice::class)->findById($invoiceId);
+        $user = $this->getUser();
 
-        $e=$entityManager->getRepository(Customeraccount::class)->findCustomeraccountById($this->get("session")->get("volunteeraccountID"));
-
-        if($e->getCustomer()->getCustomerId()!=$invoice->getCustomer()->getCustomerId()){
-            return $this->render('customeaccount/index.html.twig', []);
+        if($user != $invoice->getCustomer()->getUser() and ! $this->isGranted("ROLE_TRESO")){
+            return $this->redirectToRoute('profil_show');
         }
-        $association = $entityManager->getRepository(Federation::class)->findById("Fédé B");
-        $institution = $entityManager->getRepository(Institution::class)->findHeadquarterById($association->getAssociationId());
+        $federation = $entityManager->getRepository(Federation::class)->findBySocialReason("Fédé B")[0];
+     
+        $institution = $entityManager->getRepository(Institution::class)->findHeadquarterById($federation->getId());
 
         $options = new Options();
         $options->set('defaultFont', 'Roboto');
@@ -185,7 +177,7 @@ class InvoiceController extends AbstractController
         $dompdf = new Dompdf($options);
      $html = $this->renderView('invoice/templateInvoice.html.twig', [
             'invoice' => $invoice,
-            'association'=>$association,
+            'federation'=>$federation,
             'institution'=>$institution,
             'total'=> InvoiceController::invoiceTotale($invoice),
         ]);
@@ -204,6 +196,7 @@ class InvoiceController extends AbstractController
         exit(0);
     }
 
+    
     public function invoiceTotale($invoice)
     {
         $nbInvoiceLine = count($invoice->getInvoiceLines());

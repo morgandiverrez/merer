@@ -39,28 +39,39 @@ class ChequeBoxRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return ChequeBox[] Returns an array of ChequeBox objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('c')
-//            ->andWhere('c.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('c.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    //    /**
+    //     * @return ChequeBox[] Returns an array of ChequeBox objects
+    //     */
+    //    public function findByExampleField($value): array
+    //    {
+    //        return $this->createQueryBuilder('c')
+    //            ->andWhere('c.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->orderBy('c.id', 'ASC')
+    //            ->setMaxResults(10)
+    //            ->getQuery()
+    //            ->getResult()
+    //        ;
+    //    }
 
-//    public function findOneBySomeField($value): ?ChequeBox
-//    {
-//        return $this->createQueryBuilder('c')
-//            ->andWhere('c.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    //    public function findOneBySomeField($value): ?ChequeBox
+    //    {
+    //        return $this->createQueryBuilder('c')
+    //            ->andWhere('c.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->getQuery()
+    //            ->getOneOrNullResult()
+    //        ;
+    //    }
+
+    public function MontantTotale($val)
+    {
+        return $this->createQueryBuilder('chequeBox')
+        ->where('chequeBox.id = :val')
+        ->innerJoin('chequeBox.cheques','cheques')
+        ->select('SUM(cheques.amount) as total_amount')
+        ->setParameter('val',$val)
+            ->getQuery()
+            ->getResult();
+    }
 }

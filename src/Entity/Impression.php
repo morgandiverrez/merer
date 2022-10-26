@@ -35,8 +35,6 @@ class Impression
     #[ORM\Column(type: 'boolean')]
     private $factureFinDuMois = true;
 
-    #[ORM\Column(type: 'boolean')]
-    private $dejaPaye = false;
 
     #[ORM\ManyToOne(targetEntity: Invoice::class, inversedBy: 'impressions')]
     private $invoice;
@@ -139,17 +137,6 @@ class Impression
         return $this;
     }
 
-    public function isDejaPaye(): ?bool
-    {
-        return $this->dejaPaye;
-    }
-
-    public function setDejaPaye(bool $dejaPaye): self
-    {
-        $this->dejaPaye = $dejaPaye;
-
-        return $this;
-    }
 
     public function getInvoice(): ?Invoice
     {
