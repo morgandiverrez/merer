@@ -16,32 +16,26 @@ class FundType
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $fundName = null;
+    private ?string $name = null;
 
     #[ORM\Column]
     private ?float $amount = null;
 
-    #[ORM\ManyToMany(targetEntity: FundBox::class, inversedBy: 'fundTypes')]
-    private Collection $fundBox;
-
-    public function __construct()
-    {
-        $this->fundBox = new ArrayCollection();
-    }
+   
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getFundName(): ?string
+    public function getName(): ?string
     {
-        return $this->fundName;
+        return $this->name;
     }
 
-    public function setFundName(string $fundName): self
+    public function setName(string $name): self
     {
-        $this->fundName = $fundName;
+        $this->name = $name;
 
         return $this;
     }
@@ -54,30 +48,6 @@ class FundType
     public function setAmount(float $amount): self
     {
         $this->amount = $amount;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, FundBox>
-     */
-    public function getFundBox(): Collection
-    {
-        return $this->fundBox;
-    }
-
-    public function addFundBox(FundBox $fundBox): self
-    {
-        if (!$this->fundBox->contains($fundBox)) {
-            $this->fundBox->add($fundBox);
-        }
-
-        return $this;
-    }
-
-    public function removeFundBox(FundBox $fundBox): self
-    {
-        $this->fundBox->removeElement($fundBox);
 
         return $this;
     }

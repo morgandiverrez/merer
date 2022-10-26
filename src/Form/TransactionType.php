@@ -21,9 +21,8 @@ class TransactionType extends AbstractType
                     'Non' => false,
                 ],
             ])
-            ->add('quote')
-            ->add(
-                'transactionLines',CollectionType::class,[
+            ->add('quote', TextAreaType::class)
+            ->add('transactionLines',CollectionType::class,[
                     'entry_type' => TransactionLineType::class,
                     "label" => false,
                     'allow_add' => true,

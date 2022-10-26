@@ -3,17 +3,12 @@
 namespace App\Controller;
 
 use DateTime;
-use DateInterval;
 use App\Entity\Invoice;
 use App\Entity\Customer;
 use App\Entity\Impression;
 use App\Entity\InvoiceLine;
-use App\Entity\Transaction;
 use App\Form\ImpressionType;
 use App\Entity\CatalogService;
-use App\Entity\PaymentDeadline;
-use App\Entity\TransactionLine;
-use App\Controller\InvoiceController;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -64,8 +59,7 @@ class ImpressionController extends AbstractController
 
             $invoiceLine = new InvoiceLine();
 
-            if(! $impression->isDejaPaye() &&  $impression->isFactureFinDuMois()){
-                echo('pas payé et fin mois');
+            if($impression->isFactureFinDuMois()){ //si facture fin mois
                 if($impression->getFormat() == 'plastification'){
                     $impression->setCouleur(false);
                     $impression->setRectoVerso(false);
@@ -89,7 +83,6 @@ class ImpressionController extends AbstractController
                 if($invoice = null){
                     $invoice = new Invoice();
                     $invoice->setAcquitted(false);
-                    echo('invocie null');
                     $invoice->setComfirm(false);
                     $invoice->setReady(false);
                     $invoice->setCode('impression mois'.date('m'));
@@ -120,57 +113,14 @@ class ImpressionController extends AbstractController
                 }
 
                 $invoice = new Invoice();
-                $invoice->setCategory('Impression');
-                $invoice->setCode('impression mois' . date('m'));
+                $invoice->setCategory('Fin Mois');
                 $invoice->setCustomer($impression->getCustomer());
                 $invoice->setCreationDate(new Datetime());
-                if($impression->isDejaPaye()){
-                    $invoice->setAcquitted(true);
-                    $invoice->setComfirm(true);
-                    $invoice->setReady(false);
-                   
-                    
-                    $transaction = new Transaction();
-                    $invoice->setTransaction($transaction);
-                    if (isset($entityManager->getRepository(Transaction::class)->findMaxDayTransaction(date("Ymd") * 100)[0])){
-                         $nbtransaction = $entityManager->getRepository(Transaction::class)->findMaxDayTransaction(date("Ymd") * 100)[0]['code'];
-                        $transaction->setCode($nbtransaction + 1);
-                    }else {
-                        $nbtransaction = 0;
-                         $transaction->setCode(date("Ymd") * 100 + 1);
-                    }
-                    $transaction->setClosure(true);
-                    $invoice->setCode($transaction->getCode());
-                    
-                    $transactionLine = new TransactionLine();
-                    $transactionLine->setTransaction($transaction);
-                    $transactionLine->setDate(new \DateTime());
-                    $totale = (new InvoiceController)->invoiceTotale($invoice);
-                    echo($totale);
-                    $transactionLine->setAmount($totale);
-                    $transactionLine->setLabel("Fact-" . $transaction->getCode());
-                    $transactionLine->setChartofaccounts($invoice->getCustomer()->getChartofaccounts());
-
-                   
-                    $paymentDeadline = new PaymentDeadline();
-                    $paymentDeadline->setExpectedAmount($totale);
-                    $date = new DateTime();
-                    $paymentDeadline->setExpectedPaymentDate($date);
-                    $paymentDeadline->setExpectedMeans("espece");
-                    $paymentDeadline->setActualPaymentDate($date);
-                    $paymentDeadline->setActualAmount($totale);
-                    $paymentDeadline->setActualMeans("espece");
-                    $paymentDeadline->setInvoice($invoice);
-
-                    $entityManager->persist($paymentDeadline);
-                    $entityManager->persist($transaction);
-                    $entityManager->persist($transactionLine);
-
-                }else{
-                    $invoice->setAcquitted(false);
-                    $invoice->setComfirm(false);
-                    $invoice->setReady(false);
-                }
+                
+                $invoice->setAcquitted(false);
+                $invoice->setComfirm(false);
+                $invoice->setReady(false);
+                
             }
             $impression->setInvoice($invoice);
             $invoiceLine->setInvoice($invoice);
@@ -178,11 +128,9 @@ class ImpressionController extends AbstractController
             $entityManager->persist($invoice);
             $entityManager->persist($invoiceLine);
             $entityManager->persist($impression);
-            echo ("paymentdeadline avant");
             $entityManager->flush();
             return $this->redirectToRoute('impression_validation', []);
         }
-        echo ('1');
         return $this->render('impression/new.html.twig', [
             'impression' => $impression,
             'form' => $form->createView(),

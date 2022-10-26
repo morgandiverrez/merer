@@ -25,6 +25,9 @@ class InvoiceLine
     #[ORM\ManyToOne(targetEntity: CatalogService::class, inversedBy: 'invoiceLines')]
     private $CatalogService;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $quote = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -76,6 +79,18 @@ class InvoiceLine
     public function setCatalogService(?CatalogService $CatalogService): self
     {
         $this->CatalogService = $CatalogService;
+
+        return $this;
+    }
+
+    public function getQuote(): ?string
+    {
+        return $this->quote;
+    }
+
+    public function setQuote(?string $quote): self
+    {
+        $this->quote = $quote;
 
         return $this;
     }

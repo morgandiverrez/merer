@@ -15,6 +15,7 @@ class ChequeBoxFixtures extends Fixture implements DependentFixtureInterface
         $this->faker = Factory::create();
         for ($i = 0; $i < 20; $i++) {
             $chequeBox = new ChequeBox();
+            $chequeBox->setName('ChequeBox'.$i);
             $chequeBox->setDescription($this->faker->sentence());
             $chequeBox->setLastCountDate($this->faker->datetime());
 

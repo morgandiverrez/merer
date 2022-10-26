@@ -15,13 +15,15 @@ class FundBoxFixtures extends Fixture implements DependentFixtureInterface
         $this->faker = Factory::create();
         for ($i = 0; $i < 5; $i++) {
             $fundBox = new FundBox();
+
             $fundBox->setDescription($this->faker->sentence());
+            $fundBox->setName($this->faker->word());
             $fundBox->setLastCountDate($this->faker->dateTime());
             $fundBox->setLocation(($this->getRandomReference('LOCATION')));
-            $fundBox->addFundType($this->getRandomReference('FUNDTYPE'));
+            $fundBox->setChartOfAccounts(($this->getRandomReference('CHARTOFACCOUNTS')));
       
 
-            $this->addReference('FUNDBOX_' . $i, $fundBox);
+            $this->addReference('FUNDBOX_' . $fundBox->getName(), $fundBox);
 
             $manager->persist($fundBox);
             $manager->flush();
@@ -33,7 +35,7 @@ class FundBoxFixtures extends Fixture implements DependentFixtureInterface
         return [
 
             LocationFixtures::class,
-            FundTypeFixtures::class,
+            ChartOfAccountsFixtures::class,
 
 
         ];

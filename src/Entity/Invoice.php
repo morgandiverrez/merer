@@ -22,22 +22,22 @@ class Invoice
     private $creationDate;
 
     #[ORM\Column(type: 'boolean', nullable: true)]
-    private $acquitted = false;
+    private $acquitted = false; // payé
 
     #[ORM\Column(type: 'boolean', nullable: true)]
-    private $ready = false;
+    private $ready = false; // visible
 
     #[ORM\Column(type: 'boolean', nullable: true)]
-    private $comfirm = false;
+    private $comfirm = false; // validé
 
     #[ORM\Column(type: 'boolean', nullable: true)]
-    private $credit = false;
+    private $credit = false; // pour les avoirs
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $code = null;
+    private ?string $code = null; 
 
     #[ORM\Column(length: 64, nullable: true)]
-    private ?string $category = null;
+    private ?string $category = null; // pour impression par exemple
 
     #[ORM\ManyToOne(inversedBy: 'invoices')]
     private ?Transaction $transaction = null;

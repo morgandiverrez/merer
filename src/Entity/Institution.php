@@ -22,6 +22,12 @@ class Institution
     #[ORM\ManyToOne(inversedBy: 'institutions')]
     private ?AdministrativeIdentifier $administrativeIdentifier = null;
 
+    #[ORM\ManyToOne(inversedBy: 'institutions')]
+    private ?Federation $federation = null;
+
+    #[ORM\ManyToOne]
+    private ?Location $location = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -59,6 +65,30 @@ class Institution
     public function setAdministrativeIdentifier(?AdministrativeIdentifier $administrativeIdentifier): self
     {
         $this->administrativeIdentifier = $administrativeIdentifier;
+
+        return $this;
+    }
+
+    public function getFederation(): ?Federation
+    {
+        return $this->federation;
+    }
+
+    public function setFederation(?Federation $federation): self
+    {
+        $this->federation = $federation;
+
+        return $this;
+    }
+
+    public function getLocation(): ?Location
+    {
+        return $this->location;
+    }
+
+    public function setLocation(?Location $location): self
+    {
+        $this->location = $location;
 
         return $this;
     }

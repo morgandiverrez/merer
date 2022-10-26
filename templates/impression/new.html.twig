@@ -25,21 +25,21 @@
                 </div>
 
                 <div class="format my-5">
-                    {{ form_label(form.format, 'format ', {'label_attr': {'class': 'foo'}}) }}
+                    {{ form_label(form.format, 'Format ', {'label_attr': {'class': 'foo'}}) }}
                     {{ form_errors(form.format) }}
                     {{ form_widget(form.format) }}
                     {{ form_help(form.format) }}
                 </div>
 
                  <div class="rectoVerso my-5">
-                    {{ form_label(form.rectoVerso, 'recto Verso ', {'label_attr': {'class': 'foo'}}) }}
+                    {{ form_label(form.rectoVerso, 'Recto Verso ', {'label_attr': {'class': 'foo'}}) }}
                     {{ form_errors(form.rectoVerso) }}
                     {{ form_widget(form.rectoVerso) }}
                     {{ form_help(form.rectoVerso) }}
                 </div>
 
                 <div class="couleur my-5">
-                    {{ form_label(form.couleur, ' couleur ', {'label_attr': {'class': 'foo'}}) }}
+                    {{ form_label(form.couleur, ' Couleur ', {'label_attr': {'class': 'foo'}}) }}
                     {{ form_errors(form.couleur) }}
                     {{ form_widget(form.couleur) }}
                     {{ form_help(form.couleur) }}
@@ -53,18 +53,13 @@
                 </div>
 
                  <div class="factureFinDuMois my-5">
-                    {{ form_label(form.factureFinDuMois, ' Souhaites tu avoir une facture pour cette impression ou une facture globale à la fin du mois ?', {'label_attr': {'class': 'foo'}}) }}
+                    {{ form_label(form.factureFinDuMois, ' Souhaites tu avoir une facture globale à la fin du mois ?', {'label_attr': {'class': 'foo'}}) }}
                     {{ form_errors(form.factureFinDuMois) }}
                     {{ form_widget(form.factureFinDuMois) }}
                     {{ form_help(form.factureFinDuMois) }}
                 </div>
 
-                 <div class="dejaPaye my-5">
-                    {{ form_label(form.dejaPaye, ' Déjà payé ?', {'label_attr': {'class': 'foo'}}) }}
-                    {{ form_errors(form.dejaPaye) }}
-                    {{ form_widget(form.dejaPaye) }}
-                    {{ form_help(form.dejaPaye) }}
-                </div>
+         
                
                 <button class="btn btn-success mt-3 mb-3">{{ button_label|default('Valider ') }}<i class = "fa text-light fa-save me-2"></i></button>
             </div>

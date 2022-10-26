@@ -1,0 +1,55 @@
+{% extends 'base_user.html.twig' %}
+
+{% block title %}Modifier boite chèque {% endblock %}
+
+{% block body %}
+    <div class="container-fluid">
+        <p class="display-6 no-wrap text-center">Modifier la boite de chèque</p>
+        <div class="form-control form-control-lg mx-auto corps text-center">
+            {{ form_start(form) }}
+            <div class="mx-auto mt-5 mb-5">
+
+
+                <div class="name my-5">
+                    {{ form_label(form.name, 'Nom ', {'label_attr': {'class': 'foo'}}) }}
+                    {{ form_errors(form.name) }}
+                    {{ form_widget(form.name) }}
+                    {{ form_help(form.name) }}
+                </div>
+
+                <div class="description my-5">
+                    {{ form_label(form.description, 'Description ', {'label_attr': {'class': 'foo'}}) }}
+                    {{ form_errors(form.description) }}
+                    {{ form_widget(form.description) }}
+                    {{ form_help(form.description) }}
+                </div>
+
+                 <div class="lastCountDate my-5">
+                    {{ form_label(form.lastCountDate, 'Dernier Comptage ', {'label_attr': {'class': 'foo'}}) }}
+                    {{ form_errors(form.lastCountDate) }}
+                    {{ form_widget(form.lastCountDate) }}
+                    {{ form_help(form.lastCountDate) }}
+                </div>
+
+                <div class="chartOfAccounts my-5">
+                    {{ form_label(form.chartOfAccounts, ' Compte associé ', {'label_attr': {'class': 'foo'}}) }}
+                    {{ form_errors(form.chartOfAccounts) }}
+                    {{ form_widget(form.chartOfAccounts) }}
+                    {{ form_help(form.chartOfAccounts) }}
+                </div>
+
+                 <div class="location my-5">
+                    {{ form_label(form.location, 'lieu de stockage ', {'label_attr': {'class': 'foo'}}) }}
+                    {{ form_errors(form.location) }}
+                    {{ form_widget(form.location) }}
+                    {{ form_help(form.location) }}
+                </div>
+
+                <button class="btn btn-success mt-3 mb-3">{{ button_label|default('Valider ') }}<i class = "fa text-light fa-save me-2"></i></button>
+            </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+
+{% endblock %}
+

@@ -2,9 +2,12 @@
 
 namespace App\Entity;
 
-use App\Repository\ChequeBoxRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\ChequeBoxRepository;
+use Doctrine\ORM\EntityManagerInterface;
 
 #[ORM\Entity(repositoryClass: ChequeBoxRepository::class)]
 class ChequeBox
@@ -24,11 +27,30 @@ class ChequeBox
     #[ORM\JoinColumn(nullable: false)]
     private ?ChartOfAccounts $chartOfAccounts ;
 
+    #[ORM\Column(length: 255)]
+    private ?string $name = null;
+
+    #[ORM\ManyToOne]
+    private ?Location $location = null;
+
+    #[ORM\OneToMany(mappedBy: 'chequeBox', targetEntity: Cheque::class)]
+    private Collection $cheques;
+
+    public function __construct()
+    {
+        $this->cheques = new ArrayCollection();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
     }
 
+    public function  __toString()
+    {
+        return $this->getName();
+    }
+    
     public function getDescription(): ?string
     {
         return $this->description;
@@ -64,4 +86,59 @@ class ChequeBox
 
         return $this;
     }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): self
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    public function getLocation(): ?Location
+    {
+        return $this->location;
+    }
+
+    public function setLocation(?Location $location): self
+    {
+        $this->location = $location;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Cheque>
+     */
+    public function getCheques(): Collection
+    {
+        return $this->cheques;
+    }
+
+    public function addCheque(Cheque $cheque): self
+    {
+        if (!$this->cheques->contains($cheque)) {
+            $this->cheques->add($cheque);
+            $cheque->setChequeBox($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCheque(Cheque $cheque): self
+    {
+        if ($this->cheques->removeElement($cheque)) {
+            // set the owning side to null (unless already changed)
+            if ($cheque->getChequeBox() === $this) {
+                $cheque->setChequeBox(null);
+            }
+        }
+
+        return $this;
+    }
+
 }

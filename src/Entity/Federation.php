@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\FederationRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -34,6 +36,9 @@ class Federation
 
     #[ORM\Column(length: 1, nullable: true)]
     private ?string $currency = null;
+
+
+
 
     public function getId(): ?int
     {
@@ -123,4 +128,6 @@ class Federation
 
         return $this;
     }
+
+   
 }

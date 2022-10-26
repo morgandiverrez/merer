@@ -27,8 +27,6 @@ class Location
     #[ORM\Column(length: 255)]
     private ?string $city = null;
 
-    #[ORM\OneToMany(mappedBy: 'location', targetEntity: Contact::class)]
-    private Collection $contacts;
 
     #[ORM\OneToMany(mappedBy: 'location', targetEntity: Supplier::class)]
     private Collection $suppliers;
@@ -38,10 +36,15 @@ class Location
     public function __construct()
     {
         $this->customers = new ArrayCollection();
-        $this->contacts = new ArrayCollection();
         $this->suppliers = new ArrayCollection();
     }
 
+
+    public function  __toString()
+    {
+        return $this->getName();
+    }
+    
     public function getId(): ?int
     {
         return $this->id;
@@ -95,35 +98,8 @@ class Location
         return $this;
     }
 
-    /**
-     * @return Collection<int, Contact>
-     */
-    public function getContacts(): Collection
-    {
-        return $this->contacts;
-    }
 
-    public function addContact(Contact $contact): self
-    {
-        if (!$this->contacts->contains($contact)) {
-            $this->contacts->add($contact);
-            $contact->setLocation($this);
-        }
 
-        return $this;
-    }
-
-    public function removeContact(Contact $contact): self
-    {
-        if ($this->contacts->removeElement($contact)) {
-            // set the owning side to null (unless already changed)
-            if ($contact->getLocation() === $this) {
-                $contact->setLocation(null);
-            }
-        }
-
-        return $this;
-    }
 
     /**
      * @return Collection<int, Supplier>

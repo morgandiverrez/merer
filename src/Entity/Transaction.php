@@ -32,10 +32,14 @@ class Transaction
     #[ORM\OneToMany(mappedBy: 'transaction', targetEntity: TransactionLine::class)]
     private Collection $transactionLines;
 
+    #[ORM\OneToMany(mappedBy: 'transaction', targetEntity: ExpenseReport::class)]
+    private Collection $expenseReports;
+
     public function __construct()
     {
         $this->invoices = new ArrayCollection();
         $this->transactionLines = new ArrayCollection();
+        $this->expenseReports = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -139,6 +143,36 @@ class Transaction
             // set the owning side to null (unless already changed)
             if ($transactionLine->getTransaction() === $this) {
                 $transactionLine->setTransaction(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ExpenseReport>
+     */
+    public function getExpenseReports(): Collection
+    {
+        return $this->expenseReports;
+    }
+
+    public function addExpenseReport(ExpenseReport $expenseReport): self
+    {
+        if (!$this->expenseReports->contains($expenseReport)) {
+            $this->expenseReports->add($expenseReport);
+            $expenseReport->setTransaction($this);
+        }
+
+        return $this;
+    }
+
+    public function removeExpenseReport(ExpenseReport $expenseReport): self
+    {
+        if ($this->expenseReports->removeElement($expenseReport)) {
+            // set the owning side to null (unless already changed)
+            if ($expenseReport->getTransaction() === $this) {
+                $expenseReport->setTransaction(null);
             }
         }
 

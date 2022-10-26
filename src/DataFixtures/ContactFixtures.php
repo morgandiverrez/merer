@@ -25,6 +25,7 @@ class ContactFixtures extends Fixture implements DependentFixtureInterface
             for($k=0 ; $k< $this->faker->numberbetween(1, 3) ; $k++){
                 $contact->addCustomer($this->getRandomReference('CUSTOMER'));
              }
+             $contact->setLocation($this->getRandomReference('LOCATION'));
         
             $this->addReference('CONTACT_' . $i, $contact);
 

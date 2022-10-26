@@ -39,28 +39,60 @@ class FundBoxRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return FundBox[] Returns an array of FundBox objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('f')
-//            ->andWhere('f.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('f.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    //    /**
+    //     * @return FundBox[] Returns an array of FundBox objects
+    //     */
+    //    public function findByExampleField($value): array
+    //    {
+    //        return $this->createQueryBuilder('f')
+    //            ->andWhere('f.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->orderBy('f.id', 'ASC')
+    //            ->setMaxResults(10)
+    //            ->getQuery()
+    //            ->getResult()
+    //        ;
+    //    }
 
-//    public function findOneBySomeField($value): ?FundBox
-//    {
-//        return $this->createQueryBuilder('f')
-//            ->andWhere('f.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    //    public function findOneBySomeField($value): ?FundBox
+    //    {
+    //        return $this->createQueryBuilder('f')
+    //            ->andWhere('f.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->getQuery()
+    //            ->getOneOrNullResult()
+    //        ;
+    //    }
+
+    public function findByID($value): ?array
+    {
+        return $this->createQueryBuilder('fundBox')
+        ->andWhere('fundBox.id = :val')
+        ->setParameter('val', $value)
+            ->orderBy('fundBox.name', 'ASC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findAllInOrder(): ?array
+    {
+        return $this->createQueryBuilder('fundBox')
+            ->orderBy('fundBox.name', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function MontantTotale($val)
+    {
+        return $this->createQueryBuilder('fundBox')
+        ->where('fundBox.id = :val')
+        ->innerJoin('fundBox.fundTypeJoin', 'typeJoin')
+        ->innerJoin('typeJoin.fundType', 'fundType')
+        ->select('SUM(typeJoin.quantity * fundType.amount) as total_amount')
+        ->setParameter('val', $val)
+            ->getQuery()
+            ->getResult();
+    }
+
 }

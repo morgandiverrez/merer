@@ -9,14 +9,14 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
-
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 class EvenementType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
              ->add('name')
-            ->add('description')
+            ->add('description', TextAreaType::class)
             ->add( 'dateDebut', DateTimeType::class, [
             'date_widget' => 'single_text',
             'time_widget' => 'single_text',

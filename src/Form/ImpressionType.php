@@ -32,7 +32,6 @@ class ImpressionType extends AbstractType
             ->add('couleur')
             ->add('quantite')
             ->add('factureFinDuMois')
-            ->add('dejaPaye')
            
         ;
     }
