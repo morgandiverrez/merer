@@ -26,7 +26,7 @@ class ChequeBoxController extends AbstractController
             $totals[$box->getName()] = $entityManager->getRepository(ChequeBox::class)->montantTotale($box->getId())[0]['total_amount']; 
             if($totals[$box->getName()] == null)$totals[$box->getName()]=0;
         }
-        $chequeBox = $entityManager->getRepository(ChequeBox::class)->findAll();
+        
 
        
         

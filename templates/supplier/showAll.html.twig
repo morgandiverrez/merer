@@ -1,0 +1,40 @@
+{% extends 'base_user.html.twig' %}
+
+{% block title %}Liste client{% endblock %}
+
+
+{% block body %}
+    <div class="container-fluid">
+        <div style = "margin-left: auto ; margin-right: auto ; max-width : 900px;">
+            <p class="display-6 no-wrap text-center">Liste des Clients  </p>
+       
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th scope="col">Nom</th>
+                    <th scope="col">Contact</th>
+                    <th scope="col">Lieux</th>
+                    <th scope="col">Compte associé</th>
+                    <th scope="col">Détails</th>
+                    
+                 </tr>
+                </thead>
+
+                <tbody>
+                {% for customer in customers %} 
+                
+                    <tr>
+                        <td>{{customer.getName()}}</td>
+                        <td>{{customer.getContacts()[0].getName()}} {{customer.getContacts()[0].getLastName()}}</td>
+                          <td>{{customer.getLocation().getName()}}</td>
+                          <td>{{customer.getChartOfAccounts().getCode()}}</td>
+                        <td><a href="/customer/show/{{customer.getId()}}"><i class="fa-solid fa-eye"></i></a></td> 
+                     </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+{% endblock %}
