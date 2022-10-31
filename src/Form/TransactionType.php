@@ -2,10 +2,12 @@
 
 namespace App\Form;
 
+use App\Entity\Event;
 use App\Entity\Transaction;
 use App\Form\TransactionLineType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -29,7 +31,10 @@ class TransactionType extends AbstractType
                     'allow_delete' => true,
                     'by_reference' => false,
                 ]
-            );
+            )
+            ->add('event',  EntityType::class, [
+            'class' => Event::class,
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

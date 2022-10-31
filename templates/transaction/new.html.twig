@@ -24,6 +24,13 @@
                 {{ form_help(form.quote) }}
             </div>
 
+             <div class="event my-5">
+                {{ form_label(form.event, "Projet lié" , {'label_attr': {'class': 'foo'}}) }}
+                {{ form_errors(form.event) }}
+                {{ form_widget(form.event) }}
+                {{ form_help(form.event) }}
+            </div>
+
             {% for transactionLine in transaction.transactionLines %}
                 <div class="transactionLine my-5">
 
