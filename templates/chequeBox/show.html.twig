@@ -28,30 +28,31 @@
                 </div>
             </div>
              <div style = "margin-left: auto ; margin-right: auto ; max-width : 900px;">
-            <p class="display-6 no-wrap text-center">Liste des chèques de la boite </p>
-       
-            <table class="table table-striped">
-                <thead>
-                <tr>
-                   <th scope="col">date de réception</th>
-                    <th scope="col">Montant</th>
-                    <th scope="col">Modifier</th>
-                    <th scope="col">Supprimer</th>  
-                 </tr>
-                </thead>
-                <tbody>
-                {% for cheque in chequeBox.getCheques() %} 
+                <p class="display-6 no-wrap text-center">Liste des chèques de la boite </p>
+        
+                <table class="table table-striped">
+                    <thead>
                     <tr>
-                        <td> 
-                            {% if cheque.getDateOfCollection() is  null %} - {% else %} {{cheque.getDateOfCollection().format('d/m/y H:i')}} {% endif %}   
-                        </td>
-                        <td>{{cheque.getAmount()}}€</td>
-                        <td><a href="/cheque/edit/{{cheque.getId()}}"><i class="fa-solid fa-pen-to-square"></i></a></td> 
-                          <td><a href="/cheque/delete/{{cheque.getId()}}"><i class="fa-solid fa-trash-can"></a></td> 
-                     </tr>
-                {% endfor %}
-                </tbody>
-            </table>
+                    <th scope="col">date de réception</th>
+                        <th scope="col">Montant</th>
+                        <th scope="col">Modifier</th>
+                        <th scope="col">Supprimer</th>  
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for cheque in chequeBox.getCheques() %} 
+                        <tr>
+                            <td> 
+                                {% if cheque.getDateOfCollection() is  null %} - {% else %} {{cheque.getDateOfCollection().format('d/m/y H:i')}} {% endif %}   
+                            </td>
+                            <td>{{cheque.getAmount()}}€</td>
+                            <td><a href="/cheque/edit/{{cheque.getId()}}"><i class="fa-solid fa-pen-to-square"></i></a></td> 
+                            <td><a href="/cheque/delete/{{cheque.getId()}}"><i class="fa-solid fa-trash-can"></a></td> 
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 {% endblock %}
