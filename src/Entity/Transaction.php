@@ -38,9 +38,6 @@ class Transaction
     #[ORM\ManyToOne(inversedBy: 'transaction')]
     private ?Event $event = null;
 
-    #[ORM\ManyToOne(inversedBy: 'transaction')]
-    private ?BPA $BPA = null;
-
     public function __construct()
     {
         $this->invoices = new ArrayCollection();
@@ -197,15 +194,4 @@ class Transaction
         return $this;
     }
 
-    public function getBPA(): ?BPA
-    {
-        return $this->BPA;
-    }
-
-    public function setBPA(?BPA $BPA): self
-    {
-        $this->BPA = $BPA;
-
-        return $this;
-    }
 }
