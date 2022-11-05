@@ -12,6 +12,14 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class LoginController extends AbstractController
 {
+   
+    #[Route('', name: 'index')]
+    public function index( ): Response
+    {
+     
+
+          return $this->redirectToRoute('profil_show');
+    }
     #[Route('/login', name: 'login')]
     public function login( AuthenticationUtils $authenticationUtils): Response
     {
