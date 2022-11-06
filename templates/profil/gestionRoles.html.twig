@@ -3,10 +3,10 @@
 {% block title %}Gestion Rôle{% endblock %}
 
 {% block body %}
-     <div class=" text-center container-fluid">
-            <form action="{{ path('profil_roles') }}" method="post">
-            <p class="display-6 no-wrap text-center"> Gestionnaire de Rôle  <button class="btn btn-primary" type="submit" >valider</button></p>
-
+       <div class="container-fluid">
+            <div style = "margin-left: auto ; margin-right: auto ; max-width : 900px;">
+                <form action="{{ path('profil_roles') }}" method="post">
+                <p class="display-6 no-wrap text-center"> Gestionnaire de Rôle  <button class="btn btn-primary" type="submit" >valider</button></p>
                     <table class="table table-striped">
                         <thead>
                             <tr>
@@ -18,7 +18,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                             {% for user in users %}
+                            {% for user in users %}
                                 <tr>
                                     <th>{{user.profil.getName()}}</th>
                                     <th>{{user.profil.getLastName()}}</th>
@@ -40,10 +40,10 @@
                                 </tr> 
                             {% endfor %}
                         </tbody>
-                     </table> 
-            </form>
-
-                  
+                    </table> 
+                </form>
+            </div>
+        </div>              
     </div>
 {% endblock %}
 

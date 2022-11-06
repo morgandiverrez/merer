@@ -6,11 +6,10 @@
 
 {% block body %}
     <div class="container-fluid">
-        <div  style = "margin-left: auto ; margin-right: auto ; max-width : 900px;"">
+        <div style = "margin-left: auto ; margin-right: auto ; max-width : 900px;">
             <p class="display-6 no-wrap text-center mb-5"> Détails de l'association {{association.name}}</p>
-
-            <div class=" d-flex text-center justify-content-evenly ">
-                <div class="card justify-content-start " style="width: 18rem;">
+            <div class=" d-flex text-center justify-content-evenly">
+                <div class="card justify-content-start" style="width: 28rem;">
                     <div class=" card-body ">
                         {% if association.getImage() is not null %} <img class="card-img-top rounded-circle" src="{{asset(association.getImage())}}}}" alt="image du association : {{association.getSigle()}}"> {% else %} <i class="fa-solid fa-image"></i> {% endif %}
                         <p class="card-text">{{association.getName()}}</p>
@@ -28,63 +27,61 @@
                         {% if is_granted('ROLE_FORMATEURICE') %}
                             {% if is_granted('ROLE_BF') %}
                                 <a href="/association/edit/{{ association.getId() }}" class="card-link"><i class="fa-solid fa-pen-to-square"></i></a>
-                               {% if is_granted('ROLE_ADMIN') %}
-                                     <a href="/association/delete/{{ association.getId()}}" class="card-link"><i class="fa-solid fa-trash-can"></i></a>
+                                {% if is_granted('ROLE_ADMIN') %}
+                                        <a href="/association/delete/{{ association.getId()}}" class="card-link"><i class="fa-solid fa-trash-can"></i></a>
                                 {% endif %}
                             {% endif %}
-                             <a href="/association/" class="card-link"><i class="fa-solid fa-list"></i></a>
+                                <a href="/association/" class="card-link"><i class="fa-solid fa-list"></i></a>
                         {% endif %}
-                              
+                                
                     </div>
                 </div>
-                
-                <div >
-                    <table class="table table-striped  ">
-                        <thead>
-                        <tr>
-                            <th scope="col">Nom</th>
-                            <th scope="col">Prénom</th>
-                            <th scope="col">Equipe.s d'élu.e.s</th>
-                            <th scope="col">Adresse mail</th>
-                            <th scope="col">Profil</th>
-                            
-                        </tr>
-                        </thead>
-                        <tbody>
-                            {% if association.getProfil() is null %} 
-                                    Aucun membre inscrit sur la plateforme
-                            {% else %} 
-                                {% for profil in association.getProfil() %}
-                                    <tr>
-                                        <th>{{profil.getName()}}</th>
-                                        <th>{{profil.getLastName()}}</th>
-                                        <th> 
-                                        {% for equipeElu in profil.getEquipeElu() %}
-                                            {{equipeElu.getName()}}
-                                        {% endfor %}
-                                        </th>
-                                         {% if is_granted('ROLE_FORMATEURICE') %}
-                                            <th> {{profil.user.getEMail()}} </th>
-                                            <th><a href="/account/show/{{profil.getId()}}"><i class="fa-solid fa-eye"></i></i></a></th> 
-                                        {% endif %}
-                                    </tr> 
-                                {% endfor %}
-                            {% endif %}
-                        </tbody>
-                         {% if is_granted('ROLE_ADMIN') %}
-                            <tfoot>
-                                <th></th>
-                                <th></th>
-                                <th> <a class="btn btn-primary" href="/association/remove/{{ association.getId() }}">vider l'association</a> </th>
-                                <th></th>
-                                <th></th>
-                            </tfoot>
+            </div>
+            
+            <div >
+                <table class="table table-striped  ">
+                    <thead>
+                    <tr>
+                        <th scope="col">Nom</th>
+                        <th scope="col">Prénom</th>
+                        <th scope="col">Equipe.s d'élu.e.s</th>
+                        <th scope="col">Adresse mail</th>
+                        <th scope="col">Profil</th>
+                        
+                    </tr>
+                    </thead>
+                    <tbody>
+                        {% if association.getProfil() is null %} 
+                                Aucun membre inscrit sur la plateforme
+                        {% else %} 
+                            {% for profil in association.getProfil() %}
+                                <tr>
+                                    <th>{{profil.getName()}}</th>
+                                    <th>{{profil.getLastName()}}</th>
+                                    <th> 
+                                    {% for equipeElu in profil.getEquipeElu() %}
+                                        {{equipeElu.getName()}}
+                                    {% endfor %}
+                                    </th>
+                                        {% if is_granted('ROLE_FORMATEURICE') %}
+                                        <th> {{profil.user.getEMail()}} </th>
+                                        <th><a href="/account/show/{{profil.getId()}}"><i class="fa-solid fa-eye"></i></i></a></th> 
+                                    {% endif %}
+                                </tr> 
+                            {% endfor %}
                         {% endif %}
-                    </table>
-                </div> 
-            </div>         
+                    </tbody>
+                        {% if is_granted('ROLE_ADMIN') %}
+                        <tfoot>
+                            <th></th>
+                            <th></th>
+                            <th> <a class="btn btn-primary" href="/association/remove/{{ association.getId() }}">vider l'association</a> </th>
+                            <th></th>
+                            <th></th>
+                        </tfoot>
+                    {% endif %}
+                </table>
+            </div>      
         </div>
     </div>
-
-
 {% endblock %}

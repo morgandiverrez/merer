@@ -11,7 +11,7 @@
                     <a href="/catalogue/new"><i class="fa-solid fa-plus align-left"></i></a>
                 {% endif %}
             </p>
-                <form action="{{ path('catalogue_showAll') }}" method="post">
+            <form action="{{ path('catalogue_showAll') }}" method="post">
                 <p style="flex-wrap : wrap;" class="text-center justify-content-center">
                     <input type="text" id="name" name="name" placeholder="Nom"/>
                     <input  type="text" id="categorie" name="categorie" placeholder="categorie"/>
@@ -22,20 +22,18 @@
                     durée minimum : <input type="time"  id="durationMin" name="durationMin" min="00:10" max="48:00"  />
                     durée maximum : <input type="time"  id="durationMax" name="durationMax" min="00:15" max="48:00"  />
                     <button class="btn btn-primary" type="submit" >Rechercher</button>
-                </form>
-            </p>
+                </p>
+            </form>
 
             <table class="table table-striped">                   
                 <thead>
-                <tr>
-                    <th scope="col">Nom</th>
-                    <th scope="col">Description</th>
-                    <th scope="col">Durée</th>
-                    <th scope="col">Détails</th>
-          
-                </tr>
+                    <tr>
+                        <th scope="col">Nom</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Durée</th>
+                        <th scope="col">Détails</th>
+                    </tr>
                 </thead>
-
                 <tbody>
                     {% for formation in formations %} 
                         <tr>
@@ -47,8 +45,6 @@
                     {% endfor %}
                 </tbody>
             </table>
-        </div>
+         </div>
     </div>
-
-
 {% endblock %}

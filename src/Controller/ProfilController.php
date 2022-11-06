@@ -293,14 +293,14 @@ class ProfilController extends AbstractController
     #[IsGranted('ROLE_ADMIN')]
     public function roles(EntityManagerInterface $entityManager, Request $request): Response
     {
-        $users = $entityManager->getRepository(User::class)->findAll();
+        $users = $entityManager->getRepository(User::class)->findAllIfProfil();
 
 
         if ($request->isMethod('post')) {
             $posts = $request->request->all();
 
             foreach( $users as $user){
-                if($user->getEmail() == "admin@fedeb.net" or $user->getEmail() == "formation@fedeb.net" ){
+                if($user->getEmail() == "presidence@fedeb.net" or $user->getEmail() == "formation@fedeb.net" ){
                     $user->setRoles(["ROLE_ADMIN"]);  
                 }
                 elseif(isset($posts[$user->getId() . '_bf'])){

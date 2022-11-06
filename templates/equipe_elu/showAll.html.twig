@@ -4,8 +4,8 @@
 
 
 {% block body %}
-    <div class="container-lg">
-        <div >
+    <div class="container-fluid">
+        <div style = "margin-left: auto ; margin-right: auto ; max-width : 900px;">
             <p class="display-6 no-wrap text-center">Liste des équipes d'élu.e.s
                 {% if is_granted('ROLE_BF') %}
                     <a href="/equipeElu/new"><i class="fa-solid fa-plus align-right"></i></a>
@@ -22,15 +22,13 @@
                         <option  value=Departement>Departement</option>
                         <option  value=LBSU>LBSU</option>
                         <option  value=Nationaux>Nationaux</option>
-                   </select>
+                    </select>
                     <input type="text" id="etablissement" name="etablissement" placeholder="etablissement"/>
                     <input type="text" id="fedeFi" name="fedeFi" placeholder="fede fi"/>
                     <button class="btn btn-primary" type="submit" >Rechercher</button>
                 </p>
             </form>
             <table class="table table-striped">
-                
-                
                 <thead>
                 <tr>
                     <th scope="col">Nom</th>
@@ -38,7 +36,7 @@
                     <th scope="col">Etablissement</th>
                     <th scope="col">Détails</th>
                     
-                 </tr>
+                    </tr>
                 </thead>
 
                 <tbody>
@@ -52,13 +50,10 @@
                         </th>
                         <th>{{equipeElu.getEtablissement()}}</th>
                         <th><a href="/equipeElu/show/{{equipeElu.getId()}}"><i class="fa-solid fa-eye"></i></i></a></th> 
-                     </tr>
+                        </tr>
                 {% endfor %}
                 </tbody>
             </table>
-
         </div>
     </div>
-
-
 {% endblock %}
