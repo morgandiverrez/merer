@@ -4,101 +4,102 @@
 
 {% block body %}
     <div class="container-fluid">
-        <p class="display-6 no-wrap text-center">Modifier un évènement</p>
-        
-        <div class="form-control form-control-lg mx-auto corps text-center">
-            {{ form_start(form) }}
-            <div class="mx-auto mt-5 mb-5">
+        <div style = "margin-left: auto ; margin-right: auto ; max-width : 900px;">
+            <p class="display-6 no-wrap text-center">Modifier un évènement</p>
+            <div class="form-control form-control-lg mx-auto corps text-center">
+                {{ form_start(form) }}
+                <div class="mx-auto mt-5 mb-5">
 
-                <div class="name my-5">
-                    {{ form_label(form.name, 'Nom de l\'évènement', {'label_attr': {'class': 'foo'}}) }}
-                    {{ form_errors(form.name) }}
-                    {{ form_widget(form.name) }}
-                    {{ form_help(form.name) }}
+                    <div class="name my-5">
+                        {{ form_label(form.name, 'Nom de l\'évènement', {'label_attr': {'class': 'foo'}}) }}
+                        {{ form_errors(form.name) }}
+                        {{ form_widget(form.name) }}
+                        {{ form_help(form.name) }}
+                    </div>
+
+                    <div class="description my-5">
+                        {{ form_label(form.description, 'Description de l\'évènement ', {'label_attr': {'class': 'foo'}}) }}
+                        {{ form_errors(form.description) }}
+                        {{ form_widget(form.description) }}
+                        {{ form_help(form.description) }}
+                    </div>
+
+                    <div class="dateDebut my-5">
+                        {{ form_label(form.dateDebut, 'Date de début de de l\'évènement ', {'label_attr': {'class': 'foo'}}) }}
+                        {{ form_errors(form.dateDebut) }}
+                        {{ form_widget(form.dateDebut) }}
+                        {{ form_help(form.dateDebut) }}
+                    </div>
+
+                    <div class="dateFin my-5">
+                        {{ form_label(form.dateFin, 'Date de fin de de l\'évènement ', {'label_attr': {'class': 'foo'}}) }}
+                        {{ form_errors(form.dateFin) }}
+                        {{ form_widget(form.dateFin) }}
+                        {{ form_help(form.dateFin) }}
+                    </div>
+                    <div class="dateFinInscription my-5">
+                        {{ form_label(form.dateFinInscription, 'date de fin des inscriptions pour l\'évènement ', {'label_attr': {'class': 'foo'}}) }}
+                        {{ form_errors(form.dateFinInscription) }}
+                        {{ form_widget(form.dateFinInscription) }}
+                        {{ form_help(form.dateFinInscription) }}
+                    </div>
+
+                    <div class="URL my-5">
+                        {{ form_label(form.URL, ' URL de redirection (s\'il y a un formulaire complémentaire) ', {'label_attr': {'class': 'foo'}}) }}
+                        {{ form_errors(form.URL) }}
+                        {{ form_widget(form.URL) }}
+                        {{ form_help(form.URL) }}
+                    </div>
+
+                    
+
+                    <div class="autorisationPhoto my-5">
+                        {{ form_label(form.autorisationPhoto, ' il y a t\'il besoin de demander l\'autorisation de prendre des photos durant l\'évènement ', {'label_attr': {'class': 'foo'}}) }}
+                        {{ form_errors(form.autorisationPhoto) }}
+                        {{ form_widget(form.autorisationPhoto) }}
+                        {{ form_help(form.autorisationPhoto) }}
+                    </div>
+
+                    <div class="modePaiement my-5">
+                        {{ form_label(form.modePaiement, 'mode de paiement disponible pour l\'évènement ', {'label_attr': {'class': 'foo'}}) }}
+                        {{ form_errors(form.modePaiement) }}
+                        {{ form_widget(form.modePaiement) }}
+                        {{ form_help(form.modePaiement) }}
+                    </div>
+
+                    <div class="covoiturage my-5">
+                        {{ form_label(form.covoiturage, ' il y a t\'il un covoiturage de prévu pour l\'évènement ', {'label_attr': {'class': 'foo'}}) }}
+                        {{ form_errors(form.covoiturage) }}
+                        {{ form_widget(form.covoiturage) }}
+                        {{ form_help(form.covoiturage) }}
+                    </div>
+
+                    <div class="parcoursObligatoire my-5">
+                        {{ form_label(form.parcoursObligatoire, ' est-il obligatoire de choisir un parcours pour l\'évènement ', {'label_attr': {'class': 'foo'}}) }}
+                        {{ form_errors(form.parcoursObligatoire) }}
+                        {{ form_widget(form.parcoursObligatoire) }}
+                        {{ form_help(form.parcoursObligatoire) }}
+                    </div>
+
+                    <div class="visible my-5">
+                        {{ form_label(form.visible, ' souhaitez vous rendre visible cet évènement ', {'label_attr': {'class': 'foo'}}) }}
+                        {{ form_errors(form.visible) }}
+                        {{ form_widget(form.visible) }}
+                        {{ form_help(form.visible) }}
+                    </div>
+
+                    <div class="lieu my-5">
+                        {{ form_label(form.lieu, ' ou aura lieu l\'évènement ', {'label_attr': {'class': 'foo'}}) }}
+                        {{ form_errors(form.lieu) }}
+                        {{ form_widget(form.lieu) }}
+                        {{ form_help(form.lieu) }}
+                    </div>
+
+    
+                    <button class="btn btn-success mt-3 mb-3">{{ button_label|default('Valider ') }}<i class = "fa text-light fa-save me-2"></i></button>
                 </div>
-
-                   <div class="description my-5">
-                    {{ form_label(form.description, 'Description de l\'évènement ', {'label_attr': {'class': 'foo'}}) }}
-                    {{ form_errors(form.description) }}
-                    {{ form_widget(form.description) }}
-                    {{ form_help(form.description) }}
-                </div>
-
-                <div class="dateDebut my-5">
-                    {{ form_label(form.dateDebut, 'Date de début de de l\'évènement ', {'label_attr': {'class': 'foo'}}) }}
-                    {{ form_errors(form.dateDebut) }}
-                    {{ form_widget(form.dateDebut) }}
-                    {{ form_help(form.dateDebut) }}
-                </div>
-
-                 <div class="dateFin my-5">
-                    {{ form_label(form.dateFin, 'Date de fin de de l\'évènement ', {'label_attr': {'class': 'foo'}}) }}
-                    {{ form_errors(form.dateFin) }}
-                    {{ form_widget(form.dateFin) }}
-                    {{ form_help(form.dateFin) }}
-                </div>
-                <div class="dateFinInscription my-5">
-                    {{ form_label(form.dateFinInscription, 'date de fin des inscriptions pour l\'évènement ', {'label_attr': {'class': 'foo'}}) }}
-                    {{ form_errors(form.dateFinInscription) }}
-                    {{ form_widget(form.dateFinInscription) }}
-                    {{ form_help(form.dateFinInscription) }}
-                </div>
-
-                <div class="URL my-5">
-                    {{ form_label(form.URL, ' URL de redirection (s\'il y a un formulaire complémentaire) ', {'label_attr': {'class': 'foo'}}) }}
-                    {{ form_errors(form.URL) }}
-                    {{ form_widget(form.URL) }}
-                    {{ form_help(form.URL) }}
-                </div>
-
-                
-
-                <div class="autorisationPhoto my-5">
-                    {{ form_label(form.autorisationPhoto, ' il y a t\'il besoin de demander l\'autorisation de prendre des photos durant l\'évènement ', {'label_attr': {'class': 'foo'}}) }}
-                    {{ form_errors(form.autorisationPhoto) }}
-                    {{ form_widget(form.autorisationPhoto) }}
-                    {{ form_help(form.autorisationPhoto) }}
-                </div>
-
-                <div class="modePaiement my-5">
-                    {{ form_label(form.modePaiement, 'mode de paiement disponible pour l\'évènement ', {'label_attr': {'class': 'foo'}}) }}
-                    {{ form_errors(form.modePaiement) }}
-                    {{ form_widget(form.modePaiement) }}
-                    {{ form_help(form.modePaiement) }}
-                </div>
-
-                <div class="covoiturage my-5">
-                    {{ form_label(form.covoiturage, ' il y a t\'il un covoiturage de prévu pour l\'évènement ', {'label_attr': {'class': 'foo'}}) }}
-                    {{ form_errors(form.covoiturage) }}
-                    {{ form_widget(form.covoiturage) }}
-                    {{ form_help(form.covoiturage) }}
-                </div>
-
-                  <div class="parcoursObligatoire my-5">
-                    {{ form_label(form.parcoursObligatoire, ' est-il obligatoire de choisir un parcours pour l\'évènement ', {'label_attr': {'class': 'foo'}}) }}
-                    {{ form_errors(form.parcoursObligatoire) }}
-                    {{ form_widget(form.parcoursObligatoire) }}
-                    {{ form_help(form.parcoursObligatoire) }}
-                </div>
-
-                <div class="visible my-5">
-                    {{ form_label(form.visible, ' souhaitez vous rendre visible cet évènement ', {'label_attr': {'class': 'foo'}}) }}
-                    {{ form_errors(form.visible) }}
-                    {{ form_widget(form.visible) }}
-                    {{ form_help(form.visible) }}
-                </div>
-
-                <div class="lieu my-5">
-                    {{ form_label(form.lieu, ' ou aura lieu l\'évènement ', {'label_attr': {'class': 'foo'}}) }}
-                    {{ form_errors(form.lieu) }}
-                    {{ form_widget(form.lieu) }}
-                    {{ form_help(form.lieu) }}
-                </div>
-
- 
-                <button class="btn btn-success mt-3 mb-3">{{ button_label|default('Valider ') }}<i class = "fa text-light fa-save me-2"></i></button>
+                {{ form_end(form) }}
             </div>
-            {{ form_end(form) }}
         </div>
     </div>
 

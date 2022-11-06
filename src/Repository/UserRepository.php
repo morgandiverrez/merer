@@ -92,6 +92,16 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             ->getResult();
     }
 
+     public function findAllIfProfil(): ?array
+    {
+        return $this->createQueryBuilder('user')
+            ->andWhere('user.profil != :val')
+            ->setParameter('val', null)
+            ->orderBy('user.id', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
     
 
 }

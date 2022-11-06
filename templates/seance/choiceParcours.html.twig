@@ -3,7 +3,8 @@
 {% block title %}Choix parcours{% endblock %}
 
 {% block body %}
-    <div class="container-fluid">
+<div class="container-fluid">
+        <div style = "margin-left: auto ; margin-right: auto ; max-width : 900px;">
         <p class="display-6 no-wrap text-center">Choisir un parcours pour  la Seance :{{seance.getName()}} du {{seance.getDatetime().format("Y-m-d H:i")}}</p>
         <form action="/seance/parcours/{{seance.getID()}}" method="post">
             <p class="text-center ">
@@ -20,6 +21,8 @@
             <button class="btn btn-primary" type="submit" >Valider</button>
         </form>  
     </div>
+</div>
+
 
 {% endblock %}
 
