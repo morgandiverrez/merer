@@ -37,6 +37,10 @@ class Event
     #[ORM\OneToMany(mappedBy: 'event', targetEntity: Transaction::class)]
     private Collection $transaction;
 
+    #[ORM\ManyToOne(inversedBy: 'events')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Exercice $exercice = null;
+
     public function __construct()
     {
         $this->transaction = new ArrayCollection();
@@ -151,6 +155,18 @@ class Event
                 $transaction->setEvent(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getExercice(): ?Exercice
+    {
+        return $this->exercice;
+    }
+
+    public function setExercice(?Exercice $exercice): self
+    {
+        $this->exercice = $exercice;
 
         return $this;
     }

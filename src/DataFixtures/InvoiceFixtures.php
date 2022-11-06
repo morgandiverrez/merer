@@ -27,7 +27,7 @@ class InvoiceFixtures extends Fixture implements DependentFixtureInterface
                  $invoice->addInvoiceLine($this->getRandomReference('INVOICELINE'));
             }
             $invoice->setCustomer(($this->getRandomReference('CUSTOMER')));
-
+            $invoice->setExercice($this->getRandomReference('EXERCICE'));
             $this->addReference('INVOICE_' . $i, $invoice);
 
             $manager->persist($invoice);
@@ -42,6 +42,7 @@ class InvoiceFixtures extends Fixture implements DependentFixtureInterface
 
             CustomerFixtures::class,
             InvoiceLineFixtures::class,
+            ExerciceFixtures::class,
 
 
         ];

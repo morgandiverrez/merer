@@ -44,6 +44,10 @@ class ExpenseReport
     #[ORM\Column(nullable: true)]
     private ?bool $comfirm = null;
 
+    #[ORM\ManyToOne(inversedBy: 'expenseReports')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Exercice $exercice = null;
+
     public function __construct()
     {
         $this->expenseReportRouteLines = new ArrayCollection();
@@ -197,6 +201,18 @@ class ExpenseReport
     public function setComfirm(?bool $comfirm): self
     {
         $this->comfirm = $comfirm;
+
+        return $this;
+    }
+
+    public function getExercice(): ?Exercice
+    {
+        return $this->exercice;
+    }
+
+    public function setExercice(?Exercice $exercice): self
+    {
+        $this->exercice = $exercice;
 
         return $this;
     }

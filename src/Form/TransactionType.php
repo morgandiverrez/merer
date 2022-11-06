@@ -17,6 +17,9 @@ class TransactionType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
+           ->add('exercice', EntityType::class,[
+                'class' => Exercice::class,
+            ])
             ->add('closure', ChoiceType::class, [
                 'choices'  => [
                     'Oui' => true,
@@ -34,6 +37,9 @@ class TransactionType extends AbstractType
             )
             ->add('event',  EntityType::class, [
             'class' => Event::class,
+            ])
+            ->add('bp',  EntityType::class, [
+            'class' => BP::class,
             ]);
     }
 

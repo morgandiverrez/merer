@@ -8,7 +8,13 @@
             {{ form_start(form) }}
             <p class="display-4 no-wrap text-center mt-3">Edition Transaction </p>
 
-          
+           <div class="exercice my-5">
+                    {{ form_label(form.exercice, 'Exercice affecté ', {'label_attr': {'class': 'foo'}}) }}
+                    {{ form_errors(form.exercice) }}
+                    {{ form_widget(form.exercice) }}
+                    {{ form_help(form.exercice) }}
+                </div>
+
             <div class="closure my-5">
                 {{ form_label(form.closure, "Cloturer" , {'label_attr': {'class': 'foo'}}) }}
                 {{ form_errors(form.closure) }}
