@@ -22,7 +22,7 @@ class EquipeElu
     private $name;
 
     #[ORM\Column(type: 'array', nullable: true)]
-    private $categorie = [];
+    private $categorie;
 
     #[ORM\Column(type: 'string', length: 2048, nullable: true)]
     private $description;

@@ -51,6 +51,10 @@ class Invoice
     #[ORM\OneToMany(mappedBy: 'invoice', targetEntity: InvoiceLine::class)]
     private $invoiceLines;
 
+    #[ORM\ManyToOne(inversedBy: 'invoices')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Exercice $exercice = null;
+
 
 
     public function __construct()
@@ -233,6 +237,18 @@ class Invoice
     public function setCategory(?string $category): self
     {
         $this->category = $category;
+
+        return $this;
+    }
+
+    public function getExercice(): ?Exercice
+    {
+        return $this->exercice;
+    }
+
+    public function setExercice(?Exercice $exercice): self
+    {
+        $this->exercice = $exercice;
 
         return $this;
     }

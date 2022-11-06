@@ -38,6 +38,13 @@ class Transaction
     #[ORM\ManyToOne(inversedBy: 'transaction')]
     private ?Event $event = null;
 
+    #[ORM\ManyToOne(inversedBy: 'transaction')]
+    private ?BP $BP = null;
+
+    #[ORM\ManyToOne(inversedBy: 'transactions')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Exercice $exercice = null;
+
     public function __construct()
     {
         $this->invoices = new ArrayCollection();
@@ -190,6 +197,30 @@ class Transaction
     public function setEvent(?Event $event): self
     {
         $this->event = $event;
+
+        return $this;
+    }
+
+    public function getBP(): ?BP
+    {
+        return $this->BP;
+    }
+
+    public function setBP(?BP $BP): self
+    {
+        $this->BP = $BP;
+
+        return $this;
+    }
+
+    public function getExercice(): ?Exercice
+    {
+        return $this->exercice;
+    }
+
+    public function setExercice(?Exercice $exercice): self
+    {
+        $this->exercice = $exercice;
 
         return $this;
     }

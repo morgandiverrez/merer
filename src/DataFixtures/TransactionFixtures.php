@@ -28,7 +28,9 @@ class TransactionFixtures extends Fixture implements DependentFixtureInterface
             for ($k = 0; $k < $this->faker->numberbetween(1, 3); $k++) {
                 $transaction->addTransactionLine($this->getRandomReference('TRANSACTIONLINE'));
             }
-
+            $transaction->setExercice($this->getRandomReference('EXERCICE'));
+             $transaction->setEvent($this->getRandomReference('EVENT'));
+              $transaction->setBP($this->getRandomReference('BP'));
             $this->addReference('TRANSACTION_' . $i, $transaction);
 
             $manager->persist($transaction);
@@ -42,6 +44,7 @@ class TransactionFixtures extends Fixture implements DependentFixtureInterface
         return [
             TransactionLineFixtures::class,
             InvoiceFixtures::class,
+            ExerciceFixtures::class,
         ];
     }
 }
