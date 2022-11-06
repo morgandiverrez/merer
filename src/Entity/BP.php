@@ -44,6 +44,11 @@ class BP
         return $this->id;
     }
 
+      public function  __toString()
+    {
+        return $this->getDesignation();
+    }
+    
     public function getCategorie(): ?string
     {
         return $this->categorie;

@@ -48,6 +48,11 @@ class Exercice
         return $this->id;
     }
 
+    public function  __toString()
+    {
+        return $this->getDate()->format('Y');
+    }
+    
     public function getDate(): ?\DateTimeInterface
     {
         return $this->date;
