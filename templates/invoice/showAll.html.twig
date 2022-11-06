@@ -7,68 +7,68 @@
 
 {% block body %}
      <div class="container-fluid">
-            <div style = "margin-left: auto ; margin-right: auto ; max-width : 900px;">
-        <div class="corps mx-auto">
-            <p class="display-6 no-wrap text-center mb-5">Tables des factures</p>
+        <div style = "margin-left: auto ; margin-right: auto ; max-width : 900px;">
+            <div class="corps mx-auto">
+                <p class="display-6 no-wrap text-center mb-5">Tables des factures</p>
 
-            <table class="table table-dark table-striped table-hover text-center">
-                <thead>
-                <tr>
-                    <th scope="col">Client</th>
-                    <th scope="col">Numéro</th>
-                    <th scope="col">Transaction</th>
-                    <th scope="col">Montant</th>
-                    <th scope="col">Total Payé</th>
-                    <th scope="col">Reste à charge</th>
-                    <th scope="col">Chèque</th>
-                    <th scope="col">Show</th>
-                    <th scope="col">Comfirm</th>
-                </tr>
-                </thead>
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th scope="col">Client</th>
+                        <th scope="col">Numéro</th>
+                        <th scope="col">Transaction</th>
+                        <th scope="col">Montant</th>
+                        <th scope="col">Total Payé</th>
+                        <th scope="col">Reste à charge</th>
+                        <th scope="col">Chèque</th>
+                        <th scope="col">Show</th>
+                        <th scope="col">Comfirm</th>
+                    </tr>
+                    </thead>
 
-                <tbody>
-                {% for invoice in invoices %} <tr>
-                    <th>{{ invoice.customer.name }}</th>
-                    {% if invoice.comfirm==true %}
-                        <th>Fact-{{ invoice.code }}</th>
-                    {% else %}
-                        {% if invoice.category == "Fin Mois"%}
-                            <th>Fact en  cours -{{ invoice.code }}</th>
+                    <tbody>
+                    {% for invoice in invoices %} <tr>
+                        <th>{{ invoice.customer.name }}</th>
+                        {% if invoice.comfirm==true %}
+                            <th>Fact-{{ invoice.code }}</th>
                         {% else %}
-                              <th>Dev-{{ invoice.code }}</th>
-                        {% endif %}
-                    {% endif %}
-                    <th>{%if invoice.transaction %}{{ invoice.transaction.id }}{% endif %}</th>
-                    <th>{{ totals[loop.index-1] }}</th>
-
-                    {% set total=0 %}
-
-                    {% for paymentdeadline in  invoice.paymentdeadlines %}
-                        {% if paymentdeadline.actualPaymentDate is not null %}
-                            {% set total = total+paymentdeadline.actualAmount %}
-                        {% endif %}
-                    {% endfor %}
-                    <th>{{ total }}</th>
-                    <th>{{ totals[loop.index-1]-total }}</th>
-                    {% set cheque=0 %}
-                    {% if invoice.transaction is not null %}
-                        {% for transactionline in invoice.transaction.transactionlines %}
-                            {% if transactionline.chartofaccounts.code==51120 or transactionline.chartofaccounts.code==51121 or transactionline.chartofaccounts.code==51122 %}
-                                {% set cheque=cheque+transactionline.amount %}
+                            {% if invoice.category == "Fin Mois"%}
+                                <th>Fact en  cours -{{ invoice.code }}</th>
+                            {% else %}
+                                <th>Dev-{{ invoice.code }}</th>
                             {% endif %}
-                            {% if "REM CHQ" in transactionline.label %}
-                                {% set cheque=cheque+transactionline.amount %}
+                        {% endif %}
+                        <th>{%if invoice.transaction %}{{ invoice.transaction.id }}{% endif %}</th>
+                        <th>{{ totals[loop.index-1] }}</th>
+
+                        {% set total=0 %}
+
+                        {% for paymentdeadline in  invoice.paymentdeadlines %}
+                            {% if paymentdeadline.actualPaymentDate is not null %}
+                                {% set total = total+paymentdeadline.actualAmount %}
                             {% endif %}
                         {% endfor %}
-                    {% endif %}
-                    <th>{{ cheque }}</th>
+                        <th>{{ total }}</th>
+                        <th>{{ totals[loop.index-1]-total }}</th>
+                        {% set cheque=0 %}
+                        {% if invoice.transaction is not null %}
+                            {% for transactionline in invoice.transaction.transactionlines %}
+                                {% if transactionline.chartofaccounts.code==51120 or transactionline.chartofaccounts.code==51121 or transactionline.chartofaccounts.code==51122 %}
+                                    {% set cheque=cheque+transactionline.amount %}
+                                {% endif %}
+                                {% if "REM CHQ" in transactionline.label %}
+                                    {% set cheque=cheque+transactionline.amount %}
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                        <th>{{ cheque }}</th>
 
-                    <th><a href="/invoice/invoicePDF/{{ invoice.iD }}" target="_blank"><i class = "fa text-light fa-eye"></i></a></th>
-                    <th><a href="/invoice/comfirm/{{ invoice.iD }}" target="_blank"><i class = "fa text-light fa-eye"></i></a></th>
-                </tr> {% endfor %}
-                </tbody>
-            </table>
-
+                        <th><a href="/invoice/invoicePDF/{{ invoice.iD }}" target="_blank"><i class = "fa text-light fa-eye"></i></a></th>
+                        <th><a href="/invoice/comfirm/{{ invoice.iD }}" target="_blank"><i class = "fa text-light fa-eye"></i></a></th>
+                    </tr> {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 

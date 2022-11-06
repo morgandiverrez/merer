@@ -4,6 +4,8 @@ namespace App\Form;
 
 use App\Entity\Event;
 use App\Entity\Transaction;
+use App\Entity\Exercice;
+use App\Entity\BP;
 use App\Form\TransactionLineType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -11,6 +13,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 class TransactionType extends AbstractType
 {
