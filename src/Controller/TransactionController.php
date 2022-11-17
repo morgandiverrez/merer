@@ -43,7 +43,7 @@ class TransactionController extends AbstractController
             }
             $entityManager->persist($transaction);
             $entityManager->flush();
-            return $this->redirectToRoute('transactionLine_new', ['transactionId' => $transaction->getId()]);
+            return $this->redirectToRoute('transaction_show', ['transactionId' => $transaction->getId()]);
         }
 
         return $this->render('transaction/new.html.twig', [
@@ -59,12 +59,13 @@ class TransactionController extends AbstractController
         $transaction = $entityManager->getRepository(Transaction::class)->findTransactionById($transactionId);
         $form = $this->createForm(TransactionType::class, $transaction);
         $form->handleRequest($request);
+       
 
         if ($form->isSubmitted() && $form->isValid()) {
            
             $entityManager->persist($transaction);
             $entityManager->flush();
-            return $this->redirectToRoute('transactionLine_new', ['transactionId' => $transaction->getId()]);
+            return $this->redirectToRoute('transaction_show', ['transactionId' => $transaction->getId()]);
         }
 
         return $this->render('transaction/edit.html.twig', [

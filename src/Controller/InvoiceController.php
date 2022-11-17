@@ -50,23 +50,15 @@ class InvoiceController extends AbstractController
         $invoice = new Invoice();
         $form = $this->createForm(InvoiceType::class, $invoice);
         $form->handleRequest($request);
-        $total = InvoiceController::invoiceTotale($invoice);
-        $diff = 0;
-
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $diff = $total - InvoiceController::invoicPaymentdeadlineTotale($invoice);
-            if ($diff == 0) {
-                $entityManager->persist($invoice);
-                $entityManager->flush();
-                return $this->redirectToRoute('customeaccount_invoiceTable');
-            }
+            $entityManager->persist($invoice);
+            $entityManager->flush();
+            return $this->redirectToRoute('invoice_show', ['invoiceId' => $invoice->getId()]); 
         }
 
         return $this->render('invoice/new.html.twig', [
             'invoice' => $invoice,
-            'total' => $total,
-            'diff' => $diff,
             'form' => $form->createView(),
         ]);
     }
@@ -86,34 +78,27 @@ class InvoiceController extends AbstractController
         $entityManager->remove($invoice);
         $entityManager->flush();
 
-        return $this->redirectToRoute('invoice_showAll', []);
+        return $this->redirectToRoute('invoice_showAll');
     }
 
 
-    #[Route('/edit', name: 'edit')]
+    #[Route('/edit/{invoiceID}', name: 'edit')]
     #[IsGranted('ROLE_TRESO')]
-    public function edit(EntityManagerInterface $entityManager, Request $request, $invoiceId): Response
+    public function edit(EntityManagerInterface $entityManager, Request $request, $invoiceID): Response
     {
-        $invoice = $entityManager->getRepository(Invoice::class)->findById($invoiceId);
+
+        $invoice = $entityManager->getRepository(Invoice::class)->findById($invoiceID);
         $form = $this->createForm(InvoiceType::class, $invoice);
         $form->handleRequest($request);
-        $total = InvoiceController::invoiceTotale($invoice);
-        $diff = 0;
-
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $diff = $total - InvoiceController::invoicPaymentdeadlineTotale($invoice);
-            if ($diff == 0) {
-                $entityManager->persist($invoice);
-                $entityManager->flush();
-                return $this->redirectToRoute('profil_show');
-            }
+            $entityManager->persist($invoice);
+            $entityManager->flush();
+            return $this->redirectToRoute('invoice_show', ['invoiceId' => $invoice->getId()]);
         }
 
-        return $this->render('invoice/new.html.twig', [
+        return $this->render('invoice/edit.html.twig', [
             'invoice' => $invoice,
-            'total' => $total,
-            'diff' => $diff,
             'form' => $form->createView(),
         ]);
     }
