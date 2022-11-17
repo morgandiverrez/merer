@@ -16,7 +16,7 @@
                 </div>
 
             <div class="closure my-5">
-                {{ form_label(form.closure, "Cloturer" , {'label_attr': {'class': 'foo'}}) }}
+                {{ form_label(form.closure, "Cloturé" , {'label_attr': {'class': 'foo'}}) }}
                 {{ form_errors(form.closure) }}
                 {{ form_widget(form.closure) }}
                 {{ form_help(form.closure) }}
@@ -40,42 +40,42 @@
             {% for transactionLine in transaction.transactionLines %}
                 <div class="transactionLine my-5">
 
-                    <div class="label">
+                    <div class="label my-5">
                         {{ form_label(transactionLine.label, 'Label ', {'label_attr': {'class': 'foo'}}) }}
                         {{ form_errors(transactionLine.label) }}
                         {{ form_widget(transactionLine.label)}}
                         {{ form_help(transactionLine.label) }}
                     </div>
 
-                    <div class="date">
+                    <div class="date my-5">
                         {{ form_label(transactionLine.date, 'Date ', {'label_attr': {'class': 'foo'}}) }}
                         {{ form_errors(transactionLine.date) }}
                         {{ form_widget(transactionLine.date)}}
                         {{ form_help(transactionLine.date) }}
                     </div>
-
-                    <div class="amount">
+ 
+                    <div class="amount my-5">
                         {{ form_label(transactionLine.amount, 'Montant ', {'label_attr': {'class': 'foo'}}) }}
                         {{ form_errors(transactionLine.amount) }}
                         {{ form_widget(transactionLine.amount)}}
                         {{ form_help(transactionLine.amount) }}
                     </div>
 
-                    <div class="urlProof">
+                    <div class="urlProof my-5">
                         {{ form_label(transactionLine.urlProof, 'urlProof ', {'label_attr': {'class': 'foo'}}) }}
                         {{ form_errors(transactionLine.urlProof) }}
                         {{ form_widget(transactionLine.urlProof)}}
                         {{ form_help(transactionLine.urlProof) }}
                     </div>
 
-                    <div class="quote">
+                    <div class="quote my-5">
                         {{ form_label(transactionLine.quote, 'Commentaire ', {'label_attr': {'class': 'foo'}}) }}
                         {{ form_errors(transactionLine.quote) }}
                         {{ form_widget(transactionLine.quote)}}
                         {{ form_help(transactionLine.quote) }}
                     </div>
 
-                    <div class="chartOfAccounts">
+                    <div class="chartOfAccounts my-5">
                         {{ form_label(transactionLine.chartOfAccounts, 'PCG ', {'label_attr': {'class': 'foo'}}) }}
                         {{ form_errors(transactionLine.chartOfAccounts) }}
                         {{ form_widget(transactionLine.chartOfAccounts)}}

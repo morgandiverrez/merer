@@ -20,6 +20,7 @@ class TransactionFixtures extends Fixture implements DependentFixtureInterface
             $transaction->setCode($this->faker->numerify('2022######'));
             $transaction->setClosure($this->faker->boolean());
             $transaction->setQuote($this->faker->word());
+           
             
             for ($k = 0; $k < $this->faker->numberbetween(1, 3); $k++) {
                 $transaction->addInvoice($this->getRandomReference('INVOICE'));

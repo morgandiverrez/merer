@@ -56,11 +56,11 @@
                     <th>{{transactionLine.chartofaccounts.code}}</th>
                     <th>{{transactionLine.quote}}</th>
                     {% if transactionLine.urlProof !="null" %}
-                        <th><a href="/transactionLine/show/{{ transactionLine.id }}" target="_blank"><i class = "fa text-light fa-eye"></i></a></th>
+                        <th><a href="/transactionLine/show/{{ transactionLine.id }}" target="_blank"><i class = "fa-solid fa-eye"></i></a></th>
                     {% else %}
                         <th></th>
                     {% endif %}
-                    <th><a href="/transactionLine/edit/{{ transaction.id }}/{{ transactionLine.id }}"><i class = "fa text-light fa-pencil"></i></a></th>
+                    <th><a href="/transactionLine/edit/{{ transaction.id }}/{{ transactionLine.id }}"><i class = "fa-solid fa-pen-to-square"></i></a></th>
 
                 </tr> {% endfor %}
                 </tbody>

@@ -1,58 +1,94 @@
-{% extends 'base.html.twig' %}
+{% extends 'base_user.html.twig' %}
 
-{% block title %}Échéancier de paiement{% endblock %}
+{% block title %}Nouvelle Facture{% endblock %}
 
 {% block body %}
        <div class="container-fluid">
             <div style = "margin-left: auto ; margin-right: auto ; max-width : 900px;">
-            {% if diff!=0 %}
-                <p>Erreur votre échéancier de paiement ne corrspond pas au total de la facture, il y a une erreur de {{ -diff }}€</p>
-            {% endif %}
-
-            <p class="display-4 no-wrap text-center mt-3">Définissez votre échéancier de paiement </p>
-            <h3 class="text-center mt-3">Pour la facture Fact-{{ invoice.code }} de {{ total }}€</h3>
-            <div class="form-control form-control-lg mx-auto corps text-center">
-                {{ form_start(form) }}
-                <div class="mx-auto mt-1 mb-5">
-                    <h2  class="my-5">Échéancier de paiement </h2>
-
-                    {% for paymentdeadline in form.paymentdeadlines %}
-                        <div class="paymentdeadline my-5">
-                            <h3  class="my-3">Échéance N°{{ loop.index }}</h3>
-
-                            <div class="expectedAmount">
-                                {{ form_label(paymentdeadline.expectedAmount, 'Montant ', {'label_attr': {'class': 'foo'}}) }}
-                                {{ form_errors(paymentdeadline.expectedAmount) }}
-                                {{ form_widget(paymentdeadline.expectedAmount)}}
-                                {{ form_help(paymentdeadline.expectedAmount) }}
+                 <p class="display-6 no-wrap text-center">Créer une nouvelle facture</p>
+                <div class="form-control form-control-lg mx-auto corps text-center">
+                    {{ form_start(form) }}
+                    <div class="mx-auto mt-5 mb-5">
+                            <div class="exercice my-5">
+                                {{ form_label(form.exercice, 'Exercice ', {'label_attr': {'class': 'foo'}}) }}
+                                {{ form_errors(form.exercice) }}
+                                {{ form_widget(form.exercice)}}
+                                {{ form_help(form.exercice) }}
+                            </div>
+                             <div class="customer my-5">
+                                {{ form_label(form.customer, 'customer ', {'label_attr': {'class': 'foo'}}) }}
+                                {{ form_errors(form.customer) }}
+                                {{ form_widget(form.customer)}}
+                                {{ form_help(form.customer) }}
+                            </div>
+                             <div class="acquitted my-5">
+                                {{ form_label(form.acquitted, 'acquitted ', {'label_attr': {'class': 'foo'}}) }}
+                                {{ form_errors(form.acquitted) }}
+                                {{ form_widget(form.acquitted)}}
+                                {{ form_help(form.acquitted) }}
+                            </div>
+                             <div class="ready my-5">
+                                {{ form_label(form.ready, 'ready ', {'label_attr': {'class': 'foo'}}) }}
+                                {{ form_errors(form.ready) }}
+                                {{ form_widget(form.ready)}}
+                                {{ form_help(form.ready) }}
+                            </div>
+                             <div class="comfirm my-5">
+                                {{ form_label(form.comfirm, 'comfirm ', {'label_attr': {'class': 'foo'}}) }}
+                                {{ form_errors(form.comfirm) }}
+                                {{ form_widget(form.comfirm)}}
+                                {{ form_help(form.comfirm) }}
+                            </div>
+                             <div class="credit my-5">
+                                {{ form_label(form.credit, 'credit ', {'label_attr': {'class': 'foo'}}) }}
+                                {{ form_errors(form.credit) }}
+                                {{ form_widget(form.credit)}}
+                                {{ form_help(form.credit) }}
                             </div>
 
-                            <div class="expectedPaymentDate">
-                                {{ form_label(paymentdeadline.expectedPaymentDate, 'Date de paiment ', {'label_attr': {'class': 'foo'}}) }}
-                                {{ form_errors(paymentdeadline.expectedPaymentDate) }}
-                                {{ form_widget(paymentdeadline.expectedPaymentDate) }}
-                                {{ form_help(paymentdeadline.expectedPaymentDate) }}
-                            </div>
+                           
 
+                            {% for invoiceLine in invoice.invoiceLines %}
+                                <div class="invoiceLine my-5">
+                                    <div class="discount my-5">
+                                        {{ form_label(invoiceLine.discount, 'discount ', {'label_attr': {'class': 'foo'}}) }}
+                                        {{ form_errors(invoiceLine.discount) }}
+                                        {{ form_widget(invoiceLine.discount)}}
+                                        {{ form_help(invoiceLine.discount) }}
+                                    </div>
 
-                            <div class="expectedMeans">
-                                {{ form_label(paymentdeadline.expectedMeans, 'Moyen de paiment ', {'label_attr': {'class': 'foo'}}) }}
-                                {{ form_errors(paymentdeadline.expectedMeans) }}
-                                {{ form_widget(paymentdeadline.expectedMeans) }}
-                                {{ form_help(paymentdeadline.expectedMeans) }}
-                            </div>
+                                    <div class="quote my-5">
+                                        {{ form_label(invoiceLine.quote, 'commentaire ', {'label_attr': {'class': 'foo'}}) }}
+                                        {{ form_errors(invoiceLine.quote) }}
+                                        {{ form_widget(invoiceLine.quote)}}
+                                        {{ form_help(invoiceLine.quote) }}
+                                    </div>
+
+                                    <div class="catalogDiscount my-5">
+                                        {{ form_label(invoiceLine.catalogDiscount, 'réduction ', {'label_attr': {'class': 'foo'}}) }}
+                                        {{ form_errors(invoiceLine.catalogDiscount) }}
+                                        {{ form_widget(invoiceLine.catalogDiscount)}}
+                                        {{ form_help(invoiceLine.catalogDiscount) }}
+                                    </div>
+
+                                    <div class="catalogService my-5">
+                                        {{ form_label(invoiceLine.catalogService, 'Service ', {'label_attr': {'class': 'foo'}}) }}
+                                        {{ form_errors(invoiceLine.catalogService) }}
+                                        {{ form_widget(invoiceLine.catalogService)}}
+                                        {{ form_help(invoiceLine.catalogService) }}
+                                    </div>
+                                </div>
+                            {% endfor %}
+
+                        <div class="invoiceLine my-5" data-prototype="{{ form_widget(form.invoiceLines.vars.prototype)|e('html_attr') }}">
                         </div>
-                    {% endfor %}
 
-                    <div class="paymentdeadlines my-5" data-prototype="{{ form_widget(form.paymentdeadlines.vars.prototype)|e('html_attr') }}">
+                        <button type="button" class="btn btn-success add_item_link" data-collection-holder-class="invoiceLine">Ajouter une Ligne</button>
+                        <br>
+                        <button class="btn btn-success mt-3 mb-3">{{ button_label|default('Valider ') }}<i class = "fa text-light fa-save me-2"></i></button>
                     </div>
-
-                    <button type="button" class="btn btn-success add_item_link" data-collection-holder-class="paymentdeadlines">Ajouter une échéance</button>
-
-                    <br>
-                    <button class="btn btn-success mt-3 mb-3">{{ button_label|default('Valider ') }}<i class = "fa text-light fa-save me-2"></i></button>
+                    {{ form_end(form) }}
                 </div>
-                {{ form_end(form) }}
             </div>
         </div>
     </div>
@@ -62,13 +98,14 @@
 {% block javascripts %}
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script>
-        jQuery(document).ready(function() {
+        jQuery(document).ready(
+        function() {
 
             // Get the ul that holds the collection of tags
-            var $paymentdeadlinesCollectionHolder = $('ul.paymentdeadlines');
+            var $invoiceLineCollectionHolder = $('ul.invoiceLine');
             // count the current form inputs we have (e.g. 2), use that as the new
             // index when inserting a new item (e.g. 2)
-            $paymentdeadlinesCollectionHolder.data('index', $paymentdeadlinesCollectionHolder.find('input').length);
+            $invoiceLineCollectionHolder.data('index', $invoiceLineCollectionHolder.find('input').length);
 
             $('body').on('click', '.add_item_link', function(e) {
                 var $collectionHolderClass = $(e.currentTarget).data('collectionHolderClass');
@@ -101,7 +138,7 @@
             $collectionHolder.data('index', index + 1);
 
             // Display the form in the page in an li, before the "Add a tag" link li
-            var $newLabel = $("<h3  class='my-3'>Échéance provisoire</h3>");
+            var $newLabel = $("<h3  class='my-3'>Nouvelle Ligne</h3>");
             $collectionHolder.append($newLabel)
             var $newForm = $('<div></div>').append(newForm);
             // Add the new form at the end of the list
@@ -110,7 +147,7 @@
         }
 
         function addTagFormDeleteLink($newForm,$newLabel) {
-            var $removeFormButton = $('<button type="button" class="btn btn-danger">Retirer cette échéance</button>');
+            var $removeFormButton = $('<button type="button" class="btn btn-danger">Retirer cette Ligne</button>');
             $newForm.append($removeFormButton);
 
             $removeFormButton.on('click', function(e) {
@@ -121,5 +158,4 @@
         }
     </script>
 {% endblock %}
-
 
