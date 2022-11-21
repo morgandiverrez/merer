@@ -22,8 +22,6 @@ class EventController extends AbstractController
 
         if ($request->isMethod('post')) {
             $posts = $request->request->all();
-
-            
             if ($posts['name']) {
                 $events = array_intersect($events, $entityManager->getRepository(Event::class)->findAllByName($posts['name']));
             }
@@ -94,15 +92,5 @@ class EventController extends AbstractController
         ]);
     }
 
-    #[Route('/delete/{eventID}', name: 'delete')]
-    #[IsGranted('ROLE_TRESO')]
-    public function delete(EntityManagerInterface $entityManager, $eventID): Response
-    {
-
-        $event = $entityManager->getRepository(Event::class)->findById($eventID)[0];
-        $entityManager->remove($event);
-        $entityManager->flush();
-
-        return $this->redirectToRoute('event_showAll');
-    }
+ 
 }

@@ -19,6 +19,7 @@ class PaymentDeadlineFixtures extends Fixture implements DependentFixtureInterfa
             $paymentDeadline->setExpectedPaymentDate($this->faker->datetime());
             $paymentDeadline->setExpectedAmount($this->faker->numberBetween(1 , 10000));
             $paymentDeadline->setExpectedMeans($this->faker->randomElement(['Chèque', 'Espèce', 'LyfPay', 'Virement']));
+            $paymentDeadline->setActualPaymentDate($this->faker->datetime());
             $paymentDeadline->setActualAmount($this->faker->numberBetween(1, 10000));
             $paymentDeadline->setActualMeans($this->faker->randomElement(['Chèque', 'Espèce', 'LyfPay', 'Virement']));
             $paymentDeadline->setInvoice($this->getRandomReference('INVOICE'));

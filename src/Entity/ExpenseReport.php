@@ -28,11 +28,7 @@ class ExpenseReport
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $document = null;
 
-    #[ORM\OneToMany(mappedBy: 'expenseReport', targetEntity: ExpenseReportRouteLine::class, orphanRemoval: true)]
-    private Collection $expenseReportRouteLines;
-
-    #[ORM\OneToMany(mappedBy: 'expenseReport', targetEntity: ExpenseReportLine::class, orphanRemoval: true)]
-    private Collection $expenseReportLines;
+   
 
     #[ORM\ManyToOne(inversedBy: 'expenseReports')]
     private ?Transaction $transaction = null;
@@ -48,10 +44,17 @@ class ExpenseReport
     #[ORM\JoinColumn(nullable: false)]
     private ?Exercice $exercice = null;
 
+    #[ORM\OneToMany(mappedBy: 'expenseReport', targetEntity: ExpenseReportLine::class, orphanRemoval: true)]
+    private Collection $expenseReportLines;
+
+    #[ORM\OneToMany(mappedBy: 'expenseReport', targetEntity: ExpenseReportRouteLine::class, orphanRemoval: true)]
+    private Collection $expenseReportRouteLines;
+
     public function __construct()
     {
         $this->expenseReportRouteLines = new ArrayCollection();
         $this->expenseReportLines = new ArrayCollection();
+        $this->expenseReportLine = new ArrayCollection();
     }
 
    
@@ -109,65 +112,7 @@ class ExpenseReport
         return $this;
     }
 
-    /**
-     * @return Collection<int, ExpenseReportRouteLine>
-     */
-    public function getExpenseReportRouteLines(): Collection
-    {
-        return $this->expenseReportRouteLines;
-    }
-
-    public function addExpenseReportRouteLine(ExpenseReportRouteLine $expenseReportRouteLine): self
-    {
-        if (!$this->expenseReportRouteLines->contains($expenseReportRouteLine)) {
-            $this->expenseReportRouteLines->add($expenseReportRouteLine);
-            $expenseReportRouteLine->setExpenseReport($this);
-        }
-
-        return $this;
-    }
-
-    public function removeExpenseReportRouteLine(ExpenseReportRouteLine $expenseReportRouteLine): self
-    {
-        if ($this->expenseReportRouteLines->removeElement($expenseReportRouteLine)) {
-            // set the owning side to null (unless already changed)
-            if ($expenseReportRouteLine->getExpenseReport() === $this) {
-                $expenseReportRouteLine->setExpenseReport(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, ExpenseReportLine>
-     */
-    public function getExpenseReportLines(): Collection
-    {
-        return $this->expenseReportLines;
-    }
-
-    public function addExpenseReportLine(ExpenseReportLine $expenseReportLine): self
-    {
-        if (!$this->expenseReportLines->contains($expenseReportLine)) {
-            $this->expenseReportLines->add($expenseReportLine);
-            $expenseReportLine->setExpenseReport($this);
-        }
-
-        return $this;
-    }
-
-    public function removeExpenseReportLine(ExpenseReportLine $expenseReportLine): self
-    {
-        if ($this->expenseReportLines->removeElement($expenseReportLine)) {
-            // set the owning side to null (unless already changed)
-            if ($expenseReportLine->getExpenseReport() === $this) {
-                $expenseReportLine->setExpenseReport(null);
-            }
-        }
-
-        return $this;
-    }
+  
 
     public function getTransaction(): ?Transaction
     {
@@ -213,6 +158,66 @@ class ExpenseReport
     public function setExercice(?Exercice $exercice): self
     {
         $this->exercice = $exercice;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ExpenseReportLine>
+     */
+    public function getExpenseReportLines(): Collection
+    {
+        return $this->expenseReportLines;
+    }
+
+    public function addExpenseReportLines(ExpenseReportLine $expenseReportLines): self
+    {
+        if (!$this->expenseReportLines->contains($expenseReportLines)) {
+            $this->expenseReportLines->add($expenseReportLines);
+            $expenseReportLines->setExpenseReport($this);
+        }
+
+        return $this;
+    }
+
+    public function removeExpenseReportLines(ExpenseReportLine $expenseReportLines): self
+    {
+        if ($this->expenseReportLines->removeElement($expenseReportLines)) {
+            // set the owning side to null (unless already changed)
+            if ($expenseReportLines->getExpenseReport() === $this) {
+                $expenseReportLines->setExpenseReport(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ExpenseReportRouteLine>
+     */
+    public function getExpenseReportRouteLines(): Collection
+    {
+        return $this->expenseReportRouteLines;
+    }
+
+    public function addExpenseReportRouteLine(ExpenseReportRouteLine $expenseReportRouteLine): self
+    {
+        if (!$this->expenseReportRouteLines->contains($expenseReportRouteLine)) {
+            $this->expenseReportRouteLines->add($expenseReportRouteLine);
+            $expenseReportRouteLine->setExpenseReport($this);
+        }
+
+        return $this;
+    }
+
+    public function removeExpenseReportRouteLine(ExpenseReportRouteLine $expenseReportRouteLine): self
+    {
+        if ($this->expenseReportRouteLines->removeElement($expenseReportRouteLine)) {
+            // set the owning side to null (unless already changed)
+            if ($expenseReportRouteLine->getExpenseReport() === $this) {
+                $expenseReportRouteLine->setExpenseReport(null);
+            }
+        }
 
         return $this;
     }

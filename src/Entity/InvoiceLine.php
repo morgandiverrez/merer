@@ -33,7 +33,10 @@ class InvoiceLine
         return $this->id;
     }
 
-
+    public function  __toString()
+    {
+        return $this->getQuote();
+    }
 
     public function getDiscount(): ?float
     {

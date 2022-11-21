@@ -6,10 +6,11 @@ use App\Entity\TransactionLine;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
 
 class TransactionLineType extends AbstractType
 {
@@ -19,7 +20,11 @@ class TransactionLineType extends AbstractType
              ->add('label', TextType::class, ['required' => false])
             ->add('date', DateType::class,['widget' => 'single_text',])
             ->add('amount', MoneyType::class)
-            ->add('urlProof')
+            ->add( 'urlProof', FileType::class, [
+            'required' => false,
+            'mapped' => false,
+            'multiple' => true,
+        ])
             ->add('quote', TextAreaType::class)
             ->add('chartOfAccounts')
         ;

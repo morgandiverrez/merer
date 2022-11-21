@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Event;
+use App\Entity\Exercice;
 use App\Entity\Location;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;

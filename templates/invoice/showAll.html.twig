@@ -9,7 +9,9 @@
      <div class="container-fluid">
         <div style = "margin-left: auto ; margin-right: auto ; max-width : 900px;">
             <div class="corps mx-auto">
-                <p class="display-6 no-wrap text-center mb-5">Tables des factures</p>
+                <p class="display-6 no-wrap text-center mb-5">Tables des factures
+                    <a href="/invoice/new"><i class="fa-solid fa-plus align-left"></i></a>
+                </p>
 
                 <table class="table table-striped">
                     <thead>
@@ -21,25 +23,28 @@
                         <th scope="col">Total Payé</th>
                         <th scope="col">Reste à charge</th>
                         <th scope="col">Chèque</th>
-                        <th scope="col">Show</th>
-                        <th scope="col">Comfirm</th>
+                        <th scope="col"> détails</th>
+                        <th scope="col">pdf</th>
+                        <th scope="col">Comfirmer</th>
                     </tr>
                     </thead>
 
                     <tbody>
                     {% for invoice in invoices %} <tr>
-                        <th>{{ invoice.customer.name }}</th>
-                        {% if invoice.comfirm==true %}
+                        <th><a href="/customer/show/{{ invoice.customer.id }}" target="_blank">{{ invoice.customer.name }}</a></th>
+                        
+                        {% if invoice.comfirm == true %}
                             <th>Fact-{{ invoice.code }}</th>
-                        {% else %}
+                         {% else %}
                             {% if invoice.category == "Fin Mois"%}
                                 <th>Fact en  cours -{{ invoice.code }}</th>
                             {% else %}
                                 <th>Dev-{{ invoice.code }}</th>
                             {% endif %}
                         {% endif %}
-                        <th>{%if invoice.transaction %}{{ invoice.transaction.id }}{% endif %}</th>
-                        <th>{{ totals[loop.index-1] }}</th>
+                        
+                        <th>{%if invoice.transaction %}<a href="/transaction/show/{{ invoice.transaction.id }}" target="_blank">{{ invoice.transaction.code }}</a>{% endif %}</th>
+                        <th>{{ totals[loop.index-1] }} €</th>
 
                         {% set total=0 %}
 
@@ -48,8 +53,8 @@
                                 {% set total = total+paymentdeadline.actualAmount %}
                             {% endif %}
                         {% endfor %}
-                        <th>{{ total }}</th>
-                        <th>{{ totals[loop.index-1]-total }}</th>
+                        <th>{{ total }} €</th>
+                        <th>{{ totals[loop.index-1]-total }} €</th>
                         {% set cheque=0 %}
                         {% if invoice.transaction is not null %}
                             {% for transactionline in invoice.transaction.transactionlines %}
@@ -62,9 +67,18 @@
                             {% endfor %}
                         {% endif %}
                         <th>{{ cheque }}</th>
-
-                        <th><a href="/invoice/invoicePDF/{{ invoice.iD }}" target="_blank"><i class = "fa text-light fa-eye"></i></a></th>
-                        <th><a href="/invoice/comfirm/{{ invoice.iD }}" target="_blank"><i class = "fa text-light fa-eye"></i></a></th>
+                         <th><a href="/invoice/show/{{ invoice.iD }}" ><i class = "fa-solid fa-eye"></i></a></th>
+                        <th><a href="/invoice/pdf/{{ invoice.iD }}" target="_blank"><i class="fa-sharp fa-solid fa-file"></i></a></th>
+                        <th>
+                            {% if invoice.comfirm == FALSE %}
+                                <a href="/invoice/comfirm/{{ invoice.iD }}" target="_blank">
+                                    <i class="fa-sharp fa-solid fa-circle-xmark"></i>
+                                </a>
+                            {% else %}
+                                <i class="fa-sharp fa-solid fa-circle-check"></i>
+                            {% endif %} 
+                        </th>
+                        
                     </tr> {% endfor %}
                     </tbody>
                 </table>
