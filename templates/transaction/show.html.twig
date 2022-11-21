@@ -1,6 +1,6 @@
 {% extends 'base_user.html.twig' %}
 
-{% block title %}Espace Gestion Document{% endblock %}
+{% block title %}détails transaction{% endblock %}
 
 
 
@@ -18,11 +18,11 @@
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item">
                             {% for invoice in transaction.getInvoices()  %} 
-                                NDF {{invoice.getCode()}} : <a href="/invoice/show/{{ invoice.getId() }}" class="card-link"> {{invoice.getCode()}} </a>
+                                Fact - {{invoice.getCode()}} : <a href="/invoice/show/{{ invoice.getId() }}" class="card-link"> {{invoice.getCode()}} </a>
                             {% endfor %}
                             
                             {% for expenseReport in transaction.getExpenseReports()  %} 
-                                NDF {{expenseReport.getCode()}} : <a href="/expenseReport/show/{{ expenseReport.getId() }}" class="card-link"> {{expenseReport.getMotif()}} </a>
+                                NDF - {{expenseReport.getCode()}} : <a href="/expenseReport/show/{{ expenseReport.getId() }}" class="card-link"> {{expenseReport.getMotif()}} </a>
                             {% endfor %}
                         </li>
                         <li class="list-group-item">BP :  <a href="/bp/show/{{ transaction.getbP().getId() }}" class="card-link"> {{transaction.getbP().getDesignation()}} </a></li>
@@ -52,9 +52,9 @@
                 {% for transactionLine in transaction.transactionLines %} <tr>
                     <th>{{transactionLine.label}}</th>
                     <th>{{transactionLine.date.format("d/m/y")}}</th>
-                    <th>{{transactionLine.amount}}</th>
-                    <th>{{transactionLine.chartofaccounts.code}}</th>
-                    <th>{{transactionLine.quote}}</th>
+                    <th>{{transactionLine.amount}} €</th>
+                    <th>{{transactionLine.chartofaccounts.code}} </th>
+                    <th>{{transactionLine.quote}} </th>
                     {% if transactionLine.urlProof !="null" %}
                         <th><a href="/transactionLine/show/{{ transactionLine.id }}" target="_blank"><i class = "fa-solid fa-eye"></i></a></th>
                     {% else %}

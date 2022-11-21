@@ -87,8 +87,26 @@ class ProfilController extends AbstractController
 
     #[Route('/', name: 'show')] // afficheur profil perso pour user
     #[IsGranted('ROLE_USER')] 
-    public function show(): Response
+    public function show(EntityManagerInterface $entityManager): Response
     {
+        $user = $this->getUser();
+        $profils = $entityManager->getRepository(Profil::class)->findAll();
+
+        $profilExistePas = false;
+        foreach ($profils as $testProfil) {
+            if ($testProfil->getUser() == $user) {
+                $profilExistePas = true;
+            }
+        }
+
+        if( ! $profilExistePas) {
+            $profil = new Profil;
+            $entityManager->persist($profil);
+            $profil->setUser($user);
+            $entityManager->persist($user);
+            $entityManager->flush();
+            return $this->redirectToRoute('profil_edit', ['profilID' => $profil->getID()]);
+        }
         
         return $this->render('profil/show.html.twig', [           
         ]);

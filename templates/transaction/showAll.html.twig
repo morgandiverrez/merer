@@ -1,6 +1,6 @@
 {% extends 'base_user.html.twig' %}
 
-{% block title %}Espace Gestion Document{% endblock %}
+{% block title %}liste transaction{% endblock %}
 
 
 
@@ -8,7 +8,9 @@
 {% block body %}
   <div class="container-fluid">
         <div style = "margin-left: auto ; margin-right: auto ; max-width : 900px;">
-            <p class="display-6 no-wrap text-center mb-5">Tables des Transactions</p>
+            <p class="display-6 no-wrap text-center mb-5">Tables des Transactions
+                     <a href="/transaction/new"><i class="fa-solid fa-plus align-left"></i></a>
+                </p>
 
             <table class="table table-striped">
                 <thead>

@@ -22,7 +22,6 @@ class RegistrationController extends AbstractController
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager, MailerInterface $mailer): Response
     {
         $user = new User();
-        $profil = new Profil();
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
 
@@ -35,26 +34,21 @@ class RegistrationController extends AbstractController
                 )
             );
 
-            $user->setProfil($profil);
             $entityManager->persist($user);
             $entityManager->flush();
 
-            // $email = (new Email())
-            // ->from('hello@example.com')
-            // ->to('you@example.com')
-            // //->cc('cc@example.com')
-            // //->bcc('bcc@example.com')
-            // //->replyTo('fabien@example.com')
-            // //->priority(Email::PRIORITY_HIGH)
-            // ->subject('Time for Symfony Mailer!')
-            //     ->text('Sending emails is fun again!');
-           
+            $email = (new Email())
+                        ->from('no-reply@fedeb.net')
+                        ->to($user->getEmail())
+                        //->cc('formation@example.com')
+                        //->bcc('bcc@example.com')
+                        //->replyTo('fabien@example.com')
+                        //->priority(Email::PRIORITY_HIGH)
+                        ->subject('Time for Symfony Mailer!')
+                        ->text('Sending emails is fun again!');
+            $mailer->send($email);
 
-            // $mailer->send($email);
-
-
-
-            return $this->redirectToRoute('profil_edit', ['profilID' => $profil->getID()]);
+            return $this->redirectToRoute('login', []);
         }
 
         return $this->render('registration/register.html.twig', [

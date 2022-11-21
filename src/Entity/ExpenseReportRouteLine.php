@@ -32,12 +32,14 @@ class ExpenseReportRouteLine
     #[ORM\Column(length: 255)]
     private ?string $amount = null;
 
-    #[ORM\ManyToOne(inversedBy: 'expenseReportRouteLines')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?ExpenseReport $expenseReport = null;
+    
 
     #[ORM\ManyToOne]
     private ?RepayGrid $RepayGrid = null;
+
+    #[ORM\ManyToOne(inversedBy: 'expenseReportRouteLines')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?ExpenseReport $expenseReport = null;
 
     public function getId(): ?int
     {
@@ -116,17 +118,7 @@ class ExpenseReportRouteLine
         return $this;
     }
 
-    public function getExpenseReport(): ?ExpenseReport
-    {
-        return $this->expenseReport;
-    }
-
-    public function setExpenseReport(?ExpenseReport $expenseReport): self
-    {
-        $this->expenseReport = $expenseReport;
-
-        return $this;
-    }
+  
 
     public function getRepayGrid(): ?RepayGrid
     {
@@ -136,6 +128,18 @@ class ExpenseReportRouteLine
     public function setRepayGrid(?RepayGrid $RepayGrid): self
     {
         $this->RepayGrid = $RepayGrid;
+
+        return $this;
+    }
+
+    public function getExpenseReport(): ?ExpenseReport
+    {
+        return $this->expenseReport;
+    }
+
+    public function setExpenseReport(?ExpenseReport $expenseReport): self
+    {
+        $this->expenseReport = $expenseReport;
 
         return $this;
     }

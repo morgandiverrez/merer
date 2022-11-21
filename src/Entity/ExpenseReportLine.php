@@ -23,9 +23,11 @@ class ExpenseReportLine
     #[ORM\Column]
     private ?float $amount = null;
 
-    #[ORM\ManyToOne(inversedBy: 'expenseReportLines')]
+    #[ORM\ManyToOne(inversedBy: 'expenseReportLine')]
     #[ORM\JoinColumn(nullable: false)]
     private ?ExpenseReport $expenseReport = null;
+
+  
 
     public function getId(): ?int
     {
@@ -79,4 +81,6 @@ class ExpenseReportLine
 
         return $this;
     }
+
+
 }

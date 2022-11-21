@@ -30,16 +30,25 @@
                 {{ form_help(form.quote) }}
             </div>
 
-              <div class="event my-5">
+            <div class="event my-5">
                 {{ form_label(form.event, "Projet lié" , {'label_attr': {'class': 'foo'}}) }}
                 {{ form_errors(form.event) }}
                 {{ form_widget(form.event) }}
                 {{ form_help(form.event) }}
             </div>
 
-            {% for transactionLine in transaction.transactionLines %}
-                <div class="transactionLine my-5">
+             <div class="bp my-5">
+                {{ form_label(form.bp, "Ligne du budget" , {'label_attr': {'class': 'foo'}}) }}
+                {{ form_errors(form.bp) }}
+                {{ form_widget(form.bp) }}
+                {{ form_help(form.bp) }}
+            </div>
 
+            {% set n = 1 %}
+            {% for transactionLine in form.transactionLines %}
+                <div class="transactionLine my-5">
+                <h1> Ligne {{n }}</h1>
+                {% set n = n + 1 %}
                     <div class="label my-5">
                         {{ form_label(transactionLine.label, 'Label ', {'label_attr': {'class': 'foo'}}) }}
                         {{ form_errors(transactionLine.label) }}
@@ -82,13 +91,14 @@
                         {{ form_help(transactionLine.chartOfAccounts) }}
                     </div>
 
+                    <button type="button" class="btn btn-success add_item_link" data-collection-holder-class="transactionLines">Ajouter une ligne</button>
                 </div>
             {% endfor %}
 
-            <div class="paymentdeadlines my-5" data-prototype="{{ form_widget(form.transactionLines.vars.prototype)|e('html_attr') }}">
+            <div class="transactionLines my-5" data-prototype="{{ form_widget(form.transactionLines.vars.prototype)|e('html_attr') }}">
             </div>
             
-            <button type="button" class="btn btn-success add_item_link" data-collection-holder-class="paymentdeadlines">Ajouter une ligne</button>
+            <button type="button" class="btn btn-success add_item_link" data-collection-holder-class="transactionLines">Ajouter une ligne</button>
 
             <br>
             <button class="btn btn-success mt-3 mb-3">{{ button_label|default('Valider ') }}<i class = "fa text-light fa-save me-2"></i></button>
@@ -103,14 +113,15 @@
 {% block javascripts %}
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script>
+      
         jQuery(document).ready(
         function() {
 
             // Get the ul that holds the collection of tags
-            var $paymentdeadlinesCollectionHolder = $('ul.paymentdeadlines');
+            var $transactionLinesCollectionHolder = $('ul.transactionLine');
             // count the current form inputs we have (e.g. 2), use that as the new
             // index when inserting a new item (e.g. 2)
-            $paymentdeadlinesCollectionHolder.data('index', $paymentdeadlinesCollectionHolder.find('input').length);
+            $transactionLinesCollectionHolder.data('index', $transactionLinesCollectionHolder.find('input').length);
 
             $('body').on('click', '.add_item_link', function(e) {
                 var $collectionHolderClass = $(e.currentTarget).data('collectionHolderClass');
@@ -143,7 +154,7 @@
             $collectionHolder.data('index', index + 1);
 
             // Display the form in the page in an li, before the "Add a tag" link li
-            var $newLabel = $("<h3  class='my-3'>Échéance provisoire</h3>");
+            var $newLabel = $("<h3  class='my-3'>Nouvelle Ligne de transaction</h3>");
             $collectionHolder.append($newLabel)
             var $newForm = $('<div></div>').append(newForm);
             // Add the new form at the end of the list
@@ -152,7 +163,7 @@
         }
 
         function addTagFormDeleteLink($newForm,$newLabel) {
-            var $removeFormButton = $('<button type="button" class="btn btn-danger">Retirer cette échéance</button>');
+            var $removeFormButton = $('<button type="button" class="btn btn-danger">Retirer cette ligne</button>');
             $newForm.append($removeFormButton);
 
             $removeFormButton.on('click', function(e) {
@@ -161,6 +172,9 @@
                 $newLabel.remove();
             });
         }
+
+
+     
     </script>
 {% endblock %}
 

@@ -52,6 +52,13 @@ class InvoiceController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            if (isset($entityManager->getRepository(Invoice::class)->findMaxDayTransaction(date("Ymd") * 100)[0])) {
+                $nbinvoice = $entityManager->getRepository(Invoice::class)->findMaxDayTransaction(date("Ymd") * 100)[0]['code'];
+                $invoice->setCode($nbinvoice + 1);
+            } else {
+                $nbinvoice = 0;
+                $invoice->setCode(date("Ymd") * 100 + $nbinvoice + 1);
+            }
             $entityManager->persist($invoice);
             $entityManager->flush();
             return $this->redirectToRoute('invoice_show', ['invoiceId' => $invoice->getId()]); 
@@ -92,6 +99,13 @@ class InvoiceController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            if (isset($entityManager->getRepository(Invoice::class)->findMaxDayTransaction(date("Ymd") * 100)[0])) {
+                $nbinvoice = $entityManager->getRepository(Invoice::class)->findMaxDayTransaction(date("Ymd") * 100)[0]['code'];
+                $invoice->setCode($nbinvoice + 1);
+            } else {
+                $nbinvoice = 0;
+                $invoice->setCode(date("Ymd") * 100 + $nbinvoice + 1);
+            }
             $entityManager->persist($invoice);
             $entityManager->flush();
             return $this->redirectToRoute('invoice_show', ['invoiceId' => $invoice->getId()]);
@@ -104,22 +118,25 @@ class InvoiceController extends AbstractController
     }
 
 
-    #[Route('/comfirm/{invoiceID}', name: 'confirm')]
+    #[Route('/comfirm/{invoiceId}', name: 'comfirm')]
     #[IsGranted('ROLE_TRESO')]
-    public function confirm(EntityManagerInterface $entityManager, Request $request, $invoiceId): Response
+    public function comfirm(EntityManagerInterface $entityManager, Request $request, $invoiceId): Response
     {
         $invoice = $entityManager->getRepository(Invoice::class)->findById($invoiceId);
 
-        $invoice->setConfirm(true);
+        $invoice->setComfirm(true);
         $invoice->setCreationDate(new DateTime());
 
         $transaction = new Transaction();
+        $transaction->setExercice($invoice->getExercice());
         $invoice->setTransaction($transaction);
-        if (isset($entityManager->getRepository(Transaction::class)->findMaxDayTransaction(date("Ymd") * 100)[0]))
-            $nbtransaction = $entityManager->getRepository(Transaction::class)->findMaxDayTransaction(date("Ymd") * 100)[0];
-        else
+        if (isset($entityManager->getRepository(Transaction::class)->findMaxDayTransaction(date("Ymd") * 100)[0]['code'])){
+            $nbtransaction = $entityManager->getRepository(Transaction::class)->findMaxDayTransaction(date("Ymd") * 100)[0]['code'];
+    }
+        else{
             $nbtransaction = 0;
-        $transaction->setCode(date("Ymd") * 100 + $nbtransaction + 1);
+        }
+        $transaction->setCode(intval(date("Ymd")) * 100 + $nbtransaction + 1);
         $transaction->setClosure(false);
 
 
@@ -135,9 +152,20 @@ class InvoiceController extends AbstractController
         $entityManager->persist($invoice);
         $entityManager->flush();
 
-        return $this->redirectToRoute('paymentdeadline_create', ['invoiceId' => $invoiceId, 'nb' => 1]);
+        return $this->redirectToRoute('invoice_showAll');
     }
 
+    #[Route('/show/{invoiceID}', name: 'show')]
+    #[IsGranted('ROLE_USER')]
+    public function show(EntityManagerInterface $entityManager, $invoiceID): Response
+    {
+        $invoice = $entityManager->getRepository(Invoice::class)->findById($invoiceID);
+
+        return $this->render('invoice/show.html.twig', [
+            'invoice' => $invoice,
+
+        ]);
+    }
 
     #[Route('/pdf/{invoiceId}', name: 'invoicePDF')]
     #[IsGranted('ROLE_USER')]

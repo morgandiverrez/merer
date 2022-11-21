@@ -89,5 +89,19 @@ class InvoiceRepository extends ServiceEntityRepository
             ->getOneOrNullResult();
     }
 
+
+    public function findMaxDayTransaction($value)
+    {
+        return $this->createQueryBuilder('t')
+            ->select('t.code')
+            ->where('t.code-?1>0')
+            ->andWhere('t.code-?1<99')
+            ->setParameter(1, $value)
+            ->orderBy('t.code', "DESC")
+            ->getQuery()
+            ->setMaxResults(1)
+            ->getResult();
+    }
+
  
 }
