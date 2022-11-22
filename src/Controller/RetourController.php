@@ -64,7 +64,7 @@ class RetourController extends AbstractController
     public function edit(EntityManagerInterface $entityManager)
     {
         $seances = $entityManager->getRepository(Seance::class)->findAllByYear(date("Y")."-01-01", strval(intval(date("Y"))+1)."-01-01");
-        $inputFileName = 'C:\wamp64\www\Formation_FedeB\public\public\files\SDF\SDF_vierge.xlsx';
+        $inputFileName = '\public\public\files\SDF\SDF_vierge.xlsx';
         /** Load $inputFileName to a Spreadsheet object **/
         $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($inputFileName);
 
