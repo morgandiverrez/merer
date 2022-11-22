@@ -2,18 +2,19 @@
 
 namespace App\Form;
 
-use App\Entity\Event;
-use App\Entity\Transaction;
-use App\Entity\Exercice;
 use App\Entity\BP;
+use App\Entity\Event;
+use App\Entity\Exercice;
+use App\Entity\Transaction;
 use App\Form\TransactionLineType;
+use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 class TransactionType extends AbstractType
 {
@@ -22,11 +23,16 @@ class TransactionType extends AbstractType
         $builder
            ->add('exercice', EntityType::class,[
                 'class' => Exercice::class,
+             'query_builder' => function (EntityRepository $er) {
+                return $er->createQueryBuilder('u')
+                ->orderBy('u.date', 'DESC');
+            },
             ])
             ->add('closure', ChoiceType::class, [
                 'choices'  => [
-                    'Oui' => true,
                     'Non' => false,
+                    'Oui' => true,
+                   
                 ],
             ])
             ->add('quote', TextAreaType::class)

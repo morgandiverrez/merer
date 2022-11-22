@@ -34,6 +34,9 @@ class Exercice
     #[ORM\OneToMany(mappedBy: 'exercice', targetEntity: BP::class, orphanRemoval: true)]
     private Collection $bPs;
 
+    #[ORM\OneToMany(mappedBy: 'exercice', targetEntity: Impression::class, orphanRemoval: true)]
+    private Collection $impressions;
+
     public function __construct()
     {
         $this->events = new ArrayCollection();
@@ -41,6 +44,7 @@ class Exercice
         $this->transactions = new ArrayCollection();
         $this->expenseReports = new ArrayCollection();
         $this->bPs = new ArrayCollection();
+        $this->impressions = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -209,6 +213,36 @@ class Exercice
             // set the owning side to null (unless already changed)
             if ($bP->getExercice() === $this) {
                 $bP->setExercice(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Impression>
+     */
+    public function getImpressions(): Collection
+    {
+        return $this->impressions;
+    }
+
+    public function addImpression(Impression $impression): self
+    {
+        if (!$this->impressions->contains($impression)) {
+            $this->impressions->add($impression);
+            $impression->setExercice($this);
+        }
+
+        return $this;
+    }
+
+    public function removeImpression(Impression $impression): self
+    {
+        if ($this->impressions->removeElement($impression)) {
+            // set the owning side to null (unless already changed)
+            if ($impression->getExercice() === $this) {
+                $impression->setExercice(null);
             }
         }
 

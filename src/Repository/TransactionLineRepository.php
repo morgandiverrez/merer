@@ -64,7 +64,7 @@ class TransactionLineRepository extends ServiceEntityRepository
     //        ;
     //    }
 
-    public function findTransactionLineById($value): ?TransactionLine
+    public function findById($value): ?TransactionLine
     {
         return $this->createQueryBuilder('transactionLine')
             ->andWhere('transactionLine.id = :val')
@@ -72,5 +72,13 @@ class TransactionLineRepository extends ServiceEntityRepository
             ->getQuery()
             ->getOneOrNullResult()
              ;
-        }
+    }
+
+    public function findLastTransactionLine(): ?TransactionLine
+    {
+        return $this->createQueryBuilder('transactionLine')
+            -> orderBy('t.id', 'DESC')
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
 }

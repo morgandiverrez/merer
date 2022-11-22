@@ -6,6 +6,7 @@ use App\Entity\User;
 use App\Entity\Badge;
 use App\Entity\Profil;
 use App\Form\UserType;
+use App\Entity\Customer;
 use App\Form\ProfilType;
 use App\Entity\EquipeElu;
 use App\Entity\Association;
@@ -92,14 +93,24 @@ class ProfilController extends AbstractController
         $user = $this->getUser();
         $profils = $entityManager->getRepository(Profil::class)->findAll();
 
-        $profilExistePas = false;
-        foreach ($profils as $testProfil) {
-            if ($testProfil->getUser() == $user) {
-                $profilExistePas = true;
+        $customers = $entityManager->getRepository(Customer::class)->findAll();
+
+        $profilNonComplet = true;
+
+        foreach ($customers as $testCustomer) {
+            if ($testCustomer->getUser() == $user) {
+                $profilNonComplet = false;
             }
         }
+        
+        foreach ($profils as $testProfil) {
+            if ($testProfil->getUser() == $user and $testProfil->getName() and $testProfil->getLastName() and $testProfil->getDateOfBirth() and $testProfil->getTelephone() ) {
+                $profilNonComplet = false;
+            }
+        }
+       
 
-        if( ! $profilExistePas) {
+        if(  $profilNonComplet) {
             $profil = new Profil;
             $entityManager->persist($profil);
             $profil->setUser($user);

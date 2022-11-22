@@ -33,7 +33,7 @@ class DemandeController extends AbstractController
     #[IsGranted('ROLE_FORMATEURICE')]
     public function show(EntityManagerInterface $entityManager, Request $request,  $demandeID): Response
     {
-        $demande = $entityManager->getRepository(Demande::class)->findById($demandeID)[0];
+        $demande = $entityManager->getRepository(Demande::class)->findById($demandeID);
 
 
       
@@ -47,7 +47,7 @@ class DemandeController extends AbstractController
     #[IsGranted('ROLE_FORMATEURICE')]
     public function downloadPlanning(EntityManagerInterface $entityManager, Request $request,  $demandeID)
     {
-        $demande = $entityManager->getRepository(Demande::class)->findById($demandeID)[0];
+        $demande = $entityManager->getRepository(Demande::class)->findById($demandeID);
 
         $finaleFile = $demande->getPlanning();
 
@@ -60,7 +60,7 @@ class DemandeController extends AbstractController
         header('Content-Length: ' . filesize($finaleFile));
         readfile($finaleFile);
 
-        return $this->redirectToRoute('demandes_show',[]);
+        return $this->redirectToRoute('demande_show', ['demandeID' => $demande->getId()]);
     }
 
     #[Route('/new', name: 'new')]
@@ -114,7 +114,7 @@ class DemandeController extends AbstractController
     public function delete(EntityManagerInterface $entityManager, $demandeID): Response
     {
 
-        $demande = $entityManager->getRepository(Demande::class)->findById($demandeID)[0];
+        $demande = $entityManager->getRepository(Demande::class)->findById($demandeID);
         $entityManager->remove($demande);
         $entityManager->flush();
 
