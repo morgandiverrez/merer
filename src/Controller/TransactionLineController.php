@@ -28,124 +28,28 @@ class TransactionLineController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $transaction = $entityManager->getRepository(Transaction::class)->findTransactionById($transactionId);
 
-            if ($transactionLine->getChartOfAccounts()->getCode() == 51216) {
-                $transactionLineBis = new TransactionLine();
-                $transactionLineBis->setLabel("HelloAsso " . $transactionLine->getDate()->format('m'));
-                $transactionLineBis->setDate($transactionLine->getDate());
-                $transactionLineBis->setAmount($transactionLine->getAmount());
-                $transactionLineBis->setChartofaccounts($entityManager->getRepository(Chartofaccounts::class)->findChartofaccountsByCode(51216));
-                $transactionLineBis->setTransaction($transaction);
+            $logoUpload = $form->get('document')->getData();
+            if ($logoUpload) {
+                $urlProof = 'transactionLineProof' . $transactionLine->getId() . '.' . $logoUpload[0]->guessExtension();
 
-                $entityManager->persist($transactionLineBis);
-                $entityManager->flush();
 
-                $transactionLineBis = new TransactionLine();
-                $transactionLineBis->setLabel("Paiement Séjour 2021");
-                $transactionLineBis->setDate($transactionLine->getDate());
-                $transactionLineBis->setAmount($transactionLine->getAmount());
-                $transactionLineBis->setChartofaccounts($entityManager->getRepository(Chartofaccounts::class)->findChartofaccountsByCode(70600));
-                $transactionLineBis->setTransaction($transaction);
-
-                $entityManager->persist($transactionLineBis);
-                $entityManager->flush();
-
-                $transactionLineBis = new TransactionLine();
-                $transactionLineBis->setLabel("HelloAsso");
-                $transactionLineBis->setDate($transactionLine->getDate());
-                $transactionLineBis->setAmount(-$transactionLine->getAmount());
-                $transactionLines = $transaction->gettransactionLines();
-                foreach ($transactionLines as $value) {
-                    if ($value->getChartOfAccounts()->getCode() > 41110000 && $value->getChartOfAccounts()->getCode() < 41120000) {
-                        $transactionLineBis->setChartofaccounts($value->getChartOfAccounts());
-                        break;
-                    }
+                $transactionLine->setUrlProof('public/build/transactionLine/proof/' . $urlProof);
+                try {
+                    $logoUpload[0]->move(
+                        'public/build/transactionLine/proof',
+                        $urlProof
+                    );
+                } catch (FileException $e) {
                 }
-                $transactionLineBis->setTransaction($transaction);
-
-                $entityManager->persist($transactionLineBis);
-                $entityManager->flush();
-
-
-
-                return $this->redirectToRoute('transaction_show', ['transactionId' => $transactionId]);
             }
-
-            if ($transactionLine->getChartOfAccounts()->getCode() == 51212) {
-                $transactionLineBis = new TransactionLine();
-                $transactionLineBis->setLabel($transactionLine->getLabel());
-                $transactionLineBis->setDate($transactionLine->getDate());
-                $transactionLineBis->setAmount($transactionLine->getAmount());
-                $transactionLineBis->setChartofaccounts($entityManager->getRepository(Chartofaccounts::class)->findChartofaccountsByCode(51212));
-                $transactionLineBis->setTransaction($transaction);
-
-                $entityManager->persist($transactionLineBis);
-                $entityManager->flush();
-
-                $transactionLineBis = new TransactionLine();
-                $transactionLineBis->setLabel("Paiement Séjour 2021");
-                $transactionLineBis->setDate($transactionLine->getDate());
-                $transactionLineBis->setAmount($transactionLine->getAmount());
-                $transactionLineBis->setChartofaccounts($entityManager->getRepository(Chartofaccounts::class)->findChartofaccountsByCode(70600));
-                $transactionLineBis->setTransaction($transaction);
-
-                $entityManager->persist($transactionLineBis);
-                $entityManager->flush();
-
-                $transactionLineBis = new TransactionLine();
-                $transactionLineBis->setLabel("Virement Bancaire");
-                $transactionLineBis->setDate($transactionLine->getDate());
-                $transactionLineBis->setAmount(-$transactionLine->getAmount());
-                $transactionLines = $transaction->gettransactionLines();
-                foreach ($transactionLines as $value) {
-                    if ($value->getChartOfAccounts()->getCode() > 41110000 && $value->getChartOfAccounts()->getCode() < 41120000) {
-                        $transactionLineBis->setChartofaccounts($value->getChartOfAccounts());
-                        break;
-                    }
-                }
-                $transactionLineBis->setTransaction($transaction);
-
-                $entityManager->persist($transactionLineBis);
-                $entityManager->flush();
-
-                return $this->redirectToRoute('transaction_show', ['transactionId' => $transactionId]);
-            }
-
-            if ($transactionLine->getChartOfAccounts()->getCode() == 70600) {
-
-                $transactionLineBis = new TransactionLine();
-                $transactionLineBis->setLabel("Paiement Séjour 2021");
-                $transactionLineBis->setDate($transactionLine->getDate());
-                $transactionLineBis->setAmount($transactionLine->getAmount());
-                $transactionLineBis->setChartofaccounts($entityManager->getRepository(Chartofaccounts::class)->findChartofaccountsByCode(70600));
-                $transactionLineBis->setTransaction($transaction);
-
-                $entityManager->persist($transactionLineBis);
-                $entityManager->flush();
-
-                $transactionLineBis = new TransactionLine();
-                $transactionLineBis->setLabel("Chèque");
-                $transactionLineBis->setDate($transactionLine->getDate());
-                $transactionLineBis->setAmount(-$transactionLine->getAmount());
-                $transactionLines = $transaction->gettransactionLines();
-                foreach ($transactionLines as $value) {
-                    if ($value->getChartOfAccounts()->getCode() > 41110000 && $value->getChartOfAccounts()->getCode() < 41120000) {
-                        $transactionLineBis->setChartofaccounts($value->getChartOfAccounts());
-                        break;
-                    }
-                }
-                $transactionLineBis->setTransaction($transaction);
-
-                $entityManager->persist($transactionLineBis);
-                $entityManager->flush();
-
-                return $this->redirectToRoute('transaction_show', ['transactionId' => $transactionId]);
-            }
-
             $transactionLine->setTransaction($transaction);
             $entityManager->persist($transactionLine);
             $entityManager->flush();
-            return $this->redirectToRoute('transaction_show', ['transactionId' => $transactionId]);
+
+                return $this->redirectToRoute('transaction_show', ['transactionId' => $transactionId]);
         }
+
+         
 
         return $this->render('transactionLine/edit.html.twig', [
             'transaction' => $transactionLine,
@@ -158,11 +62,28 @@ class TransactionLineController extends AbstractController
     #[IsGranted('ROLE_TRESO')]
     public function edit(EntityManagerInterface $entityManager, $transactionId, $transactionLineId, Request $request): Response
     {
-        $transactionLine = $entityManager->getRepository(TransactionLine::class)->findTransactionLineById($transactionLineId);
+        $transactionLine = $entityManager->getRepository(TransactionLine::class)->findById($transactionLineId);
         $form = $this->createForm(TransactionLineType::class, $transactionLine);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $transaction = $entityManager->getRepository(Transaction::class)->findTransactionById($transactionId);
+
+            $logoUpload = $form->get('document')->getData();
+            if ($logoUpload) {
+                $urlProof = 'transactionLineProof' . $transactionLine->getId() . '.' . $logoUpload[0]->guessExtension();
+
+
+                $transactionLine->setUrlProof('public/build/transactionLine/proof/' . $urlProof);
+                try {
+                    $logoUpload[0]->move(
+                        'public/build/transactionLine/proof',
+                        $urlProof
+                    );
+                } catch (FileException $e) {
+                }
+            }
+            $transactionLine->setTransaction($transaction);
             $entityManager->persist($transactionLine);
             $entityManager->flush();
             return $this->redirectToRoute('transaction_show', ['transactionId' => $transactionId]);

@@ -108,14 +108,15 @@
 {% block javascripts %}
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script>
+      
         jQuery(document).ready(
         function() {
 
             // Get the ul that holds the collection of tags
-            var $paymentdeadlinesCollectionHolder = $('ul.paymentdeadlines');
+            var $transactionLinesCollectionHolder = $('ul.transactionLine');
             // count the current form inputs we have (e.g. 2), use that as the new
             // index when inserting a new item (e.g. 2)
-            $paymentdeadlinesCollectionHolder.data('index', $paymentdeadlinesCollectionHolder.find('input').length);
+            $transactionLinesCollectionHolder.data('index', $transactionLinesCollectionHolder.find('input').length);
 
             $('body').on('click', '.add_item_link', function(e) {
                 var $collectionHolderClass = $(e.currentTarget).data('collectionHolderClass');
@@ -148,7 +149,7 @@
             $collectionHolder.data('index', index + 1);
 
             // Display the form in the page in an li, before the "Add a tag" link li
-            var $newLabel = $("<h3  class='my-3'>Échéance provisoire</h3>");
+            var $newLabel = $("<h3  class='my-3'>Nouvelle Ligne de transaction</h3>");
             $collectionHolder.append($newLabel)
             var $newForm = $('<div></div>').append(newForm);
             // Add the new form at the end of the list
@@ -157,7 +158,7 @@
         }
 
         function addTagFormDeleteLink($newForm,$newLabel) {
-            var $removeFormButton = $('<button type="button" class="btn btn-danger">Retirer cette échéance</button>');
+            var $removeFormButton = $('<button type="button" class="btn btn-danger">Retirer cette ligne</button>');
             $newForm.append($removeFormButton);
 
             $removeFormButton.on('click', function(e) {
@@ -166,6 +167,9 @@
                 $newLabel.remove();
             });
         }
+
+
+     
     </script>
 {% endblock %}
 

@@ -3,20 +3,30 @@
 namespace App\Form;
 
 use App\Entity\BP;
+use App\Entity\Exercice;
+use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 
 class BPType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('exercice')
+            ->add('exercice', EntityType::class, [
+                'class' => Exercice::class,
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('u')
+                        ->orderBy('u.date', 'DESC');
+                },
+            ])
             ->add('categorie')
             ->add('designation')
-            ->add('expectedAmount')
-            ->add('reallocateAmount')
+            ->add('expectedAmount', MoneyType::class)
+            ->add('reallocateAmount', MoneyType::class)
           
         ;
     }

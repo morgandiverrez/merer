@@ -7,6 +7,7 @@ use App\Entity\Customer;
 use App\Entity\Exercice;
 use App\Entity\Transaction;
 use App\Form\InvoiceLineType;
+use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -21,9 +22,13 @@ class InvoiceType extends AbstractType
             ->add( 'customer',  EntityType::class, [
             'class' => Customer::class,
         ])
-            ->add('exercice',  EntityType::class, [
-            'class' => Exercice::class,
-        ])
+            ->add('exercice', EntityType::class, [
+                'class' => Exercice::class,
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('u')
+                        ->orderBy('u.date', 'DESC');
+                },
+            ])
             ->add('acquitted')
             ->add('ready')
             ->add('comfirm')
