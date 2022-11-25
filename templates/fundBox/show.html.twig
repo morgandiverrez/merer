@@ -8,10 +8,8 @@
     <div class="container-fluid">
         <div  style = "margin-left: auto ; margin-right: auto ; max-width : 900px;">
             <p class="display-6 no-wrap text-center align-center mb-5"> Détails de la caisse {{fundBox.getName()}}</p>
-            
             <div class=" d-flex text-center justify-content-evenly">
                 <div class="card justify-content-start" style="width: 18rem;">
-            
                     <div class=" card-body ">
                         <h5 class="card-title">{{fundBox.getName()}}</h5>
                         <p class="card-text">{{fundBox.getDescription()}}</p>
@@ -27,25 +25,25 @@
                     </div>
                 </div>
             </div>
-             <div style = "margin-left: auto ; margin-right: auto ; max-width : 900px;">
-            <p class="display-6 no-wrap text-center">Contenu de la caisse </p>
-       
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                    <th scope="col">Quantité</th>
-                        <th scope="col">Montant</th>  
-                    </tr>
-                </thead>
-                <tbody>
-                {% for type in fundBox.getFundTypeJoin() %} 
-                    <tr>
-                        <td>{{type.getQuantity()}}</td>
-                        <td>{{type.getFundType().getName()}}</td>
-                     </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-        </div>
+            <div style = "margin-left: auto ; margin-right: auto ; max-width : 900px;">
+                <p class="display-6 no-wrap text-center">Contenu de la caisse </p>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                        <th scope="col">Quantité</th>
+                            <th scope="col">Montant</th>  
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for type in fundBox.getFundTypeJoin() %} 
+                        <tr>
+                            <td>{{type.getQuantity()}}</td>
+                            <td>{{type.getFundType().getName()}}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+       </div> 
     </div>
 {% endblock %}

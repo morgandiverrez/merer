@@ -49,6 +49,35 @@ class CustomerController extends AbstractController
     }
 
 
+    #[Route('/showForCustomer', name: 'showForCustomer')]
+    #[IsGranted('ROLE_USER')]
+    public function showForCustomer(EntityManagerInterface $entityManager, ): Response
+    {
+        $user = $this->getUser();
+        $customers = $entityManager->getRepository(Customer::class)->findAll();
+        $i = 0 ;
+        while ( ! isset($customer) and isset($customers[$i])) {
+            if ($customers[$i]->getUser() == $user) {
+                $customer = $customers[$i] ;
+            }
+            $i++;
+        }
+
+     
+
+        $totals = array();
+        foreach ($customer->getInvoices() as $invoice) {
+            array_push($totals, (new InvoiceController)->invoiceTotale($invoice));
+        }
+
+        return $this->render('customer/show.html.twig', [
+            'customer' => $customer,
+            'totals' => $totals,
+
+        ]);
+    }
+
+
     #[Route('/new', name: 'new')]
     #[IsGranted('ROLE_TRESO')]
     public function new(EntityManagerInterface $entityManager, Request $request): Response

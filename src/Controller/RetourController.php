@@ -7,6 +7,7 @@ use App\Entity\Retour;
 use App\Entity\Seance;
 use App\Form\RetourType;
 use Symfony\UX\Chartjs\Model\Chart;
+use PhpOffice\PhpSpreadsheet\IOFactory;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -61,10 +62,9 @@ class RetourController extends AbstractController
 
      #[Route('/sdf', name: 'sdf')]
     #[IsGranted('ROLE_FORMA')]
-    public function edit(EntityManagerInterface $entityManager)
-    {
+    public function sdf(EntityManagerInterface $entityManager){
         $seances = $entityManager->getRepository(Seance::class)->findAllByYear(date("Y")."-01-01", strval(intval(date("Y"))+1)."-01-01");
-        $inputFileName = '\public\public\files\SDF\SDF_vierge.xlsx';
+        $inputFileName = 'C:\wamp64\www\Merer\public\public\files\SDF\SDF_vierge.xlsx';
         /** Load $inputFileName to a Spreadsheet object **/
         $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($inputFileName);
 
@@ -76,7 +76,7 @@ class RetourController extends AbstractController
 
             $spreadsheet->getSheetByName($clonedWorksheet->getTitle())->getCell('F7')->setValue($seance->getName()); // inscription intitulé formation
             $spreadsheet->getSheetByName($clonedWorksheet->getTitle())->getCell('L8')->setValue($seance->getDatetime()->format("Y-m-d")); // on met la date sur la feuille active
-            $spreadsheet->getSheetByName($clonedWorksheet->getTitle())->getCell('N10')->setValue($seance->getGroupe()); // 
+            $spreadsheet->getSheetByName($clonedWorksheet->getTitle())->getCell('N10')->setValue($seance->getEvenement()->getName()); // 
 
             $i = 8;
             foreach( $seance->getProfil() as $formateurice){
@@ -106,7 +106,7 @@ class RetourController extends AbstractController
 
         $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, "Xlsx");
         $writer->save("SDF_" . date("Y").".xlsx");
-        $finaleFile = "C:\wamp64\www\Formation_FedeB\public\SDF_". date("Y")."xlsx";
+        $finaleFile = "C:\wamp64\www\Merer\public\SDF_". date("Y")."xlsx";
         
         header('Content-Description: File Transfer');
         header('Content-Type: application/octet-stream');
@@ -116,8 +116,8 @@ class RetourController extends AbstractController
         header('Pragma: public');
         header('Content-Length: ' . filesize($finaleFile));
         readfile($finaleFile);
-       
-        
+
+        return $this->redirectToRoute('profil_show', []);
         
         
     }

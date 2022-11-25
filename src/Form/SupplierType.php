@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\Location;
 use App\Entity\Supplier;
 use App\Entity\ChartOfAccounts;
+use App\Entity\AdministrativeIdentifier;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;

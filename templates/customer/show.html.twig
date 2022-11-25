@@ -8,24 +8,25 @@
     <div class="container-fluid">
         <div  style = "margin-left: auto ; margin-right: auto ; max-width : 900px;">
             <p class="display-6 no-wrap text-center align-center mb-5"> Détails du client {{customer.getName()}}</p>
-            
-            <div class=" d-flex text-center justify-content-evenly">
-                <div class="card justify-content-start" style="width: 18rem;">
-            
-                    <div class=" card-body ">
-                        <h5 class="card-title">{{customer.getName()}}</h5>
-                    </div>
-                    <ul class="list-group list-group-flush">                       
-                        <li class="list-group-item">Identifiant Administratif : {{customer.getAdministrativeIdentifier()}}</li>
-                        <li class="list-group-item">Localisation :   {{customer.getLocation().getName()}}</li>
-                        <li class="list-group-item">Compte associé :  {{customer.getChartOfAccounts().getName()}} | {{customer.getChartOfAccounts().getCode()}}</li>                   
-                    </ul>
-                    <div class="card-body">             
-                            <a href="/customer/edit/{{ customer.getId() }}" class="card-link"><i class="fa-solid fa-pen-to-square"></i></a>       
-                            <a href="/customer/" class="card-link"><i class="fa-solid fa-list"></i></a>
+            {% if  is_granted('ROLE_TRESO') %}
+                <div class=" d-flex text-center justify-content-evenly">
+                    <div class="card justify-content-start" style="width: 18rem;">
+                
+                        <div class=" card-body ">
+                            <h5 class="card-title">{{customer.getName()}}</h5>
+                        </div>
+                        <ul class="list-group list-group-flush">                       
+                            <li class="list-group-item">Identifiant Administratif : {{customer.getAdministrativeIdentifier()}}</li>
+                            <li class="list-group-item"><a href="/location/show/{{customer.getLocation().getId()}}"> Localisation :   {{customer.getLocation().getName()}}</a></li>
+                            <li class="list-group-item"><a href="/chartOfAccounts/show/{{customer.getChartOfAccounts().getId()}}"> Compte associé :  {{customer.getChartOfAccounts().getName()}} | {{customer.getChartOfAccounts().getCode()}}</a></li>                   
+                        </ul>
+                        <div class="card-body">             
+                                <a href="/customer/edit/{{ customer.getId() }}" class="card-link"><i class="fa-solid fa-pen-to-square"></i></a>       
+                                <a href="/customer/" class="card-link"><i class="fa-solid fa-list"></i></a>
+                        </div>
                     </div>
                 </div>
-            </div>
+            {% endif %}
         </div> 
         <div style = "margin-left: auto ; margin-right: auto ; max-width : 900px;">
             <p class="display-6 no-wrap text-center">Liste des factures de ce client </p>
@@ -34,7 +35,9 @@
                 <thead>
                 <tr>
                     <th scope="col">Numéro</th>
-                    <th scope="col">Transaction</th>
+                    {% if  is_granted('ROLE_TRESO') %}
+                        <th scope="col">Transaction</th>
+                    {% endif %}
                     <th scope="col">Montant</th>
                     <th scope="col">Total Payé</th>
                     <th scope="col">Reste à charge</th>
@@ -45,44 +48,53 @@
                 </thead>
 
                 <tbody>
-                {% for invoice in customer.getInvoices() %} <tr>
-                    {% if invoice.comfirm==true %}
-                        <th>Fact-{{ invoice.code }}</th>
-                    {% else %}
-                        {% if invoice.category == "Fin Mois"%}
-                            <th>Fact en  cours -{{ invoice.code }}</th>
+                {% for invoice in customer.getInvoices() %} 
+                    <tr>
+                        {% if invoice.comfirm == true %}
+                            <th>Fact-{{ invoice.code }}</th>
                         {% else %}
-                              <th>Dev-{{ invoice.code }}</th>
-                        {% endif %}
-                    {% endif %}
-                    <th>{%if invoice.transaction %}{{ invoice.transaction.id }}{% endif %}</th>
-                    <th>{{ totals[loop.index-1] }}</th>
-
-                    {% set total=0 %}
-
-                    {% for paymentdeadline in  invoice.paymentdeadlines %}
-                        {% if paymentdeadline.actualPaymentDate is not null %}
-                            {% set total = total+paymentdeadline.actualAmount %}
-                        {% endif %}
-                    {% endfor %}
-                    <th>{{ total }}</th>
-                    <th>{{ totals[loop.index-1]-total }}</th>
-                    {% set cheque=0 %}
-                    {% if invoice.transaction is not null %}
-                        {% for transactionline in invoice.transaction.transactionlines %}
-                            {% if transactionline.chartofaccounts.code==51120 or transactionline.chartofaccounts.code==51121 or transactionline.chartofaccounts.code==51122 %}
-                                {% set cheque=cheque+transactionline.amount %}
+                            {% if invoice.category == "Fin Mois"%}
+                                <th>Fact en  cours -{{ invoice.code }}</th>
+                            {% else %}
+                                <th>Dev-{{ invoice.code }}</th>
                             {% endif %}
-                            {% if "REM CHQ" in transactionline.label %}
-                                {% set cheque=cheque+transactionline.amount %}
+                        {% endif %}
+
+                        {% if  is_granted('ROLE_TRESO') %}
+                             <th>{% if invoice.transaction %}{{ invoice.transaction.id }}{% endif %}</th>
+                        {% endif %}
+
+                        <th>{{ totals[loop.index-1] }}</th>
+
+                        {% set total = 0 %}
+
+                        {% for paymentdeadline in  invoice.paymentdeadlines %}
+                            {% if paymentdeadline.actualPaymentDate is not null %}
+                                {% set total = total+paymentdeadline.actualAmount %}
                             {% endif %}
                         {% endfor %}
-                    {% endif %}
-                    <th>{{ cheque }}</th>
 
-                    <th><a href="/invoice/invoicePDF/{{ invoice.iD }}" target="_blank"><i class="fa-solid fa-eye"></i></a></th>
-                    <th><a href="/invoice/comfirm/{{ invoice.iD }}" target="_blank"><i class="fa-solid fa-eye"></i></a></th>
-                </tr> {% endfor %}
+                        <th>{{ total }}</th>
+
+                        <th>{{ totals[loop.index-1]-total }}</th>
+                        {% set cheque = 0 %}
+                        {% if invoice.transaction is not null %}
+                            {% for transactionline in invoice.transaction.transactionlines %}
+                                {% if transactionline.chartofaccounts.code==51120 or transactionline.chartofaccounts.code==51121 or transactionline.chartofaccounts.code==51122 %}
+                                    {% set cheque=cheque+transactionline.amount %}
+                                {% endif %}
+                                {% if "REM CHQ" in transactionline.label %}
+                                    {% set cheque=cheque+transactionline.amount %}
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                        <th>{{ cheque }}</th>
+                        <th><a href="/invoice/invoicePDF/{{ invoice.iD }}" target="_blank"><i class="fa-solid fa-eye"></i></a></th>
+                        {% if  is_granted('ROLE_TRESO') %}
+                            <th><a href="/invoice/comfirm/{{ invoice.iD }}" target="_blank"><i class="fa-solid fa-eye"></i></a></th>
+                        {% endif %}
+                    </tr> 
+                {% endfor %}
                 </tbody>
             </table>
         </div>
@@ -96,7 +108,9 @@
                         <th scope="col">imprimeur</th>
                         <th scope="col">Format</th>
                         <th scope="col">Quantité</th>
-                        <th scope="col">Supprimer</th>
+                        {% if  is_granted('ROLE_TRESO') %}
+                            <th scope="col">Supprimer</th>
+                        {% endif %}
                     </tr>
                 </thead>
 
@@ -107,41 +121,39 @@
                         <th>{{impression.getName()}}</th>
                         <th>{{impression.getFormat()}}{% if impression.isRectoVerso() %} RV {% endif %} {% if impression.isCouleur() %} Couleur {% else %} NB {% endif %} </th>
                          <th>{{impression.getQuantite()}}</th>
-                        <th><a href="/impression/delete/{{impression.getId()}}"><i class="fa-solid fa-trash-can"></i></a></th> 
+                        {% if  is_granted('ROLE_TRESO') %}
+                            <th><a href="/impression/delete/{{impression.getId()}}"><i class="fa-solid fa-trash-can"></i></a></th> 
+                        {% endif %}
                      </tr>
                 {% endfor %}
                 </tbody>
             </table>
         </div>
-             <div style = "margin-left: auto ; margin-right: auto ; max-width : 900px;">
-            <p class="display-6 no-wrap text-center">Liste des contacts de ce client </p>
-       
-              <table class="table table-striped">
-                
-                
-                <thead>
-                <tr>
-                    <th scope="col">Nom</th>
-                    <th scope="col">Prénom</th>
-                    <th scope="col">Civility</th>
-                    <th scope="col">Détails</th>
-                    
-                 </tr>
-                </thead>
+        {% if  is_granted('ROLE_TRESO') %}
+            <div style = "margin-left: auto ; margin-right: auto ; max-width : 900px;">
+                <p class="display-6 no-wrap text-center">Liste des contacts de ce client </p>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">Nom</th>
+                            <th scope="col">Prénom</th>
+                            <th scope="col">Civilité</th>
+                            <th scope="col">Détails</th>
+                        </tr>
+                    </thead>
 
-                <tbody>
-                {% for contact in customer.getContacts() %} 
-                    <tr>
-                        <th>{{contact.getName()}}</th>   
-                         <th>{{contact.getLastName()}}</th>   
-                        <th>{{contact.getCivility()}}</th>
-                        <th><a href="/contact/show/{{contact.getId()}}"><i class="fa-solid fa-eye"></i></i></a></th> 
-                     </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-        </div>
-
-       
+                    <tbody>
+                        {% for contact in customer.getContacts() %} 
+                            <tr>
+                                <th>{{contact.getName()}}</th>   
+                                <th>{{contact.getLastName()}}</th>   
+                                <th>{{contact.getCivility()}}</th>
+                                <th><a href="/contact/show/{{contact.getId()}}"><i class="fa-solid fa-eye"></i></i></a></th> 
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% endif %}
     </div>
 {% endblock %}

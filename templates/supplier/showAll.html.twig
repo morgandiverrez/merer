@@ -1,18 +1,18 @@
 {% extends 'base_user.html.twig' %}
 
-{% block title %}Liste client{% endblock %}
+{% block title %}Liste fournisseur{% endblock %}
 
 
 {% block body %}
      <div class="container-fluid">
         <div style = "margin-left: auto ; margin-right: auto ; max-width : 900px;">
-            <p class="display-6 no-wrap text-center">Liste des Fournisseurs  </p>
+            <p class="display-6 no-wrap text-center">Liste des Fournisseurs
+                <a href="/supplier/new"><i class="fa-solid fa-plus align-right"></i></a> </p>
        
             <table class="table table-striped">
                 <thead>
                 <tr>
                     <th scope="col">Nom</th>
-                    <th scope="col">Contact</th>
                     <th scope="col">Lieux</th>
                     <th scope="col">Compte associé</th>
                     <th scope="col">Détails</th>
@@ -21,14 +21,14 @@
                 </thead>
 
                 <tbody>
-                {% for customer in customers %} 
+                {% for supplier in suppliers %} 
                 
                     <tr>
-                        <td>{{customer.getName()}}</td>
-                        <td>{{customer.getContacts()[0].getName()}} {{customer.getContacts()[0].getLastName()}}</td>
-                          <td>{{customer.getLocation().getName()}}</td>
-                          <td>{{customer.getChartOfAccounts().getCode()}}</td>
-                        <td><a href="/customer/show/{{customer.getId()}}"><i class="fa-solid fa-eye"></i></a></td> 
+                        <td>{{supplier.getName()}}</td>
+                          <td><a href="/location/show/{{supplier.getLocation().getId()}}">{{supplier.getLocation().getName()}}</a></td>
+                          <td><a href="/chartOfAccounts/show/{{supplier.getChartOfAccounts().getId()}}"> {{supplier.getChartOfAccounts().getName()}} | {{supplier.getChartOfAccounts().getCode()}} </a> </td>
+                         
+                        <td><a href="/supplier/show/{{supplier.getId()}}"><i class="fa-solid fa-eye"></i></a></td> 
                      </tr>
                 {% endfor %}
                 </tbody>

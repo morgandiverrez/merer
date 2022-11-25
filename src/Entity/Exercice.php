@@ -37,6 +37,9 @@ class Exercice
     #[ORM\OneToMany(mappedBy: 'exercice', targetEntity: Impression::class, orphanRemoval: true)]
     private Collection $impressions;
 
+    #[ORM\Column(length: 255)]
+    private ?string $name = null;
+
     public function __construct()
     {
         $this->events = new ArrayCollection();
@@ -245,6 +248,18 @@ class Exercice
                 $impression->setExercice(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): self
+    {
+        $this->name = $name;
 
         return $this;
     }
