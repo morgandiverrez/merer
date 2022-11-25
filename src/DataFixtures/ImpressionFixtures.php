@@ -16,6 +16,7 @@ class ImpressionFixtures extends Fixture implements DependentFixtureInterface
         for ($i = 0; $i < 20; $i++) {
             $impression = new Impression();
             $impression->setDatetime($this->faker->dateTime());
+            $impression->setExercice($this->getRandomReference('EXERCICE'));
             $impression->setCustomer($this->getRandomReference('CUSTOMER'));
             $impression->setName($this->faker->lastName());
             $impression->setFormat($this->faker->randomElement(['A3', 'A4', 'A5', 'plastification']));

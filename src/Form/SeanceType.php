@@ -40,10 +40,11 @@ class SeanceType extends AbstractType
             'multiple' => true, 
         ])
 
+            ->add('visible')
+
             ->add('evenement', EntityType::class, [
                 'class' => Evenement::class,
             ])
-
         ;
     }
 

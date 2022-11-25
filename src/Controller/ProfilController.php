@@ -95,28 +95,41 @@ class ProfilController extends AbstractController
 
         $customers = $entityManager->getRepository(Customer::class)->findAll();
 
+        $customerExistPas = true;
         $profilNonComplet = true;
+        $i = 0;
 
-        foreach ($customers as $testCustomer) {
-            if ($testCustomer->getUser() == $user) {
-                $profilNonComplet = false;
+        while($customerExistPas and isset($customers[$i]) ){ 
+            if ($customers[$i]->getUser() == $user) {
+                $customerExistPas = false;
             }
+            $i ++;
         }
-        
-        foreach ($profils as $testProfil) {
-            if ($testProfil->getUser() == $user and $testProfil->getName() and $testProfil->getLastName() and $testProfil->getDateOfBirth() and $testProfil->getTelephone() ) {
+
+        $i=0;
+        while($profilNonComplet and isset($profils[$i]) ){
+            if ($profils[$i]->getUser() == $user and 
+                                                    $profils[$i]->getName() and 
+                                                    $profils[$i]->getLastName() and 
+                                                    $profils[$i]->getDateOfBirth() and 
+                                                    $profils[$i]->getTelephone() ) {
                 $profilNonComplet = false;
+                $profil = $profils[$i];
             }
+            $i++;
         }
        
-
-        if(  $profilNonComplet) {
-            $profil = new Profil;
-            $entityManager->persist($profil);
-            $profil->setUser($user);
-            $entityManager->persist($user);
-            $entityManager->flush();
-            return $this->redirectToRoute('profil_edit', ['profilID' => $profil->getID()]);
+        if( ! $customerExistPas){
+            return $this->redirectToRoute('customer_showForCustomer', []);
+        }
+        else{ if($profilNonComplet ) {
+                $profil = new Profil;
+                $entityManager->persist($profil);
+                $profil->setUser($user);
+                $entityManager->persist($user);
+                $entityManager->flush();
+                return $this->redirectToRoute('profil_edit', ['profilID' => $profil->getID()]);
+            }
         }
         
         return $this->render('profil/show.html.twig', [           

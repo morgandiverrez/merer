@@ -1,0 +1,71 @@
+{% extends 'base_user.html.twig' %}
+
+{% block title %}BP{% endblock %}
+
+
+{% block body %}
+    <div class="container-fluid">
+        <div style = "margin-left: auto ; margin-right: auto ; max-width : 900px;">
+            <p class="display-6 no-wrap text-center">Budget Prévisionnel {{exercice}}
+                    <a href="/bp/new"><i class="fa-solid fa-plus align-right"></i></a>
+            </p>
+           
+            <table class="table table-striped">
+                <CAPTION class="display-4 no-wrap text-center" ALIGN="TOP">Produits</CAPTION>
+                <thead>
+                    <tr>
+                        <th scope="col">Catégorie</th>
+                        <th scope="col">Désignation</th>
+                        <th scope="col">Montant Prévu</th>
+                        <th scope="col">Montant réalloué</th>
+                        <th scope="col">Détails</th>
+                        
+                    </tr>
+                </thead>
+
+                <tbody>
+                {% for bp in bpProduits %} 
+                    <tr>
+                        
+                        <th>{{bp.getCategorie()}}</th> 
+                        <th>{{bp.getDesignation()}}</th>   
+                        <th>{{bp.getExpectedAmount()}} €</th>
+                        <th>{{bp.getReallocateAmount()}} €</th>
+                        <th><a href="/bp/show/{{bp.getId()}}"><i class="fa-solid fa-eye"></i></a></th> 
+                     </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+            <table class="table table-striped">
+                <CAPTION class="display-4 no-wrap text-center" ALIGN="TOP">Charges  </CAPTION>
+                <thead>
+                    <tr>
+                        <th scope="col">Catégorie</th>
+                        <th scope="col">Désignation</th>
+                        <th scope="col">Montant Prévu</th>
+                        <th scope="col">Montant réalloué</th>
+                        <th scope="col">Détails</th>
+                        
+                    </tr>
+                </thead>
+
+                <tbody>
+                {% for bp in bpCharges %} 
+                    <tr>
+                        
+                        <th>{{bp.getCategorie()}}</th> 
+                        <th>{{bp.getDesignation()}}</th>   
+                        <th>{{bp.getExpectedAmount()}} €</th>
+                        <th>{{bp.getReallocateAmount()}} €</th>
+                        <th><a href="/bp/show/{{bp.getId()}}"><i class="fa-solid fa-eye"></i></a></th> 
+                     </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+
+
+{% endblock %}

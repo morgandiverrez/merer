@@ -21,7 +21,7 @@
                         <li class="list-group-item">Fédération de territoire : {{association.getFedeTerritoire()}}</li>
                         <li class="list-group-item">Local : {{association.getLocal()}}</li>
                         <li class="list-group-item">Adresse mail : {{association.getAdresseMail()}}</li>
-                        <li class="list-group-item">Date de la dernière AGO : {{association.getDateElection().format('Y-m-d')}}</li>
+                        <li class="list-group-item">Date de la dernière AGO :  {% if association.getDateElection() is null %} {{association.getDateElection().format('d/m/y')}} {% endif %}</li>
                     </ul>
                     <div class="card-body">
                         {% if is_granted('ROLE_FORMATEURICE') %}

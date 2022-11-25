@@ -7,9 +7,8 @@
     <div class="container-fluid">
         <div style = "margin-left: auto ; margin-right: auto ; max-width : 900px;">
             <p class="display-6 no-wrap text-center">Liste des réductions
-                {% if is_granted('ROLE_BF') %}
                     <a href="/discount/new"><i class="fa-solid fa-plus align-right"></i></a>
-                {% endif %}
+        
             </p>
             <form action="{{ path('discount_showAll') }}" method="post">
                 <p class="text-center">

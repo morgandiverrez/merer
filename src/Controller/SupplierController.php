@@ -2,10 +2,17 @@
 
 namespace App\Controller;
 
+use App\Entity\Customer;
 use App\Entity\Supplier;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Form\CustomerType;
+use App\Form\SupplierType;
+use App\Controller\InvoiceController;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
  #[Route('/supplier', name: 'supplier_')]
 class SupplierController extends AbstractController
@@ -22,21 +29,17 @@ class SupplierController extends AbstractController
         ]);
     }
 
-    #[Route('/show/{customerID}', name: 'show')]
+    #[Route('/show/{supplierID}', name: 'show')]
     #[IsGranted('ROLE_TRESO')]
-    public function show(EntityManagerInterface $entityManager, $customerID): Response
+    public function show(EntityManagerInterface $entityManager, $supplierID): Response
     {
 
-        $customer = $entityManager->getRepository(Customer::class)->findById($customerID)[0];
+        $supplier = $entityManager->getRepository(Supplier::class)->findById($supplierID)[0];
         
-        $totals = array();
-        foreach ($customer->getInvoices() as $invoice) {
-            array_push($totals, (new InvoiceController)->invoiceTotale($invoice));
-        }
         
-        return $this->render('customer/show.html.twig', [
-            'customer' => $customer,
-            'totals' => $totals,
+        
+        return $this->render('supplier/show.html.twig', [
+            'supplier' => $supplier,
 
         ]);
     }
@@ -46,44 +49,44 @@ class SupplierController extends AbstractController
     #[IsGranted('ROLE_TRESO')]
     public function new(EntityManagerInterface $entityManager, Request $request): Response
     {
-        $customer = new Customer();
-        $form = $this->createForm(CustomerType::class, $customer);
+        $supplier = new Supplier();
+        $form = $this->createForm(SupplierType::class, $supplier);
         $form->handleRequest($request);
 
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $entityManager->persist($customer);
+            $entityManager->persist($supplier);
             $entityManager->flush();
-            return $this->redirectToRoute('customer_show', ['customerID' => $customer->getId()]);
+            return $this->redirectToRoute('supplier_show', ['supplierID' => $supplier->getId()]);
         }
 
-        return $this->render('customer/new.html.twig', [
-            'customer' => $customer,
+        return $this->render('supplier/new.html.twig', [
+            'supplier' => $supplier,
             'form' => $form->createView(),
 
 
         ]);
     }
 
-    #[Route('/edit/{customerID}', name: 'edit')]
+    #[Route('/edit/{supplierID}', name: 'edit')]
     #[IsGranted('ROLE_TRESO')]
-    public function edit(EntityManagerInterface $entityManager, Request $request, $customerID): Response
+    public function edit(EntityManagerInterface $entityManager, Request $request, $supplierID): Response
     {
-        $customer = $entityManager->getRepository(Customer::class)->findById($customerID)[0];
-        $form = $this->createForm(CustomerType::class, $customer);
+        $supplier = $entityManager->getRepository(Supplier::class)->findById($supplierID)[0];
+        $form = $this->createForm(SupplierType::class, $supplier);
         $form->handleRequest($request);
 
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $entityManager->persist($customer);
+            $entityManager->persist($supplier);
             $entityManager->flush();
-            return $this->redirectToRoute('customer_show', ['customerID' => $customerID]);
+            return $this->redirectToRoute('supplier_show', ['supplierID' => $supplierID]);
         }
 
-        return $this->render('customer/edit.html.twig', [
-            'customer' => $customer,
+        return $this->render('supplier/edit.html.twig', [
+            'supplier' => $supplier,
             'form' => $form->createView(),
 
         ]);

@@ -21,9 +21,6 @@ class Supplier
     #[ORM\ManyToOne(inversedBy: 'suppliers')]
     private ?Location $location = null;
 
-    #[ORM\OneToMany(mappedBy: 'supplier', targetEntity: AdministrativeIdentifier::class)]
-    private Collection $administrativeIdentifiers;
-
     #[ORM\ManyToOne(inversedBy: 'suppliers')]
     private ?AdministrativeIdentifier $administrativeIdentifier = null;
 

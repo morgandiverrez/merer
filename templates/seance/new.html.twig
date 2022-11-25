@@ -25,6 +25,13 @@
                         {{ form_help(form.datetime) }}
                     </div>
 
+                    <div class="visible my-5">
+                        {{ form_label(form.visible, 'rendre visible ', {'label_attr': {'class': 'foo'}}) }}
+                        {{ form_errors(form.visible) }}
+                        {{ form_widget(form.visible) }}
+                        {{ form_help(form.visible) }}
+                    </div>
+
                     <div class="nombreplace my-5">
                         {{ form_label(form.nombreplace, 'Nombre de place maximum ', {'label_attr': {'class': 'foo'}}) }}
                         {{ form_errors(form.nombreplace) }}

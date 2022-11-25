@@ -2,17 +2,106 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Entity\BP;
+use App\Form\BPType;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
+
+#[Route('/bp', name: 'bp_')]
 class BPController extends AbstractController
 {
-    #[Route('/b/p', name: 'app_b_p')]
-    public function index(): Response
+
+    #[Route('/', name: 'showAllBPActual')]
+    #[IsGranted('ROLE_TRESO')]
+    public function showAllBPActual(): Response
     {
-        return $this->render('bp/index.html.twig', [
-            'controller_name' => 'BPController',
+        $date =  date("Y");
+        return $this->redirectToRoute('bp_showAll', ['exercice' => $date]);
+
+    }
+    #[Route('/exercice/{exercice}', name: 'showAll')]
+    #[IsGranted('ROLE_TRESO')]
+    public function showAll(EntityManagerInterface $entityManager,   $exercice): Response
+    {
+        $bpProduits = $entityManager->getRepository(BP::class)->findAllByExerciceProduit($exercice);
+        $bpCharges = $entityManager->getRepository(BP::class)->findAllByExerciceCharge($exercice);
+
+        return $this->render('bp/showAll.html.twig', [
+            'bpProduits' => $bpProduits,
+            'bpCharges' => $bpCharges,
+            'exercice' => $exercice,
         ]);
+    }
+
+    #[Route('/show/{bpID}', name: 'show')]
+    #[IsGranted('ROLE_TRESO')]
+    public function show(EntityManagerInterface $entityManager, $bpID): Response
+    {
+        $bp = $entityManager->getRepository(BP::class)->findById($bpID)[0];
+
+        return $this->render('bp/show.html.twig', [
+            'bp' => $bp,
+
+        ]);
+    }
+
+    #[Route('/new', name: 'new')]
+    #[IsGranted('ROLE_TRESO')]
+    public function new(EntityManagerInterface $entityManager, Request $request): Response
+    {
+        $bp = new BP();
+        $form = $this->createForm(BPType::class, $bp);
+        $form->handleRequest($request);
+
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->persist($bp);
+            $entityManager->flush();
+            return $this->redirectToRoute('bp_show', ['bpID' => $bp->getId()]);
+        }
+
+        return $this->render('bp/new.html.twig', [
+            'bp' => $bp,
+            'form' => $form->createView(),
+        ]);
+    }
+
+    #[Route('/edit/{bpID}', name: 'edit')]
+    #[IsGranted('ROLE_TRESO')]
+    public function edit(EntityManagerInterface $entityManager, Request $request, $bpID): Response
+    {
+        $bp = $entityManager->getRepository(BP::class)->findById($bpID)[0];
+        $form = $this->createForm(BPType::class, $bp);
+        $form->handleRequest($request);
+
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->persist($bp);
+            $entityManager->flush();
+            return $this->redirectToRoute('bp_show', ['bpID' => $bpID]);
+        }
+
+        return $this->render('bp/edit.html.twig', [
+            'bp' => $bp,
+            'form' => $form->createView(),
+
+        ]);
+    }
+
+    #[Route('/delete/{bpID}', name: 'delete')]
+    #[IsGranted('ROLE_TRESO')]
+    public function delete(EntityManagerInterface $entityManager, $bpID): Response
+    {
+
+        $bp = $entityManager->getRepository(BP::class)->findById($bpID)[0];
+        $entityManager->remove($bp);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('bp_showAllBPActual');
     }
 }

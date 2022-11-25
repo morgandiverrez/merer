@@ -7,9 +7,7 @@
     <div class="container-fluid">
         <div style = "margin-left: auto ; margin-right: auto ; max-width : 900px;">
             <p class="display-6 no-wrap text-center">Liste des services
-                {% if is_granted('ROLE_BF') %}
                     <a href="/service/new"><i class="fa-solid fa-plus align-right"></i></a>
-                {% endif %}
             </p>
             <form action="{{ path('service_showAll') }}" method="post">
                 <p class="text-center">

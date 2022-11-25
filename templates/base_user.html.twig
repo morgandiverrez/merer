@@ -143,7 +143,7 @@
                                                 <a class="nav-link" href="/CPO/">Suivi CPO </a>
                                             </li>
                                                 <li class="nav-item">
-                                                <a class="nav-link" href="/BP/">suivie BP </a>
+                                                <a class="nav-link" href="/bp/">suivie BP </a>
                                             </li>
                                                 <li class="nav-item">
                                                 <a class="nav-link" href="/cheque/">Liste des chèques </a>
@@ -186,24 +186,26 @@
                                         </ul>
                                     </li>
                                 {% endif %}
-                                {% if app.user.profil.getEquipeElu() is not empty %}
-                                    {% if 'Centraux UBO' in app.user.profil.getEquipeElu() or 'CROUS Rennes-Bretagne' in app.user.profil.getEquipeElu() or is_granted('ROLE_BF') %}   
-                                        <li class="nav-item dropdown">
-                                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                            Signature </a>
-                                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                                {% if'Centraux UBO' in app.user.profil.getEquipeElu() or is_granted('ROLE_BF') %}
-                                                    <li >
-                                                        <a class="dropdown-item" href="/signature/centrauxUBO">Signature Centraux UBO </a>
-                                                    </li>
-                                                {% endif %}
-                                                {% if 'CROUS Rennes-Bretagne' in app.user.profil.getEquipeElu() or is_granted('ROLE_BF') %}
-                                                    <li >
-                                                        <a class="dropdown-item" href="/signature/CROUS">Signature CROUS BZH</a>
-                                                    </li>
-                                                {% endif %}
-                                            </ul>
-                                        </li>
+                                {% if app.user.getProfil() is not null %}
+                                     {% if app.user.profil.getEquipeElu() is not empty %}
+                                        {% if 'Centraux UBO' in app.user.profil.getEquipeElu() or 'CROUS Rennes-Bretagne' in app.user.profil.getEquipeElu() or is_granted('ROLE_BF') %}   
+                                            <li class="nav-item dropdown">
+                                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                Signature </a>
+                                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                                    {% if'Centraux UBO' in app.user.profil.getEquipeElu() or is_granted('ROLE_BF') %}
+                                                        <li >
+                                                            <a class="dropdown-item" href="/signature/centrauxUBO">Signature Centraux UBO </a>
+                                                        </li>
+                                                    {% endif %}
+                                                    {% if 'CROUS Rennes-Bretagne' in app.user.profil.getEquipeElu() or is_granted('ROLE_BF') %}
+                                                        <li >
+                                                            <a class="dropdown-item" href="/signature/CROUS">Signature CROUS BZH</a>
+                                                        </li>
+                                                    {% endif %}
+                                                </ul>
+                                            </li>
+                                        {% endif %}
                                     {% endif %}
                                 {% endif %}
                                 {% if not is_granted('ROLE_FORMATEURICE') %}
