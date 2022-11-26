@@ -79,9 +79,9 @@
                             {% else %} 
                                 {% for seanceProfil in seance.getSeanceProfil() %}
                                     <tr>
-                                        <th>{{seanceProfil.profil.getName()}}</th>
-                                        <th>{{seanceProfil.profil.getLastName()}}</th>
-                                        <th><a href="/account/show/{{seanceProfil.profil.getId()}}"><i class="fa-solid fa-eye"></i></a></th> 
+                                        <td>{{seanceProfil.profil.getName()}}</td>
+                                        <td>{{seanceProfil.profil.getLastName()}}</td>
+                                        <td><a href="/account/show/{{seanceProfil.profil.getId()}}"><i class="fa-solid fa-eye"></i></a></td> 
                                     </tr> 
                                 {% endfor %}
                             {% endif %}

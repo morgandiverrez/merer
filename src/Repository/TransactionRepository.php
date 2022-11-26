@@ -76,6 +76,16 @@ class TransactionRepository extends ServiceEntityRepository
            ;
        }
 
+
+    public function findTransactionByCode($value): ?Transaction
+    {
+        return $this->createQueryBuilder('transaction')
+        ->andWhere('transaction.code = :val')
+        ->setParameter('val', $value)
+        ->getQuery()
+            ->getOneOrNullResult();
+    }
+
     public function findMaxDayTransaction($value)
     {
         return $this->createQueryBuilder('t')

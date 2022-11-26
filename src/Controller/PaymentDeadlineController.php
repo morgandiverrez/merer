@@ -31,12 +31,37 @@ class PaymentDeadlineController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($paymentDeadline);
-            $entityManager->flush();
+            
 
             $invoice->addPaymentdeadline($paymentDeadline);
             $entityManager->persist($invoice);
             $entityManager->flush();
-            return $this->redirectToRoute('customeaccount_invoiceTable');
+            return $this->redirectToRoute('invoice_show', ['invoiceID'=> $invoice->getId()]);
+        }
+
+        return $this->render('paymentDeadline/new.html.twig', [
+            'paymentDeadline' => $paymentDeadline,
+            'form' => $form->createView(),
+        ]);
+    }
+
+
+    #[Route('/edit/{paymentDeadlineID}', name: 'edit')]
+    #[IsGranted('ROLE_TRESO')]
+    public function edit(EntityManagerInterface $entityManager, Request $request, $paymentDeadlineID): Response
+    {
+        $paymentDeadline = $entityManager->getRepository(PaymentDeadline::class)->findById($paymentDeadlineID)[0];
+        $form = $this->createForm(PaymentDeadlineType::class, $paymentDeadline);
+        $form->handleRequest($request);
+        $invoice = $paymentDeadline->getInvoice();
+
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->persist($paymentDeadline);
+            $invoice->addPaymentdeadline($paymentDeadline);
+            $entityManager->persist($invoice);
+            $entityManager->flush();
+            return $this->redirectToRoute('invoice_show', ['invoiceID' => $invoice->getId()]);
         }
 
         return $this->render('paymentDeadline/new.html.twig', [
@@ -73,5 +98,18 @@ class PaymentDeadlineController extends AbstractController
         }
         $entityManager->flush();
         return $this->redirectToRoute('customeaccount_invoiceTable');
+    }
+
+    #[Route('/delete/{paymentDeadlineID}', name: 'delete')]
+    #[IsGranted('ROLE_TRESO')]
+    public function delete(EntityManagerInterface $entityManager, $paymentDeadlineID): Response
+    {
+
+        $paymentDeadline = $entityManager->getRepository(PaymentDeadline::class)->findById($paymentDeadlineID)[0];
+        $entityManager->remove($paymentDeadline);
+        $entityManager->flush();
+
+
+        return $this->redirectToRoute('invoice_show', ['invoiceID' => $paymentDeadline->getInvoice()->getId()]);
     }
 }

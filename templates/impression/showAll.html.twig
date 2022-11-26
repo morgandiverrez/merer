@@ -47,12 +47,12 @@
                 <tbody>
                 {% for impression in impressions %} 
                     <tr>
-                        <th>{{impression.getDatetime().format("d/m/Y H:i")}}</th>
-                        <th>{{impression.getCustomer().getName()}}</th>   
-                        <th>{{impression.getName()}}</th>
-                        <th>{{impression.getFormat()}}{% if impression.isRectoVerso() %} RV {% endif %} {% if impression.isCouleur() %} Couleur {% else %} NB {% endif %} </th>
-                        <th>{{impression.getQuantite()}}</th>
-                        <th><a href="/impression/delete/{{impression.getId()}}"><i class="fa-solid fa-trash-can"></i></i></a></th> 
+                        <td>{{impression.getDatetime().format("d/m/Y H:i")}}</td>
+                        <td>{{impression.getCustomer().getName()}}</td>   
+                        <td>{{impression.getName()}}</td>
+                        <td>{{impression.getFormat()}}{% if impression.isRectoVerso() %} RV {% endif %} {% if impression.isCouleur() %} Couleur {% else %} NB {% endif %} </td>
+                        <td>{{impression.getQuantite()}}</td>
+                        <td><a href="/impression/delete/{{impression.getId()}}"><i class="fa-solid fa-trash-can"></i></i></a></td> 
                     </tr>
                 {% endfor %}
                 </tbody>

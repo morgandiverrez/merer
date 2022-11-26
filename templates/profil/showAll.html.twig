@@ -35,11 +35,11 @@
                 <tbody>
                     {% for profil in profils %} 
                         <tr>
-                            <th>{{profil.getName()}}</th>
-                            <th>{{profil.getLastName()}}</th>
-                            <th>{% if profil.getEquipeElu() is null %}- {% else %}  {% for equipeElu in profil.getEquipeElu() %}{{equipeElu.getName()}} {% endfor %}{% endif %}</th>
-                            <th>{% if profil.getAssociation() is null %}- {% else %} {% for association in profil.getAssociation() %}{{association.getSigle()}} {% endfor %} {% endif %}</th>
-                            <th><a href="/account/show/{{profil.getId()}}"><i class="fa-solid fa-eye"></i></i></a></th> 
+                            <td>{{profil.getName()}}</td>
+                            <td>{{profil.getLastName()}}</td>
+                            <td>{% if profil.getEquipeElu() is null %}- {% else %}  {% for equipeElu in profil.getEquipeElu() %}{{equipeElu.getName()}} {% endfor %}{% endif %}</td>
+                            <td>{% if profil.getAssociation() is null %}- {% else %} {% for association in profil.getAssociation() %}{{association.getSigle()}} {% endfor %} {% endif %}</td>
+                            <td><a href="/account/show/{{profil.getId()}}"><i class="fa-solid fa-eye"></i></i></a></td> 
                         </tr> 
                     {% endfor %}
                 </tbody>

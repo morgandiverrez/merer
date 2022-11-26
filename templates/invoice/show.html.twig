@@ -23,7 +23,7 @@
                             {% endif %}
                         </li>
                         <li class="list-group-item">Client : <a href="/custpmer/show/{{ invoice.getCustomer().getId() }}" class="card-link"> {{invoice.getCustomer().getName()}} </a> </li>
-                        <li class="list-group-item">Transaction : <a href="/transaction/show/{{ invoice.transaction.getId() }}" class="card-link"> {{invoice.getTransaction().getCode()}} </a></li>
+                        <li class="list-group-item">Transaction : {% if invoice.getTransaction() != null %}<a href="/transaction/show/{{ invoice.transaction.getId() }}" class="card-link"> {{invoice.getTransaction().getCode()}} </a>{% endif %}</li>
                         <li class="list-group-item">{% if invoice.getCategory() != null %} catégorie :  {{invoice.getCategorie()}}{% endif %}</li>  
                     </ul>
                     <div class="card-body">
@@ -45,24 +45,52 @@
                         <th scope="col">Réduction</th>
                         <th scope="col">Description réduction</th>
                         <th scope="col">Montant réduction</th>
+                        <th scope="col">edit</th>
+                        <th scope="col">delete</th>
+
                     </tr>
                 </thead>
 
-                <tbody>
+                <tbody> 
+                {% set totalHT = 0 %}
+                {% set totalTTC = 0 %}
+                {% set totalDiscount = 0 %}
                 {% for invoiceLine in invoice.invoiceLines %} 
                     <tr>
-                        <th>{{invoiceLine.catalogService.name}} </th>
-                        <th>{{invoiceLine.catalogService.description}} - {{invoiceLine.quote}}</th>
-                        <th>{{invoiceLine.catalogService.amountHt}} €</th>
-                        <th>{{invoiceLine.catalogService.tvaRate}} %</th>
-                        <th>{{invoiceLine.catalogService.amountTtc}} €</th>
-                        <th>{{invoiceLine.catalogDiscount.name}}</th>
-                        <th>{{invoiceLine.catalogDiscount.description}}</th>
-                        <th>{{invoiceLine.discount}} €</th>
+                        <td>{{invoiceLine.catalogService.name}} </td>
+                        <td>{{invoiceLine.catalogService.description}} - {{invoiceLine.quote}}</td>
+                        <td>{{invoiceLine.catalogService.amountHt}} €</td>
+                        {% set totalHT  = totalHT + invoiceLine.catalogService.amountHt %}
+                        <td>{{invoiceLine.catalogService.tvaRate}} %</td>
+                        <td>{{invoiceLine.catalogService.amountTtc}} €</td>
+                         {% set totalTTC = totalTTC + invoiceLine.catalogService.amountTtc %}
+                        <td>{{invoiceLine.catalogDiscount.name}}</td>
+                        <td>{{invoiceLine.catalogDiscount.description}}</td>
+                        <td>{{invoiceLine.discount}} €</td>
+                        {% set totalDiscount = totalDiscount + invoiceLine.discount %}
+                        <td><a href="/invoiceLine/edit/{{ invoiceLine.getId()}}" class="card-link"><i class="fa-solid fa-pen-to-square"></i></a></td>
+                        <td><a href="/invoiceLine/delete/{{ invoiceLine.getId()}}" class="card-link"><i class="fa-solid fa-trash-can"></i></a></td>
                     </tr>
                 {% endfor %}
                 </tbody>
+                <tfoot>
+                    <tr> 
+                        <th> </th>
+                        <th> </th>
+                        <th>{{ totalHT }} € </th>
+                        <th> </th>
+                        <th>{{ totalTTC }} €</th>
+                        <th> </th>
+                        <th> </th>
+                        <th>{{ totalDiscount }} € </th>
+                        <th> </th>
+                        <th> </th>
+                    </tr>
+                </tfoot>
             </table>
+             <div class="text-center">
+                <a href="/invoiceLine/new/{{ invoice.id }}"><button class="btn btn-success mt-3 mb-3" type="submit" name="show">{{ button_label|default('Ajouter une ligne ') }}<i class = "fa text-light fa-plus-square me-2"></i></button></a>
+            </div>
             <table class="table table-striped">
                 <p class="display-6 no-wrap text-center mb-5">Echéance de payment</p>
                 <thead>
@@ -73,22 +101,29 @@
                          <th scope="col">Date réalisée</th>
                         <th scope="col">Montant réalisé</th>
                         <th scope="col">Moyen utilisé</th>
+                         <th scope="col">Edit</th>
+                          <th scope="col">Delete</th>
                     </tr>
                 </thead>
 
                 <tbody>
                 {% for paymentDeadline in invoice.paymentDeadlines %} 
                     <tr>
-                        <th>{% if paymentDeadline.expectedPaymentDate is  not null %}{{paymentDeadline.expectedPaymentDate.format('d/m/y')}} {% endif %} </th>
-                        <th>{{paymentDeadline.expectedAmount}} €</th>
-                        <th>{{paymentDeadline.expectedMeans}}</th>
-                        <th>{% if paymentDeadline.actualPaymentDate is not null %}{{paymentDeadline.actualPaymentDate.format('d/m/y')}} {% endif %}</th>
-                        <th>{{paymentDeadline.actualAmount}} €</th>
-                        <th>{{paymentDeadline.actualMeans}}</th>
+                        <td>{% if paymentDeadline.expectedPaymentDate is  not null %}{{paymentDeadline.expectedPaymentDate.format('d/m/y')}} {% endif %} </td>
+                        <td>{{paymentDeadline.expectedAmount}} €</td>
+                        <td>{{paymentDeadline.expectedMeans}}</td>
+                        <td>{% if paymentDeadline.actualPaymentDate is not null %}{{paymentDeadline.actualPaymentDate.format('d/m/y')}} {% endif %}</td>
+                        <td>{{paymentDeadline.actualAmount}} €</td>
+                        <td>{{paymentDeadline.actualMeans}}</td>
+                        <td><a href="/paymentDeadline/edit/{{ paymentDeadline.getId()}}" class="card-link"><i class="fa-solid fa-pen-to-square"></i></a></td>
+                        <td><a href="/paymentDeadline/delete/{{ paymentDeadline.getId()}}" class="card-link"><i class="fa-solid fa-trash-can"></i></a></td>
                     </tr>
                 {% endfor %}
                 </tbody>
             </table>
+            <div class="text-center">
+                <a href="/paymentDeadline/new/{{ invoice.id }}"><button class="btn btn-success mt-3 mb-3" type="submit" name="show">{{ button_label|default('Ajouter une ligne ') }}<i class = "fa text-light fa-plus-square me-2"></i></button></a>
+            </div>
            
         </div>
     </div>

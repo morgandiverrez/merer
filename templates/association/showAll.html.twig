@@ -34,10 +34,10 @@
                 <tbody>
                     {% for association in associations %} 
                         <tr>
-                            <th>{{association.getSigle()}}</th>
-                            <th>{{association.getFedeFilliere()}}</th>
-                            <th>{{association.getAdresseMail()}}</th>
-                            <th><a href="/association/show/{{association.getId()}}"><i class="fa-solid fa-eye"></i></i></a></th> 
+                            <td>{{association.getSigle()}}</td>
+                            <td>{{association.getFedeFilliere()}}</td>
+                            <td>{{association.getAdresseMail()}}</td>
+                            <td><a href="/association/show/{{association.getId()}}"><i class="fa-solid fa-eye"></i></i></a></td> 
                         </tr> 
                     {% endfor %}
                 </tbody>

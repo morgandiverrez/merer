@@ -34,10 +34,10 @@
                 <tbody>
                 {% for lieu in lieux %} 
                 <tr>
-                    <th>{{lieu.getName()}}</th>
-                    <th>{{lieu.getSalle()}}</th>
-                    <th>{{lieu.getVille()}}</th>
-                    <th><a href="/lieux/show/{{lieu.getId()}}"><i class="fa-solid fa-eye"></i></i></a></th>
+                    <td>{{lieu.getName()}}</td>
+                    <td>{{lieu.getSalle()}}</td>
+                    <td>{{lieu.getVille()}}</td>
+                    <td><a href="/lieux/show/{{lieu.getId()}}"><i class="fa-solid fa-eye"></i></i></a></td>
                </tr> {% endfor %}
                 </tbody>
             </table>

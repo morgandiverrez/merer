@@ -58,16 +58,16 @@
                         {% else %} 
                             {% for profil in equipeElu.getProfil() %}
                                 <tr>
-                                    <th>{{profil.getName()}}</th>
-                                    <th>{{profil.getLastName()}}</th>
-                                    <th>
+                                    <td>{{profil.getName()}}</td>
+                                    <td>{{profil.getLastName()}}</td>
+                                    <td>
                                     {% for association in profil.getAssociation() %}
                                             {{association.getSigle()}}
                                     {% endfor %}
-                                    </th>
+                                    </td>
                                     {% if is_granted('ROLE_FORMATEURICE') %}
-                                        <th> {{profil.user.getEMail()}} </th>
-                                        <th><a href="/account/show/{{profil.getId()}}"><i class="fa-solid fa-eye"></i></a></th> 
+                                        <td> {{profil.user.getEMail()}} </td>
+                                        <td><a href="/account/show/{{profil.getId()}}"><i class="fa-solid fa-eye"></i></a></td> 
                                     {% endif %}
                                 </tr> 
                             {% endfor %}

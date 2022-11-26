@@ -56,16 +56,16 @@
                         {% else %} 
                             {% for profil in association.getProfil() %}
                                 <tr>
-                                    <th>{{profil.getName()}}</th>
-                                    <th>{{profil.getLastName()}}</th>
-                                    <th> 
+                                    <td>{{profil.getName()}}</td>
+                                    <td>{{profil.getLastName()}}</td>
+                                    <td> 
                                     {% for equipeElu in profil.getEquipeElu() %}
                                         {{equipeElu.getName()}}
                                     {% endfor %}
-                                    </th>
+                                    </td>
                                         {% if is_granted('ROLE_FORMATEURICE') %}
-                                        <th> {{profil.user.getEMail()}} </th>
-                                        <th><a href="/account/show/{{profil.getId()}}"><i class="fa-solid fa-eye"></i></i></a></th> 
+                                        <td> {{profil.user.getEMail()}} </td>
+                                        <td><a href="/account/show/{{profil.getId()}}"><i class="fa-solid fa-eye"></i></i></a></td> 
                                     {% endif %}
                                 </tr> 
                             {% endfor %}
@@ -73,11 +73,11 @@
                     </tbody>
                         {% if is_granted('ROLE_ADMIN') %}
                         <tfoot>
-                            <th></th>
-                            <th></th>
-                            <th> <a class="btn btn-primary" href="/association/remove/{{ association.getId() }}">vider l'association</a> </th>
-                            <th></th>
-                            <th></th>
+                            <td></td>
+                            <td></td>
+                            <td> <a class="btn btn-primary" href="/association/remove/{{ association.getId() }}">vider l'association</a> </td>
+                            <td></td>
+                            <td></td>
                         </tfoot>
                     {% endif %}
                 </table>

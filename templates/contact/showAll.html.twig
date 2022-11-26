@@ -40,10 +40,10 @@
                 <tbody>
                 {% for contact in contacts %} 
                     <tr>
-                        <th>{{contact.getName()}}</th>   
-                         <th>{{contact.getLastName()}}</th>   
-                        <th>{{contact.getCivility()}}</th>
-                        <th><a href="/contact/show/{{contact.getId()}}"><i class="fa-solid fa-eye"></i></i></a></th> 
+                        <td>{{contact.getName()}}</td>   
+                         <td>{{contact.getLastName()}}</td>   
+                        <td>{{contact.getCivility()}}</td>
+                        <td><a href="/contact/show/{{contact.getId()}}"><i class="fa-solid fa-eye"></i></i></a></td> 
                      </tr>
                 {% endfor %}
                 </tbody>

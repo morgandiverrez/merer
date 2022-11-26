@@ -28,7 +28,7 @@ class TransactionLineController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $transaction = $entityManager->getRepository(Transaction::class)->findTransactionById($transactionId);
 
-            $logoUpload = $form->get('document')->getData();
+            $logoUpload = $form->get('urlProof')->getData();
             if ($logoUpload) {
                 $urlProof = 'transactionLineProof' . $transactionLine->getId() . '.' . $logoUpload[0]->guessExtension();
 
@@ -69,7 +69,7 @@ class TransactionLineController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $transaction = $entityManager->getRepository(Transaction::class)->findTransactionById($transactionId);
 
-            $logoUpload = $form->get('document')->getData();
+            $logoUpload = $form->get('urlProof')->getData();
             if ($logoUpload) {
                 $urlProof = 'transactionLineProof' . $transactionLine->getId() . '.' . $logoUpload[0]->guessExtension();
 
@@ -95,4 +95,16 @@ class TransactionLineController extends AbstractController
         ]);
     }
 
+    #[Route('/delete/{transactionLineID}', name: 'delete')]
+    #[IsGranted('ROLE_TRESO')]
+    public function delete(EntityManagerInterface $entityManager, $transactionLineID): Response
+    {
+
+        $transactionLine = $entityManager->getRepository(TransactionLine::class)->findById($transactionLineID);
+        $entityManager->remove($transactionLine);
+        $entityManager->flush();
+
+
+        return $this->redirectToRoute('transaction_show', ['transactionID'=>$transactionLine->getTransaction()->getId()]);
+    }
 }

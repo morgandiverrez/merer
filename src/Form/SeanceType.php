@@ -7,11 +7,13 @@ use App\Entity\Profil;
 use App\Entity\Seance;
 use App\Entity\Evenement;
 use App\Entity\Formation;
+use Doctrine\DBAL\Types\BooleanType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 
 class SeanceType extends AbstractType
 {
@@ -25,7 +27,9 @@ class SeanceType extends AbstractType
              'date_widget' => 'single_text',
             'time_widget' => 'single_text',
             ])
-            ->add('nombreplace')
+
+            ->add('nombreplace', NumberType::class)
+
             ->add('formation', EntityType::class, [
             'class' => Formation::class,
             
@@ -40,7 +44,7 @@ class SeanceType extends AbstractType
             'multiple' => true, 
         ])
 
-            ->add('visible')
+            ->add('visible', BooleanType::class)
 
             ->add('evenement', EntityType::class, [
                 'class' => Evenement::class,

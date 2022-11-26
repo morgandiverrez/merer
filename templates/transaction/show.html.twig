@@ -41,22 +41,24 @@
                     <th scope="col">Commentaire</th>
                     <th scope="col">Document</th>
                     <th scope="col">Edit</th>
+                     <th scope="col">Supprimé</th>
                 </tr>
                 </thead>
 
                 <tbody>
                 {% for transactionLine in transaction.transactionLines %} <tr>
-                    <th>{{transactionLine.label}}</th>
-                    <th>{{transactionLine.date.format("d/m/y")}}</th>
-                    <th>{{transactionLine.amount}} €</th>
-                    <th>{{transactionLine.chartofaccounts.code}} </th>
-                    <th>{{transactionLine.quote}} </th>
+                    <td>{{transactionLine.label}}</td>
+                    <td>{{transactionLine.date.format("d/m/y")}}</td>
+                    <td>{{transactionLine.amount}} €</td>
+                    <td>{{transactionLine.chartofaccounts.code}} </td>
+                    <td>{{transactionLine.quote}} </td>
                     {% if transactionLine.urlProof is not null %}
-                        <th><a href="/transaction/download/{{ transactionLine.id }}" target="_blank"><i class = "fa-solid fa-eye"></i></a></th>
+                        <td><a href="/transaction/download/{{ transactionLine.id }}" target="_blank"><i class="fa-sharp fa-solid fa-file"></i></a></td>
                     {% else %}
-                        <th></th>
+                        <td></td>
                     {% endif %}
-                    <th><a href="/transactionLine/edit/{{ transaction.id }}/{{ transactionLine.id }}"><i class = "fa-solid fa-pen-to-square"></i></a></th>
+                    <td><a href="/transactionLine/edit/{{ transaction.id }}/{{ transactionLine.id }}"><i class = "fa-solid fa-pen-to-square"></i></a></td>
+                    <td><a href="/transactionLine/delete/{{ transactionLine.id }}"><i class="fa-solid fa-trash-can"></i></a></td>
 
                 </tr> {% endfor %}
                 </tbody>

@@ -23,10 +23,10 @@
                 <tbody>
                     {% for badge in badges %} 
                         <tr>
-                            <th>{{badge.getName()}}</th>
-                            <th>{{badge.getDescription()}}</th>
-                            <th>{{badge.getCategorie()}}</th>
-                            <th><a href="/badge/show/{{badge.getId()}}"><i class="fa-solid fa-eye"></i></i></a></th> 
+                            <td>{{badge.getName()}}</td>
+                            <td>{{badge.getDescription()}}</td>
+                            <td>{{badge.getCategorie()}}</td>
+                            <td><a href="/badge/show/{{badge.getId()}}"><i class="fa-solid fa-eye"></i></i></a></td> 
                         </tr> 
                     {% endfor %}
                 </tbody>

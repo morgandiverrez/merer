@@ -21,23 +21,23 @@
                             {% for user in users  %}
                                 {% if  user.profil is not null %}
                                     <tr>
-                                        <th>{{user.profil.getName()}}</th>
-                                        <th>{{user.profil.getLastName()}}</th>
-                                        <th>
+                                        <td>{{user.profil.getName()}}</td>
+                                        <td>{{user.profil.getLastName()}}</td>
+                                        <td>
                                             {% if "ROLE_FORMATEURICE" in user.getRoles()  %}
                                                 <input type="checkbox" id="formateurice" name="{{user.getId()}}_formateurice"  checked />
                                             {% else %}
                                                 <input type="checkbox" id="formateurice" name="{{user.getId()}}_formateurice" />
                                             {% endif %}
-                                        </th>
-                                        <th>
+                                        </td>
+                                        <td>
                                             {% if "ROLE_BF" in user.getRoles()  %}
                                                 <input type="checkbox" id="bf" name="{{user.getId()}}_bf"  checked />
                                             {% else %}
                                                 <input type="checkbox" id="bf" name="{{user.getId()}}_bf" />
                                             {% endif %}
-                                        </th>
-                                        <th><a href="/account/show/{{user.profil.getId()}}"><i class="fa-solid fa-eye"></i></a></th> 
+                                        </td>
+                                        <td><a href="/account/show/{{user.profil.getId()}}"><i class="fa-solid fa-eye"></i></a></td> 
                                     </tr> 
                                 {% endif %}
                             {% endfor %}
