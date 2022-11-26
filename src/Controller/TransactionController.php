@@ -44,27 +44,34 @@ class TransactionController extends AbstractController
                  $transaction->setCode(date("Ymd") * 100 + $nbtransaction + 1);
             }
 
-            $transactionLines = $form->get('transactionLines');
-            foreach ($transactionLines as $transactionLine) {
-                $logoUpload = $transactionLine->get('document')->getData();
-                print_r($logoUpload);
+            foreach($transaction->getTransactionLines() as $transactionLine){
+                $entityManager->persist($transactionLine);
+            }
+            $entityManager->persist($transaction);
+            $entityManager->flush();
+            
+            $transaction = $entityManager->getRepository(Transaction::class)->findTransactionByCode($transaction->getCode());
+
+            $i=0;
+            
+            foreach($form->get('transactionLines') as $transactionLine){
+                $logoUpload = $transactionLine->get('urlProof')->getData();
                 if ($logoUpload) {
-                    $urlProof = 'transactionLineProof' . $transactionLine->get('label')->getData() . '.' . $logoUpload[0]->guessExtension();
-
-
-                    $transactionLine->setUrlProof('public/build/transactionLine/proof/' . $urlProof);
+                    $urlProof = 'transactionLineProof' . $transaction->getTransactionLines()[$i]->getId() . '.' . $logoUpload[0]->guessExtension();
+                    $transaction->getTransactionLines()[$i]->setUrlProof('public/build/transactionLine/proof/' . $urlProof);
                     try {
-                        $logoUpload->move(
+                        $logoUpload[0]->move(
                             'public/build/transactionLine/proof',
                             $urlProof
                         );
                     } catch (FileException $e) {
                     }
-                    $entityManager->persist($transactionLine);
                 }
+                $entityManager->persist($transaction->getTransactionLines()[$i]);
+                $i++;
             }
-            $entityManager->persist($transaction);
             $entityManager->flush();
+
             return $this->redirectToRoute('transaction_show', ['transactionId' => $transaction->getId()]);
         }
 
@@ -85,14 +92,21 @@ class TransactionController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $transactionLines = $form->get('transactionLines');
-            $compteur =0;
-            foreach ($transactionLines as $transactionLine) {
+            foreach ($transaction->getTransactionLines() as $transactionLine) {
+                $entityManager->persist($transactionLine);
+            }
+            $entityManager->persist($transaction);
+            $entityManager->flush();
 
-                $logoUpload = $transactionLine->get('document')->getData();
+            $transaction = $entityManager->getRepository(Transaction::class)->findTransactionByCode($transaction->getCode());
+
+            $i = 0;
+
+            foreach ($form->get('transactionLines') as $transactionLine) {
+                $logoUpload = $transactionLine->get('urlProof')->getData();
                 if ($logoUpload) {
-                    $urlProof = 'transactionLineProof' . $transaction->getId() . '_' . $compteur . '.' . $logoUpload[0]->guessExtension();
-                    $transactionLine->setUrlProof('public/build/transactionLine/proof/' . $urlProof);
+                    $urlProof = 'transactionLineProof' . $transaction->getTransactionLines()[$i]->getId() . '.' . $logoUpload[0]->guessExtension();
+                    $transaction->getTransactionLines()[$i]->setUrlProof('public/build/transactionLine/proof/' . $urlProof);
                     try {
                         $logoUpload[0]->move(
                             'public/build/transactionLine/proof',
@@ -101,10 +115,9 @@ class TransactionController extends AbstractController
                     } catch (FileException $e) {
                     }
                 }
-            $compteur ++;
-                
+                $entityManager->persist($transaction->getTransactionLines()[$i]);
+                $i++;
             }
-            $entityManager->persist($transaction);
             $entityManager->flush();
             return $this->redirectToRoute('transaction_show', ['transactionId' => $transaction->getId()]);
         }

@@ -22,7 +22,7 @@ class InvoiceLineType extends AbstractType
             ->add('catalogDiscount',  EntityType::class, [
             'class' => CatalogDiscount::class,
         ])
-            ->add('CatalogService',  EntityType::class, [
+            ->add('catalogService',  EntityType::class, [
             'class' => CatalogService::class,
         ])
         ;

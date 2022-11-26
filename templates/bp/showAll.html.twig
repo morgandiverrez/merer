@@ -27,11 +27,11 @@
                 {% for bp in bpProduits %} 
                     <tr>
                         
-                        <th>{{bp.getCategorie()}}</th> 
-                        <th>{{bp.getDesignation()}}</th>   
-                        <th>{{bp.getExpectedAmount()}} €</th>
-                        <th>{{bp.getReallocateAmount()}} €</th>
-                        <th><a href="/bp/show/{{bp.getId()}}"><i class="fa-solid fa-eye"></i></a></th> 
+                        <td>{{bp.getCategorie()}}</td> 
+                        <td>{{bp.getDesignation()}}</td>   
+                        <td>{{bp.getExpectedAmount()}} €</td>
+                        <td>{{bp.getReallocateAmount()}} €</td>
+                        <td><a href="/bp/show/{{bp.getId()}}"><i class="fa-solid fa-eye"></i></a></td> 
                      </tr>
                 {% endfor %}
                 </tbody>
@@ -54,11 +54,11 @@
                 {% for bp in bpCharges %} 
                     <tr>
                         
-                        <th>{{bp.getCategorie()}}</th> 
-                        <th>{{bp.getDesignation()}}</th>   
-                        <th>{{bp.getExpectedAmount()}} €</th>
-                        <th>{{bp.getReallocateAmount()}} €</th>
-                        <th><a href="/bp/show/{{bp.getId()}}"><i class="fa-solid fa-eye"></i></a></th> 
+                        <td>{{bp.getCategorie()}}</td> 
+                        <td>{{bp.getDesignation()}}</td>   
+                        <td>{{bp.getExpectedAmount()}} €</td>
+                        <td>{{bp.getReallocateAmount()}} €</td>
+                        <td><a href="/bp/show/{{bp.getId()}}"><i class="fa-solid fa-eye"></i></a></td> 
                      </tr>
                 {% endfor %}
                 </tbody>

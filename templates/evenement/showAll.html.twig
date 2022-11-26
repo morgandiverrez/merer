@@ -31,11 +31,11 @@
                             {% set verif = true %}
                         {% endif %}
                         <tr>
-                            <th>{{evenement.getName()}}</th>
-                            <th>{{evenement.getDescription()}}</th>
-                            <th>{% if evenement.getDateDebut() is null %} - {% else %} {{evenement.getDateDebut().format('d/m/Y H:i')}} {% endif %}</th>
-                            <th>{% if evenement.getDateFin() is null %} - {% else %}{{evenement.getDateFin().format('d/m/Y H:i')}}{% endif %}</th>
-                            <th><a href="/evenement/show/{{evenement.getId()}}"><i class="fa-solid fa-eye"></i></i></a></th> 
+                            <td>{{evenement.getName()}}</td>
+                            <td>{{evenement.getDescription()}}</td>
+                            <td>{% if evenement.getDateDebut() is null %} - {% else %} {{evenement.getDateDebut().format('d/m/Y H:i')}} {% endif %}</td>
+                            <td>{% if evenement.getDateFin() is null %} - {% else %}{{evenement.getDateFin().format('d/m/Y H:i')}}{% endif %}</td>
+                            <td><a href="/evenement/show/{{evenement.getId()}}"><i class="fa-solid fa-eye"></i></i></a></td> 
                         </tr> 
                     {% endfor %}
                 </tbody>

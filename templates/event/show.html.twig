@@ -41,14 +41,14 @@
                         <tbody>
                             {% for transaction in event.getTransaction() %} 
                                 <tr>
-                                    <th>{{transaction.code}}</th>
+                                    <td>{{transaction.code}}</td>
                                     {% if transaction.closure == true %}
-                                        <th>Oui</th>
+                                        <td>Oui</td>
                                     {% else %}
-                                        <th>Non</th>
+                                        <td>Non</td>
                                     {% endif %}
-                                    <th>{{transaction.quote}}</th>
-                                    <th><a href="/transaction/show/{{ transaction.id }}"><i class = "fa-solid fa-eye"></i></a></th>
+                                    <td>{{transaction.quote}}</td>
+                                    <td><a href="/transaction/show/{{ transaction.id }}"><i class = "fa-solid fa-eye"></i></a></td>
                                 </tr> 
                             {% endfor %}
                         </tbody>

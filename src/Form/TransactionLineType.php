@@ -22,12 +22,12 @@ class TransactionLineType extends AbstractType
              ->add('label', TextType::class, ['required' => false, 'label' => 'Label'])
             ->add('date', DateType::class,['widget' => 'single_text', 'label' => 'date',])
             ->add('amount', MoneyType::class, ['label' => 'Montant ',])
-            ->add( 'document', FileType::class, [
-            'required' => false,
-            'mapped' => false,
-            'multiple' => true,
-            'label' => 'document justificatif',
-        ])
+            ->add('urlProof', FileType::class, [
+                'required' => false,
+                'mapped' => false,
+                'multiple' => true,
+                'label' => 'document justificatif',
+            ])
               
             ->add('quote', TextAreaType::class, ['label' => 'commentaire',])
             ->add('chartOfAccounts', EntityType::class, ['class' => ChartOfAccounts::class, 'label' => 'PCG',])

@@ -36,10 +36,10 @@
                 <tbody>
                 {% for account in accounts %} 
                     <tr>
-                        <th>{{account.getCode()}}</th>   
-                        <th>{{account.getName()}}</th>
-                        <th>{% if account.isMovable() %} oui {% else %} non {% endif %}</th>
-                        <th><a href="/ChartOfAccounts/show/{{account.getId()}}"><i class="fa-solid fa-eye"></i></i></a></th> 
+                        <td>{{account.getCode()}}</td>   
+                        <td>{{account.getName()}}</td>
+                        <td>{% if account.isMovable() %} oui {% else %} non {% endif %}</td>
+                        <td><a href="/ChartOfAccounts/show/{{account.getId()}}"><i class="fa-solid fa-eye"></i></i></a></td> 
                      </tr>
                 {% endfor %}
                 </tbody>

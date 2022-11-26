@@ -26,22 +26,22 @@
                 <tbody>
                 {% for seanceProfil in seance.getSeanceProfil() %} 
                     <tr>
-                        <th>{{seanceProfil.getHorrodateur().format("d/m/Y H:i")}}
-                        <th>{{seanceProfil.profil.getLastName()}}</th>
-                        <th>{{seanceProfil.profil.getName()}}</th>
-                        <th>
+                        <td>{{seanceProfil.getHorrodateur().format("d/m/Y H:i")}}</td>
+                        <td>{{seanceProfil.profil.getLastName()}}</td>
+                        <td>{{seanceProfil.profil.getName()}}</td>
+                        <td>
                         {% for association in seanceProfil.profil.getAssociation() %}
                             {{association }}
                         {% endfor %}
-                        </th>
-                        <th>
+                        </td>
+                        <td>
                         {% for equipeElu in seanceProfil.profil.getEquipeElu() %}
                             {{equipeElu }}
                         {% endfor %}
-                        </th>
-                        <th><a href="/account/show/{{seanceProfil.profil.getId()}}"><i class="fa-solid fa-eye"></i></a></th>
+                        </td>
+                        <td><a href="/account/show/{{seanceProfil.profil.getId()}}"><i class="fa-solid fa-eye"></i></a></td>
                         {% if is_granted('ROLE_BF')%}
-                            <th><a href="/inscription/delete/{{seance.getId()}}/{{seanceProfil.profil.id}}"><i class="fa-solid fa-trash-can"></i></a></th> 
+                            <td><a href="/inscription/delete/{{seance.getId()}}/{{seanceProfil.profil.id}}"><i class="fa-solid fa-trash-can"></i></a></td> 
                         {% endif %}
                     </tr>
                 {% endfor %}

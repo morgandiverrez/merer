@@ -21,11 +21,11 @@
                     {% for user in users %} 
                         {% if "ROLE_FORMATEURICE" in user.roles and user.profil is not null %}
                             <tr>
-                                <th>{{user.profil.getName()}}</th>
-                                <th>{{user.profil.getLastName()}}</th>
-                                <th>{{user.getEmail()}}</th>
-                                <th>{{user.profil.getTelephone()}} </th>
-                                <th><a href="/account/show/{{user.profil.getId()}}"><i class="fa-solid fa-eye"></i></a></th> 
+                                <td>{{user.profil.getName()}}</td>
+                                <td>{{user.profil.getLastName()}}</td>
+                                <td>{{user.getEmail()}}</td>
+                                <td>{{user.profil.getTelephone()}} </td>
+                                <td><a href="/account/show/{{user.profil.getId()}}"><i class="fa-solid fa-eye"></i></a></td> 
                             </tr> 
                         {% endif %}
                     {% endfor %}

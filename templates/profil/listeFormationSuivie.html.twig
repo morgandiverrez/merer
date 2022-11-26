@@ -22,11 +22,10 @@
                 <tbody>
                 {% for inscription in inscriptions %} 
                     <tr>
-                        <th>{{inscription.getSeance().getDatetime().format("Y-m-d H:i")}}</th>
-                        <th>{{inscription.getSeance().getName()}}</th>
-                        <th>{{inscription.getSeance().formation.getDuration().format("H:i")}}</th>
-                        
-                        <th><a href="/seance/show/{{inscription.getSeance().getId()}}"><i class="fa-solid fa-eye"></i></i></a></th>
+                        <td>{{inscription.getSeance().getDatetime().format("Y-m-d H:i")}}</td>
+                        <td>{{inscription.getSeance().getName()}}</td>
+                        <td>{{inscription.getSeance().formation.getDuration().format("H:i")}}</td>  
+                        <td><a href="/seance/show/{{inscription.getSeance().getId()}}"><i class="fa-solid fa-eye"></i></i></a></td>
                     </tr> 
                {% endfor %}
                 </tbody>

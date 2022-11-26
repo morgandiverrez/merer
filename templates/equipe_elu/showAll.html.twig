@@ -42,14 +42,14 @@
                 <tbody>
                 {% for equipeElu in equipeElus %} 
                     <tr>
-                        <th>{{equipeElu.getName()}}</th>   
-                        <th> 
+                        <td>{{equipeElu.getName()}}</td>   
+                        <td> 
                             {% for categorie in equipeElu.getCategorie() %}
                                 {{categorie}}   
                             {% endfor %}
-                        </th>
-                        <th>{{equipeElu.getEtablissement()}}</th>
-                        <th><a href="/equipeElu/show/{{equipeElu.getId()}}"><i class="fa-solid fa-eye"></i></i></a></th> 
+                        </td>
+                        <td>{{equipeElu.getEtablissement()}}</td>
+                        <td><a href="/equipeElu/show/{{equipeElu.getId()}}"><i class="fa-solid fa-eye"></i></i></a></td> 
                         </tr>
                 {% endfor %}
                 </tbody>

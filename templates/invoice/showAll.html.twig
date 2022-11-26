@@ -31,20 +31,20 @@
 
                     <tbody>
                     {% for invoice in invoices %} <tr>
-                        <th><a href="/customer/show/{{ invoice.customer.id }}" target="_blank">{{ invoice.customer.name }}</a></th>
+                        <td><a href="/customer/show/{{ invoice.customer.id }}" target="_blank">{{ invoice.customer.name }}</a></td>
                         
                         {% if invoice.comfirm == true %}
-                            <th>Fact-{{ invoice.code }}</th>
+                            <td>Fact-{{ invoice.code }}</td>
                          {% else %}
                             {% if invoice.category == "Fin Mois"%}
-                                <th>Fact en  cours -{{ invoice.code }}</th>
+                                <td>Fact en  cours -{{ invoice.code }}</td>
                             {% else %}
-                                <th>Dev-{{ invoice.code }}</th>
+                                <td>Dev-{{ invoice.code }}</td>
                             {% endif %}
                         {% endif %}
                         
-                        <th>{%if invoice.transaction %}<a href="/transaction/show/{{ invoice.transaction.id }}" target="_blank">{{ invoice.transaction.code }}</a>{% endif %}</th>
-                        <th>{{ totals[loop.index-1] }} €</th>
+                        <td>{%if invoice.transaction %}<a href="/transaction/show/{{ invoice.transaction.id }}" target="_blank">{{ invoice.transaction.code }}</a>{% endif %}</td>
+                        <td>{{ totals[loop.index-1] }} €</td>
 
                         {% set total=0 %}
 
@@ -53,8 +53,8 @@
                                 {% set total = total+paymentdeadline.actualAmount %}
                             {% endif %}
                         {% endfor %}
-                        <th>{{ total }} €</th>
-                        <th>{{ totals[loop.index-1]-total }} €</th>
+                        <td>{{ total }} €</td>
+                        <td>{{ totals[loop.index-1]-total }} €</td>
                         {% set cheque=0 %}
                         {% if invoice.transaction is not null %}
                             {% for transactionline in invoice.transaction.transactionlines %}
@@ -66,10 +66,10 @@
                                 {% endif %}
                             {% endfor %}
                         {% endif %}
-                        <th>{{ cheque }}</th>
-                         <th><a href="/invoice/show/{{ invoice.iD }}" ><i class = "fa-solid fa-eye"></i></a></th>
-                        <th><a href="/invoice/pdf/{{ invoice.iD }}" target="_blank"><i class="fa-sharp fa-solid fa-file"></i></a></th>
-                        <th>
+                        <td>{{ cheque }}</td>
+                         <td><a href="/invoice/show/{{ invoice.iD }}" ><i class = "fa-solid fa-eye"></i></a></td>
+                        <td><a href="/invoice/pdf/{{ invoice.iD }}" target="_blank"><i class="fa-sharp fa-solid fa-file"></i></a></td>
+                        <td>
                             {% if invoice.comfirm == FALSE %}
                                 <a href="/invoice/comfirm/{{ invoice.iD }}" target="_blank">
                                     <i class="fa-sharp fa-solid fa-circle-xmark"></i>
@@ -77,7 +77,7 @@
                             {% else %}
                                 <i class="fa-sharp fa-solid fa-circle-check"></i>
                             {% endif %} 
-                        </th>
+                        </td>
                         
                     </tr> {% endfor %}
                     </tbody>
