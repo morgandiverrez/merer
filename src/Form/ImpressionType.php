@@ -17,13 +17,7 @@ class ImpressionType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('exercice', EntityType::class, [
-                'class' => Exercice::class,
-                'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('u')
-                        ->orderBy('u.date', 'DESC');
-                },
-            ])
+            
             ->add('customer', EntityType::class, [
                 'class' => Customer::class,
                 'choices' => $options['liste_customer'],
