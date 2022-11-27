@@ -5,6 +5,7 @@ namespace App\Controller;
 use DateTime;
 use App\Entity\Invoice;
 use App\Entity\Customer;
+use App\Entity\Exercice;
 use App\Entity\Impression;
 use App\Entity\InvoiceLine;
 use App\Form\ImpressionType;
@@ -56,7 +57,9 @@ class ImpressionController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $impression->setDatetime(new DateTime());
-
+           
+            $impression->setExercice($entityManager->getRepository(Exercice::class)->findByName(strval(date('Y'))));
+            
             $invoiceLine = new InvoiceLine();
 
             if($impression->isFactureFinDuMois()){ //si facture fin mois
@@ -82,6 +85,7 @@ class ImpressionController extends AbstractController
                 $invoice = $entityManager->getRepository(Invoice::class)->findCurrentInvoiceImpressionOfCustomer($impression->getCustomer());
                 if($invoice = null){
                     $invoice = new Invoice();
+                    $invoice->setExercice($entityManager->getRepository(Exercice::class)->findByName(strval(date('Y'))));
                     $invoice->setAcquitted(false);
                     $invoice->setComfirm(false);
                     $invoice->setReady(false);
@@ -89,9 +93,10 @@ class ImpressionController extends AbstractController
                     $invoice->setCustomer($impression->getCustomer());
                     $invoice->setCreationDate(new Datetime());
                 }
-                
+              
             }else{ // donc facture direct 
                 $invoiceLine = new InvoiceLine();
+                
                 if ($impression->getFormat() == 'plastification') {
                     $impression->setCouleur(false);
                     $impression->setRectoVerso(false);
@@ -113,6 +118,7 @@ class ImpressionController extends AbstractController
                 }
 
                 $invoice = new Invoice();
+                $invoice->setExercice($entityManager->getRepository(Exercice::class)->findByName(strval(date('Y'))));
                 $invoice->setCategory('Fin Mois');
                 $invoice->setCustomer($impression->getCustomer());
                 $invoice->setCreationDate(new Datetime());
@@ -146,14 +152,27 @@ class ImpressionController extends AbstractController
     }
 
     #[Route('/delete/{impressionId}', name: 'delete')]
-    #[IsGranted('ROLE_TRESO')]
+    #[IsGranted('ROLE_USER')]
     public function delete(EntityManagerInterface $entityManager, $impressionId): Response
     {
 
         $impression = $entityManager->getRepository(Impression::class)->findById($impressionId)[0];
-        $entityManager->remove($impression);
-        $entityManager->flush();
+
+        $customers = $entityManager->getRepository(Customer::class)->findAll();
+        $i = 0;
+        while (!isset($customer) and isset($customers[$i])) {
+            if ($customers[$i]->getUser() == $this->getUser()) {
+                $customer = $customers[$i];
+            }
+            $i++;
+        }
+        if ($customer == $impression->getCustomer() or $this->isGranted("ROLE_TRESO")) {
+            $entityManager->remove($impression);
+            $entityManager->flush();
 
         return $this->redirectToRoute('impression_showAll', []);
+        } else {
+            return $this->redirectToRoute('account');
+        }
     }
 }

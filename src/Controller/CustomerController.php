@@ -50,7 +50,7 @@ class CustomerController extends AbstractController
 
 
     #[Route('/showForCustomer', name: 'showForCustomer')]
-    #[IsGranted('ROLE_USER')]
+    #[IsGranted('ROLE_TRESO')]
     public function showForCustomer(EntityManagerInterface $entityManager, ): Response
     {
         $user = $this->getUser();

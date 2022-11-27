@@ -18,15 +18,21 @@
                                   <th>pas comfirmer</th>
                             {% endif %}
                         </li>
-                        <li class="list-group-item"> {{expenseReport.getDate().format('d/m/y hh:ii')}}  </li>
-                        <li class="list-group-item">Client : <a href="/customer/show/{{ expenseReport.getCustomer().getId() }}" class="card-link"> {{expenseReport.getCustomer().getName()}} </a> </li>
-                        <li class="list-group-item">Transaction : {% if expenseReport.getTransaction() != null %}<a href="/transaction/show/{{ expenseReport.transaction.getId() }}" class="card-link"> {{expenseReport.getTransaction().getCode()}} </a>{% endif %}</li>
-                       
+                        <li class="list-group-item"> {{expenseReport.getDate().format('d/m/y h:i')}}  </li>
+                        {% if is_granted('ROLE_TRESO') %}
+                            <li class="list-group-item">Client : <a href="/customer/show/{{ expenseReport.getCustomer().getId() }}" class="card-link"> {{expenseReport.getCustomer().getName()}} </a> </li>
+                            <li class="list-group-item">Transaction : {% if expenseReport.getTransaction() != null %}<a href="/transaction/show/{{ expenseReport.transaction.getId() }}" class="card-link"> {{expenseReport.getTransaction().getCode()}} </a>{% endif %}</li>
+                       {% endif %}
+                      
                     </ul>
                     <div class="card-body">
+                     {% if is_granted('ROLE_TRESO') or  expenseReport.comfirm != true %}
                         <a href="/expenseReport/edit/{{ expenseReport.getId()}}" class="card-link"><i class="fa-solid fa-pen-to-square"></i></a>
                         <a href="/expenseReport/delete/{{ expenseReport.getId()}}" class="card-link"><i class="fa-solid fa-trash-can"></i></a>
-                        <a href="/expenseReport/" class="card-link"><i class="fa-solid fa-list"></i></a>
+                        {% if is_granted('ROLE_TRESO') %}
+                            <a href="/expenseReport/" class="card-link"><i class="fa-solid fa-list"></i></a>
+                        {% endif %}
+                    {% endif %}
                     </div>
                 </div>
             </div>
@@ -40,8 +46,10 @@
                          <th scope="col">Distance</th>
                           <th scope="col">Moyen de transport</th>
                         <th scope="col">Montant</th>
-                        <th scope="col">Modifié</th>
-                        <th scope="col">supprimé</th>
+                         {% if is_granted('ROLE_TRESO') or  expenseReport.comfirm != true %}
+                            <th scope="col">Modifié</th>
+                            <th scope="col">Supprimé</th>
+                        {% endif %}
 
                     </tr>
                 </thead>
@@ -57,8 +65,10 @@
                         <td> {% if expenseReportRouteLine.repayGrid %} {{expenseReportRouteLine.repayGrid.travelMeans }} {% else %} {{expenseReportRouteLine.travelMeans}} {% endif %}</td>
                         <td> {% if expenseReportRouteLine.repayGrid %} {{expenseReportRouteLine.repayGrid.amount }} € {% else %} {{expenseReportRouteLine.amount}} €{% endif %}</td>
                         {% if expenseReportRouteLine.repayGrid %} {% set totalAmount = totalAmount + expenseReportRouteLine.repayGrid.amount %} {% else %}  {% set totalAmount = totalAmount + expenseReportRouteLine.amount %}  {% endif %}
+                         {% if is_granted('ROLE_TRESO') or  expenseReport.comfirm != true %}
                         <td><a href="/expenseReportRouteLine/edit/{{expenseReport.id}}/{{ expenseReportRouteLine.getId()}}" class="card-link"><i class="fa-solid fa-pen-to-square"></i></a></td>
                         <td><a href="/expenseReportRouteLine/delete/{{ expenseReportRouteLine.getId()}}" class="card-link"><i class="fa-solid fa-trash-can"></i></a></td>
+                        {% endif %}
                     </tr>
                 {% endfor %}
                 </tbody>
@@ -75,9 +85,11 @@
                     </tr>
                 </tfoot>
             </table>
-             <div class="text-center">
-                <a href="/expenseReportRouteLine/new/{{ expenseReport.id }}"><button class="btn btn-success mt-3 mb-3" type="submit" name="show">{{ button_label|default('Ajouter une ligne ') }}<i class = "fa text-light fa-plus-square me-2"></i></button></a>
-            </div>
+             {% if   expenseReport.comfirm != true %}
+                <div class="text-center">
+                    <a href="/expenseReportRouteLine/new/{{ expenseReport.id }}"><button class="btn btn-success mt-3 mb-3" type="submit" name="show">{{ button_label|default('Ajouter une ligne ') }}<i class = "fa text-light fa-plus-square me-2"></i></button></a>
+                </div>
+            {% endif %}
             <table class="table table-striped">
                 <p class="display-6 no-wrap text-center mb-5">Ligne de frais</p>
                 <thead>
@@ -86,8 +98,10 @@
                         <th scope="col">Objet</th>
                          <th scope="col">Montant</th>
                         <th scope="col">Document</th>
-                         <th scope="col">Edit</th>
-                          <th scope="col">Delete</th>
+                        {% if is_granted('ROLE_TRESO') or expenseReport.comfirm != true %}
+                            <th scope="col">Modifié</th>
+                            <th scope="col">Suprimé</th>
+                        {% endif %}
                     </tr>
                 </thead>
 
@@ -98,15 +112,19 @@
                         <td>{{expenseReportLine.object}} </td>
                         <td>{{expenseReportLine.amount}} €</td>
                         <td><a href="/expenseReportLine/download/{{ expenseReportLine.getId()}}" class="card-link"><i class="fa-sharp fa-solid fa-file"></i></a></td>
-                        <td><a href="/expenseReportLine/edit/{{expenseReport.id}}/{{ expenseReportLine.getId()}}" class="card-link"><i class="fa-solid fa-pen-to-square"></i></a></td>
-                        <td><a href="/expenseReportLine/delete/{{ expenseReportLine.getId()}}" class="card-link"><i class="fa-solid fa-trash-can"></i></a></td>
+                        {% if is_granted('ROLE_TRESO') or  expenseReport.comfirm != true  %}
+                            <td><a href="/expenseReportLine/edit/{{expenseReport.id}}/{{ expenseReportLine.getId()}}" class="card-link"><i class="fa-solid fa-pen-to-square"></i></a></td>
+                            <td><a href="/expenseReportLine/delete/{{ expenseReportLine.getId()}}" class="card-link"><i class="fa-solid fa-trash-can"></i></a></td>
+                        {% endif %}
                     </tr>
                 {% endfor %}
                 </tbody>
             </table>
-            <div class="text-center">
-                <a href="/expenseReportLine/new/{{ expenseReport.id }}"><button class="btn btn-success mt-3 mb-3" type="submit" name="show">{{ button_label|default('Ajouter une ligne ') }}<i class = "fa text-light fa-plus-square me-2"></i></button></a>
-            </div>
+            {% if   expenseReport.comfirm != true %}
+                <div class="text-center">
+                    <a href="/expenseReportLine/new/{{ expenseReport.id }}"><button class="btn btn-success mt-3 mb-3" type="submit" name="show">{{ button_label|default('Ajouter une ligne ') }}<i class = "fa text-light fa-plus-square me-2"></i></button></a>
+                </div>
+            {% endif %}
            
         </div>
     </div>

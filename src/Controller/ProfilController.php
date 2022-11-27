@@ -10,6 +10,7 @@ use App\Entity\Customer;
 use App\Form\ProfilType;
 use App\Entity\EquipeElu;
 use App\Entity\Association;
+use App\Controller\InvoiceController;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -98,10 +99,11 @@ class ProfilController extends AbstractController
         $customerExistPas = true;
         $profilNonComplet = true;
         $i = 0;
-
+        $customer = null;
         while($customerExistPas and isset($customers[$i]) ){ 
             if ($customers[$i]->getUser() == $user) {
                 $customerExistPas = false;
+                $customer = $customers[$i];
             }
             $i ++;
         }
@@ -119,10 +121,7 @@ class ProfilController extends AbstractController
             $i++;
         }
        
-        if( ! $customerExistPas){
-            return $this->redirectToRoute('customer_showForCustomer', []);
-        }
-        else{ if($profilNonComplet ) {
+        if(  $customerExistPas and $profilNonComplet ) {
                 $profil = new Profil;
                 $entityManager->persist($profil);
                 $profil->setUser($user);
@@ -130,9 +129,15 @@ class ProfilController extends AbstractController
                 $entityManager->flush();
                 return $this->redirectToRoute('profil_edit', ['profilID' => $profil->getID()]);
             }
+
+        $totals = array();
+        if($customer){
+            foreach ($customer->getInvoices() as $invoice) {
+                array_push($totals, (new InvoiceController)->invoiceTotale($invoice));
+            }
         }
-        
-        return $this->render('profil/show.html.twig', [           
+        return $this->render('profil/show.html.twig', [       
+            'totals' => $totals,    
         ]);
     }
 

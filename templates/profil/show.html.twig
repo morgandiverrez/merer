@@ -9,31 +9,32 @@
 {% block body %}
     <div class="container-fluid">
         <div style = "margin-left: auto ; margin-right: auto ; max-width : 900px;">
-            <p class="display-6 no-wrap text-center align-center mb-5"> Profil de {{app.user.profil.getName()}} {{app.user.profil.getLastName()}}</p>
-            <div class=" d-flex text-center justify-content-evenly">
-                <div class="card justify-content-start" style="width: 18rem;">
-                    <div class=" card-body ">
-                        <h5 class="card-title">{{app.user.profil.getName()}}</h5>
-                        <p class="card-text">{{app.user.profil.getLastName()}}</p>
-                        {% for pronom in app.user.profil.getPronom()  %}
-                            <p class="card-text">{{pronom}}</p>
-                        {% endfor %}
-                    </div>
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item">Adresse Mail : {{app.user.getEmail()}}</li>
-                        <li class="list-group-item">Téléphone : {{app.user.profil.getTelephone()}}</li>
-                        <li class="list-group-item">Date de naissance : {% if app.user.profil.getDateOfBirth() is null %} - {% else %} {{app.user.profil.getDateOfBirth().format("d/m/y")}} {% endif %}</li>
-                        <li class="list-group-item">Equipe d'élu : {% for equipeElu in app.user.profil.getEquipeElu() %}{{equipeElu.getName()}} {% endfor %}</li>
-                        <li class="list-group-item">Association :{% for association in app.user.profil.getAssociation() %}{{association.getSigle()}} {% endfor %} </li
-                    </ul>
-                    <div class="card-body ">
-                        <a class="btn btn-primary" href={{path('profil_edit')}}>Modifier</a> 
-                    </div>
-                    <div class="card-body ">
-                        <a class="btn btn-primary" href="/account/show/seances/{{app.user.profil.getId()}}">Formations suivies</a> 
+            {% if app.user.profil %}
+                <p class="display-6 no-wrap text-center align-center mb-5"> Profil de {{app.user.profil.getName()}} {{app.user.profil.getLastName()}}</p>
+                <div class=" d-flex text-center justify-content-evenly">
+                    <div class="card justify-content-start" style="width: 18rem;">
+                        <div class=" card-body ">
+                            <h5 class="card-title">{{app.user.profil.getName()}}</h5>
+                            <p class="card-text">{{app.user.profil.getLastName()}}</p>
+                            {% for pronom in app.user.profil.getPronom()  %}
+                                <p class="card-text">{{pronom}}</p>
+                            {% endfor %}
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">Adresse Mail : {{app.user.getEmail()}}</li>
+                            <li class="list-group-item">Téléphone : {{app.user.profil.getTelephone()}}</li>
+                            <li class="list-group-item">Date de naissance : {% if app.user.profil.getDateOfBirth() is null %} - {% else %} {{app.user.profil.getDateOfBirth().format("d/m/y")}} {% endif %}</li>
+                            <li class="list-group-item">Equipe d'élu : {% for equipeElu in app.user.profil.getEquipeElu() %}{{equipeElu.getName()}} {% endfor %}</li>
+                            <li class="list-group-item">Association :{% for association in app.user.profil.getAssociation() %}{{association.getSigle()}} {% endfor %} </li
+                        </ul>
+                        <div class="card-body ">
+                            <a class="btn btn-primary" href={{path('profil_edit')}}>Modifier</a> 
+                        </div>
+                        <div class="card-body ">
+                            <a class="btn btn-primary" href="/account/show/seances/{{app.user.profil.getId()}}">Formations suivies</a> 
+                        </div>
                     </div>
                 </div>
-            </div>
                 <div class="d-flex align-content-start flex-wrap">
                     {% for badge in app.user.profil.getBadge() %} 
                         <div class="p-2">
@@ -42,7 +43,119 @@
                         </div>                       
                     {% endfor %}
                 </div>
-            </div>
+            {% endif %}
+            {% if app.user.customer is not null %}
+                <p class="display-6 no-wrap text-center">Liste des factures  </p>
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th scope="col">Numéro</th>
+                        <th scope="col">Montant</th>
+                        <th scope="col">Total Payé</th>
+                        <th scope="col">Reste à charge</th>
+                        <th scope="col">Chèque</th>
+                        <th scope="col">PDF</th>
+                        <th scope="col">détails</th>
+                        
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    {% for invoice in app.user.customer.getInvoices() %} 
+                        <tr>
+                            {% if invoice.comfirm == true %}
+                                <td>Fact- {{ invoice.code }}</td>
+                            {% else %}
+                                {% if invoice.category == "Fin Mois"%}
+                                    <td>Fact en  cours -{{ invoice.code }}</td>
+                                {% else %}
+                                    <td>Dev-{{ invoice.code }}</td>
+                                {% endif %}
+                            {% endif %}
+
+                            
+
+                            <td>{{ totals[loop.index-1] }}</td>
+
+                            {% set total = 0 %}
+
+                            {% for paymentdeadline in  invoice.paymentdeadlines %}
+                                {% if paymentdeadline.actualPaymentDate is not null %}
+                                    {% set total = total+paymentdeadline.actualAmount %}
+                                {% endif %}
+                            {% endfor %}
+
+                            <td>{{ total }}</td>
+
+                            <td>{{ totals[loop.index-1]-total }}</td>
+                            {% set cheque = 0 %}
+                            {% if invoice.transaction is not null %}
+                                {% for transactionline in invoice.transaction.transactionlines %}
+                                    {% if transactionline.chartofaccounts.code==51120 or transactionline.chartofaccounts.code==51121 or transactionline.chartofaccounts.code==51122 %}
+                                        {% set cheque=cheque+transactionline.amount %}
+                                    {% endif %}
+                                    {% if "REM CHQ" in transactionline.label %}
+                                        {% set cheque=cheque+transactionline.amount %}
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                            <td>{{ cheque }}</td>
+                            <td><a href="/invoice/pdf/{{ invoice.iD }}" target="_blank"><i class="fa-sharp fa-solid fa-file"></i></a></td>
+                            <td><a href="/invoice/show/{{ invoice.iD }}" ><i class="fa-solid fa-eye"></i></a></td>
+                            
+                        </tr> 
+                    {% endfor %}
+                    </tbody>
+                </table>
+                <p class="display-6 no-wrap text-center mb-5">Liste des notes de frais 
+                        <a href="/expenseReport/new"><i class="fa-solid fa-plus align-left"></i></a>
+                </p>
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th scope="col">Date</th>
+                        <th scope="col">Motif</th>
+                        <th scope="col">Détails</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    {% for expenseReport in app.user.customer.getExpenseReports() %} 
+                        <tr>
+                            <td>{{ expenseReport.date.format('d/m/y') }}</td>
+                            <td>{{ expenseReport.motif }}</td>
+                            <td><a href="/expenseReport/show/{{ expenseReport.iD }}" ><i class = "fa-solid fa-eye"></i></a></td>
+                        </tr> 
+                    {% endfor %}
+                    </tbody>
+                </table>
+                <p class="display-6 no-wrap text-center">Liste des impressions
+                <a href="/impression/new"><i class="fa-solid fa-plus align-left"></i></a>
+                  </p>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">Horrodataire</th>
+                            <th scope="col">imprimeur</th>
+                            <th scope="col">Format</th>
+                            <th scope="col">Quantité</th>
+                            
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                    {% for impression in app.user.customer.getImpressions() %} 
+                        <tr>
+                            <td>{{impression.getDatetime().format("d/m/Y H:i")}}</td>  
+                            <td>{{impression.getName()}}</td>
+                            <td>{{impression.getFormat()}}{% if impression.isRectoVerso() %} RV {% endif %} {% if impression.isCouleur() %} Couleur {% else %} NB {% endif %} </td>
+                            <td>{{impression.getQuantite()}}</td>
+                           
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            {% endif %}
         </div>
     </div>
 {% endblock %}
