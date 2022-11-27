@@ -33,12 +33,11 @@ class InvoiceType extends AbstractType
             ->add('ready')
             ->add('comfirm')
             ->add('credit')
-            ->add(
-                'invoiceLines',
+            ->add('invoiceLines',
                 CollectionType::class,
                 [
                     'entry_type' => InvoiceLineType::class,
-                    "label" => false,
+                    'label' => false,
                     'allow_add' => true,
                     'allow_delete' => true,
                     'by_reference' => false,

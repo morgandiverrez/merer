@@ -2,11 +2,14 @@
 
 namespace App\Entity;
 
-use App\Repository\ExpenseReportRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Entity\ExpenseReportLine;
+use App\Entity\ExpenseReportRouteLine;
+use App\Repository\ExpenseReportRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 #[ORM\Entity(repositoryClass: ExpenseReportRepository::class)]
 class ExpenseReport
@@ -24,11 +27,6 @@ class ExpenseReport
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $date = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $document = null;
-
-   
 
     #[ORM\ManyToOne(inversedBy: 'expenseReports')]
     private ?Transaction $transaction = null;
@@ -54,7 +52,6 @@ class ExpenseReport
     {
         $this->expenseReportRouteLines = new ArrayCollection();
         $this->expenseReportLines = new ArrayCollection();
-        $this->expenseReportLine = new ArrayCollection();
     }
 
    
@@ -99,20 +96,6 @@ class ExpenseReport
 
         return $this;
     }
-
-    public function getDocument(): ?string
-    {
-        return $this->document;
-    }
-
-    public function setDocument(?string $document): self
-    {
-        $this->document = $document;
-
-        return $this;
-    }
-
-  
 
     public function getTransaction(): ?Transaction
     {
@@ -170,7 +153,7 @@ class ExpenseReport
         return $this->expenseReportLines;
     }
 
-    public function addExpenseReportLines(ExpenseReportLine $expenseReportLines): self
+    public function addExpenseReportLine(ExpenseReportLine $expenseReportLines): self
     {
         if (!$this->expenseReportLines->contains($expenseReportLines)) {
             $this->expenseReportLines->add($expenseReportLines);
@@ -180,7 +163,7 @@ class ExpenseReport
         return $this;
     }
 
-    public function removeExpenseReportLines(ExpenseReportLine $expenseReportLines): self
+    public function removeExpenseReportLine(ExpenseReportLine $expenseReportLines): self
     {
         if ($this->expenseReportLines->removeElement($expenseReportLines)) {
             // set the owning side to null (unless already changed)

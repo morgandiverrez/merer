@@ -13,8 +13,9 @@
                     <div class=" card-body ">
                         <h5 class="card-text">{{bp.getCategorie()}}</h5>
                         <h3 class="card-title">{{bp.getDesignation()}}</h3>
-                        <p class="card-title">{{bp.getExpectedAmount()}} €</p>
-                        <p class="card-title">{{bp.getReallocateAmount()}} €</p>
+                        <p class="card-title">Montant initial :{{bp.getExpectedAmount()}} €</p>
+                        <p class="card-title">Montant réalloué :{{bp.getReallocateAmount()}} €</p>
+                        <p class="card-title">Total avancé : {{ total }} €</p>
                     </div>
                     <div class="card-body">
                         <a href="/bp/edit/{{ bp.getId() }}" class="card-link"><i class="fa-solid fa-pen-to-square"></i></a>      

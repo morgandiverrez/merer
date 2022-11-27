@@ -59,6 +59,10 @@ class InvoiceController extends AbstractController
                 $nbinvoice = 0;
                 $invoice->setCode(date("Ymd") * 100 + $nbinvoice + 1);
             }
+
+            foreach ($invoice->getInvoiceLines() as $invoiceLine) {
+                $entityManager->persist($invoiceLine);
+            }
             $entityManager->persist($invoice);
             $entityManager->flush();
             return $this->redirectToRoute('invoice_show', ['invoiceId' => $invoice->getId()]); 
@@ -69,11 +73,6 @@ class InvoiceController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
-
-
-
-   
-
 
 
     #[Route('/delete/{invoiceID}', name: 'delete')]
@@ -94,7 +93,7 @@ class InvoiceController extends AbstractController
     public function edit(EntityManagerInterface $entityManager, Request $request, $invoiceID): Response
     {
 
-        $invoice = $entityManager->getRepository(Invoice::class)->findById($invoiceID);
+        $invoice = $entityManager->getRepository(Invoice::class)->findByID($invoiceID);
         $form = $this->createForm(InvoiceType::class, $invoice);
         $form->handleRequest($request);
 
@@ -106,9 +105,13 @@ class InvoiceController extends AbstractController
                 $nbinvoice = 0;
                 $invoice->setCode(date("Ymd") * 100 + $nbinvoice + 1);
             }
+
+            foreach ($invoice->getInvoiceLines() as $invoiceLine) {
+                $entityManager->persist($invoiceLine);
+            }
             $entityManager->persist($invoice);
             $entityManager->flush();
-            return $this->redirectToRoute('invoice_show', ['invoiceId' => $invoice->getId()]);
+            return $this->redirectToRoute('invoice_show', ['invoiceID' => $invoice->getId()]);
         }
 
         return $this->render('invoice/edit.html.twig', [

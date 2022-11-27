@@ -92,5 +92,17 @@ class EventController extends AbstractController
         ]);
     }
 
+    #[Route('/delete/{eventID}', name: 'delete')]
+    #[IsGranted('ROLE_ADMIN')]
+    public function delete(EntityManagerInterface $entityManager, $eventID): Response
+    {
+
+        $event = $entityManager->getRepository(Event::class)->findById($eventID)[0];
+        $entityManager->remove($event);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('event_showAll');
+    }
+
  
 }

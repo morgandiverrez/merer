@@ -30,6 +30,7 @@
                     <th scope="col">Code</th>
                     <th scope="col">Nom</th>
                     <th scope="col">Movable</th>
+                    <th scope="col">Détails</th>
                  </tr>
                 </thead>
 
@@ -39,7 +40,7 @@
                         <td>{{account.getCode()}}</td>   
                         <td>{{account.getName()}}</td>
                         <td>{% if account.isMovable() %} oui {% else %} non {% endif %}</td>
-                        <td><a href="/ChartOfAccounts/show/{{account.getId()}}"><i class="fa-solid fa-eye"></i></i></a></td> 
+                        <td><a href="/chartOfAccounts/show/{{account.getId()}}"><i class="fa-solid fa-eye"></i></i></a></td> 
                      </tr>
                 {% endfor %}
                 </tbody>

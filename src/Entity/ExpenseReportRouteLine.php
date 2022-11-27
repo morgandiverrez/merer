@@ -17,23 +17,22 @@ class ExpenseReportRouteLine
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $date = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length:255, nullable: true)]
     private ?string $start = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length:255, nullable: true)]
     private ?string $end = null;
 
-    #[ORM\Column]
+    #[ORM\Column( nullable: true)]
     private ?float $distance = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length:255, nullable: true)]
     private ?string $travelMeans = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $amount = null;
 
     
-
     #[ORM\ManyToOne]
     private ?RepayGrid $RepayGrid = null;
 

@@ -27,6 +27,9 @@ class ExpenseReportLine
     #[ORM\JoinColumn(nullable: false)]
     private ?ExpenseReport $expenseReport = null;
 
+    #[ORM\Column(length: 1024, nullable: true)]
+    private ?string $document = null;
+
   
 
     public function getId(): ?int
@@ -78,6 +81,18 @@ class ExpenseReportLine
     public function setExpenseReport(?ExpenseReport $expenseReport): self
     {
         $this->expenseReport = $expenseReport;
+
+        return $this;
+    }
+
+    public function getDocument(): ?string
+    {
+        return $this->document;
+    }
+
+    public function setDocument(?string $document): self
+    {
+        $this->document = $document;
 
         return $this;
     }
