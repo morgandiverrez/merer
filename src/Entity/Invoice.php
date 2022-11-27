@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use App\Entity\Impression;
 use App\Entity\InvoiceLine;
 use App\Entity\PaymentDeadline;
 use Doctrine\ORM\Mapping as ORM;

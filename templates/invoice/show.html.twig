@@ -22,7 +22,7 @@
                                 {% endif %}
                             {% endif %}
                         </li>
-                        <li class="list-group-item">Client : <a href="/custpmer/show/{{ invoice.getCustomer().getId() }}" class="card-link"> {{invoice.getCustomer().getName()}} </a> </li>
+                        <li class="list-group-item">Client : <a href="/customer/show/{{ invoice.getCustomer().getId() }}" class="card-link"> {{invoice.getCustomer().getName()}} </a> </li>
                         <li class="list-group-item">Transaction : {% if invoice.getTransaction() != null %}<a href="/transaction/show/{{ invoice.transaction.getId() }}" class="card-link"> {{invoice.getTransaction().getCode()}} </a>{% endif %}</li>
                         <li class="list-group-item">{% if invoice.getCategory() != null %} catégorie :  {{invoice.getCategorie()}}{% endif %}</li>  
                     </ul>

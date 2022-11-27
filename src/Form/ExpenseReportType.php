@@ -2,12 +2,14 @@
 
 namespace App\Form;
 
+use App\Entity\Exercice;
 use App\Entity\ExpenseReport;
 use Doctrine\ORM\EntityRepository;
 use App\Form\ExpenseReportLineType;
 use App\Form\ExpenseReportRouteLineType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -24,12 +26,8 @@ class ExpenseReportType extends AbstractType
                     ->orderBy('u.date', 'DESC');
             },
             ])
-            ->add('Motif')
-            ->add('document', FileType::class, [
-            'required' => false,
-            'mapped' => false,
-            'multiple' => true,
-        ])
+            ->add('motif')
+            
             ->add('expenseReportLines',
                 CollectionType::class,
                 [
@@ -38,6 +36,7 @@ class ExpenseReportType extends AbstractType
                     'allow_add' => true,
                     'allow_delete' => true,
                     'by_reference' => false,
+                    
                 ]
             )
 

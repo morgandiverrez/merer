@@ -2,9 +2,11 @@
 
 namespace App\Repository;
 
+use App\Entity\BP;
+use App\Entity\Event;
 use App\Entity\TransactionLine;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @extends ServiceEntityRepository<TransactionLine>
@@ -80,5 +82,27 @@ class TransactionLineRepository extends ServiceEntityRepository
             -> orderBy('t.id', 'DESC')
             ->getQuery()
             ->getOneOrNullResult();
+    }
+
+    public function totalByBP(BP $bp)
+    {
+        return $this->createQueryBuilder('transactionLine')
+        ->innerJoin('transactionLine.transaction', 'transaction')
+        ->select("SUM('transactionLine.amount')")
+        ->Where('transaction.BP = :bp')
+        ->setParameter('bp', $bp)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function totalByEvent(Event $event): array
+    {
+        return $this->createQueryBuilder('transactionLine')
+        ->innerJoin('transactionLine.transaction', 'transaction')
+        ->select("SUM('transactionLine.amount')")
+        ->Where('transaction.event = :event')
+        ->setParameter('event', $event)
+            ->getQuery()
+            ->getResult();
     }
 }

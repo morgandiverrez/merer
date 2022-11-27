@@ -38,12 +38,23 @@ class ChartOfAccountsController extends AbstractController
         ]);
     }
 
+    #[Route('/show/{accountID}', name: 'show')]
+    #[IsGranted('ROLE_TRESO')]
+    public function show(EntityManagerInterface $entityManager, $accountID): Response
+    {
+        $account = $entityManager->getRepository(ChartOfAccounts::class)->findById($accountID)[0];
+
+        return $this->render('chart_of_accounts/show.html.twig', [
+            'account' => $account,
+
+        ]);
+    }
 
     #[Route('/edit/{accountID}', name: 'edit')]
     #[IsGranted('ROLE_TRESO')]
     public function edit(EntityManagerInterface $entityManager, Request $request, $accountID): Response
     {
-        $account = $entityManager->getRepository(Account::class)->findById($accountID)[0];
+        $account = $entityManager->getRepository(ChartOfAccounts::class)->findById($accountID)[0];
         $form = $this->createForm(ChartOfAccountsType::class, $account);
         $form->handleRequest($request);
 
@@ -52,7 +63,7 @@ class ChartOfAccountsController extends AbstractController
 
             $entityManager->persist($account);
             $entityManager->flush();
-            return $this->redirectToRoute('account_showAll',[]);
+            return $this->redirectToRoute('chartOfAccounts_showAll',[]);
         }
 
         return $this->render('chart_of_accounts/edit.html.twig', [

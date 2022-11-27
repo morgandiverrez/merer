@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\BP;
 use App\Form\BPType;
+use App\Entity\TransactionLine;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -43,9 +44,11 @@ class BPController extends AbstractController
     public function show(EntityManagerInterface $entityManager, $bpID): Response
     {
         $bp = $entityManager->getRepository(BP::class)->findById($bpID)[0];
-
+        $total = $entityManager->getRepository(TransactionLine::class)->totalByBP($bp)[0][1];
+        print_r($total);
         return $this->render('bp/show.html.twig', [
             'bp' => $bp,
+            'total' => $total,
 
         ]);
     }

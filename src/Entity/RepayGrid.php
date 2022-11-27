@@ -25,9 +25,17 @@ class RepayGrid
     #[ORM\Column]
     private ?float $amount = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?float $distance = null;
+
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function  __toString()
+    {
+        return ('de'.$this->getStart().'à'.$this->getEnd().'en'.$this->getTravelMean());
     }
 
     public function getTravelMean(): ?string
@@ -74,6 +82,18 @@ class RepayGrid
     public function setAmount(float $amount): self
     {
         $this->amount = $amount;
+
+        return $this;
+    }
+
+    public function getDistance(): ?float
+    {
+        return $this->distance;
+    }
+
+    public function setDistance(?float $distance): self
+    {
+        $this->distance = $distance;
 
         return $this;
     }
