@@ -11,6 +11,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 class EventType extends AbstractType
@@ -27,6 +28,7 @@ class EventType extends AbstractType
             ])
             ->add('name')
             ->add('code')
+            ->add('amount', MoneyType::class)
             ->add('startDate', DateTimeType::class, [
             'date_widget' => 'single_text',
             'time_widget' => 'single_text',

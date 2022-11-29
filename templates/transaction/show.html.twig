@@ -15,10 +15,12 @@
                         <li class="list-group-item">
                             {% for invoice in transaction.getInvoices()  %} 
                                 Fact - {{invoice.getCode()}} : <a href="/invoice/show/{{ invoice.getId() }}" class="card-link"> {{invoice.getCode()}} </a>
-                            {% endfor %}
-                            
+                            {% endfor %} 
                             {% for expenseReport in transaction.getExpenseReports()  %} 
                                 NDF - {{expenseReport.getCode()}} : <a href="/expenseReport/show/{{ expenseReport.getId() }}" class="card-link"> {{expenseReport.getMotif()}} </a>
+                            {% endfor %}
+                             {% for financementLine in transaction.getFinancementLine()  %} 
+                                Financeur -  : <a href="/financement/show/{{ financementLine.financement.getId() }}" class="card-link"> {{financementLine.financement.getName()}} - {{financementLine.getLibellee()}} </a>
                             {% endfor %}
                         </li>
                         <li class="list-group-item">BP :  <a href="/bp/show/{{ transaction.getbP().getId() }}" class="card-link"> {{transaction.getbP().getDesignation()}} </a></li>

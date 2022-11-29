@@ -16,9 +16,18 @@
                         <p class="card-text">Code :{{event.getCode()}}</p>
                     </div>
                     <ul class="list-group list-group-flush">
-                        <li class="list-group-item">Date Début : {%if event.getStartDate() is null %}0 {% else %} {{event.getStartDate().format("d/m/y H:i")}} {% endif %} </li>
-                        <li class="list-group-item">Date Fin : {%if event.getEndDate() is null %}0 {% else %} {{event.getEndDate().format("d/m/y H:i")}} {% endif %} </li>
-                        <li class="list-group-item">Lieu : {{event.getLocation()}}</li>  
+                        <li class="list-group-item">Date Début : {% if event.getStartDate() is null %}0 {% else %} {{event.getStartDate().format("d/m/y H:i")}} {% endif %} </li>
+                        <li class="list-group-item">Date Fin : {% if event.getEndDate() is null %}0 {% else %} {{event.getEndDate().format("d/m/y H:i")}} {% endif %} </li>
+                    </ul>
+                    <ul>
+                       <li class="list-group-item">Lieu : {{event.getLocation()}} </li>
+                       <li class="list-group-item">Financement : <a href="/financementLine/show/{{ event.getFinancementLine().getId() }}" class="card-link">  {{event.getFinancementLine().__toString()}}</a></li>
+                    </ul>
+                    <ul>
+                        <li class="list-group-item">Montant alloué : {{event.amount}} €</li>
+                        <li class="list-group-item">Total dépensé : {{total}} €</li>  
+                        {% set reste = event.amount - total %}
+                        <li class="list-group-item">Reste : {{reste}} €</li>  
                     </ul>
                     <div class="card-body">
                         <a href="/event/edit/{{ event.getId() }}" class="card-link"><i class="fa-solid fa-pen-to-square"></i></a>
@@ -26,35 +35,33 @@
                     </div>
                 </div>
             </div>
-            <div style = "margin-left: auto ; margin-right: auto ; max-width : 900px;">
-                <div style = "margin-left: auto ; margin-right: auto ; max-width : 900px;">
-                    <p class="display-6 no-wrap text-center">Liste des transactions de cette Evènement </p>
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th scope="col">Code</th>
-                                <th scope="col">Cloturé</th>
-                                <th scope="col">Commentaire</th>
-                                <th scope="col">Show</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for transaction in event.getTransaction() %} 
-                                <tr>
-                                    <td>{{transaction.code}}</td>
-                                    {% if transaction.closure == true %}
-                                        <td>Oui</td>
-                                    {% else %}
-                                        <td>Non</td>
-                                    {% endif %}
-                                    <td>{{transaction.quote}}</td>
-                                    <td><a href="/transaction/show/{{ transaction.id }}"><i class = "fa-solid fa-eye"></i></a></td>
-                                </tr> 
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div> 
-            </div>
+             <p class="display-6 no-wrap text-center">Liste des transactions de cette Evènement </p>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">Code</th>
+                        <th scope="col">Cloturé</th>
+                        <th scope="col">Commentaire</th>
+                        <th scope="col">Montant</th>
+                        <th scope="col">Show</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for transaction in event.getTransactions() %} 
+                        <tr>
+                            <td>{{transaction.code}}</td>
+                            {% if transaction.closure == true %}
+                                <td>Oui</td>
+                            {% else %}
+                                <td>Non</td>
+                            {% endif %}
+                            <td>{{transaction.quote}}</td>
+                             <td>{{totalTransaction[transaction.getId()]}} €</td>
+                            <td><a href="/transaction/show/{{ transaction.id }}"><i class = "fa-solid fa-eye"></i></a></td>
+                        </tr> 
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
     </div>
 
