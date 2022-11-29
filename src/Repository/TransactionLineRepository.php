@@ -84,25 +84,48 @@ class TransactionLineRepository extends ServiceEntityRepository
             ->getOneOrNullResult();
     }
 
-    public function totalByBP(BP $bp)
+    public function totalByBP(BP $bp): array
     {
         return $this->createQueryBuilder('transactionLine')
         ->innerJoin('transactionLine.transaction', 'transaction')
-        ->select("SUM('transactionLine.amount')")
+        ->select(" SUM(transactionLine.amount) as total")
         ->Where('transaction.BP = :bp')
         ->setParameter('bp', $bp)
             ->getQuery()
-            ->getResult();
+            ->getOneOrNullResult();
     }
 
     public function totalByEvent(Event $event): array
     {
         return $this->createQueryBuilder('transactionLine')
         ->innerJoin('transactionLine.transaction', 'transaction')
-        ->select("SUM('transactionLine.amount')")
+        ->select(" SUM(transactionLine.amount) as total")
         ->Where('transaction.event = :event')
         ->setParameter('event', $event)
             ->getQuery()
-            ->getResult();
+            ->getOneOrNullResult();
+    }
+
+    public function totalByFinancementLine( $id): array
+    {
+        return $this->createQueryBuilder('transactionLine')
+        ->innerJoin('transactionLine.transaction', 'transaction')
+        ->innerJoin('transaction.financementLine', 'financementLine')
+        ->select(" SUM(transactionLine.amount) as total")
+        ->Where('financementLine.id = :id')
+        ->setParameter('id', $id)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+    public function totalByTransaction($id): array
+    {
+        return $this->createQueryBuilder('transactionLine')
+        ->innerJoin('transactionLine.transaction', 'transaction')
+        ->select(" SUM(transactionLine.amount) as total")
+        ->Where('transaction.id = :id')
+        ->setParameter('id', $id)
+            ->getQuery()
+            ->getOneOrNullResult();
     }
 }

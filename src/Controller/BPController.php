@@ -30,11 +30,20 @@ class BPController extends AbstractController
     public function showAll(EntityManagerInterface $entityManager,   $exercice): Response
     {
         $bpProduits = $entityManager->getRepository(BP::class)->findAllByExerciceProduit($exercice);
+        $totalsProduits = [];
+        foreach ($bpProduits as $produit) {
+            $totalsProduits[$produit->getId()] = $entityManager->getRepository(TransactionLine::class)->totalByBP($produit)['total'];
+        }
         $bpCharges = $entityManager->getRepository(BP::class)->findAllByExerciceCharge($exercice);
-
+        $totalsCharges = [];
+        foreach ($bpCharges as $charge) {
+            $totalsCharges[$charge->getId()] = $entityManager->getRepository(TransactionLine::class)->totalByBP($charge)['total'];
+        }
         return $this->render('bp/showAll.html.twig', [
             'bpProduits' => $bpProduits,
             'bpCharges' => $bpCharges,
+            'totalsProduits' => $totalsProduits,
+            'totalsCharges' => $totalsCharges,
             'exercice' => $exercice,
         ]);
     }
@@ -44,10 +53,15 @@ class BPController extends AbstractController
     public function show(EntityManagerInterface $entityManager, $bpID): Response
     {
         $bp = $entityManager->getRepository(BP::class)->findById($bpID)[0];
-        $total = $entityManager->getRepository(TransactionLine::class)->totalByBP($bp)[0][1];
-        print_r($total);
+        $total = $entityManager->getRepository(TransactionLine::class)->totalByBP($bp)['total'];
+
+        $totalsTransactions = [];
+        foreach ($bp->getTransactions() as $transaction) {
+            $totalsTransactions[$transaction->getId()] = $entityManager->getRepository(TransactionLine::class)->totalByTransaction($transaction->getId())['total'];
+        }
         return $this->render('bp/show.html.twig', [
             'bp' => $bp,
+            'totalsTransactions' => $totalsTransactions,
             'total' => $total,
 
         ]);

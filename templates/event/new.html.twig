@@ -31,6 +31,13 @@
                         {{ form_help(form.code) }}
                     </div>
 
+                     <div class="amount my-5">
+                        {{ form_label(form.amount, 'Montant ', {'label_attr': {'class': 'foo'}}) }}
+                        {{ form_errors(form.amount) }}
+                        {{ form_widget(form.amount) }}
+                        {{ form_help(form.amount) }}
+                    </div>
+
                     <div class="startDate my-5">
                         {{ form_label(form.startDate, 'Date de début ', {'label_attr': {'class': 'foo'}}) }}
                         {{ form_errors(form.startDate) }}

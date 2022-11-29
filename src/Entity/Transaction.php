@@ -45,6 +45,9 @@ class Transaction
     #[ORM\JoinColumn(nullable: false)]
     private ?Exercice $exercice = null;
 
+    #[ORM\ManyToOne(inversedBy: 'transactions')]
+    private ?FinancementLine $financementLine = null;
+
     public function __construct()
     {
         $this->invoices = new ArrayCollection();
@@ -221,6 +224,18 @@ class Transaction
     public function setExercice(?Exercice $exercice): self
     {
         $this->exercice = $exercice;
+
+        return $this;
+    }
+
+    public function getFinancementLine(): ?FinancementLine
+    {
+        return $this->financementLine;
+    }
+
+    public function setFinancementLine(?FinancementLine $financementLine): self
+    {
+        $this->financementLine = $financementLine;
 
         return $this;
     }

@@ -33,11 +33,12 @@
                                 <th scope="col">Code</th>
                                 <th scope="col">Cloturé</th>
                                 <th scope="col">Commentaire</th>
+                                <th scope="col">Montant</th>
                                 <th scope="col">Show</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {% for transaction in bp.getTransaction() %} 
+                            {% for transaction in bp.getTransactions() %} 
                                 <tr>
                                     <td>{{transaction.code}}</td>
                                     {% if transaction.closure == true %}
@@ -46,6 +47,7 @@
                                         <td>Non</td>
                                     {% endif %}
                                     <td>{{transaction.quote}}</td>
+                                     <td>{{totalsTransactions[transaction.id()]}} €</th>
                                     <td><a href="/transaction/show/{{ transaction.id }}"><i class = "fa-solid fa-eye"></i></a></td>
                                 </tr> 
                             {% endfor %}

@@ -4,8 +4,13 @@ namespace App\DataFixtures;
 
 use Faker\Factory;
 use App\Entity\Transaction;
+use App\DataFixtures\BPFixtures;
+use App\DataFixtures\EventFixtures;
+use App\DataFixtures\InvoiceFixtures;
+use App\DataFixtures\ExerciceFixtures;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use App\DataFixtures\TransactionLineFixtures;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
 class TransactionFixtures extends Fixture implements DependentFixtureInterface
@@ -32,6 +37,7 @@ class TransactionFixtures extends Fixture implements DependentFixtureInterface
             $transaction->setExercice($this->getRandomReference('EXERCICE'));
              $transaction->setEvent($this->getRandomReference('EVENT'));
               $transaction->setBP($this->getRandomReference('BP'));
+            $transaction->setFinancementLine($this->getRandomReference('FINANCEMENTLINE'));
             $this->addReference('TRANSACTION_' . $i, $transaction);
 
             $manager->persist($transaction);
@@ -45,7 +51,10 @@ class TransactionFixtures extends Fixture implements DependentFixtureInterface
         return [
             TransactionLineFixtures::class,
             InvoiceFixtures::class,
+            EventFixtures::class,
             ExerciceFixtures::class,
+            BPFixtures::class,
+            FinancementLineFixtures::class,
         ];
     }
 }

@@ -35,15 +35,21 @@ class Event
     private ?Location $location = null;
 
     #[ORM\OneToMany(mappedBy: 'event', targetEntity: Transaction::class)]
-    private Collection $transaction;
+    private Collection $transactions;
 
     #[ORM\ManyToOne(inversedBy: 'events')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Exercice $exercice = null;
 
+    #[ORM\Column]
+    private ?float $amount = null;
+
+    #[ORM\ManyToOne(inversedBy: 'events')]
+    private ?FinancementLine $financementLine = null;
+
     public function __construct()
     {
-        $this->transaction = new ArrayCollection();
+        $this->transactions = new ArrayCollection();
     }
 
     public function  __toString()
@@ -132,15 +138,15 @@ class Event
     /**
      * @return Collection<int, Transaction>
      */
-    public function getTransaction(): Collection
+    public function getTransactions(): Collection
     {
-        return $this->transaction;
+        return $this->transactions;
     }
 
     public function addTransaction(Transaction $transaction): self
     {
-        if (!$this->transaction->contains($transaction)) {
-            $this->transaction->add($transaction);
+        if (!$this->transactions->contains($transaction)) {
+            $this->transactions->add($transaction);
             $transaction->setEvent($this);
         }
 
@@ -149,7 +155,7 @@ class Event
 
     public function removeTransaction(Transaction $transaction): self
     {
-        if ($this->transaction->removeElement($transaction)) {
+        if ($this->transactions->removeElement($transaction)) {
             // set the owning side to null (unless already changed)
             if ($transaction->getEvent() === $this) {
                 $transaction->setEvent(null);
@@ -167,6 +173,30 @@ class Event
     public function setExercice(?Exercice $exercice): self
     {
         $this->exercice = $exercice;
+
+        return $this;
+    }
+
+    public function getAmount(): ?float
+    {
+        return $this->amount;
+    }
+
+    public function setAmount(float $amount): self
+    {
+        $this->amount = $amount;
+
+        return $this;
+    }
+
+    public function getFinancementLine(): ?FinancementLine
+    {
+        return $this->financementLine;
+    }
+
+    public function setFinancementLine(?FinancementLine $financementLine): self
+    {
+        $this->financementLine = $financementLine;
 
         return $this;
     }

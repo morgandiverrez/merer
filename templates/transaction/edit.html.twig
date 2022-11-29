@@ -44,6 +44,13 @@
                 {{ form_help(form.bp) }}
             </div>
 
+                <div class="financementLine my-5">
+                {{ form_label(form.financementLine, "Financement flechée " , {'label_attr': {'class': 'foo'}}) }}
+                {{ form_errors(form.financementLine) }}
+                {{ form_widget(form.financementLine) }}
+                {{ form_help(form.financementLine) }}
+            </div>
+
             {% set n = 1 %}
             {% for transactionLine in form.transactionLines %}
                 <div class="transactionLine my-5">

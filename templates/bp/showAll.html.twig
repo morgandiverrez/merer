@@ -16,8 +16,8 @@
                     <tr>
                         <th scope="col">Catégorie</th>
                         <th scope="col">Désignation</th>
-                        <th scope="col">Montant Prévu</th>
-                        <th scope="col">Montant réalloué</th>
+                        <th scope="col">Montant </th>
+                        <th scope="col">Avancement </th>
                         <th scope="col">Détails</th>
                         
                     </tr>
@@ -30,7 +30,7 @@
                         <td>{{bp.getCategorie()}}</td> 
                         <td>{{bp.getDesignation()}}</td>   
                         <td>{{bp.getExpectedAmount()}} €</td>
-                        <td>{{bp.getReallocateAmount()}} €</td>
+                        <td>{{totalsProduits[bp.id]}} €</td>
                         <td><a href="/bp/show/{{bp.getId()}}"><i class="fa-solid fa-eye"></i></a></td> 
                      </tr>
                 {% endfor %}
@@ -57,7 +57,7 @@
                         <td>{{bp.getCategorie()}}</td> 
                         <td>{{bp.getDesignation()}}</td>   
                         <td>{{bp.getExpectedAmount()}} €</td>
-                        <td>{{bp.getReallocateAmount()}} €</td>
+                        <td>{{totalsCharges[bp.id]}} €</td>
                         <td><a href="/bp/show/{{bp.getId()}}"><i class="fa-solid fa-eye"></i></a></td> 
                      </tr>
                 {% endfor %}

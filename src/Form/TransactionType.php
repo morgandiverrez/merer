@@ -49,6 +49,9 @@ class TransactionType extends AbstractType
             ])
             ->add('bp',  EntityType::class, [
             'class' => BP::class,
+            ])
+            ->add('financementLine',  EntityType::class, [
+            'class' => FinancementLine::class,
             ]);
     }
 

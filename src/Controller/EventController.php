@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Event;
 use App\Form\EventType;
+use App\Entity\TransactionLine;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,10 +26,15 @@ class EventController extends AbstractController
             if ($posts['name']) {
                 $events = array_intersect($events, $entityManager->getRepository(Event::class)->findAllByName($posts['name']));
             }
-            
         }
+        $totals = [];
+        foreach( $events as $event){
+                $totals[$event->getId()] = $entityManager->getRepository(TransactionLine::class)->totalByEvent($event)['total'];
+        }
+        
         return $this->render('event/showAll.html.twig', [
             'events' => $events,
+            'totals' => $totals,
 
         ]);
     }
@@ -38,9 +44,16 @@ class EventController extends AbstractController
     public function show(EntityManagerInterface $entityManager, $eventID): Response
     {
         $event = $entityManager->getRepository(Event::class)->findById($eventID)[0];
+        $total = $entityManager->getRepository(TransactionLine::class)->totalByEvent($event)['total'];
+        $totalTransaction = [];
+        foreach($event->getTransactions() as $transaction ){
+            $totalTransaction[$transaction->getId()] = $entityManager->getRepository(TransactionLine::class)->totalByTransaction($transaction->getId())['total'];
+        }
 
         return $this->render('event/show.html.twig', [
             'event' => $event,
+            'total' => $total,
+            'totalTransaction' => $totalTransaction,
 
         ]);
     }

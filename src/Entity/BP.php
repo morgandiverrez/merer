@@ -28,7 +28,7 @@ class BP
     private ?float $reallocateAmount = null;
 
     #[ORM\OneToMany(mappedBy: 'BP', targetEntity: Transaction::class)]
-    private Collection $transaction;
+    private Collection $transactions;
 
     #[ORM\ManyToOne(inversedBy: 'bPs')]
     #[ORM\JoinColumn(nullable: false)]
@@ -36,7 +36,7 @@ class BP
 
     public function __construct()
     {
-        $this->transaction = new ArrayCollection();
+        $this->transactions = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -100,15 +100,15 @@ class BP
     /**
      * @return Collection<int, Transaction>
      */
-    public function getTransaction(): Collection
+    public function getTransactions(): Collection
     {
-        return $this->transaction;
+        return $this->transactions;
     }
 
     public function addTransaction(Transaction $transaction): self
     {
-        if (!$this->transaction->contains($transaction)) {
-            $this->transaction->add($transaction);
+        if (!$this->transactions->contains($transaction)) {
+            $this->transactions->add($transaction);
             $transaction->setBP($this);
         }
 
@@ -117,7 +117,7 @@ class BP
 
     public function removeTransaction(Transaction $transaction): self
     {
-        if ($this->transaction->removeElement($transaction)) {
+        if ($this->transactions->removeElement($transaction)) {
             // set the owning side to null (unless already changed)
             if ($transaction->getBP() === $this) {
                 $transaction->setBP(null);
