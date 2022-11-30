@@ -19,7 +19,7 @@ class Profil
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $code;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(type: 'string', length: 255)]
     private $name;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
@@ -28,10 +28,10 @@ class Profil
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $telephone;
     
-    #[ORM\Column(type: 'string',length: 255, nullable: true)]
+    #[ORM\Column(type: 'string',length: 255)]
     private $pronom;
 
-    #[ORM\Column(type: 'date', nullable: true)]
+    #[ORM\Column(type: 'date')]
     private $date_of_birth;
 
     #[ORM\OneToMany(mappedBy: 'profil', targetEntity: Retour::class)]

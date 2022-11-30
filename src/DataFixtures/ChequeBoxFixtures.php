@@ -18,7 +18,7 @@ class ChequeBoxFixtures extends Fixture implements DependentFixtureInterface
             $chequeBox->setName('ChequeBox'.$i);
             $chequeBox->setDescription($this->faker->sentence());
             $chequeBox->setLastCountDate($this->faker->datetime());
-
+            $chequeBox->setLocation($this->getRandomReference('LOCATION'));
             $chequeBox->setChartOfAccounts($this->getRandomReference('CHARTOFACCOUNTS'));
 
             $this->addReference('CHEQUEBOX_' . $i, $chequeBox);

@@ -41,7 +41,7 @@ class Event
     #[ORM\JoinColumn(nullable: false)]
     private ?Exercice $exercice = null;
 
-    #[ORM\Column]
+    #[ORM\Column(precision: 10, scale: 0, nullable: true)]
     private ?float $amount = null;
 
     #[ORM\ManyToOne(inversedBy: 'events')]

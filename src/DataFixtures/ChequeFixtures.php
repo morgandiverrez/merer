@@ -17,6 +17,7 @@ class ChequeFixtures extends Fixture implements DependentFixtureInterface
             $cheque = new Cheque();
             $cheque->setAmount($this->faker->numberBetween(5.00 , 4000.00));
             $cheque->setDateOfCollection($this->faker->datetime());
+            $cheque->setQuote($this->faker->sentence());
          
             $cheque->setChequeBox($this->getRandomReference('CHEQUEBOX'));
 

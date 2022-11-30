@@ -74,4 +74,13 @@ class ChequeBoxRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function findAllByName($value): ?array
+    {
+        return $this->createQueryBuilder('chequeBox')
+        ->andWhere('chequeBox.name LIKE :val')
+        ->setParameter('val', '%' . $value . '%')
+            ->getQuery()
+            ->getResult();
+    }
 }

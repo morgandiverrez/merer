@@ -20,19 +20,19 @@ class Invoice
     #[ORM\Column(type: 'date')]
     private $creationDate;
 
-    #[ORM\Column(type: 'boolean', nullable: true)]
+    #[ORM\Column(type: 'boolean')]
     private $acquitted = false; // payé
 
-    #[ORM\Column(type: 'boolean', nullable: true)]
+    #[ORM\Column(type: 'boolean')]
     private $ready = false; // visible
 
-    #[ORM\Column(type: 'boolean', nullable: true)]
+    #[ORM\Column(type: 'boolean')]
     private $comfirm = false; // validé
 
-    #[ORM\Column(type: 'boolean', nullable: true)]
+    #[ORM\Column(type: 'boolean')]
     private $credit = false; // pour les avoirs
 
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column(length: 255)]
     private ?string $code = null; 
 
     #[ORM\Column(length: 64, nullable: true)]

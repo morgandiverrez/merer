@@ -61,6 +61,13 @@
                         {{ form_help(transactionLine.label) }}
                     </div>
 
+                     <div class="supplier">
+                        {{ form_label(form.supplier, 'Fournisseur ', {'label_attr': {'class': 'foo'}}) }}
+                        {{ form_errors(form.supplier) }}
+                        {{ form_widget(form.supplier)}}
+                        {{ form_help(form.supplier) }}
+                    </div>
+
                     <div class="date">
                         {{ form_label(transactionLine.date, 'Date ', {'label_attr': {'class': 'foo'}}) }}
                         {{ form_errors(transactionLine.date) }}

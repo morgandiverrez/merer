@@ -18,13 +18,13 @@ class Location
     #[ORM\Column(length: 64)]
     private ?string $name = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $adress = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable : true)]
     private ?int $zipCode = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $city = null;
 
 

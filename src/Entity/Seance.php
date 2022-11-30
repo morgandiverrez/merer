@@ -22,14 +22,14 @@ class Seance
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $name;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
+    #[ORM\Column(type: 'datetime')]
     private $datetime;
 
-    #[ORM\Column(type: 'integer', nullable: true)]
+    #[ORM\Column(type: 'integer')]
     private $nombreplace;
 
-    #[ORM\Column(type: 'boolean', nullable: true)]
-    private $visible;
+    #[ORM\Column(type: 'boolean')]
+    private $visible = false;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $parcours;

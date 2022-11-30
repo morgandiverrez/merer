@@ -19,7 +19,6 @@ class Demande
     #[ORM\Column(type: 'integer')]
     private $id;
 
-
     #[ORM\ManyToOne(targetEntity: Profil::class, inversedBy: 'demandes')]
     private $profil;
 

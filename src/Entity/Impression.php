@@ -14,25 +14,25 @@ class Impression
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'datetime')]
+    #[ORM\Column(type:'datetime')]
     private $datetime;
 
-    #[ORM\Column(type: 'string', length: 255)]
+    #[ORM\Column(type: 'string', length:255)]
     private $name;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(type: 'string', length: 255)]
     private $format;
 
-    #[ORM\Column(type: 'boolean', nullable: true)]
+    #[ORM\Column(type: 'boolean')]
     private $rectoVerso = false;
 
-    #[ORM\Column(type: 'boolean', nullable: true)]
+    #[ORM\Column(type: 'boolean')]
     private $couleur = true;
 
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(type:'integer')]
     private $quantite;
 
-    #[ORM\Column(type: 'boolean')]
+    #[ORM\Column(type:'boolean')]
     private $factureFinDuMois = true;
 
 

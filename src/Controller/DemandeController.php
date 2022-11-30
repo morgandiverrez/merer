@@ -18,11 +18,11 @@ use Symfony\Component\HttpFoundation\File\Exception\FileException;
 class DemandeController extends AbstractController
 {
     #[Route('/', name: 'showAll')]
-    #[IsGranted('ROLE_FORMATEURICE')]
-    public function showAll(EntityManagerInterface $entityManager): Response
+    #[IsGranted('ROLE_BF')]
+    public function showAll(EntityManagerInterface $entityManager, Request $request): Response
     {
         $demandes = $entityManager->getRepository(Demande::class)->findAllOrderByDateDebut();
-      
+        
         return $this->render('demande/showAll.html.twig', [
             'demandes' => $demandes,
 
@@ -30,7 +30,7 @@ class DemandeController extends AbstractController
     }
 
     #[Route('/show/{demandeID}', name: 'show')]
-    #[IsGranted('ROLE_FORMATEURICE')]
+    #[IsGranted('ROLE_BF')]
     public function show(EntityManagerInterface $entityManager, Request $request,  $demandeID): Response
     {
         $demande = $entityManager->getRepository(Demande::class)->findById($demandeID);
@@ -44,7 +44,7 @@ class DemandeController extends AbstractController
     }
 
     #[Route('/downloadPlanning/{demandeID}', name: 'download')]
-    #[IsGranted('ROLE_FORMATEURICE')]
+    #[IsGranted('ROLE_BF')]
     public function downloadPlanning(EntityManagerInterface $entityManager, Request $request,  $demandeID)
     {
         $demande = $entityManager->getRepository(Demande::class)->findById($demandeID);

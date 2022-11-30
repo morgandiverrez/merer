@@ -10,6 +10,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 class ChequeType extends AbstractType
 {
@@ -17,12 +18,10 @@ class ChequeType extends AbstractType
     {
         $builder
             ->add('amount', MoneyType::class)
+            ->add('quote', TextareaType::class)
             ->add('dateOfCollection', DateType::class, [
             'widget' => 'single_text',
             ])
-            ->add('chequeBox',  EntityType::class, [
-            'class' => ChequeBox::class,
-        ])
         ;
     }
 

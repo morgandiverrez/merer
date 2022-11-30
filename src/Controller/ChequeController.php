@@ -15,43 +15,30 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 #[Route('/cheque', name: 'cheque_')]
 class ChequeController extends AbstractController
 {
-    #[Route('/', name: 'showAll')]
-    #[IsGranted('ROLE_TRESO')]
-    public function showAll(EntityManagerInterface $entityManager, Request $request): Response
-    {
-        $cheques = $entityManager->getRepository(Cheque::class)->findAllInOrder();
-     
-        return $this->render('cheque/showAll.html.twig', [
-            'cheques' => $cheques,
-
-        ]);
-    }
+  
 
    
 
-    #[Route('/new', name: 'new')]
+    #[Route('/new/{chequeBoxID}', name: 'new')]
     #[IsGranted('ROLE_TRESO')]
-    public function new(EntityManagerInterface $entityManager, Request $request): Response
+    public function new(EntityManagerInterface $entityManager, $chequeBoxID , Request $request): Response
     {
         $cheque = new Cheque();
         $form = $this->createForm(ChequeType::class, $cheque);
         $form->handleRequest($request);
-
+        $chequeBox = $entityManager->getRepository(ChequeBox::class)->findById($chequeBoxID);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            echo(1);
-            echo($cheque->getChequeBox()->getName());
-            $cheque->setChequeBox($cheque->getChequeBox());
+          
+            $cheque->setChequeBox($chequeBox);
             $entityManager->persist($cheque);
             $entityManager->flush();
-            return $this->redirectToRoute('cheque_showAll');
+            return $this->redirectToRoute('chequeBox_show', ['chequeBoxID' => $chequeBoxID ]);
         }
 
         return $this->render('cheque/new.html.twig', [
             'cheque' => $cheque,
             'form' => $form->createView(),
-
-
         ]);
     }
 
@@ -69,7 +56,7 @@ class ChequeController extends AbstractController
 
             $entityManager->persist($cheque);
             $entityManager->flush();
-            return $this->redirectToRoute('cheque_showAll');
+            return $this->redirectToRoute('chequeBox_show', ['chequeBoxID' => $cheque->getChequeBox()->getId()]);
         }
 
         return $this->render('cheque/edit.html.twig', [
@@ -88,7 +75,7 @@ class ChequeController extends AbstractController
         $entityManager->remove($cheque);
         $entityManager->flush();
 
-        return $this->redirectToRoute('cheque_showAll');
+        return $this->redirectToRoute('chequeBox_show', ['chequeBoxID' => $cheque->getChequeBox()->getId()]);
     }
 
 }
