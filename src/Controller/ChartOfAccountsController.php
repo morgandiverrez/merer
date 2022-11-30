@@ -22,9 +22,6 @@ class ChartOfAccountsController extends AbstractController
         $accounts = $entityManager->getRepository(ChartOfAccounts::class)->findAllInOrder();
         if ($request->isMethod('post')) {
             $posts = $request->request->all();
-            if ($posts['name'] ) {
-                $accounts = array_intersect($accounts, $entityManager->getRepository(ChartOfAccounts::class)->findAllByName($posts['name']));
-            }
             if ($posts['code']) {
                 $accounts = array_intersect($accounts, $entityManager->getRepository(ChartOfAccounts::class)->findAllByCode($posts['code']));
             }

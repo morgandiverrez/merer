@@ -22,10 +22,21 @@ class BadgeController extends AbstractController
 {
     #[Route('/', name: 'showAll')]
     #[IsGranted('ROLE_FORMATEURICE')]
-    public function showAll(EntityManagerInterface $entityManager): Response
+    public function showAll(EntityManagerInterface$entityManager, Request $request): Response
     {
         $badges = $entityManager->getRepository(Badge::class)->findAll();
-        
+        if ($request->isMethod('post')) {
+            $posts = $request->request->all();
+            if ($posts['name']) {
+                $badges = array_intersect($badges, $entityManager->getRepository(Badge::class)->findAllByName($posts['name']));
+            }
+            if ($posts['categorie']) {
+                $badges = array_intersect($badges, $entityManager->getRepository(Badge::class)->findAllByCategorie($posts['categorie']));
+            }
+            if ($posts['description']) {
+                $badges = array_intersect($badges, $entityManager->getRepository(Badge::class)->findAllByDescription($posts['description']));
+            }
+        }
         return $this->render('badge/showAll.html.twig', [     
             'badges' => $badges,
             

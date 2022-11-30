@@ -109,7 +109,7 @@ class ProfilController extends AbstractController
         }
 
         $i=0;
-        while($profilNonComplet and isset($profils[$i]) ){
+        while($profilNonComplet and isset($profils[$i]) and $this->isGranted("ROLE_TRESO", "ROLE_PRESIDENCE", "ROLE_FORMA")){
             if ($profils[$i]->getUser() == $user and 
                                                     $profils[$i]->getName() and 
                                                     $profils[$i]->getLastName() and 

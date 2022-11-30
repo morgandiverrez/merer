@@ -15,10 +15,10 @@ class FinancementLine
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length:255, nullable: true)]
     private ?string $libellee = null;
 
-    #[ORM\Column]
+    #[ORM\Column(precision: 10, scale: 0, nullable: true)]
     private ?float $Amount = null;
 
     #[ORM\Column(length: 1024, nullable: true)]

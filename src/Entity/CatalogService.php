@@ -15,16 +15,16 @@ class CatalogService
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'string', length: 255)]
+    #[ORM\Column(type: 'string', length:255, nullable: true)]
     private $name;
 
-    #[ORM\Column(type:'float', precision: 10, scale: 0)]
+    #[ORM\Column(type:'float', precision: 10, scale:0, nullable: true)]
     private $amountHt;
 
-    #[ORM\Column(type:'float', precision: 10, scale: 0)]
+    #[ORM\Column(type:'float', nullable: true)]
     private $tvaRate;
 
-    #[ORM\Column(type:'float', precision: 10, scale: 0)]
+    #[ORM\Column(type:'float', precision: 10, scale:0, nullable: true)]
     private $amountTtc;
 
     #[ORM\Column(type: 'string', length: 1024, nullable: true)]

@@ -16,13 +16,13 @@ class Contact
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length:255, nullable: true)]
     private ?string $name = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $lastName = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length:255, nullable: true)]
     private ?string $mail = null;
 
     #[ORM\Column(nullable: true)]
@@ -34,7 +34,7 @@ class Contact
     #[ORM\Column(length: 64, nullable: true)]
     private ?string $civility = null;
 
-    #[ORM\ManyToOne]
+    #[ORM\ManyToOne( nullable: true)]
     private ?Location $Location = null;
 
     public function __construct()

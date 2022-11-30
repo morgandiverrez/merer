@@ -55,13 +55,13 @@ class Retour
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $remarque_generale;
 
-    #[ORM\Column(type: 'string', length: 255)]
+    #[ORM\Column(type: 'string', length:255, nullable: true)]
     private $apport_generale;
 
-    #[ORM\Column(type: 'string', length: 255)]
+    #[ORM\Column(type: 'string', length:255, nullable: true)]
     private $plus_aimer;
 
-    #[ORM\Column(type: 'string', length: 255)]
+    #[ORM\Column(type: 'string', length:255, nullable: true)]
     private $moins_aimer;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]

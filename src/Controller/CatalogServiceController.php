@@ -25,14 +25,11 @@ class CatalogServiceController extends AbstractController
                  
             if ($posts['code']) {
                 $services = array_intersect($services, $entityManager->getRepository(CatalogService::class)->findAllByCode($posts['code']));
-              
             }
             if ($posts['name']) {
                 $services = array_intersect($services, $entityManager->getRepository(CatalogService::class)->findAllByName($posts['name']));
             }
-            if ($posts['amountTtc']) {
-                $services = array_intersect($services, $entityManager->getRepository(CatalogService::class)->findAllByAmountTtc($posts['amountTtc']));
-            }
+           
           
         }
         return $this->render('catalog_service/showAll.html.twig', [
@@ -107,7 +104,7 @@ class CatalogServiceController extends AbstractController
     public function delete(EntityManagerInterface $entityManager, $serviceID): Response
     {
 
-        $service = $entityManager->getRepository(CatalogService::class)->findById($serviceID)[0];
+        $service = $entityManager->getRepository(CatalogService::class)->findById($serviceID);
         $entityManager->remove($service);
         $entityManager->flush();
 

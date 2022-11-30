@@ -17,17 +17,17 @@ class ChequeBox
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 1024)]
+    #[ORM\Column(length:1024, nullable: true)]
     private ?string $description = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $lastCountDate = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
     private ?ChartOfAccounts $chartOfAccounts ;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length:255, nullable: true)]
     private ?string $name = null;
 
     #[ORM\ManyToOne]

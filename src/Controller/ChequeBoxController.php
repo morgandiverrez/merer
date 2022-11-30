@@ -20,18 +20,25 @@ class ChequeBoxController extends AbstractController
     #[IsGranted('ROLE_TRESO')]
     public function showAll(EntityManagerInterface $entityManager, Request $request): Response
     {
-        $chequeBox = $entityManager->getRepository(ChequeBox::class)->findAll();
+        $chequeBoxs = $entityManager->getRepository(ChequeBox::class)->findAll();
         $totals=[];
-        foreach($chequeBox as $box  ){
+        foreach($chequeBoxs as $box  ){
             $totals[$box->getName()] = $entityManager->getRepository(ChequeBox::class)->montantTotale($box->getId())[0]['total_amount']; 
             if($totals[$box->getName()] == null)$totals[$box->getName()]=0;
         }
-        
 
+        if ($request->isMethod('post')) {
+            $posts = $request->request->all();
+            if ($posts['name']) {
+                $chequeBoxs = array_intersect($chequeBoxs, $entityManager->getRepository(ChequeBox::class)->findAllByName($posts['name']));
+            }
+           
+           
+        }
        
         
         return $this->render('chequeBox/showAll.html.twig', [
-            'chequeBox' => $chequeBox,
+            'chequeBox' => $chequeBoxs,
             'totals'=>$totals,
 
         ]);
@@ -44,8 +51,9 @@ class ChequeBoxController extends AbstractController
 
         $chequeBox = $entityManager->getRepository(ChequeBox::class)->findById($chequeBoxID)[0];
 
+        $total = 0;
         $total= $entityManager->getRepository(ChequeBox::class)->montantTotale($chequeBox->getId())[0]['total_amount'];
-        if ( ! $total) $total = 0;
+        
         return $this->render('chequeBox/show.html.twig', [
             'chequeBox' => $chequeBox,
             'total'=> $total,
@@ -65,6 +73,9 @@ class ChequeBoxController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
+            foreach ($chequeBox->getCheques() as $cheque) {
+                $entityManager->persist($cheque);
+            }
             $entityManager->persist($chequeBox);
             $entityManager->flush();
             return $this->redirectToRoute('chequeBox_show', ['chequeBoxID' => $chequeBox->getId()]);
@@ -88,7 +99,9 @@ class ChequeBoxController extends AbstractController
 
 
         if ($form->isSubmitted() && $form->isValid()) {
-
+            foreach ($chequeBox->getCheques() as $cheque) {
+                $entityManager->persist($cheque);
+            }
             $entityManager->persist($chequeBox);
             $entityManager->flush();
             return $this->redirectToRoute('chequeBox_show', ['chequeBoxID' => $chequeBoxID]);
@@ -99,6 +112,19 @@ class ChequeBoxController extends AbstractController
             'form' => $form->createView(),
 
         ]);
+    }
+
+
+    #[Route('/delete/{chequeBoxID}', name: 'delete')]
+    #[IsGranted('ROLE_ADMIN')]
+    public function delete(EntityManagerInterface $entityManager, $chequeBoxID): Response
+    {
+
+        $chequeBox = $entityManager->getRepository(ChequeBox::class)->findById($chequeBoxID);
+        $entityManager->remove($chequeBox);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('chequeBox_showAll');
     }
 
    

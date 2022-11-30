@@ -15,16 +15,16 @@ class BP
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length:255, nullable: true)]
     private ?string $categorie = null;
 
-    #[ORM\Column(length: 1024)]
+    #[ORM\Column(length:1024, nullable: true)]
     private ?string $designation = null;
 
-    #[ORM\Column]
+    #[ORM\Column(  precision: 10, scale:0, nullable: true)]
     private ?float $expectedAmount = null;
 
-    #[ORM\Column(nullable: true)]
+    #[ORM\Column(precision: 10, scale: 0, nullable: true)]
     private ?float $reallocateAmount = null;
 
     #[ORM\OneToMany(mappedBy: 'BP', targetEntity: Transaction::class)]

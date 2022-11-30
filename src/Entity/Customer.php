@@ -17,7 +17,7 @@ class Customer
     private ?int $id = null;
 
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length:255, nullable: true)]
     private ?string $name = null; 
 
     #[ORM\ManyToOne(inversedBy: 'customers')]
@@ -42,7 +42,7 @@ class Customer
     #[ORM\OneToMany(mappedBy: 'customer', targetEntity: Impression::class)]
     private Collection $impressions;
 
-    #[ORM\Column]
+    #[ORM\Column( nullable: true)]
     private ?bool $impressionAccess = false;
 
     #[ORM\OneToMany(mappedBy: 'customer', targetEntity: ExpenseReport::class)]

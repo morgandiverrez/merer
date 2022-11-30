@@ -9,8 +9,10 @@
             <p class="display-6 no-wrap text-center">Budget Prévisionnel {{exercice}}
                     <a href="/bp/new"><i class="fa-solid fa-plus align-right"></i></a>
             </p>
+    
            
             <table class="table table-striped">
+                
                 <CAPTION class="display-4 no-wrap text-center" ALIGN="TOP">Produits</CAPTION>
                 <thead>
                     <tr>
@@ -26,7 +28,6 @@
                 <tbody>
                 {% for bp in bpProduits %} 
                     <tr>
-                        
                         <td>{{bp.getCategorie()}}</td> 
                         <td>{{bp.getDesignation()}}</td>   
                         <td>{{bp.getExpectedAmount()}} €</td>
@@ -38,6 +39,8 @@
             </table>
 
             <table class="table table-striped">
+                
+                   
                 <CAPTION class="display-4 no-wrap text-center" ALIGN="TOP">Charges  </CAPTION>
                 <thead>
                     <tr>

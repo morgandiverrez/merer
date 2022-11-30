@@ -110,5 +110,60 @@ class BPRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+
+    public function findAllByDesignationPlus($exercice, $value): ?array
+    {
+        return $this->createQueryBuilder('bp')
+            ->innerJoin('bp.exercice', 'exercice')
+            ->where('exercice.name LIKE :val')
+            ->andWhere('bp.expectedAmount >= 0')
+            ->setParameter('val',  $exercice)
+            ->andWhere('bp.designation LIKE :val')
+            ->setParameter('val', '%' . $value . '%')
+            ->orderBy('bp.designation', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+    public function findAllByDesignationMoins($exercice, $value): ?array
+    {
+        return $this->createQueryBuilder('bp')
+            ->innerJoin('bp.exercice', 'exercice')
+            ->where('exercice.name LIKE :val')
+            ->andWhere('bp.expectedAmount < 0')
+            ->setParameter('val',  $exercice)
+            ->andWhere('bp.designation LIKE :val')
+            ->setParameter('val', '%' . $value . '%')
+            ->orderBy('bp.designation', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+    public function findAllByCategoriePlus($exercice, $value): ?array
+    {
+        return $this->createQueryBuilder('bp')
+            ->innerJoin('bp.exercice', 'exercice')
+            ->where('exercice.name LIKE :val')
+            ->andWhere('bp.expectedAmount >= 0')
+            ->setParameter('val',  $exercice)
+            ->andWhere('bp.categorie LIKE :val')
+            ->setParameter('val', '%' . $value . '%')
+            ->orderBy('bp.designation', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+    public function findAllByCategorieMoins($exercice, $value): ?array
+    {
+        return $this->createQueryBuilder('bp')
+            ->innerJoin('bp.exercice', 'exercice')
+            ->where('exercice.name LIKE :val')
+            ->andWhere('bp.expectedAmount < 0')
+            ->setParameter('val',  $exercice)
+            ->andWhere('bp.categorie LIKE :val')
+            ->setParameter('val', '%' . $value . '%')
+            ->orderBy('bp.designation', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
+        
     
 }

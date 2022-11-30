@@ -14,15 +14,18 @@ class Cheque
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column]
+    #[ORM\Column(precision: 10, scale: 0, nullable: true)]
     private ?float $amount = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $dateOfCollection = null;
 
     #[ORM\ManyToOne(inversedBy: 'cheques')]
     #[ORM\JoinColumn(nullable: false)]
     private ?ChequeBox $chequeBox = null;
+
+    #[ORM\Column(length: 510, nullable: true)]
+    private ?string $quote = null;
 
     
 
@@ -63,6 +66,18 @@ class Cheque
     public function setChequeBox(?ChequeBox $chequeBox): self
     {
         $this->chequeBox = $chequeBox;
+
+        return $this;
+    }
+
+    public function getQuote(): ?string
+    {
+        return $this->quote;
+    }
+
+    public function setQuote(?string $quote): self
+    {
+        $this->quote = $quote;
 
         return $this;
     }

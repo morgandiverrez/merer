@@ -16,6 +16,13 @@
                         {{ form_widget(form.amount) }}
                         {{ form_help(form.amount) }}
                     </div>
+                    
+                    <div class="quote my-5">
+                        {{ form_label(form.quote, 'Commentaire ', {'label_attr': {'class': 'foo'}}) }}
+                        {{ form_errors(form.quote) }}
+                        {{ form_widget(form.quote) }}
+                        {{ form_help(form.quote) }}
+                    </div>
 
                     <div class="dateOfCollection my-5">
                         {{ form_label(form.dateOfCollection, 'Date de récéption ', {'label_attr': {'class': 'foo'}}) }}
@@ -24,13 +31,7 @@
                         {{ form_help(form.dateOfCollection) }}
                     </div>
 
-                    <div class="chequeBox my-5">
-                        {{ form_label(form.chequeBox, 'Boite attribué ', {'label_attr': {'class': 'foo'}}) }}
-                        {{ form_errors(form.chequeBox) }}
-                        {{ form_widget(form.chequeBox) }}
-                        {{ form_help(form.chequeBox) }}
-                    </div>
-
+              
             
                     <button class="btn btn-success mt-3 mb-3">{{ button_label|default('Valider ') }}<i class = "fa text-light fa-save me-2"></i></button>
                 </div>

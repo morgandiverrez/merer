@@ -142,7 +142,18 @@ class RetourController extends AbstractController
 
         $dataRemarque = array('','','','','','','','','','','',''); 
         
-        $dataQuestion = array('Satisfaction générale vis-à-vis de la formation', 'Pensez-vous que les compétences acquises durant cette formation seront utiles dans votre parcours de associatif ?', 'Comment évaluez-vous le niveau de compétences techniques (connaissances du sujet, exposé) et pédagogiques (débit de parole, charisme, échange) des formateurices ?', 'Cette formation a-t-elle répondu à vos attentes ?', 'Comment évaluez-vous l\'implication des participant.e.s à la formation ?', 'Comment évaluez-vous l’animation [séquence, utilisation du matériel, débats] de la formation ?', 'Comment évaluez-vous le contenu de la formation (informations adaptées au public, compréhension, technicité) ?','Qu\'est-ce que tu as aimé ? ','Qu\'est-ce que tu as moins aimé ?', 'Qu\'est-ce que tu aurais aimé voir dans cette formation ?','Mot de la fin');
+        $dataQuestion = array(
+            'Satisfaction générale vis-à-vis de la formation', 
+            'Pensez-vous que les compétences acquises durant cette formation seront utiles dans votre parcours de associatif ?', 
+            'Comment évaluez-vous le niveau de compétences techniques (connaissances du sujet, exposé) et pédagogiques (débit de parole, charisme, échange) des formateurices ?', 
+            'Cette formation a-t-elle répondu à vos attentes ?',
+            'Comment évaluez-vous l\'implication des participant.e.s à la formation ?',
+            'Comment évaluez-vous l’animation [séquence, utilisation du matériel, débats] de la formation ?',
+            'Comment évaluez-vous le contenu de la formation (informations adaptées au public, compréhension, technicité) ?', 
+            'Qu\'est-ce que tu as aimé ? ', 
+            'Qu\'est-ce que tu as moins aimé ?',
+            'Qu\'est-ce que tu aurais aimé voir dans cette formation ?',
+            'Mot de la fin');
        
         foreach( $retours as $retour){ // indentation pour passer par chaque retour
             $note = $retour ->getNoteGenerale();
@@ -253,38 +264,35 @@ class RetourController extends AbstractController
         $chartApport = $chartBuilder->createChart(Chart::TYPE_BAR);
 
         $chart->setData([
-            'labels' => ['Satisfaction générale vis-à-vis de la formation','Utilité des compétences acquises', 'Compétences techniques et pédagogiques des formateurices', 'Cette formation a-t-elle répondu à vos attentes ?', 'L\'implication des participant.e.s', 'L\'animation de la formation', 'Le contenu de la formation'],
+            'labels' => [   'Satisfaction générale vis-à-vis de la formation',
+                            'Utilité des compétences acquises', 
+                            'Compétences techniques et pédagogiques des formateurices', 
+                            'Cette formation a-t-elle répondu à vos attentes ?', 
+                            'L\'implication des participant.e.s', 
+                            'L\'animation de la formation',
+                            'Le contenu de la formation'],
             'datasets' => [
-                [
-                    'label' => 'Mauvais',
+                [   'label' => 'Mauvais',
                     'backgroundColor' => 'blue',
                     'stack' => 'Stack 0',
                     'data' => $dataSomme[0],
                 ],
-
-                [
-                    'label' => 'Moyen',
+                [   'label' => 'Moyen',
                     'backgroundColor' => 'red',
                     'stack' => 'Stack 0',
                     'data' => $dataSomme[1],
                 ],
-
-                [
-                    'label' => 'Correct',
+                [   'label' => 'Correct',
                     'backgroundColor' => 'yellow',
                     'stack' => 'Stack 0',
                     'data' => $dataSomme[2],
                 ],
-
-                [
-                    'label' => 'Bien',
+                [   'label' => 'Bien',
                     'backgroundColor' => 'green',
                     'stack' => 'Stack 0',
                     'data' => $dataSomme[3],
                 ],
-
-                [
-                    'label' => 'Très bien',
+                [   'label' => 'Très bien',
                     'backgroundColor' => 'orange',
                     'stack' => 'Stack 0',
                     'data' => $dataSomme[4],

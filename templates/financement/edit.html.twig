@@ -59,40 +59,40 @@
                         {{ form_help(form.flechee) }}
                     </div>
 
-                      {% set compteur = 0 %}
-                            {% for financementLine in form.financementLines %}
-                                <div class="financementLine my-5">
-                                    <p class="display-5 no-wrap text-center"> Ligne {{compteur}} </p>
-                                    <div class="libellee my-5">
-                                        {{ form_label(financementLine.libellee, 'Libellée ', {'label_attr': {'class': 'foo'}}) }}
-                                        {{ form_errors(financementLine.libellee) }}
-                                        {{ form_widget(financementLine.libellee)}}
-                                        {{ form_help(financementLine.libellee) }}
-                                    </div>
+                    {% set compteur = 0 %}
+                    {% for financementLine in form.financementLines %}
+                        <div class="financementLine my-5">
+                            <p class="display-5 no-wrap text-center"> Ligne {{compteur}} </p>
+                            <div class="libellee my-5">
+                                {{ form_label(financementLine.libellee, 'Libellée ', {'label_attr': {'class': 'foo'}}) }}
+                                {{ form_errors(financementLine.libellee) }}
+                                {{ form_widget(financementLine.libellee)}}
+                                {{ form_help(financementLine.libellee) }}
+                            </div>
 
-                                    <div class="amount my-5">
-                                        {{ form_label(financementLine.amount, 'montant ', {'label_attr': {'class': 'foo'}}) }}
-                                        {{ form_errors(financementLine.amount) }}
-                                        {{ form_widget(financementLine.amount)}}
-                                        {{ form_help(financementLine.amount) }}
-                                    </div>
+                            <div class="amount my-5">
+                                {{ form_label(financementLine.amount, 'montant ', {'label_attr': {'class': 'foo'}}) }}
+                                {{ form_errors(financementLine.amount) }}
+                                {{ form_widget(financementLine.amount)}}
+                                {{ form_help(financementLine.amount) }}
+                            </div>
 
-                                    <div class="description my-5">
-                                        {{ form_label(financementLine.description, 'Description ', {'label_attr': {'class': 'foo'}}) }}
-                                        {{ form_errors(financementLine.description) }}
-                                        {{ form_widget(financementLine.description)}}
-                                        {{ form_help(financementLine.description) }}
-                                    </div>
+                            <div class="description my-5">
+                                {{ form_label(financementLine.description, 'Description ', {'label_attr': {'class': 'foo'}}) }}
+                                {{ form_errors(financementLine.description) }}
+                                {{ form_widget(financementLine.description)}}
+                                {{ form_help(financementLine.description) }}
+                            </div>
 
-                                    <div class="reporter my-5">
-                                        {{ form_label(financementLine.reporter, 'reporter ', {'label_attr': {'class': 'foo'}}) }}
-                                        {{ form_errors(financementLine.reporter) }}
-                                        {{ form_widget(financementLine.reporter)}}
-                                        {{ form_help(financementLine.reporter) }}
-                                    </div>
-                                </div>
-                                {% set compteur = compteur + 1 %}
-                            {% endfor %}
+                            <div class="reporter my-5">
+                                {{ form_label(financementLine.reporter, 'reporter ', {'label_attr': {'class': 'foo'}}) }}
+                                {{ form_errors(financementLine.reporter) }}
+                                {{ form_widget(financementLine.reporter)}}
+                                {{ form_help(financementLine.reporter) }}
+                            </div>
+                        </div>
+                        {% set compteur = compteur + 1 %}
+                    {% endfor %}
 
                      <div class="financementLine2 my-5" data-prototype="{{ form_widget(form.financementLines.vars.prototype)|e('html_attr') }}">
                     </div>

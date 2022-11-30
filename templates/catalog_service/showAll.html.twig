@@ -13,27 +13,21 @@
                 <p class="text-center">
                     <input type="text" id="code" name="code" placeholder="Code"/>
                     <input type="text" id="name" name="name" placeholder="name"/>
-                    <input type="text" id="amountTtc" name="amountTtc" placeholder="montant TTC"/>
                     <button class="btn btn-primary" type="submit" >Rechercher</button>
                 </p>
             </form>
             <table class="table table-striped">
-                
-                
                 <thead>
-                <tr>
-                    <th scope="col">Code</th>
-                    <th scope="col">Nom</th>
-                    <th scope="col">Amount TTC</th>
-                    <th scope="col">Détails</th>
-                    
-                 </tr>
+                    <tr>
+                        <th scope="col">Code</th>
+                        <th scope="col">Nom</th>
+                        <th scope="col">Amount TTC</th>
+                        <th scope="col">Détails</th>
+                    </tr>
                 </thead>
-
                 <tbody>
                 {% for service in services %} 
-                    <tr>
-                        
+                    <tr> 
                         <td>{{service.getCode()}}</td> 
                         <td>{{service.getName()}}</td>   
                         <td>{{service.getAmountTtc()}}€</td>

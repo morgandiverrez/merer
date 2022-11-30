@@ -14,25 +14,25 @@ class BankAccount
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?int $accountNumber = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?int $ribBankCode = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?int $ribBranchCode = null;
 
-    #[ORM\Column(type: Types::BIGINT)]
+    #[ORM\Column(type: Types::BIGINT, nullable: true)]
     private ?string $ribAccountNumber = null;
 
-    #[ORM\Column]
+    #[ORM\Column( nullable: true)]
     private ?int $ribKey = null;
 
-    #[ORM\Column(length: 64)]
+    #[ORM\Column(length:64, nullable: true)]
     private ?string $iban = null;
 
-    #[ORM\Column(length: 64)]
+    #[ORM\Column(length:64, nullable: true)]
     private ?string $bic = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]

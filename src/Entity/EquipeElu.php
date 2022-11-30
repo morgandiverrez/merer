@@ -18,7 +18,7 @@ class EquipeElu
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $code;
 
-    #[ORM\Column(type: 'string', length: 255)]
+    #[ORM\Column(type: 'string', length:255, nullable: true)]
     private $name;
 
     #[ORM\Column(type: 'array', nullable: true)]
