@@ -6,7 +6,9 @@ use App\Entity\Customer;
 use App\Entity\ChequeBox;
 use App\Form\CustomerType;
 use App\Form\ChequeBoxType;
+use App\Controller\InvoiceController;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Controller\ExpenseReportController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -40,10 +42,16 @@ class CustomerController extends AbstractController
         foreach ($customer->getInvoices() as $invoice) {
             array_push($totals, (new InvoiceController)->invoiceTotale($invoice));
         }
+
+        $totalExpenseReports = array();
+        foreach ($customer->getExpenseReports() as $expenseReport) {
+            array_push($totalExpenseReports, (new ExpenseReportController)->expenseReportTotale($expenseReport));
+        }
         
         return $this->render('customer/show.html.twig', [
             'customer' => $customer,
             'totals' => $totals,
+            'totalExpenseReports' => $totalExpenseReports,
 
         ]);
     }
@@ -84,16 +92,17 @@ class CustomerController extends AbstractController
     {
         $customer = new Customer();
         $form = $this->createForm(CustomerType::class, $customer);
+        
         $form->handleRequest($request);
 
 
         if ($form->isSubmitted() && $form->isValid()) {
-
+            
+           
             $entityManager->persist($customer);
             $entityManager->flush();
             return $this->redirectToRoute('customer_show', ['customerID' => $customer->getId()]);
         }
-
         return $this->render('customer/new.html.twig', [
             'customer' => $customer,
             'form' => $form->createView(),
@@ -112,7 +121,7 @@ class CustomerController extends AbstractController
 
 
         if ($form->isSubmitted() && $form->isValid()) {
-
+           
             $entityManager->persist($customer);
             $entityManager->flush();
             return $this->redirectToRoute('customer_show', ['customerID' => $customerID]);

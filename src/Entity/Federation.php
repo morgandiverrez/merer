@@ -45,6 +45,11 @@ class Federation
         return $this->id;
     }
 
+    public function  __toString()
+    {
+        return $this->getSocialReason();
+    }
+
     public function getSocialReason(): ?string
     {
         return $this->socialReason;

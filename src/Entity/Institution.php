@@ -33,6 +33,11 @@ class Institution
         return $this->id;
     }
 
+    public function  __toString()
+    {
+        return $this->getId();
+    }
+
     public function isHeadquarter(): ?bool
     {
         return $this->headquarter;

@@ -32,7 +32,7 @@ class TransactionLineType extends AbstractType
             ->add('quote', TextAreaType::class, ['label' => 'commentaire',])
             ->add('chartOfAccounts', EntityType::class, ['class' => ChartOfAccounts::class, 'label' => 'PCG',])
 
-            ->add('supplier', EntityType::class, ['class' => Supplier::class, 'label' => 'fournisseur',])
+           
             
         ;
     }

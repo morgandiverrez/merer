@@ -24,7 +24,7 @@ class ExpenseReportRouteLineType extends AbstractType
             ->add('start')
             ->add('end')
             ->add('distance')
-            ->add( 'travelMeans', ChoiceType::class, [
+            ->add( 'travelMean', ChoiceType::class, [
             'choices' => [
                 'voiture' => 'voiture',
                 'bus' =>  'bus',

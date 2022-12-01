@@ -20,6 +20,7 @@
                                 {{ form_errors(form.customer) }}
                                 {{ form_widget(form.customer)}}
                                 {{ form_help(form.customer) }}
+                                 <a href="/customer/new" target="_blank"><i class="fa-sharp fa-solid fa-circle-plus"></i></button></a>
                             </div>
                              <div class="acquitted my-5">
                                 {{ form_label(form.acquitted, 'acquitted ', {'label_attr': {'class': 'foo'}}) }}
@@ -69,6 +70,7 @@
                                         {{ form_errors(invoiceLine.catalogDiscount) }}
                                         {{ form_widget(invoiceLine.catalogDiscount)}}
                                         {{ form_help(invoiceLine.catalogDiscount) }}
+                                         <a href="/discount/new" target="_blank"><i class="fa-sharp fa-solid fa-circle-plus"></i></button></a>
                                     </div>
 
                                     <div class="catalogService my-5">
@@ -76,6 +78,7 @@
                                         {{ form_errors(invoiceLine.catalogService) }}
                                         {{ form_widget(invoiceLine.catalogService)}}
                                         {{ form_help(invoiceLine.catalogService) }}
+                                         <a href="/service/new" target="_blank"><i class="fa-sharp fa-solid fa-circle-plus"></i></button></a>
                                     </div>
                                 </div>
                                  {% set compteur = compteur + 1 %}

@@ -62,7 +62,7 @@
                         <td> {% if expenseReportRouteLine.repayGrid %} {{expenseReportRouteLine.repayGrid.start }} {% else %} {{expenseReportRouteLine.start}} {% endif %}</td>
                         <td> {% if expenseReportRouteLine.repayGrid %} {{expenseReportRouteLine.repayGrid.end }} {% else %} {{expenseReportRouteLine.end}} {% endif %}</td>
                         <td> {% if expenseReportRouteLine.repayGrid %} {{expenseReportRouteLine.repayGrid.distance }} {% else %} {{expenseReportRouteLine.distance}} {% endif %}</td>
-                        <td> {% if expenseReportRouteLine.repayGrid %} {{expenseReportRouteLine.repayGrid.travelMeans }} {% else %} {{expenseReportRouteLine.travelMeans}} {% endif %}</td>
+                        <td> {% if expenseReportRouteLine.repayGrid %} {{expenseReportRouteLine.repayGrid.travelMean }} {% else %} {{expenseReportRouteLine.travelMeans}} {% endif %}</td>
                         <td> {% if expenseReportRouteLine.repayGrid %} {{expenseReportRouteLine.repayGrid.amount }} € {% else %} {{expenseReportRouteLine.amount}} €{% endif %}</td>
                         {% if expenseReportRouteLine.repayGrid %} {% set totalAmount = totalAmount + expenseReportRouteLine.repayGrid.amount %} {% else %}  {% set totalAmount = totalAmount + expenseReportRouteLine.amount %}  {% endif %}
                          {% if is_granted('ROLE_TRESO') or  expenseReport.comfirm != true %}
@@ -87,7 +87,7 @@
             </table>
              {% if   expenseReport.comfirm != true %}
                 <div class="text-center">
-                    <a href="/expenseReportRouteLine/new/{{ expenseReport.id }}"><button class="btn btn-success mt-3 mb-3" type="submit" name="show">{{ button_label|default('Ajouter une ligne ') }}<i class = "fa text-light fa-plus-square me-2"></i></button></a>
+                    <a href="/expenseReportRouteLine/new/{{ expenseReport.id }}" ><button class="btn btn-success mt-3 mb-3" type="submit" name="show">{{ button_label|default('Ajouter une ligne ') }}<i class = "fa text-light fa-plus-square me-2"></i></button></a>
                 </div>
             {% endif %}
             <table class="table table-striped">

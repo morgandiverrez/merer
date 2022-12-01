@@ -31,6 +31,7 @@ class CustomerType extends AbstractType
         ])
             ->add('contacts', EntityType::class, [
             'class' => Contact::class,
+            'multiple' => true,
         ])
             ->add('user', EntityType::class, [
             'class' => User::class,
