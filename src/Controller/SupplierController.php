@@ -22,7 +22,13 @@ class SupplierController extends AbstractController
     public function showAll(EntityManagerInterface $entityManager, Request $request): Response
     {
         $suppliers = $entityManager->getRepository(Supplier::class)->findAll();
-        
+        if ($request->isMethod('post')) {
+            $posts = $request->request->all();
+            if ($posts['name']) {
+                $suppliers = array_intersect($suppliers, $entityManager->getRepository(Supplier::class)->findAllByName($posts['name']));
+            }
+           
+        }
         return $this->render('supplier/showAll.html.twig', [
             'suppliers' => $suppliers,
 

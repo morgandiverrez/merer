@@ -27,7 +27,7 @@ class ExpenseReportRouteLine
     private ?float $distance = null;
 
     #[ORM\Column(length:255, nullable: true)]
-    private ?string $travelMeans = null;
+    private ?string $travelMean = null;
 
     #[ORM\Column(precision: 10, scale: 0, nullable: true)]
     private ?float $amount = null;
@@ -44,6 +44,8 @@ class ExpenseReportRouteLine
     {
         return $this->id;
     }
+
+    
 
     public function getDate(): ?\DateTimeInterface
     {
@@ -93,14 +95,14 @@ class ExpenseReportRouteLine
         return $this;
     }
 
-    public function getTravelMeans(): ?string
+    public function getTravelMean(): ?string
     {
-        return $this->travelMeans;
+        return $this->travelMean;
     }
 
-    public function setTravelMeans(string $travelMeans): self
+    public function setTravelMean(string $travelMean): self
     {
-        $this->travelMeans = $travelMeans;
+        $this->travelMean = $travelMean;
 
         return $this;
     }

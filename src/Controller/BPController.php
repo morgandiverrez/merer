@@ -25,6 +25,25 @@ class BPController extends AbstractController
         return $this->redirectToRoute('bp_showAll', ['exercice' => $date]);
 
     }
+
+    #[Route('/exercicePrecedent/{exercice}', name: 'showAllBPPrecedent')]
+    #[IsGranted('ROLE_TRESO')]
+    public function showAllBPPrecedent( $exercice): Response
+    {
+        $annee = $exercice-1;
+        return $this->redirectToRoute('bp_showAll', ['exercice' => $annee]);
+    }
+
+    #[Route('/exerciceSuivant/{exercice}', name: 'showAllBPSuivant')]
+    #[IsGranted('ROLE_TRESO')]
+    public function showAllBPSuivant( $exercice): Response
+    {
+  
+        $annee = $exercice + 1;
+        return $this->redirectToRoute('bp_showAll', ['exercice' => $annee]);
+    }
+
+
     #[Route('/exercice/{exercice}', name: 'showAll')]
     #[IsGranted('ROLE_TRESO')]
     public function showAll(EntityManagerInterface $entityManager , Request $request, $exercice): Response

@@ -39,7 +39,11 @@ class PaymentDeadline
         return $this->id;
     }
 
-  
+    public function  __toString()
+    {
+        return $this->getExpectedPaymentDate();
+    }
+    
     public function getExpectedPaymentDate(): ?\DateTimeInterface
     {
         return $this->expectedPaymentDate;

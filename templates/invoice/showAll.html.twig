@@ -12,12 +12,26 @@
                 <p class="display-6 no-wrap text-center mb-5">Tables des factures
                     <a href="/invoice/new"><i class="fa-solid fa-plus align-left"></i></a>
                 </p>
+                <form action="{{ path('invoice_showAll') }}" method="post">
+                    <p class="text-center" >
+                        <input type="text" id="customer" name="customer" placeholder="Client"/>
+                        <input type="text" id="code" name="code" placeholder="Code"/>
+                        <input type="text" id="transaction" name="transaction" placeholder="Transaction"/>
+                        <select name="comfirmer" id="comfirmer" >
+                            <option select value='tous' >tous</option>
+                            <option  value='1'>comfirmé</option>
+                            <option  value='0'>pas comfirmé</option>
+                        </select>
+                        <button class="btn btn-primary" type="submit" >Rechercher</button>
+                     </p>
+                </form>
+              
 
                 <table class="table table-striped">
                     <thead>
                     <tr>
                         <th scope="col">Client</th>
-                        <th scope="col">Numéro</th>
+                        <th scope="col">Code</th>
                         <th scope="col">Transaction</th>
                         <th scope="col">Montant</th>
                         <th scope="col">Total Payé</th>
@@ -72,10 +86,10 @@
                         <td>
                             {% if invoice.comfirm == FALSE %}
                                 <a href="/invoice/comfirm/{{ invoice.iD }}" target="_blank">
-                                    <i class="fa-sharp fa-solid fa-circle-xmark"></i>
+                                    <i class="fa-sharp fa-solid fa-circle-xmark" style="color: red;"></i>
                                 </a>
                             {% else %}
-                                <i class="fa-sharp fa-solid fa-circle-check"></i>
+                                <i class="fa-sharp fa-solid fa-circle-check" style="color: green;"></i>
                             {% endif %} 
                         </td>
                         

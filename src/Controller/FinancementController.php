@@ -17,10 +17,18 @@ class FinancementController extends AbstractController
 {
     #[Route('/', name: 'showAll')]
     #[IsGranted('ROLE_TRESO')]
-    public function showAll(EntityManagerInterface $entityManager, ): Response
+    public function showAll(EntityManagerInterface$entityManager, Request $request ): Response
     {
         $financements = $entityManager->getRepository(Financement::class)->findAllInOrder();
-
+        if ($request->isMethod('post')) {
+            $posts = $request->request->all();
+            if ($posts['name']) {
+                $financements = array_intersect($financements, $entityManager->getRepository(Financement::class)->findAllByName($posts['name']));
+            }
+            if ($posts['financeur']) {
+                $financements = array_intersect($financements, $entityManager->getRepository(Financement::class)->findAllByFinanceur($posts['financeur']));
+            } 
+        }
        
         return $this->render('financement/showAll.html.twig', [
             'financements' => $financements,

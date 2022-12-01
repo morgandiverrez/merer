@@ -28,6 +28,26 @@ class InvoiceController extends AbstractController
     {
 
         $invoices = $entityManager->getRepository(Invoice::class)->findAll();
+
+        if ($request->isMethod('post')) {
+            $posts = $request->request->all();
+            if ($posts['customer']) {
+                $invoices = array_intersect($invoices, $entityManager->getRepository(Invoice::class)->findAllByCustomer($posts['customer']));
+            }
+            if ($posts['code']) {
+                $invoices = array_intersect($invoices, $entityManager->getRepository(Invoice::class)->findAllByCode($posts['code']));
+            }
+            if ($posts['transaction']) {
+                $invoices = array_intersect($invoices, $entityManager->getRepository(Invoice::class)->findAllByTransaction($posts['transaction']));
+            }
+            if ($posts['comfirmer'] == '1') {
+                $invoices = array_intersect($invoices, $entityManager->getRepository(Invoice::class)->findAllComfirm());
+            }
+            if ($posts['comfirmer'] == '0') {
+                $invoices = array_intersect($invoices, $entityManager->getRepository(Invoice::class)->findAllNotComfirm());
+            }
+        }
+
         $totals = array();
         foreach ($invoices as $invoice) {
             array_push($totals, (new InvoiceController)->invoiceTotale($invoice));

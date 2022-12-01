@@ -44,6 +44,11 @@ class FundBox
         return $this->id;
     }
 
+    public function  __toString()
+    {
+        return $this->getName();
+    }
+    
     public function getDescription(): ?string
     {
         return $this->description;

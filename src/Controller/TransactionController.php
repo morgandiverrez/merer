@@ -18,9 +18,25 @@ class TransactionController extends AbstractController
 {
     #[Route('/', name: 'showAll')]
     #[IsGranted('ROLE_TRESO')]
-    public function showAll(EntityManagerInterface $entityManager): Response
+    public function showAll(EntityManagerInterface$entityManager, Request $request): Response
     {
         $transactions = $entityManager->getRepository(Transaction::class)->findAll();
+
+        if ($request->isMethod('post')) {
+            $posts = $request->request->all();
+            if ($posts['commentaire']) {
+                $transactions = array_intersect($transactions, $entityManager->getRepository(Transaction::class)->findAllByCommentaire($posts['commentaire']));
+            }
+            if ($posts['code']) {
+                $transactions = array_intersect($transactions, $entityManager->getRepository(Transaction::class)->findAllByCode($posts['code']));
+            }
+            if ($posts['cloture'] == '1') {
+                $transactions = array_intersect($transactions, $entityManager->getRepository(Transaction::class)->findAllComfirm());
+            }
+            if ($posts['cloture'] == '0') {
+                $transactions = array_intersect($transactions, $entityManager->getRepository(Transaction::class)->findAllNotComfirm());
+            }
+        }
         return $this->render('transaction/showAll.html.twig', [
             'transactions' => $transactions,
           
@@ -70,6 +86,7 @@ class TransactionController extends AbstractController
                 $entityManager->persist($transaction->getTransactionLines()[$i]);
                 $i++;
             }
+            $entityManager->persist($transaction);
             $entityManager->flush();
 
             return $this->redirectToRoute('transaction_show', ['transactionId' => $transaction->getId()]);
@@ -118,6 +135,7 @@ class TransactionController extends AbstractController
                 $entityManager->persist($transaction->getTransactionLines()[$i]);
                 $i++;
             }
+            $entityManager->persist($transaction);
             $entityManager->flush();
             return $this->redirectToRoute('transaction_show', ['transactionId' => $transaction->getId()]);
         }
@@ -156,5 +174,27 @@ class TransactionController extends AbstractController
         readfile($finaleFile);
 
         return $this->redirectToRoute('transaction_show', ['transactionId' => $transactionLine->getTransaction()->getId()]);
+    }
+
+    #[Route('/closure/{transactionId}', name: 'cloture')]
+    #[IsGranted('ROLE_TRESO')]
+    public function closure(EntityManagerInterface $entityManager, $transactionId): Response
+    {
+        $transaction = $entityManager->getRepository(Transaction::class)->findTransactionById($transactionId);
+        $transaction->setClosure(true);
+        $entityManager->persist($transaction);
+        $entityManager->flush();
+        return $this->redirectToRoute('transaction_showAll');
+    }
+
+    #[Route('/unclosure/{transactionId}', name: 'uncloture')]
+    #[IsGranted('ROLE_TRESO')]
+    public function unclosure(EntityManagerInterface $entityManager, $transactionId): Response
+    {
+        $transaction = $entityManager->getRepository(Transaction::class)->findTransactionById($transactionId);
+        $transaction->setClosure(false);
+        $entityManager->persist($transaction);
+        $entityManager->flush();
+        return $this->redirectToRoute('transaction_showAll');
     }
 }

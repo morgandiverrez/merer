@@ -16,10 +16,20 @@ class EvenementController extends AbstractController
 {
     #[Route('/', name: 'showAll')]
     #[IsGranted('ROLE_BF')]
-    public function showAll(EntityManagerInterface $entityManager): Response
+    public function showAll(EntityManagerInterface$entityManager, Request $request): Response
     {
         $evenements = $entityManager->getRepository(Evenement::class)->findAllOrderByDate();
-
+        if ($request->isMethod('post')) {
+            $posts = $request->request->all();
+            if ($posts['name']) {
+                $evenements = array_intersect($evenements, $entityManager->getRepository(Evenement::class)->findAllByName($posts['name']));
+            }
+            if ($posts['description']) {
+                $evenements = array_intersect($evenements, $entityManager->getRepository(Evenement::class)->findAllByDescription($posts['description']));
+            }
+        
+           
+        }
         return $this->render('evenement/showAll.html.twig', [
             'evenements' => $evenements,
 

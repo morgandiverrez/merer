@@ -64,7 +64,10 @@ class Invoice
     }
 
 
-
+    public function  __toString()
+    {
+        return $this->getCode();
+    }
 
     public function getId(): ?int
     {

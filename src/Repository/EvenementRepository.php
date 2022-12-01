@@ -94,4 +94,26 @@ class EvenementRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function findAllByName($value): ?array
+    {
+        return $this->createQueryBuilder('evenement')
+        ->andWhere('evenement.name LIKE :val')
+        ->setParameter('val', '%' . $value . '%')
+            ->orderBy('evenement.dateDebut', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findAllByDescription($value): ?array
+    {
+        return $this->createQueryBuilder('evenement')
+        ->andWhere('evenement.description LIKE :val')
+        ->setParameter('val', $value . '%')
+            ->orderBy('evenement.dateDebut', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
+
 }
