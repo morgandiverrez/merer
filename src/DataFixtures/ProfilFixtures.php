@@ -65,6 +65,7 @@ class ProfilFixtures extends Fixture implements DependentFixtureInterface
         $profil2->setCode('ADMIN');
         $profil2->setLastName('PRESIDENCE');
         $profil2->setName('PAUL');
+        $profil2->setPronom($this->faker->randomElement(['il', 'iel', 'elle']));
         $profil2->setDateOfBirth($this->faker->dateTime());
         $profil2->setTelephone($this->faker->phoneNumber());
         $this->addReference('PROFIL_PREZ', $profil2);
@@ -83,6 +84,7 @@ class ProfilFixtures extends Fixture implements DependentFixtureInterface
         $profil2a = new Profil();
         $user2a = new User();
         $profil2a->setCode('TRESO');
+        $profil2a->setPronom($this->faker->randomElement(['il', 'iel', 'elle']));
         $profil2a->setLastName('TRESO');
         $profil2a->setName('Paul');
         $profil2a->setDateOfBirth($this->faker->dateTime());
@@ -104,6 +106,7 @@ class ProfilFixtures extends Fixture implements DependentFixtureInterface
         $profil2b->setCode('FORMA');
         $profil2b->setLastName('FORMA');
         $profil2b->setName('Paul');
+        $profil2b->setPronom($this->faker->randomElement(['il', 'iel', 'elle']));
         $profil2b->setDateOfBirth($this->faker->dateTime());
         $profil2b->setTelephone($this->faker->phoneNumber());
         $this->addReference('PROFIL_FORMA', $profil2b);
@@ -124,6 +127,7 @@ class ProfilFixtures extends Fixture implements DependentFixtureInterface
         $profil3->setCode('FORMATEURICE');
         $profil3->setLastName('FORMATEURICE');
         $profil3->setName('LE');
+        $profil3->setPronom($this->faker->randomElement(['il', 'iel', 'elle']));
         $profil3->setDateOfBirth($this->faker->dateTime());
         $profil3->setTelephone($this->faker->phoneNumber());
   
@@ -145,6 +149,7 @@ class ProfilFixtures extends Fixture implements DependentFixtureInterface
         $user4 = new User();
         $profil4->setCode($this->faker->regexify('[A-Z]{2}-[0-9]{2}'));
         $profil4->setLastName('DIVERREZ');
+        $profil4->setPronom($this->faker->randomElement(['il', 'iel', 'elle']));
         $profil4->setName('Morgan');
         $profil4->setDateOfBirth($this->faker->dateTime());
         $profil4->setTelephone('0651812671');
@@ -167,6 +172,7 @@ class ProfilFixtures extends Fixture implements DependentFixtureInterface
         $profil5->setCode($this->faker->regexify('[A-Z]{3}-[0-9]{2}'));
         $profil5->setLastName('BF');
         $profil5->setName('EQUIPE');
+        $profil5->setPronom($this->faker->randomElement(['il', 'iel', 'elle']));
         $profil5->setDateOfBirth($this->faker->dateTime());
         $profil5->setTelephone($this->faker->phoneNumber());
       

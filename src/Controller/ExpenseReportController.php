@@ -24,9 +24,21 @@ class ExpenseReportController extends AbstractController
 {
     #[Route('/', name: 'showAll')]
     #[IsGranted('ROLE_TRESO')]
-    public function showAll(EntityManagerInterface $entityManager): Response
+    public function showAll(EntityManagerInterface$entityManager, Request $request): Response
     {
         $expenseReports = $entityManager->getRepository(ExpenseReport::class)->findAll();
+        if ($request->isMethod('post')) {
+            $posts = $request->request->all();
+            if ($posts['demandeur']) {
+                $expenseReports = array_intersect($expenseReports, $entityManager->getRepository(ExpenseReport::class)->findAllByDemandeur($posts['demandeur']));
+            }
+            if ($posts['comfirmer'] == '1' ) {
+                $expenseReports = array_intersect($expenseReports, $entityManager->getRepository(ExpenseReport::class)->findAllComfirm());
+            }
+            if ($posts['comfirmer'] == '0') {
+                $expenseReports = array_intersect($expenseReports, $entityManager->getRepository(ExpenseReport::class)->findAllNotComfirm());
+            }
+        }
         return $this->render('expense_report/showAll.html.twig', [
             'expenseReports' => $expenseReports,
 

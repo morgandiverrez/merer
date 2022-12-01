@@ -35,8 +35,8 @@ class ExpenseReport
     #[ORM\JoinColumn(nullable: false)]
     private ?Customer $customer = null;
 
-    #[ORM\Column(nullable: true)]
-    private ?bool $comfirm = null;
+    #[ORM\Column]
+    private ?bool $comfirm = false;
 
     #[ORM\ManyToOne(inversedBy: 'expenseReports')]
     #[ORM\JoinColumn(nullable: false)]
@@ -59,6 +59,11 @@ class ExpenseReport
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function  __toString()
+    {
+        return $this->getMotif(). $this->getId();
     }
 
     public function getMotif(): ?string

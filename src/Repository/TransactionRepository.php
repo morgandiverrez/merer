@@ -99,5 +99,43 @@ class TransactionRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function findAllByCode($value): ?array
+    {
+        return $this->createQueryBuilder('transaction')
+        ->andWhere('transaction.code LIKE :val')
+        ->setParameter('val', '%' . $value . '%')
+            ->orderBy('transaction.code', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findAllByCommentaire($value): ?array
+    {
+        return $this->createQueryBuilder('transaction')
+        ->andWhere('transaction.quote LIKE :val')
+        ->setParameter('val', '%' . $value . '%')
+            ->orderBy('transaction.code', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findAllComfirm(): ?array
+    {
+        return $this->createQueryBuilder('transaction')
+        ->andWhere('transaction.closure = true')
+        ->orderBy('transaction.code', 'DESC')
+        ->getQuery()
+            ->getResult();
+    }
+
+    public function findAllNotComfirm(): ?array
+    {
+        return $this->createQueryBuilder('transaction')
+        ->andWhere('transaction.closure = false')
+        ->orderBy('transaction.code', 'DESC')
+        ->getQuery()
+            ->getResult();
+    }
+
    
 }

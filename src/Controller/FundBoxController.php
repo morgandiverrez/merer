@@ -20,15 +20,21 @@ class FundBoxController extends AbstractController
     #[IsGranted('ROLE_TRESO')]
     public function showAll(EntityManagerInterface $entityManager, Request $request): Response
     {
-        $fundBox = $entityManager->getRepository(FundBox::class)->findAll();
-
+        $fundBoxs = $entityManager->getRepository(FundBox::class)->findAll();
+        if ($request->isMethod('post')) {
+            $posts = $request->request->all();
+            if ($posts['name']) {
+                $fundBoxs = array_intersect($fundBoxs, $entityManager->getRepository(FundBox::class)->findAllByName($posts['name']));
+            }
+        }
+        
         $totals = [];
-        foreach ($fundBox as $box) {
+        foreach ($fundBoxs as $box) {
             $totals[$box->getName()] = $entityManager->getRepository(FundBox::class)->montantTotale($box->getId())[0]['total_amount'];
             if ($totals[$box->getName()] == null) $totals[$box->getName()] = 0;
         }
         return $this->render('fundBox/showAll.html.twig', [
-            'fundBox' => $fundBox,
+            'fundBox' => $fundBoxs,
             'totals'=>$totals,
 
         ]);

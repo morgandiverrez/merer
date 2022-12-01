@@ -17,7 +17,7 @@ class BPFixtures extends Fixture implements DependentFixtureInterface
             $bp = new BP();
             $bp->setCategorie($this->faker->word());
             $bp->setDesignation($this->faker->sentence());
-            $bp->setExpectedAmount(($this->faker->numberBetween(5, 1000)));
+            $bp->setExpectedAmount(($this->faker->numberBetween(-1000, 1000)));
             $bp->setReallocateAmount($this->faker->numberBetween(5, 100));
             $bp->setExercice($this->getRandomReference('EXERCICE'));
             $this->addReference('BP_' . $i, $bp);

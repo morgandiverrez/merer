@@ -64,15 +64,7 @@ class FinancementRepository extends ServiceEntityRepository
     //        ;
     //    }
 
-    public function findAllByName($value): ?array
-    {
-        return $this->createQueryBuilder('financement')
-        ->andWhere('financement.name LIKE :val')
-        ->setParameter('val', '%' . $value . '%')
-            ->orderBy('financement.startDate', 'DESC')
-            ->getQuery()
-            ->getResult();
-    }
+  
 
     public function findAllInOrder(): ?array
     {
@@ -91,4 +83,24 @@ class FinancementRepository extends ServiceEntityRepository
                ->getOneOrNullResult()
            ;
        }
+
+    public function findAllByName($value): ?array
+    {
+        return $this->createQueryBuilder('financement')
+        ->andWhere('financement.name LIKE :val')
+        ->setParameter('val', '%' . $value . '%')
+            ->orderBy('financement.dateVersement', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findAllByFinanceur($value): ?array
+    {
+        return $this->createQueryBuilder('financement')
+        ->andWhere('financement.financeur LIKE :val')
+        ->setParameter('val', '%' . $value . '%')
+            ->orderBy('financement.dateVersement', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
 }

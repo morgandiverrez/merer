@@ -16,6 +16,7 @@ class InvoiceFixtures extends Fixture implements DependentFixtureInterface
         $this->faker = Factory::create();
         for ($i = 0; $i < 5; $i++) {
             $invoice = new Invoice();
+            $invoice->setCode($this->faker->regexify('[A-Z]{3}-[0-9]{2}'));
             $invoice->setCreationDate($this->faker->datetime());
             $invoice->setAcquitted($this->faker->boolean());
             $invoice->setReady($this->faker->boolean());

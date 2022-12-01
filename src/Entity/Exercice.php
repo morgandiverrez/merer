@@ -16,9 +16,6 @@ class Exercice
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
-    private ?\DateTimeInterface $date = null;
-
     #[ORM\OneToMany(mappedBy: 'exercice', targetEntity: Event::class)]
     private Collection $events;
 
@@ -37,8 +34,10 @@ class Exercice
     #[ORM\OneToMany(mappedBy: 'exercice', targetEntity: Impression::class, orphanRemoval: true)]
     private Collection $impressions;
 
-    #[ORM\Column(length:255, nullable: true)]
-    private ?string $name = null;
+  
+
+    #[ORM\Column]
+    private ?int $annee ;
 
     public function __construct()
     {
@@ -57,20 +56,10 @@ class Exercice
 
     public function  __toString()
     {
-        return $this->getDate()->format('Y');
+        return $this->getAnnee();
     }
     
-    public function getDate(): ?\DateTimeInterface
-    {
-        return $this->date;
-    }
-
-    public function setDate(\DateTimeInterface $date): self
-    {
-        $this->date = $date;
-
-        return $this;
-    }
+ 
 
     /**
      * @return Collection<int, Event>
@@ -252,14 +241,14 @@ class Exercice
         return $this;
     }
 
-    public function getName(): ?string
+    public function getAnnee(): ?int
     {
-        return $this->name;
+        return $this->annee;
     }
 
-    public function setName(string $name): self
+    public function setAnnee(int $annee): self
     {
-        $this->name = $name;
+        $this->annee = $annee;
 
         return $this;
     }

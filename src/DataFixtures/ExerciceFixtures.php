@@ -13,9 +13,7 @@ class ExerciceFixtures extends Fixture
     {
           for ($i = 2020; $i<=2023; $i++){
             $exercice = new Exercice();
-            $dt = \DateTime::createFromFormat( "Y", $i );
-            $exercice->setName($i);
-            $exercice ->setDate($dt);
+            $exercice->setAnnee($i);
             $this->addReference('EXERCICE_'.$i, $exercice);
              $manager->persist($exercice);
            

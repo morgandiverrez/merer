@@ -103,5 +103,55 @@ class InvoiceRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function findAllByCustomer($value): ?array
+    {
+        return $this->createQueryBuilder('invoice')
+            ->innerJoin('invoice.customer', 'customer')
+            ->andWhere('customer.name LIKE :val')
+            ->setParameter('val', '%' . $value . '%')
+            ->orderBy('invoice.code', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findAllByCode($value): ?array
+    {
+        return $this->createQueryBuilder('invoice')
+        ->andWhere('invoice.code LIKE :val')
+        ->setParameter('val', '%' . $value . '%')
+            ->orderBy('invoice.code', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findAllByTransaction($value): ?array
+    {
+        return $this->createQueryBuilder('invoice')
+            ->innerJoin('invoice.transaction', 'transaction')
+            ->andWhere('transaction.code LIKE :val')
+            ->setParameter('val', '%' . $value . '%')
+            ->orderBy('invoice.code', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findAllComfirm(): ?array
+    {
+        return $this->createQueryBuilder('invoice')
+        ->andWhere('invoice.comfirm = true')
+        ->orderBy('invoice.code', 'DESC')
+        ->getQuery()
+            ->getResult();
+    }
+
+    public function findAllNotComfirm(): ?array
+    {
+        return $this->createQueryBuilder('invoice')
+        ->andWhere('invoice.comfirm = false')
+        ->orderBy('invoice.code', 'DESC')
+        ->getQuery()
+            ->getResult();
+    }
+
  
 }

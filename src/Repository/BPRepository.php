@@ -89,7 +89,7 @@ class BPRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('bp')
             ->innerJoin('bp.exercice', 'exercice')
-            ->where('exercice.name LIKE :val')
+            ->where('exercice.annee = :val')
             ->andWhere('bp.expectedAmount >= 0')
             ->setParameter('val',  $exercice)
             ->orderBy('bp.designation', 'DESC')
@@ -102,7 +102,7 @@ class BPRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('bp')
             ->innerJoin('bp.exercice', 'exercice')
-            ->where('exercice.name LIKE :val')
+            ->where('exercice.annee = :val')
             ->andWhere('bp.expectedAmount < 0')
             ->setParameter('val',  $exercice)
             ->orderBy('bp.designation', 'DESC')
@@ -115,7 +115,7 @@ class BPRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('bp')
             ->innerJoin('bp.exercice', 'exercice')
-            ->where('exercice.name LIKE :val')
+            ->where('exercice.annee = :val')
             ->andWhere('bp.expectedAmount >= 0')
             ->setParameter('val',  $exercice)
             ->andWhere('bp.designation LIKE :val')
@@ -128,7 +128,7 @@ class BPRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('bp')
             ->innerJoin('bp.exercice', 'exercice')
-            ->where('exercice.name LIKE :val')
+            ->where('exercice.annee = :val')
             ->andWhere('bp.expectedAmount < 0')
             ->setParameter('val',  $exercice)
             ->andWhere('bp.designation LIKE :val')
@@ -141,7 +141,7 @@ class BPRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('bp')
             ->innerJoin('bp.exercice', 'exercice')
-            ->where('exercice.name LIKE :val')
+            ->where('exercice.annee = :val')
             ->andWhere('bp.expectedAmount >= 0')
             ->setParameter('val',  $exercice)
             ->andWhere('bp.categorie LIKE :val')
@@ -154,7 +154,7 @@ class BPRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('bp')
             ->innerJoin('bp.exercice', 'exercice')
-            ->where('exercice.name LIKE :val')
+            ->where('exercice.annee = :val')
             ->andWhere('bp.expectedAmount < 0')
             ->setParameter('val',  $exercice)
             ->andWhere('bp.categorie LIKE :val')

@@ -34,7 +34,7 @@ class Contact
     #[ORM\Column(length: 64, nullable: true)]
     private ?string $civility = null;
 
-    #[ORM\ManyToOne( nullable: true)]
+    #[ORM\ManyToOne]
     private ?Location $Location = null;
 
     public function __construct()

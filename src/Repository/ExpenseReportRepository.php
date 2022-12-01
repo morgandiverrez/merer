@@ -95,4 +95,35 @@ class ExpenseReportRepository extends ServiceEntityRepository
             ->setMaxResults(1)
             ->getResult();
     }
+
+    public function findAllByDemandeur($value): ?array
+    {
+        return $this->createQueryBuilder('expenseReport')
+            ->innerJoin('expenseReport.customer', 'customer')
+        ->andWhere('customer.name LIKE :val')
+        ->setParameter('val', '%' . $value . '%')
+            ->orderBy('expenseReport.date', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findAllComfirm(): ?array
+    {
+        return $this->createQueryBuilder('expenseReport')
+            ->andWhere('expenseReport.comfirm = true')
+            ->orderBy('expenseReport.date', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findAllNotComfirm(): ?array
+    {
+        return $this->createQueryBuilder('expenseReport')
+            ->andWhere('expenseReport.comfirm = false')
+            ->orderBy('expenseReport.date', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
+
 }

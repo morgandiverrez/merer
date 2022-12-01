@@ -95,4 +95,13 @@ class FundBoxRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function findAllByName($value): ?array
+    {
+        return $this->createQueryBuilder('fundBox')
+        ->andWhere('fundBox.name LIKE :val')
+        ->setParameter('val', '%' . $value . '%')
+            ->orderBy('fundBox.name', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
 }
