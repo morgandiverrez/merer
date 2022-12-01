@@ -14,14 +14,7 @@
                 {{ form_widget(form.exercice) }}
                 {{ form_help(form.exercice) }}
             </div>
-
-             <div class="supplier">
-                {{ form_label(form.supplier, 'Fournisseur ', {'label_attr': {'class': 'foo'}}) }}
-                {{ form_errors(form.supplier) }}
-                {{ form_widget(form.supplier)}}
-                {{ form_help(form.supplier) }}
-            </div>
-
+            
             <div class="closure my-5">
                 {{ form_label(form.closure, "Cloturé" , {'label_attr': {'class': 'foo'}}) }}
                 {{ form_errors(form.closure) }}
@@ -42,6 +35,7 @@
                 {{ form_errors(form.event) }}
                 {{ form_widget(form.event) }}
                 {{ form_help(form.event) }}
+                 <a href="/event/new" target="_blank"><i class="fa-sharp fa-solid fa-circle-plus"></i></button></a>
             </div>
 
              <div class="bp my-5">
@@ -49,6 +43,7 @@
                 {{ form_errors(form.bp) }}
                 {{ form_widget(form.bp) }}
                 {{ form_help(form.bp) }}
+                 <a href="/bp/new" target="_blank"><i class="fa-sharp fa-solid fa-circle-plus"></i></button></a>
             </div>
 
                 <div class="financementLine my-5">
@@ -56,6 +51,7 @@
                 {{ form_errors(form.financementLine) }}
                 {{ form_widget(form.financementLine) }}
                 {{ form_help(form.financementLine) }}
+                 
             </div>
 
             {% set n = 1 %}
@@ -103,6 +99,7 @@
                         {{ form_errors(transactionLine.chartOfAccounts) }}
                         {{ form_widget(transactionLine.chartOfAccounts)}}
                         {{ form_help(transactionLine.chartOfAccounts) }}
+                         <a href="/chartOfAccounts/new" target="_blank"><i class="fa-sharp fa-solid fa-circle-plus"></i></button></a>
                     </div>
 
                    

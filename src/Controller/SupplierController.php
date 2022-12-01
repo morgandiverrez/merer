@@ -61,7 +61,7 @@ class SupplierController extends AbstractController
 
 
         if ($form->isSubmitted() && $form->isValid()) {
-
+           
             $entityManager->persist($supplier);
             $entityManager->flush();
             return $this->redirectToRoute('supplier_show', ['supplierID' => $supplier->getId()]);
@@ -85,7 +85,7 @@ class SupplierController extends AbstractController
 
 
         if ($form->isSubmitted() && $form->isValid()) {
-
+           
             $entityManager->persist($supplier);
             $entityManager->flush();
             return $this->redirectToRoute('supplier_show', ['supplierID' => $supplierID]);

@@ -23,6 +23,7 @@
                         {{ form_errors(form.chartOfAccounts) }}
                         {{ form_widget(form.chartOfAccounts) }}
                         {{ form_help(form.chartOfAccounts) }}
+                         <a href="/chartOfAccounts/new" target="_blank"><i class="fa-sharp fa-solid fa-circle-plus"></i></button></a>
                     </div>
 
                     <div class="location my-5">
@@ -30,6 +31,7 @@
                         {{ form_errors(form.location) }}
                         {{ form_widget(form.location) }}
                         {{ form_help(form.location) }}
+                         <a href="/location/new" target="_blank"><i class="fa-sharp fa-solid fa-circle-plus"></i></button></a>
                     </div>
 
                     <div class="administrativeIdentifier my-5">
@@ -37,7 +39,9 @@
                         {{ form_errors(form.administrativeIdentifier) }}
                         {{ form_widget(form.administrativeIdentifier) }}
                         {{ form_help(form.administrativeIdentifier) }}
+                         <a href="/administrativeIdentifier/new" target="_blank"><i class="fa-sharp fa-solid fa-circle-plus"></i></button></a>
                     </div>
+
 
                 
                     <button class="btn btn-success mt-3 mb-3">{{ button_label|default('Valider ') }}<i class = "fa text-light fa-save me-2"></i></button>

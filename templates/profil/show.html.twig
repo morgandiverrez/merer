@@ -76,7 +76,7 @@
 
                                 
 
-                                <td>{{ totals[loop.index-1] }}</td>
+                                <td>{{ totals[loop.index-1] }} €</td>
 
                                 {% set total = 0 %}
 
@@ -86,9 +86,9 @@
                                     {% endif %}
                                 {% endfor %}
 
-                                <td>{{ total }}</td>
+                                <td>{{ total }} €</td>
 
-                                <td>{{ totals[loop.index-1]-total }}</td>
+                                <td>{{ totals[loop.index-1]-total }} €</td>
                                 {% set cheque = 0 %}
                                 {% if invoice.transaction is not null %}
                                     {% for transactionline in invoice.transaction.transactionlines %}

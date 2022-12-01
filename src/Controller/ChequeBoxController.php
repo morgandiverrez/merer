@@ -32,11 +32,7 @@ class ChequeBoxController extends AbstractController
             if ($posts['name']) {
                 $chequeBoxs = array_intersect($chequeBoxs, $entityManager->getRepository(ChequeBox::class)->findAllByName($posts['name']));
             }
-           
-           
         }
-       
-        
         return $this->render('chequeBox/showAll.html.twig', [
             'chequeBox' => $chequeBoxs,
             'totals'=>$totals,

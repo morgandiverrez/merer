@@ -8,94 +8,100 @@
     <div class="container-fluid">
         <div  style = "margin-left: auto ; margin-right: auto ; max-width : 900px;">
             <p class="display-6 no-wrap text-center align-center mb-5"> Détails du client {{customer.getName()}}</p>
-            {% if  is_granted('ROLE_TRESO') %}
-                <div class=" d-flex text-center justify-content-evenly">
-                    <div class="card justify-content-start" style="width: 18rem;">
-                
-                        <div class=" card-body ">
-                            <h5 class="card-title">{{customer.getName()}}</h5>
-                        </div>
-                        <ul class="list-group list-group-flush">                       
-                            <li class="list-group-item">Identifiant Administratif : {{customer.getAdministrativeIdentifier()}}</li>
-                            <li class="list-group-item"><a href="/location/show/{{customer.getLocation().getId()}}"> Localisation :   {{customer.getLocation().getName()}}</a></li>
-                            <li class="list-group-item"><a href="/chartOfAccounts/show/{{customer.getChartOfAccounts().getId()}}"> Compte associé :  {{customer.getChartOfAccounts().getName()}} | {{customer.getChartOfAccounts().getCode()}}</a></li>                   
-                        </ul>
-                        <div class="card-body">             
-                                <a href="/customer/edit/{{ customer.getId() }}" class="card-link"><i class="fa-solid fa-pen-to-square"></i></a>       
-                                <a href="/customer/" class="card-link"><i class="fa-solid fa-list"></i></a>
-                        </div>
+            <div class=" d-flex text-center justify-content-evenly">
+                <div class="card justify-content-start" style="width: 18rem;">
+                    <div class=" card-body ">
+                        <h5 class="card-title">{{customer.getName()}}</h5>
+                    </div>
+                    <ul class="list-group list-group-flush">                       
+                        <li class="list-group-item">Identifiant Administratif : {{customer.getAdministrativeIdentifier()}}</li>
+                        <li class="list-group-item"><a href="/location/show/{{customer.getLocation().getId()}}"> Localisation :   {{customer.getLocation().getName()}}</a></li>
+                        <li class="list-group-item"><a href="/chartOfAccounts/show/{{customer.getChartOfAccounts().getId()}}"> Compte associé :  {{customer.getChartOfAccounts().getName()}} | {{customer.getChartOfAccounts().getCode()}}</a></li>                   
+                    </ul>
+                    <div class="card-body">             
+                        <a href="/customer/edit/{{ customer.getId() }}" class="card-link"><i class="fa-solid fa-pen-to-square"></i></a>       
+                        <a href="/customer/" class="card-link"><i class="fa-solid fa-list"></i></a>
                     </div>
                 </div>
-            {% endif %}
+            </div>
             <p class="display-6 no-wrap text-center">Liste des factures de ce client </p>
             <table class="table table-striped">
                 <thead>
-                <tr>
-                    <th scope="col">Numéro</th>
-                    {% if  is_granted('ROLE_TRESO') %}
-                        <th scope="col">Transaction</th>
-                    {% endif %}
-                    <th scope="col">Montant</th>
-                    <th scope="col">Total Payé</th>
-                    <th scope="col">Reste à charge</th>
-                    <th scope="col">Chèque</th>
-                    <th scope="col">Show</th>
-                    <th scope="col">Comfirm</th>
-                </tr>
-                </thead>
-
-                <tbody>
-                {% for invoice in customer.getInvoices() %} 
                     <tr>
-                        {% if invoice.comfirm == true %}
-                            <td>Fact-{{ invoice.code }}</td>
-                        {% else %}
-                            {% if invoice.category == "Fin Mois"%}
-                                <td>Fact en  cours -{{ invoice.code }}</td>
+                        <th scope="col">Numéro</th>
+                        <th scope="col">Transaction</th>
+                        <th scope="col">Montant</th>
+                        <th scope="col">Total Payé</th>
+                        <th scope="col">Reste à charge</th>
+                        <th scope="col">Chèque</th>
+                        <th scope="col">Show</th>
+                        <th scope="col">Comfirm</th>
+                    </tr>
+                </thead>
+                <tbody>
+                 {% set totaux = 0 %}
+                  {% set totauxPayés = 0 %}
+                    {% for invoice in customer.getInvoices() %} 
+                        <tr>
+                            {% if invoice.comfirm == true %}
+                                <td>Fact-{{ invoice.code }}</td>
                             {% else %}
-                                <td>Dev-{{ invoice.code }}</td>
-                            {% endif %}
-                        {% endif %}
-
-                        {% if  is_granted('ROLE_TRESO') %}
-                             <td>{% if invoice.transaction %}{{ invoice.transaction.id }}{% endif %}</td>
-                        {% endif %}
-
-                        <td>{{ totals[loop.index-1] }}</td>
-
-                        {% set total = 0 %}
-
-                        {% for paymentdeadline in  invoice.paymentdeadlines %}
-                            {% if paymentdeadline.actualPaymentDate is not null %}
-                                {% set total = total+paymentdeadline.actualAmount %}
-                            {% endif %}
-                        {% endfor %}
-
-                        <td>{{ total }}</td>
-
-                        <td>{{ totals[loop.index-1]-total }}</td>
-                        {% set cheque = 0 %}
-                        {% if invoice.transaction is not null %}
-                            {% for transactionline in invoice.transaction.transactionlines %}
-                                {% if transactionline.chartofaccounts.code==51120 or transactionline.chartofaccounts.code==51121 or transactionline.chartofaccounts.code==51122 %}
-                                    {% set cheque=cheque+transactionline.amount %}
+                                {% if invoice.category == "Fin Mois"%}
+                                    <td>Fact en  cours -{{ invoice.code }}</td>
+                                {% else %}
+                                    <td>Dev-{{ invoice.code }}</td>
                                 {% endif %}
-                                {% if "REM CHQ" in transactionline.label %}
-                                    {% set cheque=cheque+transactionline.amount %}
+                            {% endif %}
+                            <td>{% if invoice.transaction %}{{ invoice.transaction.id }}{% endif %}</td>
+                            <td>{{ totals[loop.index-1] }} €</td>
+                             {% set totaux = totaux + totals[loop.index - 1] %}
+                            {% set total = 0 %}
+                            {% for paymentdeadline in  invoice.paymentdeadlines %}
+                                {% if paymentdeadline.actualPaymentDate is not null %}
+                                    {% set total = total + paymentdeadline.actualAmount %}
                                 {% endif %}
                             {% endfor %}
-                        {% endif %}
-                        <td>{{ cheque }}</td>
-                        <td><a href="/invoice/pdf/{{ invoice.iD }}" target="_blank"><i class="fa-solid fa-eye"></i></a></td>
-                        {% if  is_granted('ROLE_TRESO') %}
-                            <td><a href="/invoice/comfirm/{{ invoice.iD }}" target="_blank"><i class="fa-solid fa-eye"></i></a></td>
-                        {% endif %}
-                    </tr> 
-                {% endfor %}
+                            <td>{{ total }} €</td>
+                             {% set totauxPayés = totauxPayés + total[loop.index - 1] %}
+                            <td>{{ totals[loop.index-1] - total }} €</td>
+                            {% set cheque = 0 %}
+                            {% if invoice.transaction is not null %}
+                                {% for transactionline in invoice.transaction.transactionlines %}
+                                    {% if transactionline.chartofaccounts.code==51120 or transactionline.chartofaccounts.code==51121 or transactionline.chartofaccounts.code==51122 %}
+                                        {% set cheque=cheque+transactionline.amount %}
+                                    {% endif %}
+                                    {% if "REM CHQ" in transactionline.label %}
+                                        {% set cheque=cheque+transactionline.amount %}
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                            <td>{{ cheque }}</td>
+                            <td><a href="/invoice/pdf/{{ invoice.iD }}" target="_blank"><i class="fa-solid fa-eye"></i></a></td>
+                            <td>
+                                {% if expenseReport.comfirm == FALSE %}
+                                    <a href="/expenseReport/comfirm/{{ expenseReport.iD }}" >
+                                        <i class="fa-sharp fa-solid fa-circle-xmark" style="color: red;" ></i>
+                                    </a>
+                                {% else %}
+                                    <i class="fa-sharp fa-solid fa-circle-check" style="color: green;"></i>
+                                {% endif %} 
+                            </td>
+                        </tr> 
+                    {% endfor %}
                 </tbody>
+                <tfoot>
+                        <th></th>
+                        <th></th>
+                        <th>{{totaux}} €</th>
+                        <th>{{totauxPayés}} €</th>
+                        <th>{{ totaux - totauxPayés }} €</th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                    </tfoot>
             </table>
+
             <p class="display-6 no-wrap text-center">Liste des impressions de ce client </p>
-       
             <table class="table table-striped">
                 <thead>
                     <tr>
@@ -103,9 +109,7 @@
                         <th scope="col">imprimeur</th>
                         <th scope="col">Format</th>
                         <th scope="col">Quantité</th>
-                        {% if  is_granted('ROLE_TRESO') %}
-                            <th scope="col">Supprimer</th>
-                        {% endif %}
+                        <th scope="col">Supprimer</th>
                     </tr>
                 </thead>
 
@@ -116,14 +120,55 @@
                         <td>{{impression.getName()}}</td>
                         <td>{{impression.getFormat()}}{% if impression.isRectoVerso() %} RV {% endif %} {% if impression.isCouleur() %} Couleur {% else %} NB {% endif %} </td>
                          <td>{{impression.getQuantite()}}</td>
-                        {% if  is_granted('ROLE_TRESO') %}
-                            <td><a href="/impression/delete/{{impression.getId()}}"><i class="fa-solid fa-trash-can"></i></a></td> 
-                        {% endif %}
+                        <td><a href="/impression/delete/{{impression.getId()}}"><i class="fa-solid fa-trash-can"></i></a></td> 
                      </tr>
                 {% endfor %}
                 </tbody>
             </table>
-        {% if  is_granted('ROLE_TRESO') %}
+            <p class="display-6 no-wrap text-center mb-5">Liste des notes de frais de ce client</p>
+            <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th scope="col">Code</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Demandeur</th>
+                        <th scope="col">Montant</th>
+                        <th scope="col">Comfirmer</th>
+                        <th scope="col">Détails</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                        {% set totaux = 0 %}
+                        {% for expenseReport in customer.getExpenseReports() %} 
+                            <tr>
+                                <td>{{ expenseReport.code }}</td>
+                                <td>{{ expenseReport.date.format('d/m/y') }}</td>
+                                <td>{{ expenseReport.customer.name }}</td>
+                                <td>{{ totalExpenseReports[loop.index - 1] }} €</td>
+                                {% set totaux = totaux + totalExpenseReports[loop.index - 1] %}
+                                <td>
+                                    {% if expenseReport.comfirm == FALSE %}
+                                        <a href="/expenseReport/comfirm/{{ expenseReport.iD }}" >
+                                            <i class="fa-sharp fa-solid fa-circle-xmark" style="color: red;" ></i>
+                                        </a>
+                                    {% else %}
+                                        <i class="fa-sharp fa-solid fa-circle-check" style="color: green;"></i>
+                                    {% endif %} 
+                                </td>
+                                <td><a href="/expenseReport/show/{{ expenseReport.iD }}" ><i class = "fa-solid fa-eye"></i></a></td>
+                            </tr> 
+                        {% endfor %}
+                    </tbody>
+                    <tfoot>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th>{{totaux}} €</th>
+                        <th></th>
+                        <th></th>
+                    </tfoot>
+                </table>
                 <p class="display-6 no-wrap text-center">Liste des contacts de ce client </p>
                 <table class="table table-striped">
                     <thead>
@@ -134,7 +179,6 @@
                             <th scope="col">Détails</th>
                         </tr>
                     </thead>
-
                     <tbody>
                         {% for contact in customer.getContacts() %} 
                             <tr>
@@ -147,6 +191,6 @@
                     </tbody>
                 </table>
             </div>
-        {% endif %}
+        </div>
     </div>
 {% endblock %}

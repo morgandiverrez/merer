@@ -46,9 +46,7 @@ class SeanceType extends AbstractType
 
             ->add('visible', BooleanType::class)
 
-            ->add('evenement', EntityType::class, [
-                'class' => Evenement::class,
-            ])
+          
         ;
     }
 
