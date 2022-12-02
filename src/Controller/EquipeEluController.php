@@ -112,11 +112,19 @@ class EquipeEluController extends AbstractController
     {
 
         $equipeElu = $entityManager->getRepository(EquipeElu::class)->findById($equipeEluID)[0];
+        foreach ($equipeElu->getProfil() as $profil){
+            $equipeElu->removeProfil($profil);
+        }
+         $entityManager->persist($equipeElu);
+        $entityManager->flush();
         $entityManager->remove($equipeElu);
+
         $entityManager->flush();
         
         return $this->redirectToRoute('equipeElu_showAll');
     }
+
+   
 
     #[Route('/remove/{equipeEluID}', name: 'remove')]
     #[IsGranted('ROLE_ADMIN')]

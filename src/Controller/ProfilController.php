@@ -109,7 +109,7 @@ class ProfilController extends AbstractController
         }
 
         $i=0;
-        while($profilNonComplet and isset($profils[$i]) and $this->isGranted("ROLE_TRESO", "ROLE_PRESIDENCE", "ROLE_FORMA")){
+        while($profilNonComplet and isset($profils[$i]) ){
             if ($profils[$i]->getUser() == $user and 
                                                     $profils[$i]->getName() and 
                                                     $profils[$i]->getLastName() and 
@@ -121,13 +121,9 @@ class ProfilController extends AbstractController
             $i++;
         }
        
-        if(  $customerExistPas and $profilNonComplet ) {
-                $profil = new Profil;
-                $entityManager->persist($profil);
-                $profil->setUser($user);
-                $entityManager->persist($user);
-                $entityManager->flush();
-                return $this->redirectToRoute('profil_edit', ['profilID' => $profil->getID()]);
+        if(  ($customerExistPas and $profilNonComplet ) or  $this->isGranted("ROLE_TRESO", "ROLE_PRESIDENCE", "ROLE_FORMA") ) {
+              
+                return $this->redirectToRoute('profil_edit', []);
             }
 
         $totals = array();
@@ -233,17 +229,11 @@ class ProfilController extends AbstractController
                 $profil = $testProfil;
             }
         }
+        if( ! isset($profil)) $profil = new Profil();
 
         $form = $this->createForm(ProfilType::class, $profil);
 
-        $equipeElus = $profil->getEquipeElu();
-        foreach ($equipeElus as $equipe) {
-            $profil->removeEquipeElu($equipe);
-        }
-        $associations = $profil->getEquipeElu();
-        foreach ($associations as $asso) {
-            $asso->removeProfil($profil);
-        }
+     
         
         $form->handleRequest($request);
 
@@ -279,8 +269,9 @@ class ProfilController extends AbstractController
                     $go = false;
                 }
             }
-
+            $user->setProfil($profil);
             $entityManager->persist($profil);
+             $entityManager->persist($user);
             $entityManager->flush();
 
             return $this->redirectToRoute('profil_show');

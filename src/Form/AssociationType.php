@@ -24,15 +24,16 @@ class AssociationType extends AbstractType
                 'constraints' => [new Image(['maxSize' => '1024k'])]
                 ])
             ->add('sigle')
-            ->add('name')
+            ->add('name',)
    
-            ->add('description', TextareaType::class)
+            ->add('description', TextareaType::class, ['required' => false,])
             ->add('fede_filliere')
             ->add('fede_territoire')
             ->add('local')
             ->add('adresse_mail', EmailType::class)
             ->add( 'date_election', BirthdayType::class, [
             'widget' => 'single_text',
+            'required' => false,
         ])
         ;
     }
