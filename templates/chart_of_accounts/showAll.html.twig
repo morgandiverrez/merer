@@ -32,7 +32,7 @@
                     <tr>
                         <td>{{account.getCode()}}</td>   
                         <td>{{account.getName()}}</td>
-                        <td>{% if account.isMovable() %} oui {% else %} non {% endif %}</td>
+                        <td>{% if account.isMovable() %}<i class="fa-solid fa-circle-check" style="color: green;"></i>{% else %}<i class="fa-solid fa-circle-xmark" style="color: red;"></i> {% endif %}</td>
                         <td><a href="/chartOfAccounts/show/{{account.getId()}}"><i class="fa-solid fa-eye"></i></i></a></td> 
                      </tr>
                 {% endfor %}

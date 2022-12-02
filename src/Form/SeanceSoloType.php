@@ -16,7 +16,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 
-class SeanceType extends AbstractType
+class SeanceSoloType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -45,10 +45,8 @@ class SeanceType extends AbstractType
             'multiple' => true, 
         ])
 
-            ->add('parcours', ChoiceType::class,[
-
-                'choices' => $options['parcours'],
-            ])
+            ->add('visible')
+           
 
           
         ;
@@ -58,9 +56,9 @@ class SeanceType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Seance::class,
-            'parcours' => false,
+           
         ]);
 
-        $resolver->setAllowedTypes('parcours', 'array');
+      
     }
 }

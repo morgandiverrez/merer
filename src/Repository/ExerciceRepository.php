@@ -66,8 +66,8 @@ class ExerciceRepository extends ServiceEntityRepository
 
     public function findByName($value): ?Exercice
    {
-       return $this->createQueryBuilder('impression')
-           ->andWhere('impression.name = :val')
+       return $this->createQueryBuilder('exercice')
+           ->andWhere('exercice.annee = :val')
            ->setParameter('val', $value)
            ->getQuery()
            ->getOneOrNullResult()

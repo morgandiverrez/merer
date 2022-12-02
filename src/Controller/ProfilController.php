@@ -337,20 +337,27 @@ class ProfilController extends AbstractController
     }
 
     #[Route('/roles', name: 'roles')]
-    #[IsGranted('ROLE_ADMIN')]
+    #[IsGranted('ROLE_FORMA')]
     public function roles(EntityManagerInterface $entityManager, Request $request): Response
     {
         $users = $entityManager->getRepository(User::class)->findAll();
-
-
+        foreach($users as $user){
+            foreach(["ROLE_ADMIN", "ROLE_TRESO", "ROLE_FORMA"] as $role){
+                if(in_array($role, $user->getRoles())){
+                    unset($users[array_search($user, $users)]);
+       
+                }
+            }
+            if($user->getProfil() == null ){
+                unset($users[array_search($user, $users)]);
+            }
+        }
         if ($request->isMethod('post')) {
             $posts = $request->request->all();
 
             foreach( $users as $user){
-                if($user->getEmail() == "presidence@fedeb.net" or $user->getEmail() == "formation@fedeb.net" ){
-                    $user->setRoles(["ROLE_ADMIN"]);  
-                }
-                elseif(isset($posts[$user->getId() . '_bf'])){
+                
+                if(isset($posts[$user->getId() . '_bf'])){
                         $user->setRoles(["ROLE_BF"]);
                 }       
                 elseif(isset($posts[$user->getId() . '_formateurice'])){

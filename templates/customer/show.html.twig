@@ -14,9 +14,10 @@
                         <h5 class="card-title">{{customer.getName()}}</h5>
                     </div>
                     <ul class="list-group list-group-flush">                       
-                        <li class="list-group-item">Identifiant Administratif : {{customer.getAdministrativeIdentifier()}}</li>
-                        <li class="list-group-item"><a href="/location/show/{{customer.getLocation().getId()}}"> Localisation :   {{customer.getLocation().getName()}}</a></li>
-                        <li class="list-group-item"><a href="/chartOfAccounts/show/{{customer.getChartOfAccounts().getId()}}"> Compte associé :  {{customer.getChartOfAccounts().getName()}} | {{customer.getChartOfAccounts().getCode()}}</a></li>                   
+                        <li class="list-group-item">APE : {{customer.getAdministrativeIdentifier().getAPE()}}</li>
+                         <li class="list-group-item">SIRET : {{customer.getAdministrativeIdentifier().getSiret()}}</li>
+                        <li class="list-group-item"> Localisation : <a href="/location/show/{{customer.getLocation().getId()}}">  {{customer.getLocation().getName()}}</a></li>
+                        <li class="list-group-item">Compte associé :<a href="/chartOfAccounts/show/{{customer.getChartOfAccounts().getId()}}">   {{customer.getChartOfAccounts().getName()}} | {{customer.getChartOfAccounts().getCode()}}</a></li>                   
                     </ul>
                     <div class="card-body">             
                         <a href="/customer/edit/{{ customer.getId() }}" class="card-link"><i class="fa-solid fa-pen-to-square"></i></a>       
