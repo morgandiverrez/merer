@@ -19,27 +19,25 @@
                         </thead>
                         <tbody>
                             {% for user in users  %}
-                                {% if  user.profil is not null %}
-                                    <tr>
-                                        <td>{{user.profil.getName()}}</td>
-                                        <td>{{user.profil.getLastName()}}</td>
-                                        <td>
-                                            {% if "ROLE_FORMATEURICE" in user.getRoles()  %}
-                                                <input type="checkbox" id="formateurice" name="{{user.getId()}}_formateurice"  checked />
-                                            {% else %}
-                                                <input type="checkbox" id="formateurice" name="{{user.getId()}}_formateurice" />
-                                            {% endif %}
-                                        </td>
-                                        <td>
-                                            {% if "ROLE_BF" in user.getRoles()  %}
-                                                <input type="checkbox" id="bf" name="{{user.getId()}}_bf"  checked />
-                                            {% else %}
-                                                <input type="checkbox" id="bf" name="{{user.getId()}}_bf" />
-                                            {% endif %}
-                                        </td>
-                                        <td><a href="/account/show/{{user.profil.getId()}}"><i class="fa-solid fa-eye"></i></a></td> 
-                                    </tr> 
-                                {% endif %}
+                                <tr>
+                                    <td>{{user.profil.getName()}}</td>
+                                    <td>{{user.profil.getLastName()}}</td>
+                                    <td>
+                                        {% if "ROLE_FORMATEURICE" in user.getRoles()  %}
+                                            <input type="checkbox" id="formateurice" name="{{user.getId()}}_formateurice"  checked />
+                                        {% else %}
+                                            <input type="checkbox" id="formateurice" name="{{user.getId()}}_formateurice" />
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if "ROLE_BF" in user.getRoles()  %}
+                                            <input type="checkbox" id="bf" name="{{user.getId()}}_bf"  checked />
+                                        {% else %}
+                                            <input type="checkbox" id="bf" name="{{user.getId()}}_bf" />
+                                        {% endif %}
+                                    </td>
+                                    <td><a href="/account/show/{{user.profil.getId()}}"><i class="fa-solid fa-eye"></i></a></td> 
+                                </tr> 
                             {% endfor %}
                         </tbody>
                     </table> 

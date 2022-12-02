@@ -44,7 +44,7 @@ class EvenementController extends AbstractController
 
         $evenement = $entityManager->getRepository(Evenement::class)->findById($evenementID)[0];
         
-        $seances = $evenement->getSeance(); //on recup tt les seances qui ont un groupe qui commence par la variable groupe
+        $seances = $evenement->getSeances(); //on recup tt les seances qui ont un groupe qui commence par la variable groupe
 
         foreach ($seances as $seance) {
             if ($seance->getParcours() != null) {
@@ -69,7 +69,11 @@ class EvenementController extends AbstractController
     public function new(EntityManagerInterface $entityManager, Request $request): Response
     {
         $evenement = new Evenement();
-        $form = $this->createForm(EvenementType::class, $evenement);
+        $parcours =  [];
+        foreach ($evenement->getParcours() as $parcour) {
+            $parcours[$parcour] = $parcour;
+        }
+        $form = $this->createForm(EvenementType::class, $evenement, ['parcours_event' => $parcours]);
         $form->handleRequest($request);
 
 
@@ -77,8 +81,9 @@ class EvenementController extends AbstractController
             if ($evenement->getDateFinInscription() == null) {
                 $evenement->setDateFinInscription($evenement->getDateFin());
             }
-            foreach($evenement->getSeance() as $seance){
-                $seance->setVisible($evenement->isVisible);
+            foreach($evenement->getSeances() as $seance){
+                $seance->setVisible($evenement->isVisible());
+                $entityManager->persist($seance);
             }
             $entityManager->persist($evenement);
             $entityManager->flush();
@@ -99,13 +104,21 @@ class EvenementController extends AbstractController
     public function edit(EntityManagerInterface $entityManager, Request $request, $evenementID): Response
     {
         $evenement = $entityManager->getRepository(Evenement::class)->findById($evenementID)[0];
-        $form = $this->createForm(EvenementType::class, $evenement);
+        $parcours =  [];
+        foreach($evenement->getParcours() as $parcour) {
+            $parcours[$parcour] = $parcour;
+        }
+        $form = $this->createForm(EvenementType::class, $evenement,['parcours_event' => $parcours] );
         $form->handleRequest($request);
 
 
         if ($form->isSubmitted() && $form->isValid()) {
             if($evenement->getDateFinInscription() == null){
                 $evenement->setDateFinInscription($evenement->getDateFin());
+            }
+            foreach ($evenement->getSeances() as $seance) {
+                $seance->setVisible($evenement->isVisible());
+                $entityManager->persist($seance);
             }
            
             $entityManager->persist($evenement);
@@ -132,5 +145,27 @@ class EvenementController extends AbstractController
         $entityManager->flush();
 
         return $this->redirectToRoute('evenement_showAll', []);
+    }
+
+    #[Route('/visible/{evenementID}', name: 'cloture')]
+    #[IsGranted('ROLE_FORMA')]
+    public function visible(EntityManagerInterface $entityManager, $evenementID): Response
+    {
+        $evenement = $entityManager->getRepository(Evenement::class)->findById($evenementID)[0];
+        $evenement->setVisible(true);
+        $entityManager->persist($evenement);
+        $entityManager->flush();
+        return $this->redirectToRoute('evenement_showAll');
+    }
+
+    #[Route('/unvisible/{evenementID}', name: 'uncloture')]
+    #[IsGranted('ROLE_FORMA')]
+    public function unvisible(EntityManagerInterface $entityManager, $evenementID): Response
+    {
+        $evenement = $entityManager->getRepository(Evenement::class)->findById($evenementID)[0];
+        $evenement->setVisible(false);
+        $entityManager->persist($evenement);
+        $entityManager->flush();
+        return $this->redirectToRoute('evenement_showAll');
     }
 }

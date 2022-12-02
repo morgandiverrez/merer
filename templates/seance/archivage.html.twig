@@ -31,6 +31,9 @@
                         <th scope="col">Nom</th>
                         <th scope="col">Durée</th>
                         <th scope="col">Ville</th>
+                        {% if is_granted('ROLE_BF')%}
+                            <th scope="col">Visible</th>
+                        {% endif %}
                         <th scope="col">Détails</th>
                         
                     </tr>
@@ -45,23 +48,34 @@
                         <tr>
                         {% set verif = true %}
                     {% endif %}
-                    {% if seance.isVisible() %}
-                        <tr> 
-                            <td>{{seance.getDatetime().format("d/m/Y H:i")}}</td>
-                            <td>{{seance.getName()}}</td>
-                            <td>{{seance.formation.getDuration().format("H:i")}}</td>
-                            <td>
-                            {% if seance.getLieux() is not null %}
-                                {% for lieu in seance.getLieux() %}
-                                    {{lieu.getVille()}} 
-                                {% endfor %}
+                    <tr> 
+                        <td>{{seance.getDatetime().format("d/m/Y H:i")}}</td>
+                        <td>{{seance.getName()}}</td>
+                        <td>{{seance.formation.getDuration().format("H:i")}}</td>
+                        <td>
+                        {% if seance.getLieux() is not null %}
+                            {% for lieu in seance.getLieux() %}
+                                {{lieu.getVille()}} 
+                            {% endfor %}
+                        {% else %}
+                            -
+                        {% endif %}
+                        </td>
+                        <td>
+                        {% if is_granted('ROLE_BF')%}
+                            {% if seance.visible == FALSE %}
+                                <a href="/seance/visible/{{ seance.iD }}" >
+                                    <i class="fa-sharp fa-solid fa-circle-xmark" style="color: red;" ></i>
+                                </a>
                             {% else %}
-                                -
+                                <a href="/seance/unvisible/{{ seance.iD }}" >
+                                    <i class="fa-sharp fa-solid fa-circle-check" style="color: green;"></i>
+                                </a>
                             {% endif %}
-                            </td>
-                            <td><a href="/seance/showForFormateurice/{{seance.getId()}}"><i class="fa-solid fa-eye"></i></a></td>
-                        </tr>
-                    {% endif %}
+                        {% endif %}
+                        </td>
+                        <td><a href="/seance/showForFormateurice/{{seance.getId()}}"><i class="fa-solid fa-eye"></i></a></td>
+                    </tr>
                {% endfor %}
                 </tbody>
             </table>

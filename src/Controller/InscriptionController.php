@@ -164,7 +164,7 @@ class InscriptionController extends AbstractController
                         $seanceProfil->setCovoiturage($posts['participation_covoiturage']);
                     }
                     $entityManager->persist($seanceProfil);
-                 }
+                }
             }else{
                 foreach ($seances as $seance) {
                     if (isset($posts['inscription_' . $seance->getDatetime()->format('d/m/y H:i:s')])  and $posts['inscription_' . $seance->getDatetime()->format('d/m/y H:i:s')] == $seance->getId()) {

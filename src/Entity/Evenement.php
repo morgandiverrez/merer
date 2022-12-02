@@ -33,7 +33,7 @@ class Evenement
     private $URL;
 
     #[ORM\OneToMany(mappedBy: 'evenement', targetEntity: seance::class)]
-    private $seance;
+    private $seances;
 
     #[ORM\Column(type: 'array', nullable: true)]
     private $parcours = [];
@@ -67,7 +67,7 @@ class Evenement
    
     public function __construct()
     {
-        $this->seance = new ArrayCollection();
+        $this->seances = new ArrayCollection();
       
     }
 
@@ -92,7 +92,6 @@ class Evenement
 
         return $this;
     }
-
 
     public function getDescription(): ?string
     {
@@ -145,15 +144,15 @@ class Evenement
     /**
      * @return Collection<int, seance>
      */
-    public function getSeance(): Collection
+    public function getSeances(): Collection
     {
-        return $this->seance;
+        return $this->seances;
     }
 
     public function addSeance(seance $seance): self
     {
-        if (!$this->seance->contains($seance)) {
-            $this->seance[] = $seance;
+        if (!$this->seances->contains($seance)) {
+            $this->seances[] = $seance;
             $seance->setEvenement($this);
         }
 
@@ -162,7 +161,7 @@ class Evenement
 
     public function removeSeance(seance $seance): self
     {
-        if ($this->seance->removeElement($seance)) {
+        if ($this->seances->removeElement($seance)) {
             // set the owning side to null (unless already changed)
             if ($seance->getEvenement() === $this) {
                 $seance->setEvenement(null);

@@ -10,7 +10,7 @@ use App\Entity\Lieux;
 use App\Entity\Profil;
 use App\Entity\Retour;
 use App\Entity\Seance;
-use App\Form\SeanceType;
+use App\Form\SeanceSoloType;
 use App\Entity\Formation;
 use App\Entity\SeanceProfil;
 use Doctrine\ORM\EntityManagerInterface;
@@ -168,7 +168,7 @@ class SeanceController extends AbstractController
     public function edit(EntityManagerInterface $entityManager, Request $request, $seanceID): Response
     {
         $seance = $entityManager->getRepository(Seance::class)->findById($seanceID)[0];
-        $form = $this->createForm(SeanceType::class, $seance);
+        $form = $this->createForm(SeanceSoloType::class, $seance);
         $form->handleRequest($request);
  
         if ($form->isSubmitted() && $form->isValid()) {
@@ -223,81 +223,16 @@ class SeanceController extends AbstractController
         ]);
     }
    
-    #[Route('/parcours/{seanceID}', name: 'parcours')]
-    #[IsGranted('ROLE_BF')]
-    public function choiceEvenement(EntityManagerInterface $entityManager, Request $request,  $seanceID): Response
-    {
-        $seance = $entityManager->getRepository(Seance::class)->findById($seanceID)[0];
 
-        if ($request->isMethod('post')) {
-            $posts = $request->request->all();
-            if ($posts['parcours'] ) {
-                $seance->setParcours($posts['parcours']);
-            }
-            if ($posts['newParcours']) {
-                $seance->getEvenement()->addParcours($posts['newParcours']);
-                $seance->setParcours($posts['newParcours']);
-            }
-            $entityManager->persist($seance);
-            $entityManager->flush();
-            return $this->redirectToRoute('seance_show', ['seanceID' => $seance->getID()]);
-        }
-    return $this->render('seance/choiceParcours.html.twig', [
-        'seance' => $seance,
-
-    ]);
-    }
-
-    //  #[Route('/sub_group/{seanceID}/{group}', name: 'subGroup')]
-    // #[IsGranted('ROLE_BF')]
-    // public function choiceSubGroup(EntityManagerInterface $entityManager, $group, $seanceID ,Request $request): Response
-    // {
-    //     $seance = $entityManager->getRepository(Seance::class)->findById($seanceID)[0];
-    //     $currentSubGroup ="";
-    //     if(isset(explode("_", $seance->getGroupe())[1])) {
-    //         $currentSubGroup = explode("_", $seance->getGroupe())[1];
-    //     }
-    //     $listesGroups = $entityManager->getRepository(Seance::class)->findAllSousGroupe($group);
-    //     $arraySubGroups = [];
-    //     foreach ($listesGroups as $subGroup) {
-    //         $subGroupxplode = explode("_", $subGroup['groupe']);
-
-    //         if (isset($subGroupxplode[1]) and ! in_array($subGroupxplode[1], $arraySubGroups)){
-    //             array_push($arraySubGroups, $subGroupxplode[1]);
-    //         }
-    //     }
-
-    //     if ($request->isMethod('post')) {
-    //         $posts = $request->request->all();
-    //         if ($posts['subGroup'] and $posts['subGroup']!='0') {
-    //             $seance->setGroupe($group.'_'.strtoupper($posts['subGroup']));
-    //         } elseif ($posts['newSubGroup']) {
-    //             $seance->setGroupe($group.'_'.strtoupper($posts['newSubGroup']));
-    //         } else {
-    //             $seance->setGroupe($group);
-    //         }
-    //         $entityManager->persist($seance);
-    //         $entityManager->flush();
-    //         return $this->redirectToRoute('seance_showForFormateurice', ['seanceID' => $seance->getID()]);
-    //     }
-    //     print_r($arraySubGroups);
-    //     return $this->render('seance/choiceSubGroup.html.twig', [
-    //         'seance' => $seance,
-    //         'group'=> $group,
-    //         'listeSubGroups' => $arraySubGroups,
-    //         'currentSubGroup' => $currentSubGroup,
-
-    //     ]);
-    // }
+    
 
     #[Route('/new', name: 'new')]
     #[IsGranted('ROLE_BF')]
     public function new(EntityManagerInterface $entityManager, Request $request): Response
     {
         $seance = new Seance();
-        $form = $this->createForm(SeanceType::class, $seance);
+        $form = $this->createForm(SeanceSoloType::class, $seance, );
         $form->handleRequest($request);
-
         
         if ($form->isSubmitted() && $form->isValid()) {
          
@@ -332,5 +267,28 @@ class SeanceController extends AbstractController
             'seance' => $seance,
             'form' => $form->createView(), 
         ]);
+    }
+
+
+    #[Route('/visible/{seanceID}', name: 'cloture')]
+    #[IsGranted('ROLE_FORMA')]
+    public function visible(EntityManagerInterface $entityManager, $seanceID): Response
+    {
+        $seance = $entityManager->getRepository(Seance::class)->findById($seanceID)[0];
+        $seance->setVisible(true);
+        $entityManager->persist($seance);
+        $entityManager->flush();
+        return $this->redirectToRoute('seance_archivage');
+    }
+
+    #[Route('/unvisible/{seanceID}', name: 'uncloture')]
+    #[IsGranted('ROLE_FORMA')]
+    public function unvisible(EntityManagerInterface $entityManager, $seanceID): Response
+    {
+        $seance = $entityManager->getRepository(Seance::class)->findById($seanceID)[0];
+        $seance->setVisible(false);
+        $entityManager->persist($seance);
+        $entityManager->flush();
+        return $this->redirectToRoute('seance_archivage');
     }
 }

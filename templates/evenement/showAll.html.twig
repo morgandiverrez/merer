@@ -25,6 +25,9 @@
                     <th scope="col">Description</th>
                     <th scope="col">Date début</th>
                      <th scope="col">Date fin</th>
+                     {% if is_granted('ROLE_BF')%}
+                        <th scope="col">Visible</th>
+                    {% endif %}
                     <th scope="col">Détails</th>        
                  </tr>
                 </thead>
@@ -42,7 +45,20 @@
                             <td>{{evenement.getDescription()}}</td>
                             <td>{% if evenement.getDateDebut() is null %} - {% else %} {{evenement.getDateDebut().format('d/m/Y H:i')}} {% endif %}</td>
                             <td>{% if evenement.getDateFin() is null %} - {% else %}{{evenement.getDateFin().format('d/m/Y H:i')}}{% endif %}</td>
-                            <td><a href="/evenement/show/{{evenement.getId()}}"><i class="fa-solid fa-eye"></i></i></a></td> 
+                            {% if is_granted('ROLE_BF')%}
+                                <td>
+                                    {% if evenement.visible == FALSE %}
+                                        <a href="/evenement/visible/{{ evenement.iD }}" >
+                                            <i class="fa-sharp fa-solid fa-circle-xmark" style="color: red;" ></i>
+                                        </a>
+                                    {% else %}
+                                        <a href="/evenement/unvisible/{{ evenement.iD }}" >
+                                            <i class="fa-sharp fa-solid fa-circle-check" style="color: green;"></i>
+                                        </a>
+                                    {% endif %}
+                                </td>
+                            {% endif %}
+                           <td><a href="/evenement/show/{{evenement.getId()}}"><i class="fa-solid fa-eye"></i></i></a></td> 
                         </tr> 
                     {% endfor %}
                 </tbody>
