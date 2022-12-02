@@ -11,15 +11,14 @@
                  <a href="/association/new"><i class="fa-solid fa-plus align-right"></i></a>
             {% endif %}
             </p>
-             </p>
-            </p>
-            <p class="text-center ">
-                <form action="{{ path('association_showAll') }}" method="post">
-                        <input type="text" id="name" name="name" placeholder="Nom"/>
-                        <input type="text" id="fedefi" name="fedefi" placeholder="fede fi"/>
-                        <button class="btn btn-primary" type="submit" >Rechercher</button>
-                </form>
-             </p>
+            <form action="{{ path('association_showAll') }}" method="post">
+                <p class="text-center ">
+                    <input type="text" id="name" name="name" placeholder="Nom"/>
+                    <input type="text" id="fedefi" name="fedefi" placeholder="fede fi"/>
+                    <button class="btn btn-primary" type="submit" >Rechercher</button>
+                </p>
+            </form>
+             
             
             
             <table class="table table-striped">

@@ -19,7 +19,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 class RegistrationController extends AbstractController
 {
     #[Route('/register', name: 'register')]
-    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager, MailerInterface $mailer): Response
+    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
     {
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
@@ -37,16 +37,16 @@ class RegistrationController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
 
-            $email = (new Email())
-                        ->from('no-reply@fedeb.net')
-                        ->to($user->getEmail())
-                        //->cc('formation@example.com')
-                        //->bcc('bcc@example.com')
-                        //->replyTo('fabien@example.com')
-                        //->priority(Email::PRIORITY_HIGH)
-                        ->subject('Time for Symfony Mailer!')
-                        ->text('Sending emails is fun again!');
-            $mailer->send($email);
+            // $email = (new Email())
+            //             ->from('no-reply@fedeb.net')
+            //             ->to($user->getEmail())
+            //             //->cc('formation@example.com')
+            //             //->bcc('bcc@example.com')
+            //             //->replyTo('fabien@example.com')
+            //             //->priority(Email::PRIORITY_HIGH)
+            //             ->subject('Time for Symfony Mailer!')
+            //             ->text('Sending emails is fun again!');
+            // $mailer->send($email);
 
             return $this->redirectToRoute('login', []);
         }
