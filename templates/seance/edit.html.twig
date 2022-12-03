@@ -56,7 +56,7 @@
                     {{ form_errors(form.formation) }}
                     {{ form_widget(form.formation) }}
                     {{ form_help(form.formation) }}
-                     <a href="/formation/new" target="_blank"><i class="fa-sharp fa-solid fa-circle-plus"></i></button></a>
+                     <a href="/catalogue/new" target="_blank"><i class="fa-sharp fa-solid fa-circle-plus"></i></button></a>
                 </div>
 
                 <div class="lieux my-5">
@@ -64,7 +64,7 @@
                     {{ form_errors(form.lieux) }}
                     {{ form_widget(form.lieux) }}
                     {{ form_help(form.lieux) }}
-                     <a href="/lieu/new" target="_blank"><i class="fa-sharp fa-solid fa-circle-plus"></i></button></a>
+                     <a href="/lieux/new" target="_blank"><i class="fa-sharp fa-solid fa-circle-plus"></i></button></a>
                 </div>
 
                 <div class="profil my-5">
@@ -73,6 +73,8 @@
                     {{ form_widget(form.profil) }}
                     {{ form_help(form.profil) }}
                 </div>
+
+              
  
 
                 <button class="btn btn-success mt-3 mb-3">{{ button_label|default('Valider ') }}<i class = "fa text-light fa-save me-2"></i></button>

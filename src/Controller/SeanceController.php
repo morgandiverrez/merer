@@ -53,9 +53,7 @@ class SeanceController extends AbstractController
             if ($posts['name']) {
                 $seances = array_intersect($seances, $entityManager->getRepository(Seance::class)->findAllByName($posts['name']));
             }
-            if ($posts['groupe']) {
-                $seances = array_intersect($seances, $entityManager->getRepository(Seance::class)->findAllByGroupe($posts['groupe']));
-            }
+           
             if ($posts['formation']) {
                 $seances = array_intersect($seances, $entityManager->getRepository(Formation::class)->findAllByName($posts['formation']));
             }

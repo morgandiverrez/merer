@@ -32,7 +32,7 @@
                         <div class="card-body">
                             {% if is_granted('ROLE_ADMIN') %}
                                 <a href="/account/edit/{{ profil.getId() }}" class="card-link"><i class="fa-solid fa-pen-to-square"></i></a>
-                                <a href="/account/delete/{{ profil.getId()}}" class="card-link"><i class="fa-solid fa-trash-can"></i></a>
+                                
                             {% endif %}
                             <a href="/account/showAll" class="card-link"><i class="fa-solid fa-list"></i></a>
                            
