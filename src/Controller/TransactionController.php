@@ -83,7 +83,7 @@ class TransactionController extends AbstractController
                     } catch (FileException $e) {
                     }
                 }
-                $entityManager->persist($transaction->getTransactionLines()[$i]);
+                $entityManager->persist($transactionLine);
                 $i++;
             }
             $entityManager->persist($transaction);

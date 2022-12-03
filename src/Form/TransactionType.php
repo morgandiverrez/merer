@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\BP;
 use App\Entity\Event;
 use App\Entity\Exercice;
+use App\Entity\FinancementLine;
 use App\Entity\Transaction;
 use App\Form\TransactionLineType;
 use Doctrine\ORM\EntityRepository;
@@ -39,6 +40,7 @@ class TransactionType extends AbstractType
             ->add('transactionLines', CollectionType::class,[
                     'entry_type' => TransactionLineType::class,
                     "label" => false,
+                    "mapped" => false,
                     'allow_add' => true,
                     'allow_delete' => true,
                     'by_reference' => false,

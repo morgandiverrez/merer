@@ -37,12 +37,7 @@ class ProfilController extends AbstractController
             if ($posts['last_name']) {
                 $profils = array_intersect($profils, $entityManager->getRepository(Profil::class)->findAllByLastName($posts['last_name']));
             }
-            if ($posts['scoreMax']) {
-                $profils = array_intersect($profils, $entityManager->getRepository(Profil::class)->findAllScoreInferior($posts['scoreMax']));
-            }
-            if ($posts['scoreMin']) {
-                $profils = array_intersect($profils, $entityManager->getRepository(Profil::class)->findAllScoreSuperior($posts['scoreMin']));
-            }
+         
             if ($posts['DOBmin']) {
                 $profils = array_intersect($profils, $entityManager->getRepository(Profil::class)->findAllDobSuperior($posts['DOBmin']));
             }
@@ -110,22 +105,21 @@ class ProfilController extends AbstractController
 
         $i=0;
         while($profilNonComplet and isset($profils[$i]) ){
-            if ($profils[$i]->getUser() == $user and 
-                                                    $profils[$i]->getName() and 
-                                                    $profils[$i]->getLastName() and 
+            if ($profils[$i]->getUser() == $user ){
+                 $profil = $profils[$i];
+                if($profils[$i]->getName() and      $profils[$i]->getLastName() and 
                                                     $profils[$i]->getDateOfBirth() and 
                                                     $profils[$i]->getTelephone() ) {
                 $profilNonComplet = false;
-                $profil = $profils[$i];
+                }
             }
             $i++;
         }
-       
-        if(  ($customerExistPas and $profilNonComplet ) or  $this->isGranted("ROLE_TRESO", "ROLE_PRESIDENCE", "ROLE_FORMA") ) {
-              
-                return $this->redirectToRoute('profil_edit', []);
+       if(!$this->isGranted("ROLE_TRESO", "ROLE_PRESIDENCE", "ROLE_FORMA")){
+            if($customerExistPas and $profilNonComplet  ) {
+                 return $this->redirectToRoute('profil_edit', []);
             }
-
+        }
         $totals = array();
         if($customer){
             foreach ($customer->getInvoices() as $invoice) {
@@ -163,7 +157,7 @@ class ProfilController extends AbstractController
         foreach ($equipeElus as $equipe) {
             $profil->removeEquipeElu($equipe);
         }
-        $associations = $profil->getEquipeElu();
+        $associations = $profil->getAssociation();
         foreach ($associations as $asso) {
             $asso->removeProfil($profil);
         }
@@ -230,6 +224,15 @@ class ProfilController extends AbstractController
             }
         }
         if( ! isset($profil)) $profil = new Profil();
+
+         $equipeElus = $profil->getEquipeElu();
+        foreach ($equipeElus as $equipe) {
+            $profil->removeEquipeElu($equipe);
+        }
+        $associations = $profil->getAssociation();
+        foreach ($associations as $asso) {
+            $asso->removeProfil($profil);
+        }
 
         $form = $this->createForm(ProfilType::class, $profil);
 

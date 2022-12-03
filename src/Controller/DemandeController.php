@@ -97,7 +97,7 @@ class DemandeController extends AbstractController
             $demande->setProfil($profil);
             $entityManager->persist($demande);
             $entityManager->flush();
-            return $this->redirectToRoute('demande_show', ['demandeID' => $demande->getId()]);
+            return $this->redirectToRoute('profil_show', []);
         }
 
         return $this->render('demande/new.html.twig', [

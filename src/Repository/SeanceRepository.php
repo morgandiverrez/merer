@@ -139,15 +139,7 @@ class SeanceRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    public function findAllByGroupe($value): ?array
-    {
-        return $this->createQueryBuilder('seance')
-            ->andWhere('seance.groupe LIKE :val')
-            ->setParameter('val', $value.'%')
-            ->orderBy('seance.datetime', 'ASC')   
-            ->getQuery()
-            ->getResult();
-    }
+ 
 
     public function findAllByDateTimeSuperior($value): array
     {

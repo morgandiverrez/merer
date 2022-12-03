@@ -13,7 +13,6 @@
             <form action="{{ path('seance_archivage') }}" method="post">
                 <p style="flex-wrap : wrap;" class="text-center justify-content-center">
                     <input type="text" id="name" name="name" placeholder="Nom"/>
-                    <input type="text" id="groupe" name="groupe" placeholder="groupe"/>
                     <input type="text" id="formation" name="formation" placeholder="formation"/>
                     <input type="text" id="nom_lieu" name="nom_lieu" placeholder="nom lieu"/>
                     <input type="text" id="ville" name="ville" placeholder="ville"/>
@@ -61,8 +60,8 @@
                             -
                         {% endif %}
                         </td>
-                        <td>
                         {% if is_granted('ROLE_BF')%}
+                        <td>
                             {% if seance.visible == FALSE %}
                                 <a href="/seance/visible/{{ seance.iD }}" >
                                     <i class="fa-sharp fa-solid fa-circle-xmark" style="color: red;" ></i>
@@ -72,8 +71,8 @@
                                     <i class="fa-sharp fa-solid fa-circle-check" style="color: green;"></i>
                                 </a>
                             {% endif %}
-                        {% endif %}
                         </td>
+                        {% endif %}
                         <td><a href="/seance/showForFormateurice/{{seance.getId()}}"><i class="fa-solid fa-eye"></i></a></td>
                     </tr>
                {% endfor %}

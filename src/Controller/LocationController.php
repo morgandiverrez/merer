@@ -27,7 +27,7 @@ class LocationController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($location);
             $entityManager->flush();
-            return $this->redirectToRoute('location_showAll');
+            return $this->redirectToRoute('profil_show');
         }
 
         return $this->render('location/new.html.twig', [
