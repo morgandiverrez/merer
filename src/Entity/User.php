@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Entity\Profil;
+use App\Entity\Customer;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UserRepository;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -30,7 +31,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToOne(inversedBy: 'user', targetEntity: Profil::class, cascade: ['persist', 'remove'])]
     private $profil = null;
 
-    #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(inversedBy: 'user', cascade: ['persist', 'remove'])]
     private ?Customer $customer = null;
 
     public function getId(): ?int
@@ -128,18 +129,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function setCustomer(?Customer $customer): self
     {
-        // unset the owning side of the relation if necessary
-        if ($customer === null && $this->customer !== null) {
-            $this->customer->setUser(null);
-        }
-
-        // set the owning side of the relation if necessary
-        if ($customer !== null && $customer->getUser() !== $this) {
-            $customer->setUser($this);
-        }
-
         $this->customer = $customer;
 
         return $this;
     }
+
+  
 }

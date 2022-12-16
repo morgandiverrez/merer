@@ -7,7 +7,9 @@ use App\Entity\Contact;
 use App\Entity\Customer;
 use App\Entity\Location;
 use App\Entity\ChartOfAccounts;
+use Doctrine\ORM\EntityRepository;
 use App\Entity\AdministrativeIdentifier;
+use ContainerJ7znfVl\getVarDumper_ContextualizedCliDumper_InnerService;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -34,8 +36,14 @@ class CustomerType extends AbstractType
             'multiple' => true,
         ])
             ->add('user', EntityType::class, [
-            'class' => User::class,
-        ])
+                'class' => User::class,
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('user')
+                    ->leftJoin('user.customer', 'customer')
+                     ->where('  customer.id IS NULL  ');
+                },
+            ])
+
         ;
     }
 

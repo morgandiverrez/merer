@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Event;
 use App\Form\EventType;
+use App\Entity\Exercice;
 use App\Entity\TransactionLine;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -62,6 +63,14 @@ class EventController extends AbstractController
     #[IsGranted('ROLE_TRESO')]
     public function new(EntityManagerInterface $entityManager, Request $request): Response
     {
+        $exercice = $entityManager->getRepository(Exercice::class)->findOneByAnnee(intval(date('Y')));
+
+        if (!$exercice) {
+            $exercice = new Exercice();
+            $exercice->setAnnee(intval(date('Y')));
+            $entityManager->persist($exercice);
+            $entityManager->flush();
+        }
         $event = new Event();
         $form = $this->createForm(EventType::class, $event);
         $form->handleRequest($request);
@@ -87,6 +96,14 @@ class EventController extends AbstractController
     #[IsGranted('ROLE_TRESO')]
     public function edit(EntityManagerInterface $entityManager, Request $request, $eventID): Response
     {
+        $exercice = $entityManager->getRepository(Exercice::class)->findOneByAnnee(intval(date('Y')));
+
+        if (!$exercice) {
+            $exercice = new Exercice();
+            $exercice->setAnnee(intval(date('Y')));
+            $entityManager->persist($exercice);
+            $entityManager->flush();
+        }
         $event = $entityManager->getRepository(Event::class)->findById($eventID)[0];
         $form = $this->createForm(EventType::class, $event);
         $form->handleRequest($request);

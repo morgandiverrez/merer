@@ -24,7 +24,7 @@ class Supplier
     #[ORM\ManyToOne(inversedBy: 'suppliers')]
     private ?AdministrativeIdentifier $administrativeIdentifier = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(unique: true, length: 255)]
     private ?string $name = null;
 
     public function __construct()

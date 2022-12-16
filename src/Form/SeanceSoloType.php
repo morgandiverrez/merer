@@ -7,6 +7,7 @@ use App\Entity\Profil;
 use App\Entity\Seance;
 use App\Entity\Evenement;
 use App\Entity\Formation;
+use Doctrine\ORM\EntityRepository;
 use Doctrine\DBAL\Types\BooleanType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -40,10 +41,21 @@ class SeanceSoloType extends AbstractType
             'multiple' => true,
       
         ])
+
             ->add('profil', EntityType::class, [
-            'class' => Profil::class,
-            'multiple' => true, 
-        ])
+                'class' => Profil::class,
+                 'multiple' => true,
+                'query_builder' => function (EntityRepository $er) {
+                return $er->createQueryBuilder('profil')
+                    ->innerJoin('profil.user', 'u')
+                    ->orderBy('u.email', 'ASC')
+                    ->andWhere('u.roles LIKE :val0 OR  u.roles LIKE :val1')
+                    ->setParameter('val0', '%ROLE_FORMATEURICE%')
+                    ->setParameter('val1', '%ROLE_BF%');
+                    
+                },
+            ])
+
 
             ->add('visible')
            

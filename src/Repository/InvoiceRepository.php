@@ -74,17 +74,17 @@ class InvoiceRepository extends ServiceEntityRepository
             ->getOneOrNullResult();
     }
 
-    public function findCurrentInvoiceImpressionOfCustomer($id): array
+    public function findCurrentInvoiceImpressionOfCustomer($id): ?Invoice
     {
         return $this->createQueryBuilder('invoice')
             ->innerJoin('invoice.customer', 'customer')
             ->Where('customer.id LIKE :id')
             ->andWhere('invoice.category LIKE :category')
-            ->andWhere('invoice.confirm LIKE FALSE')
+            ->andWhere('invoice.comfirm LIKE :false')
             ->setParameter('id', $id )
+            ->setParameter('false', false)
             ->setParameter('category', 'Impression' )
             ->orderBy('invoice.creationDate', 'DESC')
-            ->setMaxResults(10)
             ->getQuery()
             ->getOneOrNullResult();
     }

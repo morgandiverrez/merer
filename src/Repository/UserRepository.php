@@ -100,8 +100,22 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             ->orderBy('user.id', 'ASC')
             ->getQuery()
             ->getResult();
+            
     }
 
+
+    public function findAllUserWithProfilAndFormateurice()
+    {
+
+         return $this->createQueryBuilder('u')
+                    ->orderBy('u.email', 'ASC')
+                    ->andWhere('u.roles LIKE :val0 OR  u.roles LIKE :val1')
+                    ->setParameter('val0', '%'.'ROLE_FORMATEURICE'.'%')
+                    ->setParameter('val1', '%' . 'ROLE_BF' . '%')
+                    ->getQuery()
+                     ->getResult();
+    }
+    
     
     
 

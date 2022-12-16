@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\BP;
 use App\Form\BPType;
+use App\Entity\Exercice;
 use App\Entity\TransactionLine;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -96,6 +97,14 @@ class BPController extends AbstractController
     #[IsGranted('ROLE_TRESO')]
     public function new(EntityManagerInterface $entityManager, Request $request): Response
     {
+        $exercice = $entityManager->getRepository(Exercice::class)->findOneByAnnee(intval(date('Y')));
+
+        if (!$exercice) {
+            $exercice = new Exercice();
+            $exercice->setAnnee(intval(date('Y')));
+            $entityManager->persist($exercice);
+            $entityManager->flush();
+        }
         $bp = new BP();
         $form = $this->createForm(BPType::class, $bp);
         $form->handleRequest($request);
@@ -117,6 +126,14 @@ class BPController extends AbstractController
     #[IsGranted('ROLE_TRESO')]
     public function edit(EntityManagerInterface $entityManager, Request $request, $bpID): Response
     {
+        $exercice = $entityManager->getRepository(Exercice::class)->findOneByAnnee(intval(date('Y')));
+
+        if (!$exercice) {
+            $exercice = new Exercice();
+            $exercice->setAnnee(intval(date('Y')));
+            $entityManager->persist($exercice);
+            $entityManager->flush();
+        }
         $bp = $entityManager->getRepository(BP::class)->findById($bpID)[0];
         $form = $this->createForm(BPType::class, $bp);
         $form->handleRequest($request);

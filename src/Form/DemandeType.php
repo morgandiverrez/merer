@@ -36,15 +36,14 @@ class DemandeType extends AbstractType
             ->add('doubleMaillage')
             ->add('association', EntityType::class, [
                 'class'=> Association::class,
-                'mapped'=>false,
+                 'multiple' => true,
             ])
             ->add( 'equipeElu', EntityType::class, [
             'class' => EquipeElu::class,
-            'mapped' => false,
+            'multiple' => true,
             ])
             ->add('formation', EntityType::class, [
                 'class'=> Formation::class,
-                'mapped' => false,
                 'multiple'=>true,
                 
             ])

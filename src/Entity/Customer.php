@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\User;
 use App\Entity\Contact;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\CustomerRepository;
@@ -36,9 +37,6 @@ class Customer
     #[ORM\ManyToMany(targetEntity: Contact::class, mappedBy: 'customer')]
     private Collection $contacts;
 
-    #[ORM\OneToOne(inversedBy: 'customer', cascade: ['persist', 'remove'])]
-    private ?User $user = null;
-
     #[ORM\OneToMany(mappedBy: 'customer', targetEntity: Impression::class)]
     private Collection $impressions;
 
@@ -47,6 +45,9 @@ class Customer
 
     #[ORM\OneToMany(mappedBy: 'customer', targetEntity: ExpenseReport::class)]
     private Collection $expenseReports;
+
+    #[ORM\OneToOne(mappedBy: 'customer', cascade: ['persist', 'remove'])]
+    private ?User $user = null;
 
  
 
@@ -163,17 +164,7 @@ class Customer
         return $this;
     }
 
-    public function getUser(): ?User
-    {
-        return $this->user;
-    }
 
-    public function setUser(?User $user): self
-    {
-        $this->user = $user;
-
-        return $this;
-    }
 
     /**
      * @return Collection<int, Impression>
@@ -255,6 +246,28 @@ class Customer
                 $expenseReport->setCustomer(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        // unset the owning side of the relation if necessary
+        if ($user === null && $this->user !== null) {
+            $this->user->setCustomer(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($user !== null && $user->getCustomer() !== $this) {
+            $user->setCustomer($this);
+        }
+
+        $this->user = $user;
 
         return $this;
     }

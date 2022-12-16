@@ -63,12 +63,13 @@ class RetourController extends AbstractController
      #[Route('/sdf', name: 'sdf')]
     #[IsGranted('ROLE_FORMA')]
     public function sdf(EntityManagerInterface $entityManager){
-        $seances = $entityManager->getRepository(Seance::class)->findAllByYear(date("Y")."-01-01", strval(intval(date("Y"))+1)."-01-01");
+        $seances = $entityManager->getRepository(Seance::class)->findAllByYear(date("Y")."-01-01", strval(date("Y"))."-12-31");
         $inputFileName = 'C:\wamp64\www\Merer\public\public\files\SDF\SDF_vierge.xlsx';
         /** Load $inputFileName to a Spreadsheet object **/
         $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($inputFileName);
-
+        echo ('er');
         foreach( $seances as $seance){
+            echo('er');
             $clonedWorksheet = clone $spreadsheet->getSheetByName('Modèle vierge'); //créer une nouvelle feuille
             $clonedWorksheet->setTitle($seance->getName() . strval($seance->getDatetime()->format("Y-m-d"))); //on nomme la nouvelle feuille
             $spreadsheet->addSheet($clonedWorksheet); // on ajoute au classeur la nouvelle feuille
@@ -106,8 +107,9 @@ class RetourController extends AbstractController
 
         $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, "Xlsx");
         $writer->save("SDF_" . date("Y").".xlsx");
-        $finaleFile = "C:\wamp64\www\Merer\public\SDF_". date("Y")."xlsx";
         
+        $finaleFile = "C:\wamp64\www\Merer\public\SDF_". date("Y")."xlsx";
+        echo($finaleFile);
         header('Content-Description: File Transfer');
         header('Content-Type: application/octet-stream');
         header('Content-Disposition: attachment; filename="' . basename($finaleFile) . '"');
@@ -117,6 +119,8 @@ class RetourController extends AbstractController
         header('Content-Length: ' . filesize($finaleFile));
         readfile($finaleFile);
 
+
+        
         return $this->redirectToRoute('profil_show', []);
         
         

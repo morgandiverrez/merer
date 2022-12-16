@@ -2,8 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\ChartOfAccounts;
-use App\Form\ChartOfAccountsType;
 use App\Entity\AdministrativeIdentifier;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Form\AdministrativeIdentifierType;
@@ -58,7 +56,6 @@ class AdministrativeIdentifierController extends AbstractController
 
         return $this->render('administrative_identifier/new.html.twig', [
             'administrativeIdentifier' => $administrativeIdentifier,
-            'controler_title' => "new",
             'form' => $form->createView(),
         ]);
     }

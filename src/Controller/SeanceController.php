@@ -2,25 +2,27 @@
 
 namespace App\Controller;
 
-use App\Entity\Evenement;
 use DateTime;
 use Dompdf\Dompdf;
 use Dompdf\Options;
+use App\Entity\User;
 use App\Entity\Lieux;
 use App\Entity\Profil;
 use App\Entity\Retour;
 use App\Entity\Seance;
-use App\Form\SeanceSoloType;
+use App\Entity\Evenement;
 use App\Entity\Formation;
 use App\Entity\SeanceProfil;
+use App\Form\SeanceSoloType;
+use Doctrine\ORM\PersistentCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Constraints\Collection;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-
-
 
 #[Route('/seance', name: 'seance_')]
 
@@ -42,6 +44,9 @@ class SeanceController extends AbstractController
         ]);
     }
 
+
+
+    
     #[Route('/archivage', name: 'archivage')]
     #[IsGranted('ROLE_FORMATEURICE')]
     public function archivage(EntityManagerInterface $entityManager, Request $request): Response
@@ -107,9 +112,20 @@ class SeanceController extends AbstractController
     public function show(EntityManagerInterface $entityManager, $seanceID): Response
     {
         $seance = $entityManager->getRepository(Seance::class)->findByID($seanceID)[0];
-        $inscrits = $entityManager->getRepository(SeanceProfil::class)->findAllBySeance($seance);
-        $retours = $entityManager->getRepository(Retour::class)->findBySeance($seance);
+        $inscrits1 = $entityManager->getRepository(SeanceProfil::class)->findAllBySeance($seance);
+        $retours1 = $entityManager->getRepository(Retour::class)->findAllBySeance($seance);
         $dateActuelle = new DateTime();
+        $i=0;
+        foreach($inscrits1 as $inscrit){
+            $inscrits[$i]= $inscrit['id'];
+            $i++;
+        }
+
+        $i = 0;
+        foreach ($retours1 as $retour) {
+            $retours[$i] = $retour['id'];
+            $i++;
+        }
         return $this->render('seance/show.html.twig', [
             'seance' => $seance,
             'inscrits' => $inscrits,
@@ -166,6 +182,9 @@ class SeanceController extends AbstractController
     public function edit(EntityManagerInterface $entityManager, Request $request, $seanceID): Response
     {
         $seance = $entityManager->getRepository(Seance::class)->findById($seanceID)[0];
+
+       
+        
         $form = $this->createForm(SeanceSoloType::class, $seance);
         $form->handleRequest($request);
  
@@ -211,7 +230,7 @@ class SeanceController extends AbstractController
 
             $entityManager->persist($seance);
             $entityManager->flush();
-            return $this->redirectToRoute('seance_parcours', ['seanceID' => $seance->getID()]);
+            return $this->redirectToRoute('seance_show', ['seanceID' => $seance->getID()]);
         }
 
         return $this->render('seance/edit.html.twig', [
@@ -229,7 +248,7 @@ class SeanceController extends AbstractController
     public function new(EntityManagerInterface $entityManager, Request $request): Response
     {
         $seance = new Seance();
-        $form = $this->createForm(SeanceSoloType::class, $seance, );
+        $form = $this->createForm(SeanceSoloType::class, $seance);
         $form->handleRequest($request);
         
         if ($form->isSubmitted() && $form->isValid()) {
@@ -289,4 +308,6 @@ class SeanceController extends AbstractController
         $entityManager->flush();
         return $this->redirectToRoute('seance_archivage');
     }
+
+
 }

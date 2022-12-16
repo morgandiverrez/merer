@@ -15,13 +15,13 @@ class Badge
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(type: 'string', length: 255,unique: true, nullable: true)]
     private $code;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $image;
 
-    #[ORM\Column(type: 'string', length: 255)]
+    #[ORM\Column(type: 'string',unique: true, length: 255)]
     private $name;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]

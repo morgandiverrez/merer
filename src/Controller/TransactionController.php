@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Exercice;
 use App\Entity\Transaction;
 use App\Form\TransactionType;
 use App\Entity\TransactionLine;
@@ -47,6 +48,14 @@ class TransactionController extends AbstractController
     #[IsGranted('ROLE_TRESO')]
     public function new(EntityManagerInterface $entityManager, Request $request): Response
     {
+        $exercice = $entityManager->getRepository(Exercice::class)->findOneByAnnee(intval(date('Y')));
+
+        if (!$exercice) {
+            $exercice = new Exercice();
+            $exercice->setAnnee(intval(date('Y')));
+            $entityManager->persist($exercice);
+            $entityManager->flush();
+        }
         $transaction = new Transaction();
         $form = $this->createForm(TransactionType::class, $transaction);
         $form->handleRequest($request);
@@ -61,6 +70,7 @@ class TransactionController extends AbstractController
             }
 
             foreach($transaction->getTransactionLines() as $transactionLine){
+                $transaction->addTransactionLine($transactionLine);
                 $entityManager->persist($transactionLine);
             }
             $entityManager->persist($transaction);
@@ -73,6 +83,7 @@ class TransactionController extends AbstractController
             foreach($form->get('transactionLines') as $transactionLine){
                 $logoUpload = $transactionLine->get('urlProof')->getData();
                 if ($logoUpload) {
+                   
                     $urlProof = 'transactionLineProof' . $transaction->getTransactionLines()[$i]->getId() . '.' . $logoUpload[0]->guessExtension();
                     $transaction->getTransactionLines()[$i]->setUrlProof('public/build/transactionLine/proof/' . $urlProof);
                     try {
@@ -102,14 +113,23 @@ class TransactionController extends AbstractController
     #[IsGranted('ROLE_TRESO')]
     public function edit(EntityManagerInterface $entityManager, $transactionId, Request $request): Response
     {
+        $exercice = $entityManager->getRepository(Exercice::class)->findOneByAnnee(intval(date('Y')));
+
+        if (!$exercice) {
+            $exercice = new Exercice();
+            $exercice->setAnnee(intval(date('Y')));
+            $entityManager->persist($exercice);
+            $entityManager->flush();
+        }
         $transaction = $entityManager->getRepository(Transaction::class)->findTransactionById($transactionId);
         $form = $this->createForm(TransactionType::class, $transaction);
         $form->handleRequest($request);
        
 
         if ($form->isSubmitted() && $form->isValid()) {
-
+            
             foreach ($transaction->getTransactionLines() as $transactionLine) {
+                $transaction->addTransactionLine($transactionLine);
                 $entityManager->persist($transactionLine);
             }
             $entityManager->persist($transaction);
@@ -122,6 +142,7 @@ class TransactionController extends AbstractController
             foreach ($form->get('transactionLines') as $transactionLine) {
                 $logoUpload = $transactionLine->get('urlProof')->getData();
                 if ($logoUpload) {
+                    echo ($transaction->getTransactionLines()[$i]->getId());
                     $urlProof = 'transactionLineProof' . $transaction->getTransactionLines()[$i]->getId() . '.' . $logoUpload[0]->guessExtension();
                     $transaction->getTransactionLines()[$i]->setUrlProof('public/build/transactionLine/proof/' . $urlProof);
                     try {

@@ -17,7 +17,7 @@ class Transaction
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(type: Types::BIGINT)]
+    #[ORM\Column(type: Types::BIGINT ,unique: true)]
     private $code = null;
 
     #[ORM\Column]

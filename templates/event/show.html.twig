@@ -21,7 +21,7 @@
                     </ul>
                     <ul>
                        <li class="list-group-item">Lieu : {{event.getLocation()}} </li>
-                       <li class="list-group-item">Financement : <a href="/financementLine/show/{{ event.getFinancementLine().getId() }}" class="card-link">  {{event.getFinancementLine().__toString()}}</a></li>
+                       <li class="list-group-item">Financement : {% if event.getFinancementLine() %} <a href="/financementLine/show/{{ event.getFinancementLine().getId() }}"  class="card-link">  {{event.getFinancementLine().__toString()}}</a>{% else %} pas de financement définit {% endif %}</li>
                     </ul>
                     <ul>
                         <li class="list-group-item">Montant alloué : {{event.amount}} €</li>

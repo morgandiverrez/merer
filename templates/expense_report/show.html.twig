@@ -11,12 +11,19 @@
             <div class=" d-flex justify-content-center text-center align-center">
                 <div class="card" style="width: 18rem;">
                     <ul class="list-group list-group-flush">
-                       <li class="list-group-item">
-                            {% if expenseReport.comfirm == true %}
-                                <th>comfirmer</th>
+                       <li class="list-group-item"> Statut :
+                            {% if expenseReport.comfirm == FALSE %}
+                             Pas comfirmé
+                                {% if is_granted('ROLE_TRESO') %}
+                                    <a href="/expenseReport/comfirm/{{ expenseReport.iD }}" >
+                                {% endif %}
+                                        <i class="fa-sharp fa-solid fa-circle-xmark" style="color: red;" ></i>
+                                {% if is_granted('ROLE_TRESO') %}
+                                    </a>
+                                {% endif %}
                             {% else %}
-                                  <th>pas comfirmer</th>
-                            {% endif %}
+                                Comfirmé <i class="fa-sharp fa-solid fa-circle-check" style="color: green;"></i>
+                            {% endif %} 
                         </li>
                         <li class="list-group-item"> {{expenseReport.getDate().format('d/m/y h:i')}}  </li>
                         {% if is_granted('ROLE_TRESO') %}
@@ -26,12 +33,12 @@
                       
                     </ul>
                     <div class="card-body">
-                     {% if is_granted('ROLE_TRESO') or  expenseReport.comfirm != true %}
+                     {% if  expenseReport.comfirm == false  %}
                         <a href="/expenseReport/edit/{{ expenseReport.getId()}}" class="card-link"><i class="fa-solid fa-pen-to-square"></i></a>
                         <a href="/expenseReport/delete/{{ expenseReport.getId()}}" class="card-link"><i class="fa-solid fa-trash-can"></i></a>
-                        {% if is_granted('ROLE_TRESO') %}
+                    {% endif %}
+                    {% if is_granted('ROLE_TRESO') %}
                             <a href="/expenseReport/" class="card-link"><i class="fa-solid fa-list"></i></a>
-                        {% endif %}
                     {% endif %}
                     </div>
                 </div>
@@ -46,7 +53,7 @@
                          <th scope="col">Distance</th>
                           <th scope="col">Moyen de transport</th>
                         <th scope="col">Montant</th>
-                         {% if is_granted('ROLE_TRESO') or  expenseReport.comfirm != true %}
+                        {% if  expenseReport.comfirm == false  %}
                             <th scope="col">Modifié</th>
                             <th scope="col">Supprimé</th>
                         {% endif %}
@@ -62,10 +69,10 @@
                         <td> {% if expenseReportRouteLine.repayGrid %} {{expenseReportRouteLine.repayGrid.start }} {% else %} {{expenseReportRouteLine.start}} {% endif %}</td>
                         <td> {% if expenseReportRouteLine.repayGrid %} {{expenseReportRouteLine.repayGrid.end }} {% else %} {{expenseReportRouteLine.end}} {% endif %}</td>
                         <td> {% if expenseReportRouteLine.repayGrid %} {{expenseReportRouteLine.repayGrid.distance }} {% else %} {{expenseReportRouteLine.distance}} {% endif %}</td>
-                        <td> {% if expenseReportRouteLine.repayGrid %} {{expenseReportRouteLine.repayGrid.travelMean }} {% else %} {{expenseReportRouteLine.travelMeans}} {% endif %}</td>
+                        <td> {% if expenseReportRouteLine.repayGrid %} {{expenseReportRouteLine.repayGrid.travelMean }} {% else %} {{expenseReportRouteLine.travelMean}} {% endif %}</td>
                         <td> {% if expenseReportRouteLine.repayGrid %} {{expenseReportRouteLine.repayGrid.amount }} € {% else %} {{expenseReportRouteLine.amount}} €{% endif %}</td>
                         {% if expenseReportRouteLine.repayGrid %} {% set totalAmount = totalAmount + expenseReportRouteLine.repayGrid.amount %} {% else %}  {% set totalAmount = totalAmount + expenseReportRouteLine.amount %}  {% endif %}
-                         {% if is_granted('ROLE_TRESO') or  expenseReport.comfirm != true %}
+                        {% if  expenseReport.comfirm == false  %}
                         <td><a href="/expenseReportRouteLine/edit/{{expenseReport.id}}/{{ expenseReportRouteLine.getId()}}" class="card-link"><i class="fa-solid fa-pen-to-square"></i></a></td>
                         <td><a href="/expenseReportRouteLine/delete/{{ expenseReportRouteLine.getId()}}" class="card-link"><i class="fa-solid fa-trash-can"></i></a></td>
                         {% endif %}
@@ -80,12 +87,16 @@
                         <th> </th>
                         <th></th>
                         <th>{{ totalAmount }} € </th>
-                        <th> </th>
-                        <th> </th>
+                        {% if  expenseReport.comfirm == false  %}
+                            <th> </th>
+
+                            <th> </th>
+                         {% endif %}
                     </tr>
                 </tfoot>
             </table>
-             {% if   expenseReport.comfirm != true %}
+            
+            {% if  expenseReport.comfirm == false  %}
                 <div class="text-center">
                     <a href="/expenseReportRouteLine/new/{{ expenseReport.id }}" ><button class="btn btn-success mt-3 mb-3" type="submit" name="show">{{ button_label|default('Ajouter une ligne ') }}<i class = "fa text-light fa-plus-square me-2"></i></button></a>
                 </div>
@@ -98,29 +109,43 @@
                         <th scope="col">Objet</th>
                          <th scope="col">Montant</th>
                         <th scope="col">Document</th>
-                        {% if is_granted('ROLE_TRESO') or expenseReport.comfirm != true %}
+                        {% if  expenseReport.comfirm == false  %}
                             <th scope="col">Modifié</th>
-                            <th scope="col">Suprimé</th>
+                            <th scope="col">Supprimé</th>
                         {% endif %}
                     </tr>
                 </thead>
 
                 <tbody>
+                {% set totalAmount = 0 %}
                 {% for expenseReportLine in expenseReport.expenseReportLines %} 
                     <tr>
                         <td>{% if expenseReportLine.date is  not null %}{{expenseReportLine.date.format('d/m/y')}} {% endif %} </td>
                         <td>{{expenseReportLine.object}} </td>
                         <td>{{expenseReportLine.amount}} €</td>
-                        <td><a href="/expenseReportLine/download/{{ expenseReportLine.getId()}}" class="card-link"><i class="fa-sharp fa-solid fa-file"></i></a></td>
-                        {% if is_granted('ROLE_TRESO') or  expenseReport.comfirm != true  %}
+                        {% set totalAmount = totalAmount + expenseReportLine.amount %}
+                        <td><a href="/expenseReportLine/download/{{ expenseReportLine.getId()}}" target="_blank" class="card-link"><i class="fa-sharp fa-solid fa-file"></i></a></td>
+                        {% if  expenseReport.comfirm == false  %}
                             <td><a href="/expenseReportLine/edit/{{expenseReport.id}}/{{ expenseReportLine.getId()}}" class="card-link"><i class="fa-solid fa-pen-to-square"></i></a></td>
                             <td><a href="/expenseReportLine/delete/{{ expenseReportLine.getId()}}" class="card-link"><i class="fa-solid fa-trash-can"></i></a></td>
                         {% endif %}
                     </tr>
                 {% endfor %}
                 </tbody>
+                 <tfoot>
+                    <tr> 
+                        <th> </th>
+                        <th> </th>
+                        <th>{{ totalAmount }} € </th>
+                        {% if  expenseReport.comfirm == false  %}
+                            <th> </th>
+
+                            <th> </th>
+                         {% endif %}
+                    </tr>
+                </tfoot>
             </table>
-            {% if   expenseReport.comfirm != true %}
+            {% if  expenseReport.comfirm == false  %}
                 <div class="text-center">
                     <a href="/expenseReportLine/new/{{ expenseReport.id }}"><button class="btn btn-success mt-3 mb-3" type="submit" name="show">{{ button_label|default('Ajouter une ligne ') }}<i class = "fa text-light fa-plus-square me-2"></i></button></a>
                 </div>

@@ -22,10 +22,10 @@ class Contact
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $lastName = null;
 
-    #[ORM\Column(length:255, nullable: true)]
+    #[ORM\Column(length:255, unique: true, nullable: true)]
     private ?string $mail = null;
 
-    #[ORM\Column(nullable: true)]
+    #[ORM\Column(nullable: true, unique: true)]
     private ?string $phone = null;
 
     #[ORM\ManyToMany(targetEntity: Customer::class, inversedBy: 'contacts')]

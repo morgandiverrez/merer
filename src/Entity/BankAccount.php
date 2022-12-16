@@ -14,7 +14,7 @@ class BankAccount
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(nullable: true)]
+    #[ORM\Column(unique: true, nullable: true)]
     private ?int $accountNumber = null;
 
     #[ORM\Column(nullable: true)]
@@ -23,13 +23,13 @@ class BankAccount
     #[ORM\Column(nullable: true)]
     private ?int $ribBranchCode = null;
 
-    #[ORM\Column(type: Types::BIGINT, nullable: true)]
+    #[ORM\Column(type: Types::BIGINT, unique: true, nullable: true)]
     private ?string $ribAccountNumber = null;
 
     #[ORM\Column( nullable: true)]
     private ?int $ribKey = null;
 
-    #[ORM\Column(length:64, nullable: true)]
+    #[ORM\Column(unique: true, length:64, nullable: true)]
     private ?string $iban = null;
 
     #[ORM\Column(length:64, nullable: true)]

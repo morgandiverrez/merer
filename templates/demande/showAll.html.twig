@@ -25,12 +25,12 @@
                 <tbody>
                  {% set verif= false %}
                 {% for demande in demandes %} 
-                 {% if demande.getDateDebut() <= date() and verif == false %}
-                            <tr>
-                                <td colspan="5" style=" font-weight: bold;" align="center"> Demande passée </td>
-                            <tr>
-                            {% set verif = true %}
-                        {% endif %}
+                    {% if demande.getDateDebut() <= date() and verif == false %}
+                        <tr>
+                            <td colspan="5" style=" font-weight: bold;" align="center"> Demande passée </td>
+                        <tr>
+                        {% set verif = true %}
+                    {% endif %}
                     <tr>
                         <td>
                             {% for equipeElu in demande.getEquipeElu() %}{{equipeElu.getName()}}<br> {% endfor %} 

@@ -15,16 +15,16 @@ class Association
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(type: 'string', length: 255, unique: true, nullable: true)]
     private $code;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(type: 'string', length: 255,  nullable: true)]
     private $image;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(type: 'string', length: 255,unique: true, nullable: true)]
     private $name;
 
-    #[ORM\Column(type: 'string', length: 255)]
+    #[ORM\Column(type: 'string', length: 255, unique: true)]
     private $sigle;
 
     #[ORM\Column(type: 'string', length: 2048, nullable: true)]
@@ -39,7 +39,7 @@ class Association
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $local;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(type: 'string', length: 255,unique: true, nullable: true)]
     private $adresse_mail;
 
     #[ORM\ManyToMany(targetEntity: Profil::class, inversedBy: 'association')]

@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
 use App\Entity\Evenement;
 use App\Form\EvenementType;
 use Doctrine\ORM\EntityManagerInterface;
@@ -15,8 +16,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class EvenementController extends AbstractController
 {
     #[Route('/', name: 'showAll')]
-    #[IsGranted('ROLE_BF')]
-    public function showAll(EntityManagerInterface$entityManager, Request $request): Response
+    #[IsGranted('ROLE_FORMATEURICE')]
+    public function showAll(EntityManagerInterface $entityManager, Request $request): Response
     {
         $evenements = $entityManager->getRepository(Evenement::class)->findAllOrderByDate();
         if ($request->isMethod('post')) {
@@ -85,6 +86,12 @@ class EvenementController extends AbstractController
                 $seance->setVisible($evenement->isVisible());
                 $entityManager->persist($seance);
             }
+            // Récupérez la valeur du champ de formulaire 'names'
+            $parcours = $form->get('parcours')->getData();
+            print_r($parcours);
+
+            // Ajoutez les valeurs du champ 'names' à la propriété 'names' de la classe de formulaire
+            $evenement->setParcours(explode(',' ,$parcours));
             $entityManager->persist($evenement);
             $entityManager->flush();
             return $this->redirectToRoute('evenement_show', ['evenementID' => $evenement->getId()]);
@@ -104,22 +111,33 @@ class EvenementController extends AbstractController
     public function edit(EntityManagerInterface $entityManager, Request $request, $evenementID): Response
     {
         $evenement = $entityManager->getRepository(Evenement::class)->findById($evenementID)[0];
-        $parcours =  [];
-        foreach($evenement->getParcours() as $parcour) {
-            $parcours[$parcour] = $parcour;
-        }
-        $form = $this->createForm(EvenementType::class, $evenement,['parcours_event' => $parcours] );
+       
+
+        $parcours = $evenement->getparcours();
+        print_r($parcours);
+        $parcours = array_combine($parcours, $parcours);
+        print_r($parcours);
+        $form = $this->createForm(EvenementType::class, $evenement, [ 'parcours_event' => $parcours]);
+        $form->get('parcours')->setData(implode(",", $parcours));
         $form->handleRequest($request);
 
 
         if ($form->isSubmitted() && $form->isValid()) {
+            
             if($evenement->getDateFinInscription() == null){
-                $evenement->setDateFinInscription($evenement->getDateFin());
+                $evenement->setDateFinInscription($evenement->getDateDebut());
             }
             foreach ($evenement->getSeances() as $seance) {
                 $seance->setVisible($evenement->isVisible());
                 $entityManager->persist($seance);
             }
+            // Récupérez la valeur du champ de formulaire 'names'
+            $parcours = $form->get('parcours')->getData();
+
+            // Ajoutez les valeurs du champ 'names' à la propriété 'names' de la classe de formulaire
+            $evenement->setParcours(explode(',', $parcours));
+
+           
            
             $entityManager->persist($evenement);
             $entityManager->flush();
@@ -134,18 +152,6 @@ class EvenementController extends AbstractController
     }
 
 
-
-    #[Route('/delete/{evenementID}', name: 'delete')]
-    #[IsGranted('ROLE_FORMA')]
-    public function delete(EntityManagerInterface $entityManager, $evenementID): Response
-    {
-
-        $evenement = $entityManager->getRepository(Evenement::class)->findById($evenementID)[0];
-        $entityManager->remove($evenement);
-        $entityManager->flush();
-
-        return $this->redirectToRoute('evenement_showAll', []);
-    }
 
     #[Route('/visible/{evenementID}', name: 'cloture')]
     #[IsGranted('ROLE_FORMA')]

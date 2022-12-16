@@ -58,53 +58,53 @@ class LocationController extends AbstractController
     //     ]);
     // }
 
-    // #[Route('/show/{lieuID}', name: 'show')]
-    // #[IsGranted('ROLE_USER')]
-    // public function show(EntityManagerInterface $entityManager, $lieuID): Response
-    // {
-
-    //     $lieu = $entityManager->getRepository(Lieux::class)->findById($lieuID)[0];
-
-    //     return $this->render('lieux/show.html.twig', [
-    //         'lieu' => $lieu,
-
-    //     ]);
-    // }
-
-    // #[Route('/edit/{lieuID}', name: 'edit')]
-    // #[IsGranted('ROLE_BF')]
-    // public function edit(EntityManagerInterface $entityManager, Request $request, $lieuID): Response
-    // {
-    //     $lieu = $entityManager->getRepository(Lieux::class)->findById($lieuID)[0];
-    //     $form = $this->createForm(LieuxType::class, $lieu);
-    //     $form->handleRequest($request);
-
-
-    //     if ($form->isSubmitted() && $form->isValid()) {
-
-    //         $entityManager->persist($lieu);
-    //         $entityManager->flush();
-    //         return $this->redirectToRoute('lieux_show', ['lieuID' => $lieuID]);
-    //     }
-
-    //     return $this->render('lieux/edit.html.twig', [
-    //         'lieu' => $lieu,
-    //         'form' => $form->createView(),
-
-    //     ]);
-    // }
-
-    #[Route('/delete/{lieuID}', name: 'delete')]
+    #[Route('/show/{locationID}', name: 'show')]
     #[IsGranted('ROLE_TRESO')]
-    public function delete(EntityManagerInterface $entityManager, $lieuID): Response
+    public function show(EntityManagerInterface $entityManager, $locationID): Response
     {
 
-        $lieu = $entityManager->getRepository(Lieux::class)->findById($lieuID)[0];
-        $entityManager->remove($lieu);
+        $location = $entityManager->getRepository(Location::class)->findById($locationID)[0];
+
+        return $this->render('location/show.html.twig', [
+            'location' => $location,
+
+        ]);
+    }
+
+    #[Route('/edit/{locationID}', name: 'edit')]
+    #[IsGranted('ROLE_TRESO')]
+    public function edit(EntityManagerInterface $entityManager, Request $request, $locationID): Response
+    {
+        $location = $entityManager->getRepository(location::class)->findById($locationID)[0];
+        $form = $this->createForm(locationType::class, $location);
+        $form->handleRequest($request);
+
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $entityManager->persist($location);
+            $entityManager->flush();
+            return $this->redirectToRoute('location_show', ['locationID' => $locationID]);
+        }
+
+        return $this->render('location/new.html.twig', [
+            'location' => $location,
+            'form' => $form->createView(),
+
+        ]);
+    }
+
+    #[Route('/delete/{locationID}', name: 'delete')]
+    #[IsGranted('ROLE_TRESO')]
+    public function delete(EntityManagerInterface $entityManager, $locationID): Response
+    {
+
+        $location = $entityManager->getRepository(location::class)->findById($locationID)[0];
+        $entityManager->remove($location);
         $entityManager->flush();
 
 
-        return $this->redirectToRoute('lieux_showAll', []);
+        return $this->redirectToRoute('account', []);
     }
 
 }

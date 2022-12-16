@@ -46,6 +46,14 @@
                         {{ form_help(form.public_cible) }}
                     </div>
 
+                    <div class="badge my-5">
+                        {{ form_label(form.badge, ' Badge ', {'label_attr': {'class': 'foo'}}) }}
+                        {{ form_errors(form.badge) }}
+                        {{ form_widget(form.badge) }}
+                        {{ form_help(form.badge) }}
+                         <a href="/badge/new" target="_blank"><i class="fa-sharp fa-solid fa-circle-plus"></i></a>
+                    </div>
+
                     <div class="opg my-5">
                         {{ form_label(form.opg, ' OPG ', {'label_attr': {'class': 'foo'}}) }}
                         {{ form_errors(form.opg) }}
@@ -53,13 +61,7 @@
                         {{ form_help(form.opg) }}
                     </div>
 
-                    <div class="badge my-5">
-                        {{ form_label(form.badge, ' Badge ', {'label_attr': {'class': 'foo'}}) }}
-                        {{ form_errors(form.badge) }}
-                        {{ form_widget(form.badge) }}
-                        {{ form_help(form.badge) }}
-                         <a href="/badge/new" target="_blank"><i class="fa-sharp fa-solid fa-circle-plus"></i></button></a>
-                    </div>
+                    
                 
                     <button class="btn btn-success mt-3 mb-3">{{ button_label|default('Valider ') }}<i class = "fa text-light fa-save me-2"></i></button>
                 </div>

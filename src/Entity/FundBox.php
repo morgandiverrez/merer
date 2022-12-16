@@ -31,7 +31,7 @@ class FundBox
     #[ORM\OneToMany(mappedBy: 'fundBox', targetEntity: FundTypeFundBox::class, orphanRemoval: true)]
     private Collection $fundTypeJoin;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(unique: true, length: 255)]
     private ?string $name = null;
 
     public function __construct()

@@ -26,7 +26,6 @@ security:
                 check_path: login
                 enable_csrf: true 
                 use_referer: true
-                default_target_path: /account/
                 
             logout:
                 path: logout
@@ -55,7 +54,7 @@ security:
     
     # Note: Only the *first* access control that matches will be used
     access_control:
-         - { path: ^/admin, roles: ROLE_ADMIN }
+         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
 
 when@test:

@@ -19,15 +19,13 @@
                 </thead>
                 <tbody>
                     {% for user in users %} 
-                        {% if "ROLE_FORMATEURICE" in user.roles and user.profil is not null %}
-                            <tr>
-                                <td>{{user.profil.getName()}}</td>
-                                <td>{{user.profil.getLastName()}}</td>
-                                <td>{{user.getEmail()}}</td>
-                                <td>{{user.profil.getTelephone()}} </td>
-                                <td><a href="/account/show/{{user.profil.getId()}}"><i class="fa-solid fa-eye"></i></a></td> 
-                            </tr> 
-                        {% endif %}
+                        <tr>
+                            <td>{{user.profil.getName()}}</td>
+                            <td>{{user.profil.getLastName()}}</td>
+                            <td>{{user.getEmail()}}</td>
+                            <td>{{user.profil.getTelephone()}} </td>
+                            <td><a href="/account/show/{{user.profil.getId()}}"><i class="fa-solid fa-eye"></i></a></td> 
+                        </tr> 
                     {% endfor %}
                 </tbody>
             </table>

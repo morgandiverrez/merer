@@ -39,7 +39,7 @@
                         <tr>
                             <td>{{formation.getName()}}</td>
                             <td>{{formation.getDescription()}}</td>
-                            <td>{% if formation.getDuration() is null %}0 {% else %} {{formation.getDuration().format("H:i:s")}} {% endif %}</td>
+                            <td>{% if formation.getDuration() is null %} 0 {% else %} {{formation.getDuration().format("H:i")}} {% endif %}</td>
                             <td><a href="/catalogue/show/{{formation.getId()}}"><i class="fa-solid fa-eye"></i></i></a></td> 
                         </tr> 
                     {% endfor %}
