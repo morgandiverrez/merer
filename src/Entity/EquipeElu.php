@@ -15,10 +15,10 @@ class EquipeElu
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(type: 'string', unique: true, length: 255, nullable: true)]
     private $code;
 
-    #[ORM\Column(type: 'string', length:255, nullable: true)]
+    #[ORM\Column(type: 'string',unique: true, length:255, nullable: true)]
     private $name;
 
     #[ORM\Column(type: 'array', nullable: true)]
@@ -27,7 +27,7 @@ class EquipeElu
     #[ORM\Column(type: 'string', length: 2048, nullable: true)]
     private $description;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(type: 'string', unique: true, length: 255, nullable: true)]
     private $adresse_mail;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]

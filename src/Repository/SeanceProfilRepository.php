@@ -68,7 +68,9 @@ class SeanceProfilRepository extends ServiceEntityRepository
     public function findAllBySeance(Seance $value): array
    {
        return $this->createQueryBuilder('inscrit')
-           ->Where('inscrit.seance = :val ')
+            ->innerJoin('inscrit.profil' , 'profil')
+            ->select("profil.id")
+            ->Where('inscrit.seance = :val ')
            ->setParameter('val', $value)
            ->getQuery()
            ->getResult()

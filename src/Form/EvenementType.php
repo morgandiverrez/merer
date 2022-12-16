@@ -9,6 +9,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UlidType;
 use Symfony\Component\Form\Extension\Core\Type\RangeType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
@@ -39,13 +40,15 @@ class EvenementType extends AbstractType
             ->add('URL')
             ->add('autorisationPhoto')
             ->add('modePaiement')
-            ->add('parcours',RepeatedType::class, [
-                'invalid_message' => 'The password fields must match.',
-                'options' => ['attr' => ['class' => 'password-field']],
-                'required' => true,
-                'first_options'  => ['label' => 'Password'],
+            ->add('parcours', TextType::class, [
+                'mapped' => false,
+                'required' => false,
+                'attr' => [
+                    'class' => 'form-control',
+                ],
             ])
             ->add('covoiturage')
+            ->add('nombrePlace')
             ->add('parcoursObligatoire')
             ->add('visible')
             ->add('lieu', EntityType::class, [

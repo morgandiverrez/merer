@@ -31,6 +31,9 @@ class Location
     #[ORM\OneToMany(mappedBy: 'location', targetEntity: Supplier::class)]
     private Collection $suppliers;
 
+    #[ORM\OneToMany(mappedBy: 'location', targetEntity: Customer::class)]
+    private Collection $customers;
+
  
 
     public function __construct()
@@ -125,6 +128,37 @@ class Location
             // set the owning side to null (unless already changed)
             if ($supplier->getLocation() === $this) {
                 $supplier->setLocation(null);
+            }
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * @return Collection<int, Customer>
+     */
+    public function getCustomers(): Collection
+    {
+        return $this->customers;
+    }
+
+    public function addCustomer(Customer $customer): self
+    {
+        if (!$this->customers->contains($customer)) {
+            $this->customers->add($customer);
+            $customer->setLocation($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCustomer(Customer $customer): self
+    {
+        if ($this->customers->removeElement($customer)) {
+            // set the owning side to null (unless already changed)
+            if ($customer->getLocation() === $this) {
+                $customer->setLocation(null);
             }
         }
 

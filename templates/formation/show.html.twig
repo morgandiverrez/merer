@@ -18,9 +18,9 @@
                     </div>
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item">Pré-requis : {{formation.getPreRequis()}}</li>
-                        <li class="list-group-item">Durée : {%if formation.getDuration() is null %}0 {% else %} {{formation.getDuration().format("H:i")}} {% endif %} </li>
+                        <li class="list-group-item">Durée : {% if formation.getDuration() is null %} 0 {% else %} {{formation.getDuration().format("H:i")}} {% endif %} </li>
                         <li class="list-group-item">Public Cible : {{formation.getPublicCible()}}</li>
-                        {% if formation.getBadge() is not null %}
+                        {% if formation.getBadge() is not null and formation.getBadge().getImage() %}
                             <li class="list-group-item"> <img  src="{{asset(formation.badge.getImage())}}" alt="image de {{formation.badge.getName()}}" ></li>
                         {% endif %}                 
                         

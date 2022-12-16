@@ -2,10 +2,11 @@
 
 namespace App\Entity;
 
-use App\Repository\FormationRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use App\Entity\Badge;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\FormationRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 #[ORM\Entity(repositoryClass: FormationRepository::class)]
 class Formation
@@ -15,7 +16,7 @@ class Formation
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(type: 'string', length: 255, unique: true, nullable: true)]
     private $code;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]

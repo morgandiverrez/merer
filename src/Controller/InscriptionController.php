@@ -38,7 +38,7 @@ class InscriptionController extends AbstractController
     public function ponctuelle(EntityManagerInterface $entityManager, Request $request, $seanceID): Response
     {
         $seance = $entityManager->getRepository(Seance::class)->findByID($seanceID)[0];
-
+        $profil = $entityManager->getRepository(Profil::class)->findByUser($this->getUser());
         // on verifie que la seance est sensé etre visible (sinon, on renvoi vers le profil de l'utilisateur)
         if (! $seance->isVisible()) {
             return $this->redirectToRoute('profil_show', []);
@@ -58,21 +58,20 @@ class InscriptionController extends AbstractController
         if($seance->getDatetime() <= date('d/m/y H:i:s')){
             return $this->render('inscription/close.html.twig');
         }
+
+        if($entityManager->getRepository(SeanceProfil::class)->findBy2ID($seance->getId(), $profil->getId())[0]) {
+            $seanceProfil = $entityManager->getRepository(SeanceProfil::class)->findBy2ID($seance->getId(), $profil->getId())[0];
+        }else{
+            $seanceProfil = new SeanceProfil();
+        }
         
 
-        $seanceProfil = new SeanceProfil();
         $form = $this->createForm(InscriptionType::class, $seanceProfil, [ 'liste_lieu' => $seance->getLieux()]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             
-            $user = $this->getUser();
-            $profils = $entityManager->getRepository(Profil::class)->findAll();
-            foreach ($profils as $testProfil) {
-                if ($testProfil->getUser() == $user) {
-                    $profil = $testProfil;
-                }
-            }
+           
             $seanceProfil->setHorrodateur(new DateTime());
             $profil->addSeanceProfil($seanceProfil);
             $seance = $entityManager->getRepository(Seance::class)->findByID(strval($seanceID))[0];
@@ -111,7 +110,7 @@ class InscriptionController extends AbstractController
             return $this->render('inscription/close.html.twig');
         }
 
-        $seances = $evenement->getSeance(); //on recup tt les seances qui ont un groupe qui commence par la variable groupe
+        $seances = $evenement->getSeances(); //on recup tt les seances qui ont un groupe qui commence par la variable groupe
 
        
 

@@ -15,7 +15,10 @@ class Exercice
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
-
+   
+    #[ORM\Column(unique: true)]
+    private ?int $annee;
+    
     #[ORM\OneToMany(mappedBy: 'exercice', targetEntity: Event::class)]
     private Collection $events;
 
@@ -34,10 +37,7 @@ class Exercice
     #[ORM\OneToMany(mappedBy: 'exercice', targetEntity: Impression::class, orphanRemoval: true)]
     private Collection $impressions;
 
-  
-
-    #[ORM\Column]
-    private ?int $annee ;
+   
 
     public function __construct()
     {

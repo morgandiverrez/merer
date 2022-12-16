@@ -15,7 +15,7 @@ class CatalogService
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'string', length:255, nullable: true)]
+    #[ORM\Column(type: 'string',unique: true, length:255, nullable: true)]
     private $name;
 
     #[ORM\Column(type:'float', precision: 10, scale:0, nullable: true)]
@@ -33,7 +33,7 @@ class CatalogService
     #[ORM\OneToMany(mappedBy: 'CatalogService', targetEntity: InvoiceLine::class)]
     private $invoiceLines;
 
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column(length: 255,unique: true, nullable: true)]
     private ?string $code = null;
 
     public function __construct()

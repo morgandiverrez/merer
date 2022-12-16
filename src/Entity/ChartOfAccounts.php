@@ -18,7 +18,7 @@ class ChartOfAccounts
     private ?int $id = null;
 
    
-    #[ORM\Column(length:1024, nullable: true)]
+    #[ORM\Column(length:1024, unique: true, nullable: true)]
     private ?string $name = null;
 
     #[ORM\Column( nullable : false)]
@@ -27,7 +27,7 @@ class ChartOfAccounts
     #[ORM\OneToMany(mappedBy: 'chartOfAccounts', targetEntity: TransactionLine::class)]
     private Collection $transactionLines;
 
-    #[ORM\Column( nullable: true)]
+    #[ORM\Column(unique: true, nullable: true)]
     private ?int $code = null;
 
     #[ORM\OneToMany(mappedBy: 'chartOfAccounts', targetEntity: Customer::class)]

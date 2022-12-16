@@ -15,7 +15,7 @@ class CatalogDiscount
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'string', length:50, nullable: true)]
+    #[ORM\Column(type: 'string',unique: true, length:50, nullable: true)]
     private $name;
 
     #[ORM\Column(type: 'string', length: 1024, nullable: true)]
@@ -24,7 +24,7 @@ class CatalogDiscount
     #[ORM\OneToMany(mappedBy: 'catalogDiscount', targetEntity: InvoiceLine::class)]
     private $invoiceLines;
 
-    #[ORM\Column(length: 15, nullable: true)]
+    #[ORM\Column(length: 15,unique: true, nullable: true)]
     private ?string $code = null;
 
     public function __construct()

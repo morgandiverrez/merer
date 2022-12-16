@@ -16,10 +16,10 @@ class AdministrativeIdentifier
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(type: Types::BIGINT, nullable: true)]
+    #[ORM\Column(type: Types::BIGINT,unique: true, nullable: true)]
     private ?string $siret = null;
 
-    #[ORM\Column(length: 15, nullable: true)]
+    #[ORM\Column(length: 15,unique: true, nullable: true)]
     private ?string $APE = null;
 
     #[ORM\OneToMany(mappedBy: 'administrativeIdentifier', targetEntity: Institution::class)]

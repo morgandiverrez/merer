@@ -22,9 +22,7 @@
                     <div class="card-body">
                         {% if is_granted('ROLE_BF')%}
                             <a href="/badge/edit/{{ badge.getId() }}" class="card-link"><i class="fa-solid fa-pen-to-square"></i></a>
-                            {% if is_granted('ROLE_ADMIN') %}
-                                <a href="/badge/delete/{{ badge.getId()}}" class="card-link"><i class="fa-solid fa-trash-can"></i></a>
-                            {% endif %}
+                            
                         {% endif %}
                         <a href="/badge/" class="card-link"><i class="fa-solid fa-list"></i></a>
                     </div>

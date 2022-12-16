@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use DateTime;
 use App\Entity\Customer;
+use App\Entity\Exercice;
 use App\Entity\Transaction;
 use App\Entity\ExpenseReport;
 use App\Form\TransactionType;
@@ -24,7 +25,7 @@ class ExpenseReportController extends AbstractController
 {
     #[Route('/', name: 'showAll')]
     #[IsGranted('ROLE_TRESO')]
-    public function showAll(EntityManagerInterface$entityManager, Request $request): Response
+    public function showAll(EntityManagerInterface $entityManager, Request $request): Response
     {
         $expenseReports = $entityManager->getRepository(ExpenseReport::class)->findAll();
         if ($request->isMethod('post')) {
@@ -46,35 +47,65 @@ class ExpenseReportController extends AbstractController
     }
 
     #[Route('/delete/{expenseReportID}', name: 'delete')]
-    #[IsGranted('ROLE_TRESO')]
+    #[IsGranted('ROLE_USER')]
     public function delete(EntityManagerInterface $entityManager, $expenseReportID): Response
     {
 
         $expenseReport = $entityManager->getRepository(ExpenseReport::class)->findById($expenseReportID)[0];
-        $entityManager->remove($expenseReport);
-        $entityManager->flush();
+        $customers = $entityManager->getRepository(Customer::class)->findAll();
+        $i = 0;
+        while (!isset($customer) and isset($customers[$i])) {
+            if ($customers[$i]->getUser() == $this->getUser()) {
+                $customer = $customers[$i];;
+            }
+            $i++;
+        }
 
-        return $this->redirectToRoute('expenseReport_showAll', []);
+
+        if (($customer == $expenseReport->getCustomer() or $this->isGranted("ROLE_TRESO")) and !$expenseReport->isComfirm()) {
+            $entityManager->remove($expenseReport);
+            $entityManager->flush();
+            if($this->isGranted("ROLE_TRESO")){
+                return $this->redirectToRoute('expenseReport_showAll', []);
+            }
+        } else {
+            return $this->redirectToRoute('account');
+        }
     }
 
     #[Route('/new', name: 'new')]
     #[IsGranted('ROLE_USER')]
     public function new(EntityManagerInterface $entityManager, Request $request): Response
     {
+        $exercice = $entityManager->getRepository(Exercice::class)->findOneByAnnee(intval(date('Y')));
+
+        if (!$exercice) {
+            $exercice = new Exercice();
+            $exercice->setAnnee(intval(date('Y')));
+            $entityManager->persist($exercice);
+            $entityManager->flush();
+        }
         $expenseReport = new ExpenseReport();
         $form = $this->createForm(ExpenseReportType::class, $expenseReport);
         $form->handleRequest($request);
 
         $customers = $entityManager->getRepository(Customer::class)->findAll();
         $i = 0;
+       
         while ( ! isset($customer) and isset($customers[$i])) {
             if ($customers[$i]->getUser() == $this->getUser()) {
                 $customer = $customers[$i];
 ;            }
             $i++;
         }
+        if(! isset($customer)){
+            $customer = new Customer();
+            $customer->setName('provisoire');
+            $customer->setUser($this->getUser());
+        }
 
         if ($form->isSubmitted() && $form->isValid()) {
+      
             $expenseReport->setDate( new DateTime());
             $expenseReport->setCustomer($customer);
             if (isset($entityManager->getRepository(ExpenseReport::class)->findMaxDayExpenseReport(date("Ymd") * 100)[0])) {
@@ -99,6 +130,7 @@ class ExpenseReportController extends AbstractController
             }
 
             $entityManager->persist($expenseReport);
+            $entityManager->persist($customer);
             $entityManager->flush();
 
             $expenseReport = $entityManager->getRepository(ExpenseReport::class)->findExpenseReportByCode($expenseReport->getCode());
@@ -137,6 +169,14 @@ class ExpenseReportController extends AbstractController
     #[IsGranted('ROLE_USER')]
     public function edit(EntityManagerInterface $entityManager, $expenseReportID, Request $request): Response
     {
+        $exercice = $entityManager->getRepository(Exercice::class)->findOneByAnnee(intval(date('Y')));
+
+        if (!$exercice) {
+            $exercice = new Exercice();
+            $exercice->setAnnee(intval(date('Y')));
+            $entityManager->persist($exercice);
+            $entityManager->flush();
+        }
         $expenseReport = $entityManager->getRepository(ExpenseReport::class)->findExpenseReportById($expenseReportID);
 
         $customers = $entityManager->getRepository(Customer::class)->findAll();
@@ -147,10 +187,16 @@ class ExpenseReportController extends AbstractController
             }
             $i++;
         }
-        if ($customer == $expenseReport->getCustomer() or $this->isGranted("ROLE_TRESO")) {
+
+        
+        if (($customer == $expenseReport->getCustomer() or $this->isGranted("ROLE_TRESO")) and !$expenseReport->isComfirm()) {
+            
             $form = $this->createForm(ExpenseReportType::class, $expenseReport);
             $form->handleRequest($request);
+
+
             if ($form->isSubmitted() && $form->isValid()) {
+               
                 $expenseReport->setDate(new DateTime());
                 $expenseReport->setCustomer($customer);
                 if (isset($entityManager->getRepository(ExpenseReport::class)->findMaxDayExpenseReport(date("Ymd") * 100)[0])) {

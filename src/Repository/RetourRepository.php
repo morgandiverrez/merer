@@ -3,8 +3,9 @@
 namespace App\Repository;
 
 use App\Entity\Retour;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use App\Entity\Seance;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @extends ServiceEntityRepository<Retour>
@@ -64,6 +65,17 @@ class RetourRepository extends ServiceEntityRepository
     //        ;
     //    }
 
+    public function findAllBySeance(Seance $value): array
+    {
+        return $this->createQueryBuilder('retour')
+        ->innerJoin('retour.profil', 'profil')
+        ->select("profil.id")
+        ->Where('retour.seance = :val ')
+        ->setParameter('val', $value)
+            ->getQuery()
+            ->getResult();
+    }
+    
     public function findBySeanceID($value): ?Retour
        {
            return $this->createQueryBuilder('retour')

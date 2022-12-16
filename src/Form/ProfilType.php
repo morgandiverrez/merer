@@ -39,6 +39,7 @@ class ProfilType extends AbstractType
                  // used to render a select box, check boxes or radios
                  'multiple' => true,
                  'mapped' => true,
+                 'required'=>false,
                 
             ])
 
@@ -46,6 +47,7 @@ class ProfilType extends AbstractType
                  'class' => Association::class,
                  'mapped'=> true,
                  'multiple' => true,
+            'required' => false,
                  
                 
             ])

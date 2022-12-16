@@ -16,7 +16,7 @@ class Federation
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column(length: 255, unique: true, nullable: true)]
     private ?string $socialReason = null;
 
     #[ORM\Column(length: 2048, nullable: true)]
@@ -28,10 +28,10 @@ class Federation
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $representedBy = null;
 
-    #[ORM\Column(length: 15, nullable: true)]
+    #[ORM\Column(length: 15,unique: true, nullable: true)]
     private ?string $rna = null;
 
-    #[ORM\Column(length: 15, nullable: true)]
+    #[ORM\Column(length: 15, unique: true, nullable: true)]
     private ?string $vatNumber = null;
 
     #[ORM\Column(length: 1, nullable: true)]

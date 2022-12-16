@@ -6,6 +6,7 @@ use DateTime;
 use Dompdf\Dompdf;
 use Dompdf\Options;
 use App\Entity\Invoice;
+use App\Entity\Exercice;
 use App\Form\InvoiceType;
 use App\Entity\Federation;
 use App\Entity\Institution;
@@ -66,12 +67,20 @@ class InvoiceController extends AbstractController
     #[IsGranted('ROLE_TRESO')]
     public function new(EntityManagerInterface $entityManager, Request $request): Response
     {
+        $exercice = $entityManager->getRepository(Exercice::class)->findOneByAnnee(intval(date('Y')));
 
+        if (!$exercice) {
+            $exercice = new Exercice();
+            $exercice->setAnnee(intval(date('Y')));
+            $entityManager->persist($exercice);
+            $entityManager->flush();
+        }
         $invoice = new Invoice();
         $form = $this->createForm(InvoiceType::class, $invoice);
         $form->handleRequest($request);
-
+        
         if ($form->isSubmitted() && $form->isValid()) {
+           
             if (isset($entityManager->getRepository(Invoice::class)->findMaxDayTransaction(date("Ymd") * 100)[0])) {
                 $nbinvoice = $entityManager->getRepository(Invoice::class)->findMaxDayTransaction(date("Ymd") * 100)[0]['code'];
                 $invoice->setCode($nbinvoice + 1);
@@ -83,6 +92,7 @@ class InvoiceController extends AbstractController
             foreach ($invoice->getInvoiceLines() as $invoiceLine) {
                 $entityManager->persist($invoiceLine);
             }
+            
             $entityManager->persist($invoice);
             $entityManager->flush();
             return $this->redirectToRoute('invoice_show', ['invoiceId' => $invoice->getId()]); 
@@ -112,11 +122,18 @@ class InvoiceController extends AbstractController
     #[IsGranted('ROLE_TRESO')]
     public function edit(EntityManagerInterface $entityManager, Request $request, $invoiceID): Response
     {
+        $exercice = $entityManager->getRepository(Exercice::class)->findOneByAnnee(intval(date('Y')));
 
+        if (!$exercice) {
+            $exercice = new Exercice();
+            $exercice->setAnnee(intval(date('Y')));
+            $entityManager->persist($exercice);
+            $entityManager->flush();
+        }
         $invoice = $entityManager->getRepository(Invoice::class)->findByID($invoiceID);
         $form = $this->createForm(InvoiceType::class, $invoice);
         $form->handleRequest($request);
-
+        
         if ($form->isSubmitted() && $form->isValid()) {
             if (isset($entityManager->getRepository(Invoice::class)->findMaxDayTransaction(date("Ymd") * 100)[0])) {
                 $nbinvoice = $entityManager->getRepository(Invoice::class)->findMaxDayTransaction(date("Ymd") * 100)[0]['code'];

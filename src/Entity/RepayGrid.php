@@ -13,19 +13,19 @@ class RepayGrid
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column(length: 255)]
     private ?string $travelMean = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column(length: 255)]
     private ?string $start = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column(length: 255)]
     private ?string $end = null;
 
-    #[ORM\Column(precision: 10, scale: 0, nullable: true)]
+    #[ORM\Column(precision: 10, scale: 0)]
     private ?float $amount = null;
 
-    #[ORM\Column(nullable: true)]
+    #[ORM\Column]
     private ?float $distance = null;
 
     public function getId(): ?int

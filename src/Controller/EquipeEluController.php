@@ -110,17 +110,12 @@ class EquipeEluController extends AbstractController
     #[IsGranted('ROLE_ADMIN')]
     public function delete(EntityManagerInterface $entityManager, $equipeEluID): Response
     {
-
         $equipeElu = $entityManager->getRepository(EquipeElu::class)->findById($equipeEluID)[0];
-        foreach ($equipeElu->getProfil() as $profil){
-            $equipeElu->removeProfil($profil);
-        }
-         $entityManager->persist($equipeElu);
-        $entityManager->flush();
-        $entityManager->remove($equipeElu);
-
-        $entityManager->flush();
         
+       
+        $entityManager->remove($equipeElu);
+        $entityManager->flush();
+        echo ("dfg");
         return $this->redirectToRoute('equipeElu_showAll');
     }
 

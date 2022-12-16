@@ -30,7 +30,7 @@
                         <th scope="col">Nom</th>
                         <th scope="col">Durée</th>
                         <th scope="col">Ville</th>
-                        {% if is_granted('ROLE_BF')%}
+                        {% if is_granted('ROLE_FORMA')%}
                             <th scope="col">Visible</th>
                         {% endif %}
                         <th scope="col">Détails</th>
@@ -43,7 +43,12 @@
                 {% for seance in seances %} 
                     {% if seance.getDatetime() <= date() and verif == false %}
                         <tr>
-                            <td colspan="5" align="center" style="font-weight:bold;"> Séance passée </td>
+                            {% if is_granted('ROLE_FORMA')%}
+                                <td colspan="6" align="center" style="font-weight:bold;"> Séance passée </td>
+                            {% else %}
+                                <td colspan="5" align="center" style="font-weight:bold;"> Séance passée </td>
+                            {% endif %}
+                            
                         <tr>
                         {% set verif = true %}
                     {% endif %}
@@ -60,7 +65,7 @@
                             -
                         {% endif %}
                         </td>
-                        {% if is_granted('ROLE_BF')%}
+                        {% if is_granted('ROLE_FORMA')%}
                         <td>
                             {% if seance.visible == FALSE %}
                                 <a href="/seance/visible/{{ seance.iD }}" >

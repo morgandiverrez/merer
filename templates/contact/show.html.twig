@@ -25,9 +25,7 @@
                     </ul>
                     <div class="card-body">
                         <a href="/contact/edit/{{ contact.getId() }}" class="card-link"><i class="fa-solid fa-pen-to-square"></i></a>       
-                        {% if is_granted('ROLE_ADMIN') %}
-                            <a href="/contact/delete/{{ contact.getId()}}" class="card-link"><i class="fa-solid fa-trash-can"></i></a>
-                        {% endif %}
+                        
                         <a href="/contact/" class="card-link"><i class="fa-solid fa-list"></i></a>
                     </div>
                 </div>

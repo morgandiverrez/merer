@@ -272,7 +272,7 @@ class ProfilController extends AbstractController
                     $go = false;
                 }
             }
-            $user->setProfil($profil);
+            $profil->setUser($user);
             $entityManager->persist($profil);
              $entityManager->persist($user);
             $entityManager->flush();
@@ -322,10 +322,10 @@ class ProfilController extends AbstractController
     public function formateurice(EntityManagerInterface $entityManager): Response
     {
 
-        $users = $entityManager->getRepository(User::class)->findAll();
-
+        $listeFormateurice = $entityManager->getRepository(User::class)->findAllUserWithProfilAndFormateurice();
+ 
         return $this->render('profil/ListeFormateurice.html.twig', [
-            'users' => $users,
+            'users' => $listeFormateurice,
             
         ]);
     }

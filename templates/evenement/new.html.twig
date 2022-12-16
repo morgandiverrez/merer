@@ -60,6 +60,13 @@
                         {{ form_help(form.autorisationPhoto) }}
                     </div>
 
+                    <div class="visible my-5">
+                        {{ form_label(form.visible, 'rendre visible l\'évènement', {'label_attr': {'class': 'foo'}}) }}
+                        {{ form_errors(form.visible) }}
+                        {{ form_widget(form.visible) }}
+                        {{ form_help(form.visible) }}
+                    </div>
+
                     <div class="modePaiement my-5">
                         {{ form_label(form.modePaiement, 'mode de paiement disponible pour l\'évènement ', {'label_attr': {'class': 'foo'}}) }}
                         {{ form_errors(form.modePaiement) }}
@@ -68,7 +75,7 @@
                     </div>
 
                     <div class="parcours my-5">
-                        {{ form_label(form.parcours, 'parcours de l\'évènement ', {'label_attr': {'class': 'foo'}}) }}
+                        {{ form_label(form.parcours, 'parcours de l\'évènement  (séparer par une virgule (,))', {'label_attr': {'class': 'foo'}}) }}
                         {{ form_errors(form.parcours) }}
                         {{ form_widget(form.parcours) }}
                         {{ form_help(form.parcours) }}
@@ -80,6 +87,13 @@
                         {{ form_widget(form.covoiturage) }}
                         {{ form_help(form.covoiturage) }}
                     </div>
+                    
+                      <div class="nombrePlace my-5">
+                        {{ form_label(form.nombrePlace, 'nombre de place maximum', {'label_attr': {'class': 'foo'}}) }}
+                        {{ form_errors(form.nombrePlace) }}
+                        {{ form_widget(form.nombrePlace) }}
+                        {{ form_help(form.nombrePlace) }}
+                    </div>
 
                     <div class="parcoursObligatoire my-5">
                         {{ form_label(form.parcoursObligatoire, ' est-il obligatoire de choisir un parcours pour l\'évènement ', {'label_attr': {'class': 'foo'}}) }}
@@ -88,12 +102,7 @@
                         {{ form_help(form.parcoursObligatoire) }}
                     </div>
 
-                    <div class="visible my-5">
-                        {{ form_label(form.visible, ' souhaitez vous rendre visible cet évènement ', {'label_attr': {'class': 'foo'}}) }}
-                        {{ form_errors(form.visible) }}
-                        {{ form_widget(form.visible) }}
-                        {{ form_help(form.visible) }}
-                    </div>
+                    
 
                     <div class="lieu my-5">
                         {{ form_label(form.lieu, ' ou aura lieu l\'évènement ', {'label_attr': {'class': 'foo'}}) }}
@@ -227,7 +236,7 @@
             $collectionHolder.data('index', index + 1);
 
             // Display the form in the page in an li, before the "Add a tag" link li
-            var $newLabel = $("<h3  class='my-3'>Nouvelle Ligne de transaction</h3>");
+            var $newLabel = $("<h3  class='my-3'>Nouvelle  séance de l'événement</h3>");
             $collectionHolder.append($newLabel)
             var $newForm = $('<div></div>').append(newForm);
             // Add the new form at the end of the list

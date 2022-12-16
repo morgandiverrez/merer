@@ -27,7 +27,7 @@ class ChequeBox
     #[ORM\JoinColumn(nullable: false)]
     private ?ChartOfAccounts $chartOfAccounts ;
 
-    #[ORM\Column(length:255, nullable: true)]
+    #[ORM\Column(length:255, unique: true, nullable: true)]
     private ?string $name = null;
 
     #[ORM\ManyToOne]

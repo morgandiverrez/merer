@@ -22,7 +22,7 @@ class ExpenseReport
     #[ORM\Column(length:1024, nullable: true)]
     private ?string $Motif = null;
 
-    #[ORM\Column(nullable: true)]
+    #[ORM\Column(nullable: true, unique: true)]
     private ?int $code = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]

@@ -76,11 +76,11 @@ class ProfilRepository extends ServiceEntityRepository
     public function findByUser($value): ?Profil
     {
         return $this->createQueryBuilder('profil')
-        ->andWhere('profil.user = :val')
-        ->setParameter('val', $value)
-            ->setMaxResults(1)
+        ->innerJoin('profil.user', 'user')
+            ->andWhere('user.id = :val')
+             ->setParameter('val', $value)
             ->getQuery()
-            ->getResult();
+            ->getOneOrNullResult();
     }
 
 
@@ -142,6 +142,16 @@ class ProfilRepository extends ServiceEntityRepository
         ->getQuery()
             ->getResult();
     }
-
+    public function findAllFormateurice(): ?array
+    {
+        return $this->createQueryBuilder('profil')
+                ->innerJoin('profil.user', 'u')
+                 ->orderBy('u.email', 'ASC')
+                    ->andWhere('u.roles LIKE :val0 OR  u.roles LIKE :val1')
+                    ->setParameter('val0', '%'.'ROLE_FORMATEURICE'.'%')
+                    ->setParameter('val1', '%' . 'ROLE_BF' . '%')
+                    ->getQuery()
+                     ->getResult();
+    }
 
 }

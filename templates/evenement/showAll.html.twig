@@ -36,7 +36,12 @@
                     {% for evenement in evenements %} 
                         {% if evenement.getDateFin() <= date() and verif == false %}
                             <tr>
-                                <td colspan="5" align="center"> Evénement passé </td>
+                                {% if is_granted('ROLE_BF')%}
+                                    <td colspan="6" align="center"> Evénement passé </td>
+                                {% else %}
+                                    <td colspan="5" align="center"> Evénement passé </td>
+                                {% endif %}
+                                
                             <tr>
                             {% set verif = true %}
                         {% endif %}

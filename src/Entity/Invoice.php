@@ -32,7 +32,7 @@ class Invoice
     #[ORM\Column(type: 'boolean')]
     private $credit = false; // pour les avoirs
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, unique: true)]
     private ?string $code = null; 
 
     #[ORM\Column(length: 64, nullable: true)]

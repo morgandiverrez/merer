@@ -16,16 +16,14 @@
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item">Description : {{evenement.getDescription()}}</li>
                         <li class="list-group-item">Url de redirection : {{evenement.getURL()}}</li>
-                        <li class="list-group-item">Date de Debut : {{evenement.getDateDebut().format("Y/m/d H:i")}}</li>
-                        <li class="list-group-item">Date de Fin : {{evenement.getDateFin().format("Y/m/d H:i")}}</li>
-                        <li class="list-group-item">Date de Fin Inscription: {{evenement.getDateFinInscription().format("Y/m/d H:i")}}</li>
+                        <li class="list-group-item">Date de Debut : {{evenement.getDateDebut().format("d/m/y H:i")}}</li>
+                        <li class="list-group-item">Date de Fin : {{evenement.getDateFin().format("d/m/y H:i")}}</li>
+                        <li class="list-group-item">Date de Fin Inscription: {{evenement.getDateFinInscription().format("d/m/y H:i")}}</li>
                     </ul>
                     <div class="card-body">
                         {% if is_granted('ROLE_BF')%}
                             <a href="/evenement/edit/{{ evenement.getId() }}" class="card-link"><i class="fa-solid fa-pen-to-square"></i></a>
-                            {% if is_granted('ROLE_ADMIN') %}
-                                <a href="/evenement/delete/{{ evenement.getId()}}" class="card-link"><i class="fa-solid fa-trash-can"></i></a>
-                            {% endif %}
+ 
                         {% endif %}
                         <a href="/evenement/" class="card-link"><i class="fa-solid fa-list"></i></a>
                         <a href='/inscription/evenement/{{evenement.getId()}}' class="card-link">inscription</a>
@@ -65,7 +63,7 @@
                                                     <li class="list-group-item">Pré-requis : {{formation[parcours].getFormation().getPreRequis()}}</li>
                                                     <li class="list-group-item">Durée : {% if formation[parcours].getFormation().getDuration() is null %}0 {% else %} {{formation[parcours].getFormation().getDuration().format("H:i")}} {% endif %} </li>
                                                     <li class="list-group-item">Public Cible : {{formation[parcours].getFormation().getPublicCible()}}</li>
-                                                    {% if formation[parcours].getFormation().getBadge() is not null %}
+                                                    {% if formation[parcours].getFormation().getBadge() is not null and formation[parcours].getFormation().getBadge().getImage() %}
                                                         <li class="list-group-item"> <img  src="{{asset(formation[parcours].getFormation().badge.getImage())}}" alt="image de {{formation[parcours].getFormation().badge.getName()}}" ></li>
                                                     {% endif %}                 
                                                     

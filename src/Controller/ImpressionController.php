@@ -51,44 +51,61 @@ class ImpressionController extends AbstractController
     #[Route('/new', name: 'new')]
     public function new(EntityManagerInterface $entityManager, Request $request): Response
     {
+        $exercice = $entityManager->getRepository(Exercice::class)->findOneByAnnee(intval(date('Y')));
+
+        if (!$exercice) {
+            $exercice = new Exercice();
+            $exercice->setAnnee(intval(date('Y')));
+            $entityManager->persist($exercice);
+            $entityManager->flush();
+        }
         $impression = new Impression();
         $form = $this->createForm(ImpressionType::class, $impression, ['liste_customer' =>  $entityManager->getRepository(Customer::class)->findAllImpressionAccess()]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $impression->setDatetime(new DateTime());
-           
-            $impression->setExercice($entityManager->getRepository(Exercice::class)->findByName(strval(date('Y'))));
             
-            $invoiceLine = new InvoiceLine();
+            $impression->setDatetime(new DateTime());
+          
+            
+            
 
+            $impression->setExercice($exercice);
+            $invoiceLine = new InvoiceLine();
+            
             if($impression->isFactureFinDuMois()){ //si facture fin mois
+                echo ($impression->getFormat());
                 if($impression->getFormat() == 'plastification'){
+                    echo ($exercice->getAnnee());
                     $impression->setCouleur(false);
                     $impression->setRectoVerso(false);
                     $invoiceLine->setCatalogService($entityManager->getRepository(CatalogService::class)->findByCode('plastification'));
+                   
                 } else {
                     if($impression->isRectoVerso()){
                         if($impression->isCouleur()){
-                            $invoiceLine->setCatalogService($entityManager->getRepository(CatalogService::class)->findByCode($impression->getFormat().'RV'.'couleur'));
+                            $invoiceLine->setCatalogService($entityManager->getRepository(CatalogService::class)->findByCode($impression->getFormat().'_RV'.'_couleur'));
                         }else{
-                            $invoiceLine->setCatalogService($entityManager->getRepository(CatalogService::class)->findByCode($impression->getFormat() . 'RV'));
+                            $invoiceLine->setCatalogService($entityManager->getRepository(CatalogService::class)->findByCode($impression->getFormat() . '_RV'));
                         }
                     } else {
                         if ($impression->isCouleur()) {
-                            $invoiceLine->setCatalogService($entityManager->getRepository(CatalogService::class)->findByCode($impression->getFormat() .'R' . 'couleur'));
+                            $invoiceLine->setCatalogService($entityManager->getRepository(CatalogService::class)->findByCode($impression->getFormat() .'_R' . '_couleur'));
                         } else {
-                            $invoiceLine->setCatalogService($entityManager->getRepository(CatalogService::class)->findByCode($impression->getFormat() . 'R'));
+                            $invoiceLine->setCatalogService($entityManager->getRepository(CatalogService::class)->findByCode($impression->getFormat() . '_R'));
                         }
                     }
                 }
+                echo ($exercice->getAnnee());
                 $invoice = $entityManager->getRepository(Invoice::class)->findCurrentInvoiceImpressionOfCustomer($impression->getCustomer());
-                if($invoice = null){
+                
+                if($invoice == Null){
                     $invoice = new Invoice();
-                    $invoice->setExercice($entityManager->getRepository(Exercice::class)->findByName(strval(date('Y'))));
+                    $invoice->setExercice($exercice);
                     $invoice->setAcquitted(false);
                     $invoice->setComfirm(false);
                     $invoice->setReady(false);
+                    $invoice->setCategory('Impression');
                     $invoice->setCode('impression mois'.date('m'));
                     $invoice->setCustomer($impression->getCustomer());
                     $invoice->setCreationDate(new Datetime());
@@ -118,8 +135,9 @@ class ImpressionController extends AbstractController
                 }
 
                 $invoice = new Invoice();
-                $invoice->setExercice($entityManager->getRepository(Exercice::class)->findByName(strval(date('Y'))));
-                $invoice->setCategory('Fin Mois');
+                $invoice->setExercice($exercice);
+                $invoice->setCategory('Impression');
+                $invoice->setCode('impression direct' . date('d/m/y h:i'));
                 $invoice->setCustomer($impression->getCustomer());
                 $invoice->setCreationDate(new Datetime());
                 

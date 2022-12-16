@@ -63,11 +63,11 @@
                                         {{ form_help(expenseReportRouteLine.distance) }}
                                     </div>
 
-                                      <div class="travelMeans my-5">
-                                        {{ form_label(expenseReportRouteLine.travelMeans, 'moyen de déplacement ', {'label_attr': {'class': 'foo'}}) }}
-                                        {{ form_errors(expenseReportRouteLine.travelMeans) }}
-                                        {{ form_widget(expenseReportRouteLine.travelMeans)}}
-                                        {{ form_help(expenseReportRouteLine.travelMeans) }}
+                                      <div class="travelMean my-5">
+                                        {{ form_label(expenseReportRouteLine.travelMean, 'moyen de déplacement ', {'label_attr': {'class': 'foo'}}) }}
+                                        {{ form_errors(expenseReportRouteLine.travelMean) }}
+                                        {{ form_widget(expenseReportRouteLine.travelMean)}}
+                                        {{ form_help(expenseReportRouteLine.travelMean) }}
                                     </div>
                                 </div>
                                 {% set compteur = compteur + 1 %}
@@ -143,10 +143,10 @@
         function() {
 
             // Get the ul that holds the collection of tags
-            var $expenseReportLinesCollectionHolder = $('ul.expenseReportRouteLine2');
+            var $expenseReportRouteLinesCollectionHolder = $('ul.expenseReportRouteLine2');
             // count the current form inputs we have (e.g. 2), use that as the new
             // index when inserting a new item (e.g. 2)
-            $expenseReportLinesCollectionHolder.data('index', $expenseReportLinesCollectionHolder.find('input').length);
+            $expenseReportRouteLinesCollectionHolder.data('index', $expenseReportRouteLinesCollectionHolder.find('input').length);
 
             $('body').on('click', '.add_item_link', function(e) {
                 var $collectionHolderClass = $(e.currentTarget).data('collectionHolderClass');
@@ -211,58 +211,58 @@
         function() {
 
             // Get the ul that holds the collection of tags
-            var $expenseReportLinesCollectionHolder2 = $('ul.expenseReportLine2');
+            var $expenseReportLinesCollectionHolder = $('ul.expenseReportLine2');
             // count the current form inputs we have (e.g. 2), use that as the new
             // index when inserting a new item (e.g. 2)
-            $expenseReportLinesCollectionHolder2.data('index', $expenseReportLinesCollectionHolder2.find('input').length);
+            $expenseReportLinesCollectionHolder.data('index', $expenseReportLinesCollectionHolder.find('input').length);
 
             $('body').on('click', '.add_item_link', function(e) {
-                var $collectionHolderClass = $(e.currentTarget).data('collectionHolderClass');
+                var $collectionHolderClass2 = $(e.currentTarget).data('collectionHolderClass');
                 // add a new tag form (see next code block)
-                addFormToCollection($collectionHolderClass);
+                addFormToCollection($collectionHolderClass2);
             })
         });
 
-        function addFormToCollection($collectionHolderClass) {
+        function addFormToCollection($collectionHolderClass2) {
             // Get the ul that holds the collection of tags
-            var $collectionHolder = $('.' + $collectionHolderClass);
+            var $collectionHolder2 = $('.' + $collectionHolderClass2);
 
             // Get the data-prototype explained earlier
-            var prototype = $collectionHolder.data('prototype');
+            var prototype = $collectionHolder2.data('prototype');
 
             // get the new index
-            var index = $collectionHolder.data('index');
+            var index = $collectionHolder2.data('index');
 
-            var newForm = prototype;
+            var newForm2 = prototype;
             // You need this only if you didn't set 'label' => false in your tags field in TaskType
             // Replace '__name__label__' in the prototype's HTML to
             // instead be a number based on how many items we have
-            //newForm = newForm.replace(/__name__label__/g, index);
+            //newForm2 = newForm2.replace(/__name__label__/g, index);
 
             // Replace '__name__' in the prototype's HTML to
             // instead be a number based on how many items we have
-             //newForm = newForm.replace(/__name__/g, index);
+             //newForm2 = newForm2.replace(/__name__/g, index);
 
             // increase the index with one for the next item
-            $collectionHolder.data('index', index + 1);
+            $collectionHolder2.data('index', index + 1);
 
             // Display the form in the page in an li, before the "Add a tag" link li
-            var $newLabel = $("<h3  class='my-3'>Nouvelle ligne de frais</h3>");
-            $collectionHolder.append($newLabel)
-            var $newForm = $('<div></div>').append(newForm);
+            var $newLabel2 = $("<h3  class='my-3'>Nouvelle ligne de frais</h3>");
+            $collectionHolder2.append($newLabel2)
+            var $newForm2 = $('<div></div>').append(newForm2);
             // Add the new form at the end of the list
-            $collectionHolder.append($newForm)
-            addTagFormDeleteLink($newForm,$newLabel);
+            $collectionHolder2.append($newForm2)
+            addTagFormDeleteLink($newForm2,$newLabel2);
         }
 
-        function addTagFormDeleteLink($newForm,$newLabel) {
-            var $removeFormButton = $('<button type="button" class="btn btn-danger">Retirer cette ligne de frais </button>');
-            $newForm.append($removeFormButton);
+        function addTagFormDeleteLink($newForm2,$newLabel2) {
+            var $removeFormButton2 = $('<button type="button" class="btn btn-danger">Retirer cette ligne de frais </button>');
+            $newForm2.append($removeFormButton2);
 
-            $removeFormButton.on('click', function(e) {
+            $removeFormButton2.on('click', function(e) {
                 // remove the li for the tag form
-                $newForm.remove();
-                $newLabel.remove();
+                $newForm2.remove();
+                $newLabel2.remove();
             });
         }
 

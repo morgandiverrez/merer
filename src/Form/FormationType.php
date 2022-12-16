@@ -26,7 +26,7 @@ class FormationType extends AbstractType
         ]) 
             ->add('public_cible')
             ->add('opg', TextareaType::class)
-            ->add('badge', EntityType::class,[
+            ->add('badge', EntityType::class, [
                 'class' => Badge::class,
                 
             ])
