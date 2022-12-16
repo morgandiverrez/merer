@@ -17,7 +17,7 @@
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item">Catégorie : {{badge.getCategorie()}}</li>
                         <li class="list-group-item">Description : {{badge.getDescription()}}</li>
-                        <li class="list-group-item">Date de création : {{badge.getDateCreation().format("d:m:y")}}</li>
+                        <li class="list-group-item">Date de création :  {% if badge.getDateCreation() is not null %} {{badge.getDateCreation().format('d/m/y')}} {% endif %}</li>
                     </ul>
                     <div class="card-body">
                         {% if is_granted('ROLE_BF')%}
