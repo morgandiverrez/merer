@@ -30,12 +30,7 @@ class RetourController extends AbstractController
         $retour->setSeance($seance);
 
         $user = $this->getUser();
-        $profils = $entityManager->getRepository(Profil::class)->findAll();
-        foreach ($profils as $testProfil) {
-            if ($testProfil->getUser() == $user) {
-                $profil = $testProfil;
-            }
-        }
+        $profil = $user->getProfil();
         $retour->setProfil($profil);
         
         $form = $this->createForm(RetourType::class, $retour);
@@ -64,7 +59,7 @@ class RetourController extends AbstractController
     #[IsGranted('ROLE_FORMA')]
     public function sdf(EntityManagerInterface $entityManager){
         $seances = $entityManager->getRepository(Seance::class)->findAllByYear(date("Y")."-01-01", strval(date("Y"))."-12-31");
-        $inputFileName = 'C:\wamp64\www\Merer\public\public\files\SDF\SDF_vierge.xlsx';
+        $inputFileName = '\public\files\SDF\SDF_vierge.xlsx';
         /** Load $inputFileName to a Spreadsheet object **/
         $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($inputFileName);
         echo ('er');
@@ -108,7 +103,7 @@ class RetourController extends AbstractController
         $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, "Xlsx");
         $writer->save("SDF_" . date("Y").".xlsx");
         
-        $finaleFile = "C:\wamp64\www\Merer\public\SDF_". date("Y")."xlsx";
+        $finaleFile = "\sdf\SDF_". date("Y")."xlsx";
         echo($finaleFile);
         header('Content-Description: File Transfer');
         header('Content-Type: application/octet-stream');

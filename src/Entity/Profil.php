@@ -25,7 +25,7 @@ class Profil
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $last_name;
 
-    #[ORM\Column(type: 'string', unique: true, length: 255, nullable: true)]
+    #[ORM\Column(type: 'string',  length: 255, nullable: true)]
     private $telephone;
     
     #[ORM\Column(type: 'string', length: 255)]

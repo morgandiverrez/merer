@@ -114,9 +114,7 @@ class EvenementController extends AbstractController
        
 
         $parcours = $evenement->getparcours();
-        print_r($parcours);
         $parcours = array_combine($parcours, $parcours);
-        print_r($parcours);
         $form = $this->createForm(EvenementType::class, $evenement, [ 'parcours_event' => $parcours]);
         $form->get('parcours')->setData(implode(",", $parcours));
         $form->handleRequest($request);

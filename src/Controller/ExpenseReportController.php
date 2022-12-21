@@ -6,6 +6,7 @@ use DateTime;
 use App\Entity\Customer;
 use App\Entity\Exercice;
 use App\Entity\Transaction;
+use App\Controller\CustomerController;
 use App\Entity\ExpenseReport;
 use App\Form\TransactionType;
 use App\Entity\TransactionLine;
@@ -78,7 +79,8 @@ class ExpenseReportController extends AbstractController
     public function new(EntityManagerInterface $entityManager, Request $request): Response
     {
         $exercice = $entityManager->getRepository(Exercice::class)->findOneByAnnee(intval(date('Y')));
-
+        $user = $this->getUser();
+        
         if (!$exercice) {
             $exercice = new Exercice();
             $exercice->setAnnee(intval(date('Y')));
@@ -89,19 +91,10 @@ class ExpenseReportController extends AbstractController
         $form = $this->createForm(ExpenseReportType::class, $expenseReport);
         $form->handleRequest($request);
 
-        $customers = $entityManager->getRepository(Customer::class)->findAll();
-        $i = 0;
-       
-        while ( ! isset($customer) and isset($customers[$i])) {
-            if ($customers[$i]->getUser() == $this->getUser()) {
-                $customer = $customers[$i];
-;            }
-            $i++;
-        }
-        if(! isset($customer)){
-            $customer = new Customer();
-            $customer->setName('provisoire');
-            $customer->setUser($this->getUser());
+
+        $customer = $this->getUser()->getCustomer();
+        if( ! $customer){
+           $customer = (new CustomerController)->newCustomerForUser(  $entityManager, $user);
         }
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -136,26 +129,40 @@ class ExpenseReportController extends AbstractController
             $expenseReport = $entityManager->getRepository(ExpenseReport::class)->findExpenseReportByCode($expenseReport->getCode());
 
             $i = 0;
-
+            
             foreach ($form->get('expenseReportLines') as $expenseReportLine) {
                 $logoUpload = $expenseReportLine->get('document')->getData();
                 if ($logoUpload) {
-                    $document = 'expenseReportProof' . $expenseReport->getExpenseReportLines()[$i]->getId() . '.' . $logoUpload[0]->guessExtension();
-                    $expenseReport->getExpenseReportLines()[$i]->setDocument('public/build/expenseReportLine/proof/' . $document);
+                    $document = 'expenseReportLineProof_' .  $expenseReport->getExpenseReportLines()[$i]->getId() . '.' . $logoUpload[0]->guessExtension();
+                    $patho =  "build/expenseReport/".$expenseReport->getCode()."/";
+                    $path =$patho.$document;
+                 
+                    
+                    if (glob ($path)) {
+                    $pathOld = $patho."old/".$document;
+                        rename($path, $pathOld);
+                    }
+                    
+                    $expenseReport->getExpenseReportLines()[$i]->setDocument($path);
                     try {
                         $logoUpload[0]->move(
-                            'public/build/expenseReportLine/proof',
+                            $patho,
                             $document
                         );
                     } catch (FileException $e) {
                     }
                 }
+                
                 $entityManager->persist($expenseReport->getExpenseReportLines()[$i]);
                 $i++;
             }
             $entityManager->flush();
-
-            return $this->redirectToRoute('expenseReport_show', ['expenseReportID' => $expenseReport->getId()]);
+            if($customer->getBankDetails()[0]){
+                if($customer->getBankDetails()[0]->getIBAN() and $customer->getBankDetails()[0]->getBIC()){
+                    return $this->redirectToRoute('expenseReport_show', ['expenseReportID' => $expenseReport->getId()]);
+                }
+            }
+            return $this->redirectToRoute('bankDetail_new', []);
         }
 
         return $this->render('expense_report/new.html.twig', [
@@ -178,15 +185,9 @@ class ExpenseReportController extends AbstractController
             $entityManager->flush();
         }
         $expenseReport = $entityManager->getRepository(ExpenseReport::class)->findExpenseReportById($expenseReportID);
-
-        $customers = $entityManager->getRepository(Customer::class)->findAll();
-        $i = 0;
-        while (!isset($customer) and isset($customers[$i])) {
-            if ($customers[$i]->getUser() == $this->getUser()) {
-                $customer = $customers[$i];;
-            }
-            $i++;
-        }
+        $user = $this->getUser();
+        $customer = $user->getCustomer();
+       
 
         
         if (($customer == $expenseReport->getCustomer() or $this->isGranted("ROLE_TRESO")) and !$expenseReport->isComfirm()) {
@@ -199,13 +200,7 @@ class ExpenseReportController extends AbstractController
                
                 $expenseReport->setDate(new DateTime());
                 $expenseReport->setCustomer($customer);
-                if (isset($entityManager->getRepository(ExpenseReport::class)->findMaxDayExpenseReport(date("Ymd") * 100)[0])) {
-                    $nbtransaction = $entityManager->getRepository(ExpenseReport::class)->findMaxDayExpenseReport(date("Ymd") * 100)[0]['code'];
-                    $expenseReport->setCode($nbtransaction + 1);
-                } else {
-                    $nbtransaction = 0;
-                    $expenseReport->setCode(date("Ymd") * 100 + $nbtransaction + 1);
-                }
+               
                 foreach ($expenseReport->getExpenseReportLines() as $expenseReportLine) {
                     $entityManager->persist($expenseReportLine);
                 }
@@ -228,13 +223,44 @@ class ExpenseReportController extends AbstractController
 
                 foreach ($form->get('expenseReportLines') as $expenseReportLine) {
                     $logoUpload = $expenseReportLine->get('document')->getData();
+                    
                     if ($logoUpload) {
-                        $document = 'expenseReportProof' . $expenseReport->getExpenseReportLines()[$i]->getId() . '.' . $logoUpload[0]->guessExtension();
-                        $expenseReport->getExpenseReportLines()[$i]->setDocument('public/build/expenseReportLine/proof/' . $document);
+                    
+                        //on créer le nouveau chemin du nouveau doc
+                        $generalPath =  "build/expenseReport/".$expenseReport->getCode()."/";
+                        $newDocument = 'expenseReportLineProof_' .  $expenseReport->getExpenseReportLines()[$i]->getId() . '.' . $logoUpload[0]->guessExtension();
+                        $newPath =$generalPath.$newDocument;
+
+                        //on recupere l'extension du doc à déplacer 
+                        $oldPathOldDocument = $expenseReport->getExpenseReportLines()[$i]->getDocument();
+                        $element = explode(".", $oldPathOldDocument);
+                        $oldExtension = end($element);
+
+                        //verif si le dossier old existe
+                        if (!is_dir($generalPath.'old')) {
+                            mkdir($generalPath.'old/');
+                        }
+
+                        if(glob($generalPath.'old/oldExpenseReportLineProof_'. $expenseReport->getExpenseReportLines()[$i]->getId()."_*")){
+                            $listOldProof = glob($generalPath.'old/oldExpenseReportLineProof_'. $expenseReport->getExpenseReportLines()[$i]->getId()."_*");
+                            $LastProof =end($listOldProof);
+                            $listPartPathLastProof = explode("_", $LastProof);
+                            $strNumberLastProof = end($listPartPathLastProof);
+                            $intNumberLastProof = intval($strNumberLastProof);
+                            $oldPath =$generalPath.'old/oldExpenseReportLineProof_'. $expenseReport->getExpenseReportLines()[$i]->getId()."_".$intNumberLastProof+1 . '.'.$oldExtension;
+                            rename($newPath, $oldPath);
+                        }else{
+                            $oldPath =$generalPath.'old/oldExpenseReportLineProof_'. $expenseReport->getExpenseReportLines()[$i]->getId()."_1".'.'.$oldExtension;
+                            rename($newPath, $oldPath);
+                        }
+                    
+                        
+                        //on stock le nouveau chemin 
+                        $expenseReport->getExpenseReportLines()[$i]->setDocument($newPath);
                         try {
                             $logoUpload[0]->move(
-                                'public/build/expenseReportLine/proof',
-                                $document
+                                $generalPath,
+                                $newDocument
                             );
                         } catch (FileException $e) {
                         }
@@ -244,7 +270,12 @@ class ExpenseReportController extends AbstractController
                 }
                 $entityManager->flush();
 
-                return $this->redirectToRoute('expenseReport_show', ['expenseReportID' => $expenseReport->getId()]);
+                if($customer->getBankDetails()[0]){
+                    if($customer->getBankDetails()[0]->getIBAN() and $customer->getBankDetails()[0]->getBIC()){
+                        return $this->redirectToRoute('expenseReport_show', ['expenseReportID' => $expenseReport->getId()]);
+                    }
+                }
+                return $this->redirectToRoute('bankDetail_new', []);
             }
 
             return $this->render('expense_report/edit.html.twig', [
@@ -260,14 +291,8 @@ class ExpenseReportController extends AbstractController
     #[IsGranted('ROLE_USER')]
     public function show(EntityManagerInterface $entityManager, $expenseReportID): Response
     {
-        $customers = $entityManager->getRepository(Customer::class)->findAll();
-        $i = 0;
-        while (!isset($customer) and isset($customers[$i])) {
-            if ($customers[$i]->getUser() == $this->getUser()) {
-                $customer = $customers[$i];;
-            }
-            $i++;
-        }
+         $user = $this->getUser();
+        $customer = $user->getCustomer();
         $expenseReport = $entityManager->getRepository(ExpenseReport::class)->findExpenseReportById($expenseReportID);
         if ($customer == $expenseReport->getCustomer() or $this->isGranted("ROLE_TRESO")) {
         return $this->render('expense_report/show.html.twig', [
@@ -278,36 +303,7 @@ class ExpenseReportController extends AbstractController
         }
     }
 
-    #[Route('/download/{expenseReportLineID}', name: 'download')]
-    #[IsGranted('ROLE_USER')]
-    public function download(EntityManagerInterface $entityManager,  $expenseReportLineID)
-    {
-        $expenseReportLine = $entityManager->getRepository(ExpenseReportLine::class)->findById($expenseReportLineID);
-        $customers = $entityManager->getRepository(Customer::class)->findAll();
-        $i = 0;
-        while (!isset($customer) and isset($customers[$i])) {
-            if ($customers[$i]->getUser() == $this->getUser()) {
-                $customer = $customers[$i];;
-            }
-            $i++;
-        }
-        if($customer == $expenseReportLine->getExpenseReport()->getCustomer() or $this->isGranted("ROLE_TRESO")){
-            $finaleFile = $expenseReportLine->getDocument();
-
-            header('Content-Description: File Transfer');
-            header('Content-Type: application/octet-stream');
-            header('Content-Disposition: attachment; filename="' . basename($finaleFile) . '"');
-            header('Expires: 0');
-            header('Cache-Control: must-revalidate');
-            header('Pragma: public');
-            header('Content-Length: ' . filesize($finaleFile));
-            readfile($finaleFile);
-
-            return $this->redirectToRoute('expenseReport_show', ['expenseReportID' => $expenseReportLine->getExpenseReport()->getId()]);
-         }else{
-            return $this->redirectToRoute('account');
-         }
-    }
+    
 
     #[Route('/comfirm/{expenseReportID}', name: 'comfirm')]
     #[IsGranted('ROLE_TRESO')]

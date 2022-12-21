@@ -11,7 +11,7 @@
             <div class=" d-flex justify-content-center text-center align-center">
                 <div class="card" style="width: 18rem;">
                     <div class=" card-body ">
-                        <img class="card-img-top" src="{{asset(badge.getImage())}}" alt="{{badge.getName()}}" >
+                         {% if badge.getImage() is not null %}<img class="card-img-top" src="{{asset(badge.getImage())}}" alt="{{badge.getName()}}" >{% endif %}
                         <p class="card-text">{{badge.getName()}}</p>
                     </div>
                     <ul class="list-group list-group-flush">

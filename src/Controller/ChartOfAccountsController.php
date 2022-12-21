@@ -25,11 +25,8 @@ class ChartOfAccountsController extends AbstractController
             if ($posts['code']) {
                 $accounts = array_intersect($accounts, $entityManager->getRepository(ChartOfAccounts::class)->findAllByCode($posts['code']));
             }
-            // if ($posts['movable'] != 'null') {
-
-            //     $accounts = array_intersect($accounts, $entityManager->getRepository(ChartOfAccounts::class)->findAllByMovable($posts['movable']));
-            // }
         }
+        
         return $this->render('chart_of_accounts/showAll.html.twig', [
             'accounts' => $accounts,
         ]);
@@ -98,7 +95,6 @@ class ChartOfAccountsController extends AbstractController
 
         return $this->render('chart_of_accounts/new.html.twig', [
             'chartOfAccounts' => $chartOfAccounts,
-            'controler_title' => "new",
             'form' => $form->createView(),
         ]);
     }

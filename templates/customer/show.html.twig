@@ -14,10 +14,10 @@
                         <h5 class="card-title">{{customer.getName()}}</h5>
                     </div>
                     <ul class="list-group list-group-flush">                       
-                        <li class="list-group-item">APE : {{customer.getAdministrativeIdentifier().getAPE()}}</li>
-                         <li class="list-group-item">SIRET : {{customer.getAdministrativeIdentifier().getSiret()}}</li>
-                        <li class="list-group-item"> Localisation : <a href="/location/show/{{customer.getLocation().getId()}}">  {{customer.getLocation().getName()}}</a></li>
-                        <li class="list-group-item">Compte associé :<a href="/chartOfAccounts/show/{{customer.getChartOfAccounts().getId()}}">   {{customer.getChartOfAccounts().getName()}} | {{customer.getChartOfAccounts().getCode()}}</a></li>                   
+                        <li class="list-group-item">APE :{% if customer.getAdministrativeIdentifier() %} {{customer.getAdministrativeIdentifier().getAPE()}} {% endif %}</li>
+                         <li class="list-group-item">SIRET : {% if customer.getAdministrativeIdentifier() %}{{customer.getAdministrativeIdentifier().getSiret()}}{% endif %}</li>
+                        <li class="list-group-item"> Localisation :{% if customer.getLocation() %} <a href="/location/show/{{customer.getLocation().getId()}}">  {{customer.getLocation().getName()}}</a>{% endif %}</li>
+                        <li class="list-group-item">Compte associé :{% if customer.getChartOfAccounts() %}<a href="/chartOfAccounts/show/{{customer.getChartOfAccounts().getId()}}">   {{customer.getChartOfAccounts().getName()}} | {{customer.getChartOfAccounts().getCode()}}</a>{% endif %}</li>                   
                     </ul>
                     <div class="card-body">             
                         <a href="/customer/edit/{{ customer.getId() }}" class="card-link"><i class="fa-solid fa-pen-to-square"></i></a>       
@@ -25,6 +25,22 @@
                     </div>
                 </div>
             </div>
+            <br>
+            {% if customer.getBankDetails()[0] %}
+                <div class="d-flex text-center justify-content-evenly">
+                    {% set bankDetail = customer.getBankDetails()[0] %} 
+                    <div class="card justify-content-start" style="width: 18rem;">
+
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">IBAN : {{bankDetail.IBAN}}</li>
+                            <li class="list-group-item">BIC : {{bankDetail.BIC}}</li></ul>
+                        
+                        <div class="card-body ">
+                            <a class="card-link" href="/bankDetail/edit/{{bankDetail.getId()}}"><i class="fa-solid fa-pen-to-square"></i></a> 
+                        </div>
+                    </div>                      
+                </div>
+            {% endif %}
             <p class="display-6 no-wrap text-center">Liste des factures de ce client </p>
             <table class="table table-striped">
                 <thead>

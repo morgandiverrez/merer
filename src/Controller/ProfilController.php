@@ -87,36 +87,23 @@ class ProfilController extends AbstractController
     public function show(EntityManagerInterface $entityManager): Response
     {
         $user = $this->getUser();
-        $profils = $entityManager->getRepository(Profil::class)->findAll();
+        $profil = $user->getProfil();
 
-        $customers = $entityManager->getRepository(Customer::class)->findAll();
-
-        $customerExistPas = true;
-        $profilNonComplet = true;
-        $i = 0;
-        $customer = null;
-        while($customerExistPas and isset($customers[$i]) ){ 
-            if ($customers[$i]->getUser() == $user) {
-                $customerExistPas = false;
-                $customer = $customers[$i];
+        $customer = $user->getCustomer();
+        $profilComplet = false;
+        
+        if($profil ){
+            if( $profil->getName() and      $profil->getLastName() and 
+                                            $profil->getDateOfBirth() and 
+                                            $profil->getTelephone() )
+            {
+                $profilComplet = true;
             }
-            $i ++;
         }
-
-        $i=0;
-        while($profilNonComplet and isset($profils[$i]) ){
-            if ($profils[$i]->getUser() == $user ){
-                 $profil = $profils[$i];
-                if($profils[$i]->getName() and      $profils[$i]->getLastName() and 
-                                                    $profils[$i]->getDateOfBirth() and 
-                                                    $profils[$i]->getTelephone() ) {
-                $profilNonComplet = false;
-                }
-            }
-            $i++;
-        }
-       if(!$this->isGranted("ROLE_TRESO", "ROLE_PRESIDENCE", "ROLE_FORMA")){
-            if($customerExistPas and $profilNonComplet  ) {
+        
+      
+       if(! $this->isGranted("ROLE_TRESO", "ROLE_ADMIN", "ROLE_FORMA")){
+            if(! $customer and ! $profilComplet  ) {
                  return $this->redirectToRoute('profil_edit', []);
             }
         }
@@ -168,7 +155,7 @@ class ProfilController extends AbstractController
 
 
             $profil->setLastName(mb_strtoupper($profil->getLastName()));
-            $profil->setName(mb_convert_case($profil->getName(), MB_CASE_TITLE, "UTF-8"));
+            $profil->setName(mb_convert_case($profil->getName(), MB_CASE_TITLE , "UTF-8"));
 
             $go = true; $i = 0;
             while ($go) {

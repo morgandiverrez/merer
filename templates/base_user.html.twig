@@ -40,19 +40,22 @@
                     <div class="container-fluid">
                         <a class="navbar-brand" href="/account/"><img src="{{asset('build/images/logo_FEDEB_Noir.png')}}" height="60" alt="logo Fédé B"></a>
                         {% if is_granted('ROLE_USER') %}
-                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"  >
-                            <span class="navbar-toggler-icon"></span>
-                        </button>
-                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                              {% if not is_granted('ROLE_FORMATEURICE') %}
-                                <li class="nav-item">
-                                    <a class="nav-link" href="/seance/">Séance</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="/catalogue/">Catalogue de formation </a>
-                                </li>
-                            {% endif %}
+                            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"  >
+                                <span class="navbar-toggler-icon"></span>
+                            </button>
+                            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                                {% if app.user.profil is not  null and not is_granted('ROLE_FORMATEURICE')   %}
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="/seance/">Séance</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="/catalogue/">Catalogue de formation </a>
+                                    </li>
+                                     <li class="nav-item">
+                                        <a class="nav-link" href="/demande/new">Demander une formation </a>
+                                    </li>
+                                {% endif %}
                                 {% if is_granted('ROLE_FORMATEURICE') %}
                                     <li class="nav-item dropdown">
                                         <a class="nav-link dropdown-toggle"  id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -85,7 +88,7 @@
                                             <li class="nav-item">
                                                 <a class="nav-link" href="/catalogue/">Catalogue de formation</a>
                                             </li>
-                                           
+                                        
                                         </ul>
                                     </li>
                                 {% endif %}
@@ -105,10 +108,10 @@
                                             <li class="nav-item">
                                                 <a class="nav-link" href="/signature/BF">Signature de mail BF</a>
                                             </li>
-                                             <li class="nav-item">
+                                            <li class="nav-item">
                                                 <a class="nav-link" href="/expenseReport/new"> Demande de NDF </a>
                                             </li>
-                                           
+                                        
                                         </ul>
                                     </li>
                                 {% endif %}
@@ -193,7 +196,7 @@
                                     </li>
                                 {% endif %}
                                 {% if app.user.getProfil() is not null %}
-                                     {% if app.user.profil.getEquipeElu() is not empty %}
+                                    {% if app.user.profil.getEquipeElu() is not empty %}
                                         {% if 'Centraux UBO' in app.user.profil.getEquipeElu() or 'CROUS Rennes-Bretagne' in app.user.profil.getEquipeElu() or is_granted('ROLE_BF') %}   
                                             <li class="nav-item dropdown">
                                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -214,16 +217,11 @@
                                         {% endif %}
                                     {% endif %}
                                 {% endif %}
-                                {% if not is_granted('ROLE_FORMATEURICE') %}
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="/demande/new">Demander une formation </a>
-                                    </li>
-                                {% endif %}
+                              
                             </ul>
                         </div>
-                        
-                        {% endif %}
-                         <div class="d-flex justify-content-end">
+                    {% endif %}
+                        <div class="d-flex justify-content-end">
                            {% if is_granted('ROLE_USER')%}
                                 <ul>
                                       <li><a class="nav-link" target="_blank" href=" https://discord.gg/6PR3h3mtp9"> <i class="fa-brands fa-discord"></i></a> </li>

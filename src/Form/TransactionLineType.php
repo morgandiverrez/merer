@@ -29,8 +29,14 @@ class TransactionLineType extends AbstractType
                 'label' => 'document justificatif',
             ])
               
-            ->add('quote', TextAreaType::class, ['label' => 'commentaire',])
-            ->add('chartOfAccounts', EntityType::class, ['class' => ChartOfAccounts::class, 'label' => 'PCG',])
+            ->add('quote', TextAreaType::class, [
+                    'label' => 'commentaire',
+                    ])
+            ->add('chartOfAccounts', EntityType::class, [
+                'class' => ChartOfAccounts::class,
+                 'label' => 'PCG',
+                 'required' => false,
+            ])
 
            
             

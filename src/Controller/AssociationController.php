@@ -71,10 +71,10 @@ class AssociationController extends AbstractController
 
             if($logoUpload){
                 $logoFileSigle = 'logo_'. $sigleMajuscule . '.' . $logoUpload->guessExtension();
-                $association->setImage('public/build/association/' . $logoFileSigle);
+                $association->setImage('build/association/' . $logoFileSigle);
                 try {
                     $logoUpload->move(
-                        'public/build/association',
+                        'build/association',
                         $logoFileSigle
                     );
                 } catch (FileException $e) {

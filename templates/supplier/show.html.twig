@@ -16,10 +16,10 @@
                         <h5 class="card-title">{{supplier.getName()}}</h5>
                     </div>
                     <ul class="list-group list-group-flush">                       
-                        <li class="list-group-item"> SIRET : {{supplier.getAdministrativeIdentifier().getSiret()}}</li>
-                        <li class="list-group-item"> APE : {{supplier.getAdministrativeIdentifier().getAPE()}}</li>
-                        <li class="list-group-item">Localisation : <a href="/location/show/{{ supplier.getLocation().getId() }}" class="card-link">  {{supplier.getLocation().getName()}}</a></li>
-                        <li class="list-group-item">Compte associé :<a href="/chartOfAccounts/show/{{ supplier.getChartOfAccounts().getId() }}" class="card-link">  {{supplier.getChartOfAccounts().getName()}} | {{supplier.getChartOfAccounts().getCode()}}</a></li>                   
+                        <li class="list-group-item"> SIRET : {% if supplier.getAdministrativeIdentifier() %} {{supplier.getAdministrativeIdentifier().getSiret()}}{% endif %}</li>
+                        <li class="list-group-item"> APE : {% if supplier.getAdministrativeIdentifier() %} {{supplier.getAdministrativeIdentifier().getAPE()}}{% endif %}</li>
+                        <li class="list-group-item">Localisation : {% if supplier.getLocation() %}<a href="/location/show/{{ supplier.getLocation().getId() }}" class="card-link">  {{supplier.getLocation().getName()}}</a>{% endif %}</li>
+                        <li class="list-group-item">Compte associé : {% if supplier.getChartOfAccounts() %}<a href="/chartOfAccounts/show/{{ supplier.getChartOfAccounts().getId() }}" class="card-link">  {{supplier.getChartOfAccounts().getName()}} | {{supplier.getChartOfAccounts().getCode()}}</a>{% endif %}</li>                   
                     </ul>
                     <div class="card-body">             
                             <a href="/supplier/edit/{{ supplier.getId() }}" class="card-link"><i class="fa-solid fa-pen-to-square"></i></a>       

@@ -105,17 +105,7 @@ class InvoiceController extends AbstractController
     }
 
 
-    #[Route('/delete/{invoiceID}', name: 'delete')]
-    #[IsGranted('ROLE_ADMIN')]
-    public function delete(EntityManagerInterface $entityManager, $invoiceID): Response
-    {
 
-        $invoice = $entityManager->getRepository(Invoice::class)->findById($invoiceID)[0];
-        $entityManager->remove($invoice);
-        $entityManager->flush();
-
-        return $this->redirectToRoute('invoice_showAll');
-    }
 
 
     #[Route('/edit/{invoiceID}', name: 'edit')]
@@ -212,8 +202,9 @@ class InvoiceController extends AbstractController
     public function invoicePDF(EntityManagerInterface $entityManager, $invoiceId){
         $invoice = $entityManager->getRepository(Invoice::class)->findById($invoiceId);
         $user = $this->getUser();
+        $customer = $user->getCustomer();
 
-        if($user != $invoice->getCustomer()->getUser() and ! $this->isGranted("ROLE_TRESO")){
+        if($customer != $invoice->getCustomer() and ! $this->isGranted("ROLE_TRESO")){
             return $this->redirectToRoute('profil_show');
         }
         $federation = $entityManager->getRepository(Federation::class)->findBySocialReason("Fédé B")[0];
@@ -246,7 +237,18 @@ class InvoiceController extends AbstractController
         exit(0);
     }
 
-    
+        #[Route('/delete/{invoiceID}', name: 'delete')]
+    #[IsGranted('ROLE_ADMIN')]
+    public function delete(EntityManagerInterface $entityManager, $invoiceID): Response
+    {
+
+        $invoice = $entityManager->getRepository(Invoice::class)->findById($invoiceID)[0];
+        $entityManager->remove($invoice);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('invoice_showAll');
+    }
+
     public function invoiceTotale($invoice)
     {
         $nbInvoiceLine = count($invoice->getInvoiceLines());

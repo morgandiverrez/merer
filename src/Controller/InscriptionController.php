@@ -38,7 +38,7 @@ class InscriptionController extends AbstractController
     public function ponctuelle(EntityManagerInterface $entityManager, Request $request, $seanceID): Response
     {
         $seance = $entityManager->getRepository(Seance::class)->findByID($seanceID)[0];
-        $profil = $entityManager->getRepository(Profil::class)->findByUser($this->getUser());
+        $profil = $this->getProfil();
         // on verifie que la seance est sensé etre visible (sinon, on renvoi vers le profil de l'utilisateur)
         if (! $seance->isVisible()) {
             return $this->redirectToRoute('profil_show', []);
@@ -133,12 +133,7 @@ class InscriptionController extends AbstractController
         }
 
         $user = $this->getUser(); //on recup l'user 
-        $profils = $entityManager->getRepository(Profil::class)->findAll(); // on recup tt les profils
-        foreach ($profils as $testProfil) { // on itere pour trouver le bon profil
-            if ($testProfil->getUser() == $user) {
-                $profil = $testProfil;
-            }
-        }
+        $profil = $user->getProfil();
         
 
 

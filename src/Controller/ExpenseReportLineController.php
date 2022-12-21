@@ -29,33 +29,33 @@ class ExpenseReportLineController extends AbstractController
         $expenseReportLine = new ExpenseReportLine();
         $expenseReport = $entityManager->getRepository(ExpenseReport::class)->findExpenseReportById($expenseReportID);
 
-        $customers = $entityManager->getRepository(Customer::class)->findAll();
-        $i = 0;
-        while (!isset($customer) and isset($customers[$i])) {
-            if ($customers[$i]->getUser() == $this->getUser()) {
-                $customer = $customers[$i];;
-            }
-            $i++;
-        }
+         $user = $this->getUser();
+        $customer = $user->getCustomer();
 
         if (($customer == $expenseReport->getCustomer() or $this->isGranted("ROLE_TRESO")) and !$expenseReport->isComfirm()) {
             $form = $this->createForm(ExpenseReportLineType::class, $expenseReportLine);
             $form->handleRequest($request);
 
             if ($form->isSubmitted() && $form->isValid()) {
-                $expenseReport = $entityManager->getRepository(ExpenseReport::class)->findExpenseReportById($expenseReportID);
+                
                 $expenseReportLine->setExpenseReport($expenseReport);
                 $entityManager->persist($expenseReportLine);
                 $entityManager->flush();
-
+                $expenseReport = $entityManager->getRepository(ExpenseReport::class)->findExpenseReportById($expenseReportID);
                 $logoUpload = $form->get('document')->getData();
-                if ($logoUpload) {
-                    $document = 'expenseReportProof' . $expenseReportLine->getId() . '.' . $logoUpload[0]->guessExtension();
-                    $expenseReportLine->setDocument('public/build/expenseReportLine/proof/' . $document);
+                 if ($logoUpload) {
+                    
+                    //on créer le nouveau chemin du nouveau doc
+                    $generalPath =  "build/expenseReport/".$expenseReport->getCode()."/";
+                    $newDocument = 'expenseReportLineProof_' .  $expenseReportLine->getId() . '.' . $logoUpload[0]->guessExtension();
+                    $newPath =$generalPath.$newDocument;
+
+                     //on stock le nouveau chemin 
+                    $expenseReportLine->setDocument($newPath);
                     try {
                         $logoUpload[0]->move(
-                            'public/build/expenseReportLine/proof',
-                            $document
+                            $generalPath,
+                            $newDocument
                         );
                     } catch (FileException $e) {
                     }
@@ -64,7 +64,12 @@ class ExpenseReportLineController extends AbstractController
                 $entityManager->persist($expenseReportLine);
                 $entityManager->flush();
 
-                return $this->redirectToRoute('expenseReport_show', ['expenseReportID' => $expenseReport->getId()]);
+                if($customer->getBankDetails()[0]){
+                    if($customer->getBankDetails()[0]->getIBAN() and $customer->getBankDetails()[0]->getBIC()){
+                        return $this->redirectToRoute('expenseReport_show', ['expenseReportID' => $expenseReport->getId()]);
+                    }
+                }
+                return $this->redirectToRoute('bankDetail_new', []);
             }
 
 
@@ -87,19 +92,12 @@ class ExpenseReportLineController extends AbstractController
 
         $expenseReport = $entityManager->getRepository(ExpenseReport::class)->findExpenseReportById($expenseReportID);
 
-        $customers = $entityManager->getRepository(Customer::class)->findAll();
-        $i = 0;
-        while (!isset($customer) and isset($customers[$i])) {
-            if ($customers[$i]->getUser() == $this->getUser()) {
-                $customer = $customers[$i];;
-            }
-            $i++;
-        }
+         $user = $this->getUser();
+        $customer = $user->getCustomer();
 
         if (($customer == $expenseReport->getCustomer() or $this->isGranted("ROLE_TRESO")) and !$expenseReport->isComfirm()) {
             $form = $this->createForm(ExpenseReportLineType::class, $expenseReportLine);
             $form->handleRequest($request);
-
             if ($form->isSubmitted() && $form->isValid()) {
                 $expenseReport = $entityManager->getRepository(ExpenseReport::class)->findExpenseReportById($expenseReportID);
                 $expenseReportLine->setExpenseReport($expenseReport);
@@ -108,12 +106,42 @@ class ExpenseReportLineController extends AbstractController
 
                 $logoUpload = $form->get('document')->getData();
                 if ($logoUpload) {
-                    $document = 'expenseReportProof' . $expenseReportLine->getId() . '.' . $logoUpload[0]->guessExtension();
-                    $expenseReportLine->setDocument('public/build/expenseReportLine/proof/' . $document);
+                    
+                    //on créer le nouveau chemin du nouveau doc
+                    $generalPath =  "build/expenseReport/".$expenseReport->getCode()."/";
+                    $newDocument = 'expenseReportLineProof_' .  $expenseReportLine->getId() . '.' . $logoUpload[0]->guessExtension();
+                    $newPath =$generalPath.$newDocument;
+
+                    //on recupere l'extension du doc à déplacer 
+                    $oldPathOldDocument = $expenseReportLine->getDocument();
+                    $element = explode(".", $oldPathOldDocument);
+                    $oldExtension = end($element);
+
+                    //verif si le dossier old existe
+                    if (!is_dir($generalPath.'old')) {
+                        mkdir($generalPath.'old/');
+                    }
+
+                    if(glob($generalPath.'old/oldExpenseReportLineProof_'. $expenseReportLine->getId()."_*")){
+                        $listOldProof = glob($generalPath.'old/oldExpenseReportLineProof_'. $expenseReportLine->getId()."_*");
+                        $LastProof =end($listOldProof);
+                        $listPartPathLastProof = explode("_", $LastProof);
+                        $strNumberLastProof = end($listPartPathLastProof);
+                        $intNumberLastProof = intval($strNumberLastProof);
+                        $oldPath =$generalPath.'old/oldExpenseReportLineProof_'. $expenseReportLine->getId()."_".$intNumberLastProof+1 . '.'.$oldExtension;
+                        rename($newPath, $oldPath);
+                    }else{
+                        $oldPath =$generalPath.'old/oldExpenseReportLineProof_'. $expenseReportLine->getId()."_1".'.'.$oldExtension;
+                        rename($newPath, $oldPath);
+                    }
+                   
+                    
+                     //on stock le nouveau chemin 
+                    $expenseReportLine->setDocument($newPath);
                     try {
                         $logoUpload[0]->move(
-                            'public/build/expenseReportLine/proof',
-                            $document
+                            $generalPath,
+                            $newDocument
                         );
                     } catch (FileException $e) {
                     }
@@ -122,7 +150,12 @@ class ExpenseReportLineController extends AbstractController
                 $entityManager->persist($expenseReportLine);
                 $entityManager->flush();
 
-                return $this->redirectToRoute('expenseReport_show', ['expenseReportID' => $expenseReport->getId()]);
+                if($customer->getBankDetails()[0]){
+                    if($customer->getBankDetails()[0]->getIBAN() and $customer->getBankDetails()[0]->getBIC()){
+                        return $this->redirectToRoute('expenseReport_show', ['expenseReportID' => $expenseReport->getId()]);
+                    }
+                }
+                return $this->redirectToRoute('bankDetail_new', []);
             }
 
 
@@ -140,25 +173,46 @@ class ExpenseReportLineController extends AbstractController
     #[IsGranted('ROLE_USER')]
     public function delete(EntityManagerInterface $entityManager, $expenseReportLineID): Response
     {
-
+        
         $expenseReportLine = $entityManager->getRepository(ExpenseReportLine::class)->findById($expenseReportLineID)[0];
         $expenseReport = $expenseReportLine->getExpenseReport();
 
-        $customers = $entityManager->getRepository(Customer::class)->findAll();
-        $i = 0;
-        while (!isset($customer) and isset($customers[$i])) {
-            if ($customers[$i]->getUser() == $this->getUser()) {
-                $customer = $customers[$i];;
-            }
-            $i++;
-        }
+         $user = $this->getUser();
+        $customer = $user->getCustomer();
 
         if (($customer == $expenseReport->getCustomer() or $this->isGranted("ROLE_TRESO")) and !$expenseReport->isComfirm()) {
+            $path = $expenseReportLine->getDocument();
+            $elements = explode(".", $path);
+            $extension = end($elements);
+            $document = 'expenseReportLineProof_' .  $expenseReportLine->getId() . '.' . $extension;
+            $patho =  "build/expenseReport/".$expenseReport->getCode()."/";
+            if (glob ($path)) {
+                $pathOld = $patho."old/".$document;
+                if (!is_dir($patho.'old/')) {
+                    mkdir($patho.'old/');
+                }
+                $i=0;
+                while(is_dir($pathOld)){
+                    $pathOld = $patho."old/expenseReportLineProof_" .  $expenseReportLine->getId()."_".$i . '.' . $extension;
+                    $i++;
+                }
+                rename($path, $pathOld);
+            }
+
+            
             $entityManager->remove($expenseReportLine);
             $entityManager->flush();
-        }
 
-        return $this->redirectToRoute('expenseReport_show', ['expenseReportID' => $expenseReportLine->getExpenseReport()->getId()]);
+            if($customer->getBankDetails()[0]){
+                if($customer->getBankDetails()[0]->getIBAN() and $customer->getBankDetails()[0]->getBIC()){
+                    return $this->redirectToRoute('expenseReport_show', ['expenseReportID' => $expenseReport->getId()]);
+                }
+            }
+            return $this->redirectToRoute('bankDetail_new', []);
+        } else {
+            return $this->redirectToRoute('account');
+        }
+        
     }
 
     #[Route('/download/{expenseReportLine}', name: 'download')]
@@ -168,14 +222,8 @@ class ExpenseReportLineController extends AbstractController
         $expenseReportLine = $entityManager->getRepository(ExpenseReportLine::class)->findById($expenseReportLine)[0];
         $expenseReport = $expenseReportLine->getExpenseReport();
 
-        $customers = $entityManager->getRepository(Customer::class)->findAll();
-        $i = 0;
-        while (!isset($customer) and isset($customers[$i])) {
-            if ($customers[$i]->getUser() == $this->getUser()) {
-                $customer = $customers[$i];;
-            }
-            $i++;
-        }
+         $user = $this->getUser();
+        $customer = $user->getCustomer();
 
         if ($customer == $expenseReport->getCustomer() or $this->isGranted("ROLE_TRESO")) {
             $finaleFile = $expenseReportLine->getDocument();
@@ -188,7 +236,15 @@ class ExpenseReportLineController extends AbstractController
             header('Pragma: public');
             header('Content-Length: ' . filesize($finaleFile));
             readfile($finaleFile);
+            if($customer->getBankDetails()[0]){
+                if($customer->getBankDetails()[0]->getIBAN() and $customer->getBankDetails()[0]->getBIC()){
+                    return $this->redirectToRoute('expenseReport_show', ['expenseReportID' => $expenseReport->getId()]);
+                }
+            }
+            return $this->redirectToRoute('bankDetail_new', []);
+         } else {
+            return $this->redirectToRoute('account');
         }
-        return $this->redirectToRoute('expenseReport_show', ['expenseReportID' => $expenseReportLine->getExpenseReport()->getId()]);
+        
     }
 }

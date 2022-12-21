@@ -23,12 +23,11 @@
                                 Financeur -  : <a href="/financement/show/{{ financementLine.financement.getId() }}" class="card-link"> {{financementLine.financement.getName()}} - {{financementLine.getLibellee()}} </a>
                             {% endfor %}
                         </li>
-                        <li class="list-group-item">BP :  <a href="/bp/show/{{ transaction.getbP().getId() }}" class="card-link"> {{transaction.getbP().getDesignation()}} </a></li>
-                        <li class="list-group-item">Projet :  <a href="/event/show/{{ transaction.getEvent().getId() }}" class="card-link"> {{transaction.getEvent().getName()}} </a></li>   
+                        <li class="list-group-item">BP : {% if transaction.getbP() is not null %} <a href="/bp/show/{{ transaction.getbP().getId() }}" class="card-link"> {{transaction.getbP().getDesignation()}} </a></li> {% endif %}
+                        <li class="list-group-item">Projet :{% if transaction.getEvent() is not null %}  <a href="/event/show/{{ transaction.getEvent().getId() }}" class="card-link"> {{transaction.getEvent().getName()}} </a></li>   {% endif %}
                     </ul>
                     <div class="card-body">
                         <a href="/transaction/edit/{{ transaction.getId() }}" class="card-link"><i class="fa-solid fa-pen-to-square"></i></a>
-                        <a href="/transaction/delete/{{ transaction.getId()}}" class="card-link"><i class="fa-solid fa-trash-can"></i></a>
                         <a href="/transaction/" class="card-link"><i class="fa-solid fa-list"></i></a>
                     </div>
                 </div>
@@ -48,22 +47,33 @@
                 </thead>
 
                 <tbody>
-                {% for transactionLine in transaction.transactionLines %} <tr>
-                    <td>{{transactionLine.label}}</td>
-                    <td>{{transactionLine.date.format("d/m/y")}}</td>
-                    <td>{{transactionLine.amount}} €</td>
-                    <td>{{transactionLine.chartofaccounts.code}} </td>
-                    <td>{{transactionLine.quote}} </td>
-                    {% if transactionLine.urlProof is not null %}
-                        <td><a href="/transaction/download/{{ transactionLine.id }}" target="_blank"><i class="fa-sharp fa-solid fa-file"></i></a></td>
-                    {% else %}
-                        <td></td>
-                    {% endif %}
-                    <td><a href="/transactionLine/edit/{{ transaction.id }}/{{ transactionLine.id }}"><i class = "fa-solid fa-pen-to-square"></i></a></td>
-                    <td><a href="/transactionLine/delete/{{ transactionLine.id }}"><i class="fa-solid fa-trash-can"></i></a></td>
-
-                </tr> {% endfor %}
+                    {% set total = 0 %}
+                    {% for transactionLine in transaction.transactionLines %}
+                        <tr>
+                            <td>{{transactionLine.label}}</td>
+                            <td>{{transactionLine.date.format("d/m/y")}}</td>
+                            <td>{{transactionLine.amount}} €</td>
+                            {% set total  = total + transactionLine.amount %}
+                            <td>{% if transactionLine.getChartofaccounts() is not null %}{{transactionLine.chartofaccounts.code}} {% endif %}</td>
+                            <td>{{transactionLine.quote}} </td>
+                            <td>{% if transactionLine.getUrlProof() is not null %}<a href="/transaction/download/{{ transactionLine.id }}" target="_blank"><i class="fa-sharp fa-solid fa-file"></i></a>{% endif %}</td>
+                            <td><a href="/transactionLine/edit/{{ transaction.id }}/{{ transactionLine.id }}"><i class = "fa-solid fa-pen-to-square"></i></a></td>
+                            <td><a href="/transactionLine/delete/{{ transactionLine.id }}"><i class="fa-solid fa-trash-can"></i></a></td>
+                        </tr>
+                    {% endfor %}
                 </tbody>
+                <tfoot>
+                    <tr>
+                        <th></th>
+                        <th></th>
+                        <th>{{ total }} €</th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </tfoot>
             </table>
             <div class="text-center">
                 <a href="/transactionLine/new/{{ transaction.id }}"><button class="btn btn-success mt-3 mb-3" type="submit" name="show">{{ button_label|default('Ajouter une ligne ') }}<i class = "fa text-light fa-plus-square me-2"></i></button></a>

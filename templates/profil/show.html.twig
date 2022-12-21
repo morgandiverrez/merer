@@ -2,7 +2,7 @@
 {% extends 'base_user.html.twig' %}
 
 
-{% block title %}Profil{% endblock %}
+{% block title %}mon profil{% endblock %}
 
 
 
@@ -10,7 +10,7 @@
     <div class="container-fluid">
         <div style = "margin-left: auto ; margin-right: auto ; max-width : 900px;">
             {% if app.user.profil %}
-                <p class="display-6 no-wrap text-center align-center mb-5"> Profil de {{app.user.profil.getName()}} {{app.user.profil.getLastName()}}</p>
+                <p class="display-6 no-wrap text-center align-center mb-5"> Mon profil </p>
                 <div class=" d-flex text-center justify-content-evenly">
                     <div class="card justify-content-start" style="width: 18rem;">
                         <div class=" card-body ">
@@ -27,25 +27,37 @@
                             <li class="list-group-item">Equipe d'élu : {% for equipeElu in app.user.profil.getEquipeElu() %}{{equipeElu.getName()}} {% endfor %}</li>
                             <li class="list-group-item">Association :{% for association in app.user.profil.getAssociation() %}{{association.getSigle()}} {% endfor %} </li
                         </ul>
-                        <div class="card-body ">
-                            <a class="btn btn-primary" href={{path('profil_edit')}}>Modifier</a> 
+                         <div class="card-body ">
+                            <a class="card-link" href={{path('profil_edit')}}><i class="fa-solid fa-pen-to-square"></i></a> 
                         </div>
                         <div class="card-body ">
                             <a class="btn btn-primary" href="/account/show/seances/{{app.user.profil.getId()}}">Formations suivies</a> 
                         </div>
+                        
                     </div>
                 </div>
-                <div class="d-flex align-content-start flex-wrap">
+                <br>
+                <p class="display-6 no-wrap text-center">Mes badges  </p>
+                 <div class="d-flex justify-content-center flex-wrap">
                     {% for badge in app.user.profil.getBadge() %} 
-                        <div class="p-2">
-                            <img class="card-img-top" href='/badge/{{badge.getId()}}'src="{{badge.getImage()}}" alt="badge :{{badge.getName()}}" >
-                                {{badge.getName()}}
-                        </div>                       
+                        <div class=" d-flex justify-content-center text-center align-center">
+                            <div class="card" style="width: 8rem;">
+                                <div class=" card-body ">
+                                    {% if badge.getImage() is not null %}<img class="card-img-top" src="{{asset(badge.getImage())}}" alt="badge : {{badge.getName()}}" >{% endif %}
+                                    <p class="card-text" >{{badge.getName()}}</p>
+                                </div>
+                            </div>
+                        </div>
                     {% endfor %}
                 </div>
+                <br>
             {% endif %}
+            
             {% if app.user.customer is not null %}
-                <p class="display-6 no-wrap text-center">Liste des factures  </p>
+
+               
+                
+                <p class="display-6 no-wrap text-center">Liste de mes factures  </p>
                 <table class="table table-striped">
                     <thead>
                     <tr>
@@ -109,7 +121,11 @@
                     {% endfor %}
                     </tbody>
                 </table>
-                <p class="display-6 no-wrap text-center mb-5">Liste des notes de frais 
+
+                <br>
+                <br>
+                <br>
+                <p class="display-6 no-wrap text-center mb-5">Liste de mes notes de frais 
                         <a href="/expenseReport/new"><i class="fa-solid fa-plus align-left"></i></a>
                 </p>
                 <table class="table table-striped">
@@ -131,7 +147,11 @@
                     {% endfor %}
                     </tbody>
                 </table>
-                <p class="display-6 no-wrap text-center">Liste des impressions
+                
+                <br>
+                <br>
+                <br>
+                <p class="display-6 no-wrap text-center">Liste de mes impressions
                 <a href="/impression/new"><i class="fa-solid fa-plus align-left"></i></a>
                   </p>
                 <table class="table table-striped">
@@ -157,7 +177,26 @@
                     {% endfor %}
                     </tbody>
                 </table>
+                <br>
+                <br>
+                <br>
+                 {% if app.user.customer.getBankDetails()[0] %}
+                    <p class="display-6 no-wrap text-center">Mes coordonnées bancaires  </p>
+                    <div class="d-flex text-center justify-content-evenly">
+                        {% set bankDetail = app.user.customer.getBankDetails()[0] %} 
+                        <div class="card justify-content-start" style="width: 18rem;">
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">IBAN : {{bankDetail.IBAN}}</li>
+                                <li class="list-group-item">BIC : {{bankDetail.BIC}}</li></ul>
+                            
+                            <div class="card-body ">
+                                <a class="card-link" href="/bankDetail/new"><i class="fa-solid fa-pen-to-square"></i></a> 
+                            </div>
+                        </div>                      
+                    </div>
+                {% endif %}
             {% endif %}
+
         </div>
     </div>
 {% endblock %}
