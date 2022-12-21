@@ -67,9 +67,6 @@ class ImpressionController extends AbstractController
             
             $impression->setDatetime(new DateTime());
           
-            
-            
-
             $impression->setExercice($exercice);
             $invoiceLine = new InvoiceLine();
             

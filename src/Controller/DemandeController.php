@@ -72,23 +72,18 @@ class DemandeController extends AbstractController
         $form->handleRequest($request);
 
         $user = $this->getUser(); //on recup l'user 
-        $profils = $entityManager->getRepository(Profil::class)->findAll(); // on recup tt les profils
-        foreach ($profils as $testProfil) { // on itere pour trouver le bon profil
-            if ($testProfil->getUser() == $user) {
-                $profil = $testProfil;
-            }
-        }
+        $profil = $user->getProfil();
         
         if ($form->isSubmitted() && $form->isValid()) {
             if( $demande->getDateFin() != null){ $demande->setDateFin($demande->getDateDebut()); }
-            $logoUpload = $form->get('planning')->getData();
+            $planningUpload = $form->get('planning')->getData();
 
-            if ($logoUpload) {
-                $planningFileName = 'planning_'.$demande->getId().'.' . $logoUpload->guessExtension();
-                $demande->setPlanning('public/build/demande/planning/' . $planningFileName);
+            if ($planningUpload) {
+                $planningFileName = 'planning_'.$demande->getId().'.' . $planningUpload->guessExtension();
+                $demande->setPlanning('build/demande/planning/' . $planningFileName);
                 try {
-                    $logoUpload->move(
-                        'public/build/demande/planning',
+                    $planningUpload->move(
+                        'build/demande/planning',
                         $planningFileName
                     );
                 } catch (FileException $e) {

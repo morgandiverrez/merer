@@ -49,6 +49,9 @@ class Customer
     #[ORM\OneToOne(mappedBy: 'customer', cascade: ['persist', 'remove'])]
     private ?User $user = null;
 
+    #[ORM\OneToMany(mappedBy: 'customer', targetEntity: BankDetail::class, orphanRemoval: true)]
+    private Collection $bankDetails;
+
  
 
     public function __construct()
@@ -57,6 +60,7 @@ class Customer
         $this->contacts = new ArrayCollection();
         $this->impressions = new ArrayCollection();
         $this->expenseReports = new ArrayCollection();
+        $this->bankDetails = new ArrayCollection();
     }
 
     public function  __toString()
@@ -268,6 +272,36 @@ class Customer
         }
 
         $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, BankDetail>
+     */
+    public function getBankDetails(): Collection
+    {
+        return $this->bankDetails;
+    }
+
+    public function addBankDetail(BankDetail $bankDetail): self
+    {
+        if (!$this->bankDetails->contains($bankDetail)) {
+            $this->bankDetails->add($bankDetail);
+            $bankDetail->setCustomer($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBankDetail(BankDetail $bankDetail): self
+    {
+        if ($this->bankDetails->removeElement($bankDetail)) {
+            // set the owning side to null (unless already changed)
+            if ($bankDetail->getCustomer() === $this) {
+                $bankDetail->setCustomer(null);
+            }
+        }
 
         return $this;
     }

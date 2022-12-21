@@ -68,10 +68,10 @@ class TransactionController extends AbstractController
                 $nbtransaction = 0;    
                  $transaction->setCode(date("Ymd") * 100 + $nbtransaction + 1);
             }
-
             foreach($transaction->getTransactionLines() as $transactionLine){
-                $transaction->addTransactionLine($transactionLine);
+                
                 $entityManager->persist($transactionLine);
+                
             }
             $entityManager->persist($transaction);
             $entityManager->flush();
@@ -83,20 +83,22 @@ class TransactionController extends AbstractController
             foreach($form->get('transactionLines') as $transactionLine){
                 $logoUpload = $transactionLine->get('urlProof')->getData();
                 if ($logoUpload) {
-                   
-                    $urlProof = 'transactionLineProof' . $transaction->getTransactionLines()[$i]->getId() . '.' . $logoUpload[0]->guessExtension();
-                    $transaction->getTransactionLines()[$i]->setUrlProof('public/build/transactionLine/proof/' . $urlProof);
+                    $urlProof = 'transactionLineProof_' . $transaction->getTransactionLines()[$i]->getId() . '.' . $logoUpload[0]->guessExtension();
+
+
+                    $transaction->getTransactionLines()[$i]->setUrlProof("build/transaction/".$transaction->getCode()."/" . $urlProof);
                     try {
                         $logoUpload[0]->move(
-                            'public/build/transactionLine/proof',
+                            "build/transaction/".$transaction->getCode()."/",
                             $urlProof
                         );
                     } catch (FileException $e) {
                     }
                 }
-                $entityManager->persist($transactionLine);
+                $entityManager->persist($transaction->getTransactionLines()[$i]);
                 $i++;
             }
+            
             $entityManager->persist($transaction);
             $entityManager->flush();
 
@@ -142,13 +144,53 @@ class TransactionController extends AbstractController
             foreach ($form->get('transactionLines') as $transactionLine) {
                 $logoUpload = $transactionLine->get('urlProof')->getData();
                 if ($logoUpload) {
-                    echo ($transaction->getTransactionLines()[$i]->getId());
                     $urlProof = 'transactionLineProof' . $transaction->getTransactionLines()[$i]->getId() . '.' . $logoUpload[0]->guessExtension();
                     $transaction->getTransactionLines()[$i]->setUrlProof('public/build/transactionLine/proof/' . $urlProof);
                     try {
                         $logoUpload[0]->move(
                             'public/build/transactionLine/proof',
                             $urlProof
+                        );
+                    } catch (FileException $e) {
+                    }
+                }
+                if ($logoUpload) {
+                
+                    //on créer le nouveau chemin du nouveau doc
+                    $generalPath =  "build/transaction/".$transaction->getCode()."/";
+                    $newDocument = 'transactionLineProof_' . $transaction->getTransactionLines()[$i]->getId() . '.' . $logoUpload[0]->guessExtension();
+                    $newPath =$generalPath.$newDocument;
+
+                    //on recupere l'extension du doc à déplacer 
+                    $oldPathOldDocument = $transaction->getTransactionLines()[$i]->getUrlProof();
+                    $element = explode(".", $oldPathOldDocument);
+                    $oldExtension = end($element);
+
+                    //verif si le dossier old existe
+                    if (!is_dir($generalPath.'old')) {
+                        mkdir($generalPath.'old/');
+                    }
+
+                    if(glob($generalPath.'old/oldTransactionLineProof_'. $transaction->getTransactionLines()[$i]->getId()."_*")){
+                        $listOldProof = glob($generalPath.'old/oldTransactionLineProof_'. $transaction->getTransactionLines()[$i]->getId()."_*");
+                        $LastProof =end($listOldProof);
+                        $listPartPathLastProof = explode("_", $LastProof);
+                        $strNumberLastProof = end($listPartPathLastProof);
+                        $intNumberLastProof = intval($strNumberLastProof);
+                        $oldPath =$generalPath.'old/oldTransactionLineProof_'. $transaction->getTransactionLines()[$i]->getId()."_".$intNumberLastProof+1 . '.'.$oldExtension;
+                        rename($newPath, $oldPath);
+                    }else{
+                        $oldPath =$generalPath.'old/oldTransactionLineProof_'. $transaction->getTransactionLines()[$i]->getId()."_1".'.'.$oldExtension;
+                        rename($newPath, $oldPath);
+                    }
+                    
+                    
+                        //on stock le nouveau chemin 
+                    $transaction->getTransactionLines()[$i]->setUrlProof($newPath);
+                    try {
+                        $logoUpload[0]->move(
+                            $generalPath,
+                            $newDocument
                         );
                     } catch (FileException $e) {
                     }

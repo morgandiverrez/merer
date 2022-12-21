@@ -18,7 +18,7 @@ class ChartOfAccounts
     private ?int $id = null;
 
    
-    #[ORM\Column(length:1024, unique: true, nullable: true)]
+    #[ORM\Column(length:512, unique: true, nullable: true)]
     private ?string $name = null;
 
     #[ORM\Column( nullable : false)]

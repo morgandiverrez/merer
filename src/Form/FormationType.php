@@ -28,6 +28,8 @@ class FormationType extends AbstractType
             ->add('opg', TextareaType::class)
             ->add('badge', EntityType::class, [
                 'class' => Badge::class,
+                'label' =>"Badge",
+                'required' => false,
                 
             ])
         ;

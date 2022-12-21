@@ -33,11 +33,10 @@
                 
                     <tr>
                         <td>{{supplier.getName()}}</td>
-                          <td><a href="/location/show/{{supplier.getLocation().getId()}}">{{supplier.getLocation().getName()}}</a></td>
-                          <td><a href="/chartOfAccounts/show/{{supplier.getChartOfAccounts().getId()}}"> {{supplier.getChartOfAccounts().getName()}} | {{supplier.getChartOfAccounts().getCode()}} </a> </td>
-                         
+                        <td> {% if supplier.getLocation() %} <a href="/location/show/{{supplier.getLocation().getId()}}">{{supplier.getLocation().getName()}}</a>{% endif %}</td>
+                        <td>{% if supplier.getChartOfAccounts() %}<a href="/chartOfAccounts/show/{{supplier.getChartOfAccounts().getId()}}"> {{supplier.getChartOfAccounts().getName()}} | {{supplier.getChartOfAccounts().getCode()}} </a> {% endif %}</td>
                         <td><a href="/supplier/show/{{supplier.getId()}}"><i class="fa-solid fa-eye"></i></a></td> 
-                     </tr>
+                    </tr>
                 {% endfor %}
                 </tbody>
             </table>

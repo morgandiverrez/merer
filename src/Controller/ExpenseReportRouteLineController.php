@@ -27,14 +27,8 @@ class ExpenseReportRouteLineController extends AbstractController
         $expenseReportRouteLine = new ExpenseReportRouteLine();
         $expenseReport = $entityManager->getRepository(ExpenseReport::class)->findExpenseReportById($expenseReportID);
 
-        $customers = $entityManager->getRepository(Customer::class)->findAll();
-        $i = 0;
-        while (!isset($customer) and isset($customers[$i])) {
-            if ($customers[$i]->getUser() == $this->getUser()) {
-                $customer = $customers[$i];;
-            }
-            $i++;
-        }
+         $user = $this->getUser();
+        $customer = $user->getCustomer();
 
         if (($customer == $expenseReport->getCustomer() or $this->isGranted("ROLE_TRESO")) and !$expenseReport->isComfirm()) {
             $form = $this->createForm(ExpenseReportRouteLineType::class, $expenseReportRouteLine);
@@ -54,7 +48,12 @@ class ExpenseReportRouteLineController extends AbstractController
                 $entityManager->persist($expenseReportRouteLine);
                 $entityManager->flush();
 
-                return $this->redirectToRoute('expenseReport_show', ['expenseReportID' => $expenseReport->getId()]);
+                if($customer->getBankDetails()[0]){
+                    if($customer->getBankDetails()[0]->getIBAN() and $customer->getBankDetails()[0]->getBIC()){
+                        return $this->redirectToRoute('expenseReport_show', ['expenseReportID' => $expenseReport->getId()]);
+                    }
+                }
+                return $this->redirectToRoute('bankDetail_new', []);
             }
             return $this->render('expense_report_route_line/edit.html.twig', [
                 'expenseReportRouteLine' => $expenseReportRouteLine,
@@ -74,14 +73,8 @@ class ExpenseReportRouteLineController extends AbstractController
         $expenseReportRouteLine = $entityManager->getRepository(ExpenseReportRouteLine::class)->findById($expenseReportRouteLineID)[0];
         $expenseReport = $entityManager->getRepository(ExpenseReport::class)->findExpenseReportById($expenseReportID);
 
-        $customers = $entityManager->getRepository(Customer::class)->findAll();
-        $i = 0;
-        while (!isset($customer) and isset($customers[$i])) {
-            if ($customers[$i]->getUser() == $this->getUser()) {
-                $customer = $customers[$i];;
-            }
-            $i++;
-        }
+         $user = $this->getUser();
+        $customer = $user->getCustomer();
 
         if (($customer == $expenseReport->getCustomer() or $this->isGranted("ROLE_TRESO")) and !$expenseReport->isComfirm()) {
             $form = $this->createForm(ExpenseReportRouteLineType::class, $expenseReportRouteLine);
@@ -100,7 +93,12 @@ class ExpenseReportRouteLineController extends AbstractController
                 $entityManager->persist($expenseReportRouteLine);
                 $entityManager->flush();
 
-                return $this->redirectToRoute('expenseReport_show', ['expenseReportID' => $expenseReport->getId()]);
+                if($customer->getBankDetails()[0]){
+                    if($customer->getBankDetails()[0]->getIBAN() and $customer->getBankDetails()[0]->getBIC()){
+                        return $this->redirectToRoute('expenseReport_show', ['expenseReportID' => $expenseReport->getId()]);
+                    }
+                }
+                return $this->redirectToRoute('bankDetail_new', []);
             }
 
 
@@ -122,20 +120,22 @@ class ExpenseReportRouteLineController extends AbstractController
         $expenseReportRouteLine = $entityManager->getRepository(ExpenseReportRouteLine::class)->findById($expenseReportRouteLineID)[0];
         $expenseReport = $expenseReportRouteLine->getExpenseReport();
 
-        $customers = $entityManager->getRepository(Customer::class)->findAll();
-        $i = 0;
-        while (!isset($customer) and isset($customers[$i])) {
-            if ($customers[$i]->getUser() == $this->getUser()) {
-                $customer = $customers[$i];;
-            }
-            $i++;
-        }
+         $user = $this->getUser();
+        $customer = $user->getCustomer();
 
         if (($customer == $expenseReport->getCustomer() or $this->isGranted("ROLE_TRESO")) and !$expenseReport->isComfirm()) {
             $entityManager->remove($expenseReportRouteLine);
             $entityManager->flush();
-        } 
+            if($customer->getBankDetails()[0]){
+                    if($customer->getBankDetails()[0]->getIBAN() and $customer->getBankDetails()[0]->getBIC()){
+                        return $this->redirectToRoute('expenseReport_show', ['expenseReportID' => $expenseReport->getId()]);
+                    }
+                }
+                return $this->redirectToRoute('bankDetail_new', []);
+        } else {
+            return $this->redirectToRoute('account');
+        }
 
-        return $this->redirectToRoute('expenseReport_show', ['expenseReportID' => $expenseReportRouteLine->getExpenseReport()->getId()]);
+        
     }
 }

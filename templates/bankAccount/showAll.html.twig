@@ -27,8 +27,8 @@
                 
                     <tr>
                         <td>{{bankAccount.getAccountNumber()}}</td>
-                        <td><a href="/location/show/{{bankAccount.getLocation().getId()}}">{{bankAccount.getLocation().getName()}}</a></td>
-                        <td><a href="/chartOfAccounts/show/{{bankAccount.getChartOfAccounts().getId()}}"> {{bankAccount.getChartOfAccounts().getName()}} | {{bankAccount.getChartOfAccounts().getCode()}} </a> </td>
+                        <td> {% if bankAccount.getLocation() %} <a href="/location/show/{{bankAccount.getLocation().getId()}}">{{bankAccount.getLocation().getName()}}</a> {% endif %} </td>
+                        <td>{% if bankAccount.getLocation() %} <a href="/chartOfAccounts/show/{{bankAccount.getChartOfAccounts().getId()}}"> {{bankAccount.getChartOfAccounts().getName()}} | {{bankAccount.getChartOfAccounts().getCode()}} </a> {% endif %}  </td>
                         <td><a href="/bankAccount/show/{{bankAccount.getId()}}"><i class="fa-solid fa-eye"></i></a></td> 
                      </tr>
                 {% endfor %}

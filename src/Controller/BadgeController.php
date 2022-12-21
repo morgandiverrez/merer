@@ -114,10 +114,10 @@ class BadgeController extends AbstractController
 
             if ($logoUpload) {
                 $logoFileName = 'logo_' . $nameMajuscule . '.' . $logoUpload->guessExtension();
-                $badge->setImage('public/build/badge/' . $logoFileName);
+                $badge->setImage('build/badge/' . $logoFileName);
                 try {
                     $logoUpload->move(
-                        'public/files/badge',
+                        'files/badge',
                         $logoFileName
                     );
                 } catch (FileException $e) {

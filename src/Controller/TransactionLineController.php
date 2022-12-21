@@ -28,16 +28,21 @@ class TransactionLineController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $transaction = $entityManager->getRepository(Transaction::class)->findTransactionById($transactionId);
-
+             
+             $transactionLine->setTransaction($transaction);
+             $entityManager->persist($transactionLine);
+             $entityManager->persist($transaction);
+            $entityManager->flush();
+            $transactionLine = $entityManager->getRepository(TransactionLine::class)->findByTransactionAndLabel($transactionId, $form->get('label')->getData());
             $logoUpload = $form->get('urlProof')->getData();
             if ($logoUpload) {
-                $urlProof = 'transactionLineProof' . $transactionLine->getId() . '.' . $logoUpload[0]->guessExtension();
+                $urlProof = 'transactionLineProof_' . $transactionLine->getId() . '.' . $logoUpload[0]->guessExtension();
 
 
-                $transactionLine->setUrlProof('public/build/transactionLine/proof/' . $urlProof);
+                $transactionLine->setUrlProof("build/transaction/".$transaction->getCode()."/" . $urlProof);
                 try {
                     $logoUpload[0]->move(
-                        'public/build/transactionLine/proof',
+                        "build/transaction/".$transaction->getCode()."/",
                         $urlProof
                     );
                 } catch (FileException $e) {
@@ -71,15 +76,44 @@ class TransactionLineController extends AbstractController
             $transaction = $entityManager->getRepository(Transaction::class)->findTransactionById($transactionId);
 
             $logoUpload = $form->get('urlProof')->getData();
+
             if ($logoUpload) {
-                $urlProof = 'transactionLineProof' . $transactionLine->getId() . '.' . $logoUpload[0]->guessExtension();
+                
+                //on créer le nouveau chemin du nouveau doc
+                $generalPath =  "build/transaction/".$transaction->getCode()."/";
+                $newDocument = 'transactionLineProof_' . $transactionLine->getId() . '.' . $logoUpload[0]->guessExtension();
+                $newPath =$generalPath.$newDocument;
 
+                //on recupere l'extension du doc à déplacer 
+                $oldPathOldDocument = $transactionLine->getUrlProof();
+                $element = explode(".", $oldPathOldDocument);
+                $oldExtension = end($element);
 
-                $transactionLine->setUrlProof('public/build/transactionLine/proof/' . $urlProof);
+                //verif si le dossier old existe
+                if (!is_dir($generalPath.'old')) {
+                    mkdir($generalPath.'old/');
+                }
+
+                if(glob($generalPath.'old/oldTransactionLineProof_'. $transactionLine->getId()."_*")){
+                    $listOldProof = glob($generalPath.'old/oldTransactionLineProof_'. $transactionLine->getId()."_*");
+                    $LastProof =end($listOldProof);
+                    $listPartPathLastProof = explode("_", $LastProof);
+                    $strNumberLastProof = end($listPartPathLastProof);
+                    $intNumberLastProof = intval($strNumberLastProof);
+                    $oldPath =$generalPath.'old/oldTransactionLineProof_'. $transactionLine->getId()."_".$intNumberLastProof+1 . '.'.$oldExtension;
+                    rename($newPath, $oldPath);
+                }else{
+                    $oldPath =$generalPath.'old/oldTransactionLineProof_'. $transactionLine->getId()."_1".'.'.$oldExtension;
+                    rename($newPath, $oldPath);
+                }
+                
+                
+                    //on stock le nouveau chemin 
+                $transactionLine->setUrlProof($newPath);
                 try {
                     $logoUpload[0]->move(
-                        'public/build/transactionLine/proof',
-                        $urlProof
+                        $generalPath,
+                        $newDocument
                     );
                 } catch (FileException $e) {
                 }
@@ -102,6 +136,30 @@ class TransactionLineController extends AbstractController
     {
 
         $transactionLine = $entityManager->getRepository(TransactionLine::class)->findById($transactionLineID);
+         $generalPath =  "build/transaction/".$transactionLine->getTransaction()->getCode()."/";
+        //on recupere l'extension du doc à déplacer 
+        $oldPathOldDocument = $transactionLine->getUrlProof();
+        $element = explode(".", $oldPathOldDocument);
+        $oldExtension = end($element);
+
+        //verif si le dossier old existe
+        if (!is_dir($generalPath.'old')) {
+            mkdir($generalPath.'old/');
+        }
+
+        if(glob($generalPath.'old/oldTransactionLineProof_'. $transactionLine->getId()."_*")){
+            $listOldProof = glob($generalPath.'old/oldTransactionLineProof_'. $transactionLine->getId()."_*");
+            $LastProof =end($listOldProof);
+            $listPartPathLastProof = explode("_", $LastProof);
+            $strNumberLastProof = end($listPartPathLastProof);
+            $intNumberLastProof = intval($strNumberLastProof);
+            $oldPath =$generalPath.'old/oldTransactionLineProof_'. $transactionLine->getId()."_".$intNumberLastProof+1 . '.'.$oldExtension;
+            rename($oldPathOldDocument, $oldPath);
+        }else{
+            $oldPath =$generalPath.'old/oldTransactionLineProof_'. $transactionLine->getId()."_1".'.'.$oldExtension;
+            rename($oldPathOldDocument, $oldPath);
+        }  
+
         $entityManager->remove($transactionLine);
         $entityManager->flush();
 

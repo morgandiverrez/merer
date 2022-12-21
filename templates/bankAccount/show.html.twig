@@ -23,8 +23,8 @@
                         <li class="list-group-item"> IBAN : {{bankAccount.getIban()}}</li>
                         <li class="list-group-item"> BIC : {{bankAccount.getBic()}}</li>
                         <li class="list-group-item">Dernier comptage :   {% if bankAccount.getLastCountDate() is not null %} {{bankAccount.getLastCountDate().format('d/m/y')}} {% endif %}</li>
-                        <li class="list-group-item">Localisation : <a href="/location/show/{{ bankAccount.getLocation().getId() }}" class="card-link">  {{bankAccount.getLocation().getName()}}</a></li>
-                        <li class="list-group-item">Compte associé :<a href="/chartOfAccounts/show/{{ bankAccount.getChartOfAccounts().getId() }}" class="card-link">  {{bankAccount.getChartOfAccounts().getName()}} | {{bankAccount.getChartOfAccounts().getCode()}}</a></li>                   
+                        <li class="list-group-item">Localisation :  {% if bankAccount.getLocation() %} <a href="/location/show/{{ bankAccount.getLocation().getId() }}" class="card-link">  {{bankAccount.getLocation().getName()}}</a>   {% endif %} </li>
+                        <li class="list-group-item">Compte associé : {% if bankAccount.getChartOfAccounts() %}<a href="/chartOfAccounts/show/{{ bankAccount.getChartOfAccounts().getId() }}" class="card-link">  {{bankAccount.getChartOfAccounts().getName()}} | {{bankAccount.getChartOfAccounts().getCode()}}</a> {% endif %} </li>                   
                     </ul>
                     <div class="card-body">             
                             <a href="/bankAccount/edit/{{ bankAccount.getId() }}" class="card-link"><i class="fa-solid fa-pen-to-square"></i></a>       

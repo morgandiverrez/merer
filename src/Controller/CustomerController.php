@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Customer;
+use App\Entity\Contact;
 use App\Entity\ChequeBox;
 use App\Form\CustomerType;
 use App\Form\ChequeBoxType;
@@ -132,5 +133,39 @@ class CustomerController extends AbstractController
             'form' => $form->createView(),
 
         ]);
+    }
+
+      public function newCustomerForUser(EntityManagerInterface $entityManager,$user)
+    {
+        $customer = new Customer();
+        $customer->setName($user->getEmail());
+        $contact = new Contact();
+        $customer->setUser($user);
+        $customer->addContact($contact);
+        $contact->setMail($user->getEmail());
+        if($user->getProfil()){
+            $profil =  $user->getProfil();
+            $customer->setName($profil->getLastName().' '.$profil->getName());
+            $contact->setName($profil->getName());
+            $contact->setLastName($profil->getLastName());
+            $pronom = $profil->getPronom();
+            switch ($pronom){
+                case 'il':
+                    $contact->setCivility('Homme');
+                        break;
+                case 'elle':
+                    $contact->setCivility('Femme');
+                        break;
+                case 'iel':
+                    $contact->setCivility('Neutre');
+                        break;
+            }
+            $contact->setPhone($profil->getTelephone());
+        }
+        $entityManager->persist($user);
+        $entityManager->persist($customer);
+        $entityManager->persist($contact);
+        $entityManager->flush();
+        return $customer;
     }
 }

@@ -30,7 +30,7 @@ class AssociationType extends AbstractType
             ->add('fede_filliere')
             ->add('fede_territoire')
             ->add('local')
-            ->add('adresse_mail', EmailType::class)
+            ->add('adresse_mail', EmailType::class,  ['required' => false,])
             ->add( 'date_election', BirthdayType::class, [
             'widget' => 'single_text',
             'required' => false,

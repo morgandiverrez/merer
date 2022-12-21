@@ -75,6 +75,21 @@ class TransactionLineRepository extends ServiceEntityRepository
             ->getOneOrNullResult()
              ;
     }
+        
+    public function findByTransactionAndLabel($id , $label): ?TransactionLine
+    {
+        return $this->createQueryBuilder('transactionLine')
+        ->innerJoin('transactionLine.transaction', 'transaction')
+            ->andWhere('transaction.id = :id')
+            ->andWhere('transactionLine.label = :label')
+            ->setParameter('id', $id)
+            ->setParameter('label', $label)
+            ->getQuery()
+            ->getOneOrNullResult()
+             ;
+    }
+
+
 
     public function findLastTransactionLine(): ?TransactionLine
     {
