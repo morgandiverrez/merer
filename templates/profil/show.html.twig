@@ -180,19 +180,22 @@
                 <br>
                 <br>
                 <br>
-                 {% if app.user.customer.getBankDetails()[0] %}
-                    <p class="display-6 no-wrap text-center">Mes coordonnées bancaires  </p>
+                 {% if app.user.customer.getBankDetails() %}
+                    <p class="display-6 no-wrap text-center">Mes coordonnées bancaires 
+                    <a href="/bankDetail/new"><i class="fa-solid fa-pen-to-square"></i> </a></p>
                     <div class="d-flex text-center justify-content-evenly">
-                        {% set bankDetail = app.user.customer.getBankDetails()[0] %} 
+                        {% for bankDetail in app.user.customer.getBankDetails() %} 
                         <div class="card justify-content-start" style="width: 18rem;">
                             <ul class="list-group list-group-flush">
                                 <li class="list-group-item">IBAN : {{bankDetail.IBAN}}</li>
-                                <li class="list-group-item">BIC : {{bankDetail.BIC}}</li></ul>
+                                <li class="list-group-item">BIC : {{bankDetail.BIC}}</li>
+                            </ul>
                             
                             <div class="card-body ">
                                 <a class="card-link" href="/bankDetail/new"><i class="fa-solid fa-pen-to-square"></i></a> 
                             </div>
-                        </div>                      
+                        </div>
+                        {% endfor %}                      
                     </div>
                 {% endif %}
             {% endif %}

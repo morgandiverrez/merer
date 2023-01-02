@@ -35,8 +35,6 @@ class DemandeController extends AbstractController
     {
         $demande = $entityManager->getRepository(Demande::class)->findById($demandeID);
 
-
-      
         return $this->render('demande/show.html.twig', [
             'demande' => $demande,
 
@@ -77,7 +75,9 @@ class DemandeController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             if( $demande->getDateFin() != null){ $demande->setDateFin($demande->getDateDebut()); }
             $planningUpload = $form->get('planning')->getData();
-
+            $demande->setProfil($profil);
+            $entityManager->persist($demande);
+            $entityManager->flush();
             if ($planningUpload) {
                 $planningFileName = 'planning_'.$demande->getId().'.' . $planningUpload->guessExtension();
                 $demande->setPlanning('build/demande/planning/' . $planningFileName);
