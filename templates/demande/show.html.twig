@@ -14,10 +14,10 @@
                         <p class="card-text">Date de Fin : {% if demande.getDateFin() is not null %} {{demande.getDateFin().format('d/m/y H:i')}}{% else %} - {% endif %}</p>
                     </div>
                     <ul class="list-group list-group-flush">
-                            <li class="list-group-item">Equipe Elu : {% for equipeElu in demande.getEquipeElu() %}{{equipeElu.getName()}}<br> {% endfor %} </li>
+                            <li class="list-group-item">Equipe Elu.e.s : {% for equipeElu in demande.getEquipeElu() %}{{equipeElu.getName()}}<br> {% endfor %} </li>
                             <li class="list-group-item">Association :  {% for association in  demande.getAssociation() %} {{association.getName()}}<br> {%  endfor %}</li>
                             <li class="list-group-item">Demandeur : {{demande.getProfil().getName()}} {{demande.getProfil().getLastName()}} </li>
-                            <li class="list-group-item">Nombre de personne estimé : {{demande.getNombrePersonne()}}</li>
+                            <li class="list-group-item">Nombre de personne estimés : {{demande.getNombrePersonne()}}</li>
                             <li class="list-group-item">Double maillage : {% if demande.isDoubleMaillage() %} oui {% else %} non {% endif %}</li>
                             <li class="list-group-item">Planning : {% if demande.getPlanning() is not null %} <a href="/demande/downloadPlanning/{{demande.getId()}}" target="_blank" class ="card-link">Télécharger</a> {% else %} pas de planning  {% endif %}</li>                     
                     </ul>
