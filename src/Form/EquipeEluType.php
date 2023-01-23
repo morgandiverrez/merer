@@ -27,8 +27,7 @@ class EquipeEluType extends AbstractType
                     'CROUS'=> 'CROUS',
                     'LBSU' =>  'LBSU',
                     'Nationaux' =>  'Nationaux',
-                ],
-                'multiple' => true,
+                ]
             ])
             ->add('description' , TextareaType::class)
             ->add('adresse_mail', EmailType::class)
