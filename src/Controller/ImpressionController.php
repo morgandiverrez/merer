@@ -7,6 +7,7 @@ use App\Entity\Invoice;
 use App\Entity\Customer;
 use App\Entity\Exercice;
 use App\Entity\Impression;
+use Aws\Ses\SesClient;
 use App\Entity\InvoiceLine;
 use App\Form\ImpressionType;
 use App\Entity\CatalogService;
@@ -49,7 +50,7 @@ class ImpressionController extends AbstractController
     }
 
     #[Route('/new', name: 'new')]
-    public function new(EntityManagerInterface $entityManager, Request $request): Response
+    public function new(EntityManagerInterface $entityManager, Request $request, SesClient $ses): Response
     {
         $exercice = $entityManager->getRepository(Exercice::class)->findOneByAnnee(intval(date('Y')));
 
@@ -71,9 +72,8 @@ class ImpressionController extends AbstractController
             $invoiceLine = new InvoiceLine();
             
             if($impression->isFactureFinDuMois()){ //si facture fin mois
-                echo ($impression->getFormat());
+                
                 if($impression->getFormat() == 'plastification'){
-                    echo ($exercice->getAnnee());
                     $impression->setCouleur(false);
                     $impression->setRectoVerso(false);
                     $invoiceLine->setCatalogService($entityManager->getRepository(CatalogService::class)->findByCode('plastification'));
@@ -93,7 +93,6 @@ class ImpressionController extends AbstractController
                         }
                     }
                 }
-                echo ($exercice->getAnnee());
                 $invoice = $entityManager->getRepository(Invoice::class)->findCurrentInvoiceImpressionOfCustomer($impression->getCustomer());
                 
                 if($invoice == Null){
@@ -150,6 +149,38 @@ class ImpressionController extends AbstractController
             $entityManager->persist($invoiceLine);
             $entityManager->persist($impression);
             $entityManager->flush();
+
+            $sender_email ='no-reply@fedeb.net';
+            $recipient_emails = [$form->get('customer')->getUser()->getEmail()];
+
+            $subject = 'Merer - Nouvelle impression';
+            $plaintext_body = 'Nouvelle impression' ;
+            $char_set = 'UTF-8';
+            $result = $ses->sendEmail([
+                'Destination' => [
+                    'ToAddresses' => $recipient_emails,
+                ],
+                'ReplyToAddresses' => [$sender_email],
+                'Source' => $sender_email,
+                'Message' => [
+                    'Body' => [
+                        'Html' => [
+                            'Charset' => $char_set,
+                            'Data' =>$this->renderView('emails/impression.html.twig',["impression" => $impression])
+                        ],
+                        'Text' => [
+                            'Charset' => $char_set,
+                            'Data' => $plaintext_body,
+                        ],
+                    ],
+                    'Subject' => [
+                        'Charset' => $char_set,
+                        'Data' => $subject,
+                    ],
+                ],
+            
+            ]);
+
             return $this->redirectToRoute('impression_validation', []);
         }
         return $this->render('impression/new.html.twig', [

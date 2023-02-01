@@ -168,8 +168,6 @@ class InvoiceController extends AbstractController
         }
         $transaction->setCode(intval(date("Ymd")) * 100 + $nbtransaction + 1);
         $transaction->setClosure(false);
-
-
         $transactionline = new TransactionLine();
         $transactionline->setTransaction($transaction);
         $transactionline->setDate(new \DateTime());
@@ -184,6 +182,65 @@ class InvoiceController extends AbstractController
 
         return $this->redirectToRoute('invoice_showAll');
     }
+
+
+        #[Route('/ready/{invoiceId}', name: 'ready')]
+    #[IsGranted('ROLE_TRESO')]
+    public function ready(EntityManagerInterface $entityManager, Request $request, $invoiceId): Response
+    {
+        $invoice = $entityManager->getRepository(Invoice::class)->findById($invoiceId);
+
+        $invoice->setReady(true);
+        $entityManager->persist($invoice);
+        $entityManager->flush();
+
+        $sender_email = 'no-reply@fedeb.net';
+        $recipient_emails = [$invoice->getCustomer()->getUser()->getEmail()];
+
+        $subject = 'Merer - Nouvelle Facture';
+        $plaintext_body = 'Nouvelle Facture' ;
+        $char_set = 'UTF-8';
+        $result = $ses->sendEmail([
+            'Destination' => [
+                'ToAddresses' => $recipient_emails,
+            ],
+            'ReplyToAddresses' => [$sender_email],
+            'Source' => $sender_email,
+            'Message' => [
+                'Body' => [
+                    'Html' => [
+                        'Charset' => $char_set,
+                        'Data' =>$this->renderView('emails/new_invoice.html.twig',["invoice" => $invoice])
+                    ],
+                    'Text' => [
+                        'Charset' => $char_set,
+                        'Data' => $plaintext_body,
+                    ],
+                ],
+                'Subject' => [
+                    'Charset' => $char_set,
+                    'Data' => $subject,
+                ],
+            ],
+        ]);
+
+        return $this->redirectToRoute('invoice_showAll');
+    }
+
+    #[Route('/unready/{invoiceId}', name: 'unready')]
+    #[IsGranted('ROLE_TRESO')]
+    public function unready(EntityManagerInterface $entityManager, Request $request, $invoiceId): Response
+    {
+        $invoice = $entityManager->getRepository(Invoice::class)->findById($invoiceId);
+
+        $invoice->setReady(false);
+
+        $entityManager->persist($invoice);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('invoice_showAll');
+    }
+
 
     #[Route('/show/{invoiceID}', name: 'show')]
     #[IsGranted('ROLE_USER')]

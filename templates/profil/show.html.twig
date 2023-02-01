@@ -24,8 +24,8 @@
                             <li class="list-group-item">Adresse Mail : {{app.user.getEmail()}}</li>
                             <li class="list-group-item">Téléphone : {{app.user.profil.getTelephone()}}</li>
                             <li class="list-group-item">Date de naissance : {% if app.user.profil.getDateOfBirth() is null %} - {% else %} {{app.user.profil.getDateOfBirth().format("d/m/y")}} {% endif %}</li>
-                            <li class="list-group-item">Equipe d'élu : {% for equipeElu in app.user.profil.getEquipeElu() %}{{equipeElu.getName()}} {% endfor %}</li>
-                            <li class="list-group-item">Association :{% for association in app.user.profil.getAssociation() %}{{association.getSigle()}} {% endfor %} </li
+                            <li class="list-group-item">Equipe d'élu.e.s : {% for equipeElu in app.user.profil.getEquipeElu() %}{{equipeElu.getName()}} {% endfor %}</li>
+                            <li class="list-group-item">Association.s :{% for association in app.user.profil.getAssociation() %}{{association.getSigle()}} {% endfor %} </li
                         </ul>
                          <div class="card-body ">
                             <a class="card-link" href={{path('profil_edit')}}><i class="fa-solid fa-pen-to-square"></i></a> 

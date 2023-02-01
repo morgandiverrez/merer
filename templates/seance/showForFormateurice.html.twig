@@ -8,9 +8,9 @@
 {% block body %}
     <div class="container-fluid">
         <div style = "margin-left: auto ; margin-right: auto ; max-width : 900px;">
-            <p class="display-6 no-wrap text-center mb-5"> Seance </p>
+            <h1 class="display-6 no-wrap text-center mb-5"> Seance </h1>
             
-            <p class="display-8 no-wrap text-center mb-5"> Details Séance </p>
+            <h2 class="display-8 no-wrap text-center mb-5"> Details Séance </h2>
             <div class=" d-flex text-center justify-content-evenly">
                  <div class="card justify-content-start" style="width: 18rem;">
                     <div class=" card-body ">
@@ -31,7 +31,7 @@
             </div>
              <br>
             {# début information formation #}
-            <p class="display-8 no-wrap text-center mb-5"> Details Formation </p>
+            <h2 class="display-8 no-wrap text-center mb-5"> Details Formation </h2>
             <div class=" d-flex text-center justify-content-evenly">
                  <div class="card justify-content-start" style="width: 18rem;">
                     <div class=" card-body ">
@@ -54,7 +54,7 @@
              {# fin information formation #}
             <br>
             {# début information lieux #}
-            <p class="display-8 no-wrap text-center mb-5"> Details du (des) lieu(x) </p>
+            <h2 class="display-8 no-wrap text-center mb-5"> Details du (des) lieu(x) </h2>
             <div class=" d-flex text-center justify-content-evenly">
                  <div class="card justify-content-start" style="width: 18rem;">
                     {% for lieu in seance.getLieux() %}
@@ -78,7 +78,7 @@
             {# fin information lieux #}
             <br>
             <div> {# début liste inscrit #}
-            <p class="display-8 no-wrap text-center mb-5"> Liste inscrit </p>
+            <h2 class="display-8 no-wrap text-center mb-5"> Liste inscrit </h2>
                 <table class="table table-striped ">
                     <thead>
                         <tr>

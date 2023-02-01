@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Profil;
 use App\Entity\Demande;
 use App\Form\DemandeType;
+use Aws\Ses\SesClient;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -63,7 +64,7 @@ class DemandeController extends AbstractController
 
     #[Route('/new', name: 'new')]
     #[IsGranted('ROLE_USER')]
-    public function new(EntityManagerInterface $entityManager, Request $request): Response
+    public function new(EntityManagerInterface $entityManager, Request $request, SesClient $ses): Response
     {
         $demande = new Demande();
         $form = $this->createForm(DemandeType::class, $demande);
@@ -92,6 +93,37 @@ class DemandeController extends AbstractController
             $demande->setProfil($profil);
             $entityManager->persist($demande);
             $entityManager->flush();
+
+            
+            $sender_email = 'no-reply@fedeb.net';
+            $recipient_emails = [$form->get('email')->getData()];
+            $subject = 'Merer - Demande Formation';
+            $plaintext_body = 'demande formation' ;
+            $char_set = 'UTF-8';
+            $result = $ses->sendEmail([
+                'Destination' => [
+                    'ToAddresses' => $recipient_emails,
+                ],
+                'ReplyToAddresses' => [$sender_email],
+                'Source' => $sender_email,
+                'Message' => [
+                    'Body' => [
+                        'Html' => [
+                            'Charset' => $char_set,
+                            'Data' =>$this->renderView('emails/demande.html.twig',["demande" => $demande])
+                        ],
+                        'Text' => [
+                            'Charset' => $char_set,
+                            'Data' => $plaintext_body,
+                        ],
+                    ],
+                    'Subject' => [
+                        'Charset' => $char_set,
+                        'Data' => $subject,
+                    ],
+                ],
+            
+            ]);
             return $this->redirectToRoute('profil_show', []);
         }
 

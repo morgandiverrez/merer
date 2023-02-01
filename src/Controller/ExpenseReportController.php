@@ -337,6 +337,36 @@ class ExpenseReportController extends AbstractController
         $entityManager->persist($expenseReport);
         $entityManager->flush();
 
+                $sender_email = 'no-reply@fedeb.net';
+        $recipient_emails = [$expenseReport->getCustomer()->getUser()->getEmail()];
+
+        $subject = 'Merer - Confirmation NDF';
+        $plaintext_body = 'Confirmation NDF' ;
+        $char_set = 'UTF-8';
+        $result = $ses->sendEmail([
+            'Destination' => [
+                'ToAddresses' => $recipient_emails,
+            ],
+            'ReplyToAddresses' => [$sender_email],
+            'Source' => $sender_email,
+            'Message' => [
+                'Body' => [
+                    'Html' => [
+                        'Charset' => $char_set,
+                        'Data' =>$this->renderView('emails/confirm_ndf.html.twig',["expenseReport" => $expenseReport])
+                    ],
+                    'Text' => [
+                        'Charset' => $char_set,
+                        'Data' => $plaintext_body,
+                    ],
+                ],
+                'Subject' => [
+                    'Charset' => $char_set,
+                    'Data' => $subject,
+                ],
+            ],
+        ]);
+
         return $this->redirectToRoute('expenseReport_showAll');
     }
 
