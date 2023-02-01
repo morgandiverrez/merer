@@ -7,6 +7,8 @@ use Doctrine\ORM\Mapping as ORM;
 use App\Repository\ProfilRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+#[UniqueEntity(fields: ['telephone'], message: 'Il y a déjà un profil avec ce numéro de téléphone')]
 
 #[ORM\Entity(repositoryClass: ProfilRepository::class)]
 class Profil

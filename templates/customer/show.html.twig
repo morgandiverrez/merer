@@ -52,7 +52,8 @@
                         <th scope="col">Reste à charge</th>
                         <th scope="col">Chèque</th>
                         <th scope="col">Show</th>
-                        <th scope="col">Comfirm</th>
+                        <th scope="col">Comfirmer</th>
+                        <th scope="col">Visible</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -79,7 +80,7 @@
                                 {% endif %}
                             {% endfor %}
                             <td>{{ total }} €</td>
-                             {% set totauxPayés = totauxPayés + total[loop.index - 1] %}
+                             {% set totauxPayés = totauxPayés + total %}
                             <td>{{ totals[loop.index-1] - total }} €</td>
                             {% set cheque = 0 %}
                             {% if invoice.transaction is not null %}
@@ -95,13 +96,24 @@
                             <td>{{ cheque }}</td>
                             <td><a href="/invoice/pdf/{{ invoice.iD }}" target="_blank"><i class="fa-solid fa-eye"></i></a></td>
                             <td>
-                                {% if expenseReport.comfirm == FALSE %}
-                                    <a href="/expenseReport/comfirm/{{ expenseReport.iD }}" >
+                                {% if invoice.comfirm == FALSE %}
+                                    <a href="/invoice/comfirm/{{ invoice.iD }}" >
                                         <i class="fa-sharp fa-solid fa-circle-xmark" style="color: red;" ></i>
                                     </a>
                                 {% else %}
                                     <i class="fa-sharp fa-solid fa-circle-check" style="color: green;"></i>
                                 {% endif %} 
+                            </td>
+                            <td>
+                                {% if invoice.ready == true %}
+                                    <a href="/invoice/unready/{{ invoice.id }}">
+                                        <i class="fa-solid fa-circle-check" style="color: green;"></i>
+                                    </a>
+                                {% else %}
+                                    <a href="/invoice/ready/{{ invoice.id }}">
+                                        <i class="fa-solid fa-circle-xmark" style="color: red;"></i>
+                                    </a>
+                                {% endif %}
                             </td>
                         </tr> 
                     {% endfor %}

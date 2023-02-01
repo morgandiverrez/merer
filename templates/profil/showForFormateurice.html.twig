@@ -21,8 +21,8 @@
                             <li class="list-group-item">Adresse Mail : {{profil.user.getEmail()}}</li>
                             <li class="list-group-item">Téléphone : {{profil.getTelephone()}}</li>
                             <li class="list-group-item">Date de naissance : {% if profil.getDateOfBirth() is null %} - {% else %} {{profil.getDateOfBirth().format("d/m/y")}} {% endif %}</li>
-                            <li class="list-group-item">Equipe d'élu : {% for equipeElu in profil.getEquipeElu() %}{{equipeElu.getName()}} {% endfor %}</li>
-                            <li class="list-group-item">Association :{% for association in profil.getAssociation() %}{{association.getSigle()}} {% endfor %} </li
+                            <li class="list-group-item">Equipe d'élu.e.s : {% for equipeElu in profil.getEquipeElu() %}{{equipeElu.getName()}} {% endfor %}</li>
+                            <li class="list-group-item">Association.s :{% for association in profil.getAssociation() %}{{association.getSigle()}} {% endfor %} </li
                         </ul>
                        <div class="card-body">
                             {% if is_granted('ROLE_ADMIN') %}

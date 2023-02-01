@@ -7,6 +7,7 @@ use App\Entity\Profil;
 use App\Entity\Seance;
 use App\Entity\Evenement;
 use App\Entity\SeanceProfil;
+use Aws\Ses\SesClient;
 use App\Form\PonctuelleType;
 use App\Form\InscriptionType;
 use App\Form\SeanceProfilType;
@@ -35,10 +36,10 @@ class InscriptionController extends AbstractController
 
     #[Route('/ponctuelle/{seanceID}', name: 'ponctuelle')]
     #[IsGranted('ROLE_USER')]
-    public function ponctuelle(EntityManagerInterface $entityManager, Request $request, $seanceID): Response
+    public function ponctuelle(EntityManagerInterface $entityManager, Request $request, $seanceID, SesClient $ses): Response
     {
         $seance = $entityManager->getRepository(Seance::class)->findByID($seanceID)[0];
-        $profil = $this->getProfil();
+        $profil = $this->getUser()->getProfil();
         // on verifie que la seance est sensé etre visible (sinon, on renvoi vers le profil de l'utilisateur)
         if (! $seance->isVisible()) {
             return $this->redirectToRoute('profil_show', []);
@@ -59,7 +60,7 @@ class InscriptionController extends AbstractController
             return $this->render('inscription/close.html.twig');
         }
 
-        if($entityManager->getRepository(SeanceProfil::class)->findBy2ID($seance->getId(), $profil->getId())[0]) {
+        if($entityManager->getRepository(SeanceProfil::class)->findBy2ID($seance->getId(), $profil->getId())) {
             $seanceProfil = $entityManager->getRepository(SeanceProfil::class)->findBy2ID($seance->getId(), $profil->getId())[0];
         }else{
             $seanceProfil = new SeanceProfil();
@@ -79,6 +80,42 @@ class InscriptionController extends AbstractController
             $entityManager->persist($seanceProfil);
             $entityManager->flush();
 
+            // Replace sender@example.com with your "From" address.
+            // This address must be verified with Amazon SES.
+            $sender_email = 'no-reply@fedeb.net';
+
+            // Replace these sample addresses with the addresses of your recipients. If
+            // your account is still in the sandbox, these addresses must be verified.
+            $recipient_emails = [$this->getUser()->getEmail()];
+
+            $subject = 'Merer - Inscription Formation';
+            $plaintext_body = 'Inscription Formation' ;
+            $char_set = 'UTF-8';
+            $result = $ses->sendEmail([
+                'Destination' => [
+                    'ToAddresses' => $recipient_emails,
+                ],
+                'ReplyToAddresses' => [$sender_email],
+                'Source' => $sender_email,
+                'Message' => [
+                'Body' => [
+                    'Html' => [
+                        'Charset' => $char_set,
+                        'Data' =>$this->renderView('emails/inscription_seance.html.twig',["seance" => $seance, "inscription" => $seanceProfil])
+                    ],
+                    'Text' => [
+                        'Charset' => $char_set,
+                        'Data' => $plaintext_body,
+                    ],
+                ],
+                'Subject' => [
+                    'Charset' => $char_set,
+                    'Data' => $subject,
+                ],
+                ],
+            
+            ]);
+
             return $this->redirectToRoute('seance_show', ['seanceID' => $seance->getID()]);
         }
 
@@ -91,7 +128,7 @@ class InscriptionController extends AbstractController
 
     #[Route('/evenement/{evenementID}', name: 'evenement')]
     #[IsGranted('ROLE_USER')]
-    public function evenement( EntityManagerInterface $entityManager, Request $request, $evenementID): Response
+    public function evenement( EntityManagerInterface $entityManager, Request $request, $evenementID, SesClient $ses): Response
     {
         $seanceByCreneauAndParcours = [];
         $restePlace =[];
@@ -176,6 +213,37 @@ class InscriptionController extends AbstractController
                 }
             }
             $entityManager->flush();
+
+            $sender_email = 'no-reply@fedeb.net';
+            $recipient_emails = [$user->getEmail()];
+
+            $subject = 'Merer - Inscription Formation';
+            $plaintext_body = 'Inscription Formation' ;
+            $char_set = 'UTF-8';
+            $result = $ses->sendEmail([
+                'Destination' => [
+                    'ToAddresses' => $recipient_emails,
+                ],
+                'ReplyToAddresses' => [$sender_email],
+                'Source' => $sender_email,
+                'Message' => [
+                'Body' => [
+                    'Html' => [
+                        'Charset' => $char_set,
+                        'Data' => $this->renderView('emails/inscription_event.html.twig',["evenement" => $evenement, "posts" => $posts])
+                    ],
+                    'Text' => [
+                        'Charset' => $char_set,
+                        'Data' => $plaintext_body,
+                    ],
+                ],
+                'Subject' => [
+                    'Charset' => $char_set,
+                    'Data' => $subject,
+                ],
+                ],
+            
+            ]);
 
             if($evenement->getURL() != null){
                 return  $this->redirect($evenement->getURL());

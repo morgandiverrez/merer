@@ -65,6 +65,7 @@ class ResetPasswordController extends AbstractController
         if (null === ($resetToken = $this->getTokenObjectFromSession())) {
             $resetToken = $this->resetPasswordHelper->generateFakeResetToken();
         }
+      
 
         return $this->render('reset_password/check_email.html.twig', [
             'resetToken' => $resetToken,
@@ -144,38 +145,25 @@ class ResetPasswordController extends AbstractController
         try {
             $resetToken = $this->resetPasswordHelper->generateResetToken($user);
         } catch (ResetPasswordExceptionInterface $e) {
+             
             // If you want to tell the user why a reset email was not sent, uncomment
             // the lines below and change the redirect to 'app_forgot_password_request'.
             // Caution: This may reveal if a user is registered or not.
             //
-            // $this->addFlash('reset_password_error', sprintf(
-            //     '%s - %s',
-            //     $translator->trans(ResetPasswordExceptionInterface::MESSAGE_PROBLEM_HANDLE, [], 'ResetPasswordBundle'),
-            //     $translator->trans($e->getReason(), [], 'ResetPasswordBundle')
-            // ));
+            $this->addFlash('reset_password_error', sprintf(
+                '%s - %s',
+                $translator->trans(ResetPasswordExceptionInterface::MESSAGE_PROBLEM_HANDLE, [], 'ResetPasswordBundle'),
+                $translator->trans($e->getReason(), [], 'ResetPasswordBundle')
+            ));
 
-            return $this->redirectToRoute('passwordForgotapp_check_email');
+            return $this->redirectToRoute('passwordForgotapp_forgot_password_request');
         }
         
-         // Replace sender@example.com with your "From" address.
-        // This address must be verified with Amazon SES.
         $sender_email = 'no-reply@fedeb.net';
-
-        // Replace these sample addresses with the addresses of your recipients. If
-        // your account is still in the sandbox, these addresses must be verified.
-        $recipient_emails = [$user->getEmail()];
-
+         $recipient_emails = [$form->get('email')->getData()];
         $subject = 'Merer - Reset Password';
         $plaintext_body = 'reset Password' ;
-        $html_body =  "
-            <h1>Bonjour,</h1>
-
-            <p>Pour réinitialiser ton mot de passe, clic sur le lien suivant</p>
-
-            <a href='{{ url('passwordForgotapp_reset_password', {token: resetToken.token}) }}'>{{ url('passwordForgotapp_reset_password', {token: resetToken.token}) }}</a>
-
-            <p>Ce lien expirera dans {{ resetToken.expirationMessageKey|trans(resetToken.expirationMessageData, 'ResetPasswordBundle') }}.</p>
-        ";
+       
         $char_set = 'UTF-8';
         $result = $ses->sendEmail([
             'Destination' => [
@@ -184,25 +172,23 @@ class ResetPasswordController extends AbstractController
             'ReplyToAddresses' => [$sender_email],
             'Source' => $sender_email,
             'Message' => [
-            'Body' => [
-                'Html' => [
-                    'Charset' => $char_set,
-                    'Data' => $html_body,
+                'Body' => [
+                    'Html' => [
+                        'Charset' => $char_set,
+                    'Data' => $this->renderView('reset_password/email.html.twig',["resetToken" => $resetToken]),
+                    ],
+                    'Text' => [
+                        'Charset' => $char_set,
+                        'Data' => $plaintext_body,
+                    ],
                 ],
-                'Text' => [
+                'Subject' => [
                     'Charset' => $char_set,
-                    'Data' => $plaintext_body,
+                    'Data' => $subject,
                 ],
-            ],
-            'Subject' => [
-                'Charset' => $char_set,
-                'Data' => $subject,
-            ],
             ],
            
         ]);
-        
-        
 
         // Store the token object in session for retrieval in check-email route.
         $this->setTokenObjectInSession($resetToken);

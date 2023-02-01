@@ -14,6 +14,7 @@ use App\Entity\Evenement;
 use App\Entity\Formation;
 use App\Entity\SeanceProfil;
 use App\Form\SeanceSoloType;
+use Aws\Ses\SesClient;
 use Doctrine\ORM\PersistentCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -113,7 +114,9 @@ class SeanceController extends AbstractController
     {
         $seance = $entityManager->getRepository(Seance::class)->findByID($seanceID)[0];
         $inscrits1 = $entityManager->getRepository(SeanceProfil::class)->findAllBySeance($seance);
+        $inscrits = [];
         $retours1 = $entityManager->getRepository(Retour::class)->findAllBySeance($seance);
+        $retours = [];
         $dateActuelle = new DateTime();
         $i=0;
         foreach($inscrits1 as $inscrit){
@@ -179,45 +182,57 @@ class SeanceController extends AbstractController
 
     #[Route('/edit/{seanceID}', name: 'edit')]
     #[IsGranted('ROLE_BF')]
-    public function edit(EntityManagerInterface $entityManager, Request $request, $seanceID): Response
+    public function edit(EntityManagerInterface $entityManager, Request $request, $seanceID, SesClient $ses): Response
     {
         $seance = $entityManager->getRepository(Seance::class)->findById($seanceID)[0];
-
-       
-        
         $form = $this->createForm(SeanceSoloType::class, $seance);
         $form->handleRequest($request);
  
         if ($form->isSubmitted() && $form->isValid()) {
-            $go = true;
-            $i = 0;
-            while ($go) {
-                if (isset($form->get('profil')->getData()[$i])) {       
-                    $nameLastNameProfil = $form->get('profil')->getData()[$i];
-                    list($nameProfil, $lastNameProfil) = explode(" ", $nameLastNameProfil);
-                    $profil = $entityManager->getRepository(Profil::class)->findByName(strval($nameProfil),strval($lastNameProfil))[0];
-                    $profil->addSeance($seance);
-                    $entityManager->persist($profil);
+           
+            foreach($form->get('profil')->getData() as  $formateurice){       
+                $nameLastNameProfil = $formateurice;
+                list($nameProfil, $lastNameProfil) = explode(" ", $nameLastNameProfil);
+                $profil = $entityManager->getRepository(Profil::class)->findByName(strval($nameProfil),strval($lastNameProfil))[0];
+                $profil->addSeance($seance);
+                $entityManager->persist($profil);
 
-                    $i++;
-                } else {
-                    $go = false;
-                }
+                $sender_email = 'no-reply@fedeb.net';
+                $recipient_emails = [$profil->getUser()->getEmail()];
+
+                $subject = 'Merer - Formation alloué';
+                $plaintext_body = 'Formation alloué' ;
+                $char_set = 'UTF-8';
+                $result = $ses->sendEmail([
+                    'Destination' => [
+                        'ToAddresses' => $recipient_emails,
+                    ],
+                    'ReplyToAddresses' => [$sender_email],
+                    'Source' => $sender_email,
+                    'Message' => [
+                        'Body' => [
+                            'Html' => [
+                                'Charset' => $char_set,
+                                'Data' =>$this->renderView('emails/formateur_alloue.html.twig', ["seance" => $seance])
+                            ],
+                            'Text' => [
+                                'Charset' => $char_set,
+                                'Data' => $plaintext_body,
+                            ],
+                        ],
+                        'Subject' => [
+                            'Charset' => $char_set,
+                            'Data' => $subject,
+                        ],
+                    ],
+                ]);
             }
 
-            $go = true;
-            $i = 0;
-            while ($go) {
-                if (isset($form->get('lieux')->getData()[$i])) {
-                    $nameLieux = $form->get('lieux')->getData()[$i];
+            foreach ($form->get('lieux')->getData() as  $lieu) {
+                    $nameLieux = $lieu;
                     $lieux = $entityManager->getRepository(Lieux::class)->findByName(strval($nameLieux))[0];
                     $lieux->addSeance($seance);
                     $entityManager->persist($lieux);
-
-                    $i++;
-                } else {
-                    $go = false;
-                }
             }
 
             if ($form->get('formation')->getData()) {
@@ -225,12 +240,11 @@ class SeanceController extends AbstractController
                 $formation = $entityManager->getRepository(Formation::class)->findByName(strval($nameFormation))[0];
                 $formation->addSeance($seance);
                 $entityManager->persist($formation);
-                $i++;
             }
 
             $entityManager->persist($seance);
             $entityManager->flush();
-            return $this->redirectToRoute('seance_show', ['seanceID' => $seance->getID()]);
+            return $this->redirectToRoute('seance_showForFormateurice', ['seanceID' => $seance->getID()]);
         }
 
         return $this->render('seance/edit.html.twig', [
@@ -245,7 +259,7 @@ class SeanceController extends AbstractController
 
     #[Route('/new', name: 'new')]
     #[IsGranted('ROLE_BF')]
-    public function new(EntityManagerInterface $entityManager, Request $request): Response
+    public function new(EntityManagerInterface $entityManager, Request $request, SesClient $ses): Response
     {
         $seance = new Seance();
         $form = $this->createForm(SeanceSoloType::class, $seance);
@@ -259,6 +273,36 @@ class SeanceController extends AbstractController
                 $profil = $entityManager->getRepository(Profil::class)->findByName($namelastname[0], $namelastname[1])[0];
                 $profil->addSeance($seance);
                 $entityManager->persist($profil);
+
+                $sender_email = 'no-reply@fedeb.net';
+                $recipient_emails = [$profil->getUser()->getEmail()];
+
+                $subject = 'Merer - Formation alloué';
+                $plaintext_body = 'Formation alloué' ;
+                $char_set = 'UTF-8';
+                $result = $ses->sendEmail([
+                    'Destination' => [
+                        'ToAddresses' => $recipient_emails,
+                    ],
+                    'ReplyToAddresses' => [$sender_email],
+                    'Source' => $sender_email,
+                    'Message' => [
+                        'Body' => [
+                            'Html' => [
+                                'Charset' => $char_set,
+                                'Data' =>$this->renderView('emails/formateur_alloue.html.twig',["seance" => $seance])
+                            ],
+                            'Text' => [
+                                'Charset' => $char_set,
+                                'Data' => $plaintext_body,
+                            ],
+                        ],
+                        'Subject' => [
+                            'Charset' => $char_set,
+                            'Data' => $subject,
+                        ],
+                    ],
+                ]);
             }
 
             foreach ($form->get('lieux')->getData() as  $lieu) {
@@ -277,7 +321,7 @@ class SeanceController extends AbstractController
     
             $entityManager->persist($seance);
             $entityManager->flush();
-            return $this->redirectToRoute('seance_show', ['seanceID' => $seance->getID()]);
+            return $this->redirectToRoute('seance_showForFormateurice', ['seanceID' => $seance->getID()]);
         }
 
         return $this->render('seance/new.html.twig', [

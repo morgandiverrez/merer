@@ -1,0 +1,29 @@
+{% extends 'base_email.html.twig' %}
+{% block body %}
+    <p>Bonjour,</p>
+
+    <p>Une nouvelle impression a été faite.</p>
+
+    <table >
+        <thead>
+            <tr>
+                <th scope="col">Horrodataire</th>
+                <th scope="col">imprimeur</th>
+                <th scope="col">Format</th>
+                <th scope="col">Quantité</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr>
+                <td>{{impression.getDatetime().format("d/m/Y H:i")}}</td> 
+                <td>{{impression.getName()}}</td>
+                <td>{{impression.getFormat()}}{% if impression.isRectoVerso() %} RV {% endif %} {% if impression.isCouleur() %} Couleur {% else %} NB {% endif %} </td>
+                <td>{{impression.getQuantite()}}</td>
+                 <td>{% if impression.isFactureFinDuMois() %} Facture en fin de mois {% else %} Facture direct {% endif %} </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p>Lien pour vous connecter à la plateforme Merer <a href="https://15.236.191.187/">Merer - Fédé B</a>.</p>
+{% endblock %}

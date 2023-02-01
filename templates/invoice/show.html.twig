@@ -25,7 +25,7 @@
                         {% if is_granted('ROLE_TRESO') %}
                             <li class="list-group-item">Client : <a href="/customer/show/{{ invoice.getCustomer().getId() }}" class="card-link"> {{invoice.getCustomer().getName()}} </a> </li>
                             <li class="list-group-item">Transaction : {% if invoice.getTransaction() != null %}<a href="/transaction/show/{{ invoice.transaction.getId() }}" class="card-link"> {{invoice.getTransaction().getCode()}} </a>{% endif %}</li>
-                            <li class="list-group-item">{% if invoice.getCategory() != null %} catégorie :  {{invoice.getCategorie()}}{% endif %}</li>  
+                            <li class="list-group-item">{% if invoice.getCategory() != null %} catégorie :  {{invoice.getCategory()}}{% endif %}</li>  
                         {% endif %}
                         
                     </ul>
@@ -64,16 +64,16 @@
                 {% set totalDiscount = 0 %}
                 {% for invoiceLine in invoice.invoiceLines %} 
                     <tr>
-                        <td>{{invoiceLine.catalogService.name}} </td>
-                        <td>{{invoiceLine.catalogService.description}} - {{invoiceLine.quote}}</td>
-                        <td>{{invoiceLine.catalogService.amountHt}} €</td>
-                        {% set totalHT  = totalHT + invoiceLine.catalogService.amountHt %}
-                        <td>{{invoiceLine.catalogService.tvaRate}} %</td>
-                        <td>{{invoiceLine.catalogService.amountTtc}} €</td>
-                         {% set totalTTC = totalTTC + invoiceLine.catalogService.amountTtc %}
-                        <td>{{invoiceLine.catalogDiscount.name}}</td>
-                        <td>{{invoiceLine.catalogDiscount.description}}</td>
-                        <td>{{invoiceLine.discount}} €</td>
+                        <td>{% if invoiceLine.catalogService %}{{invoiceLine.catalogService.name}} {% endif %}</td>
+                        <td>{% if invoiceLine.catalogService %}{{invoiceLine.catalogService.description}} - {{invoiceLine.quote}}{% endif %}</td>
+                        <td>{% if invoiceLine.catalogService %}{{invoiceLine.catalogService.amountHt}} €{% endif %}</td>
+                        {% if invoiceLine.catalogService %}{% set totalHT  = totalHT + invoiceLine.catalogService.amountHt %}{% endif %}
+                        <td>{% if invoiceLine.catalogService %}{{invoiceLine.catalogService.tvaRate}} %{% endif %}</td>
+                        <td>{% if invoiceLine.catalogService %}{{invoiceLine.catalogService.amountTtc}} €{% endif %}</td>
+                        {% if invoiceLine.catalogService %}{% set totalTTC = totalTTC + invoiceLine.catalogService.amountTtc %}{% endif %}
+                        <td>{% if invoiceLine.catalogDiscount %}{{invoiceLine.catalogDiscount.name}}{% endif %}</td>
+                        <td>{% if invoiceLine.catalogDiscount %}{{invoiceLine.catalogDiscount.description}}{% endif %}</td>
+                        <td>{{invoiceLine.discount}} € </td>
                         {% set totalDiscount = totalDiscount + invoiceLine.discount %}
                         {% if is_granted('ROLE_TRESO') %}
                             <td><a href="/invoiceLine/edit/{{ invoiceLine.getId()}}" class="card-link"><i class="fa-solid fa-pen-to-square"></i></a></td>
