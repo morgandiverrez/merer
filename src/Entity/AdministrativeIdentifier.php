@@ -5,10 +5,13 @@ namespace App\Entity;
 use App\Repository\AdministrativeIdentifierRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: AdministrativeIdentifierRepository::class)]
+#[UniqueEntity(fields: ['siret'], message: 'Il y a déjà un identifiant avec ce SIRET')]
+#[UniqueEntity(fields: ['APE'], message: 'Il y a déjà un identifiant avec cette APE')]
 class AdministrativeIdentifier
 {
     #[ORM\Id]

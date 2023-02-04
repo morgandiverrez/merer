@@ -50,7 +50,6 @@ class EvenementType extends AbstractType
             ->add('covoiturage')
             ->add('nombrePlace')
             ->add('parcoursObligatoire')
-            ->add('visible')
             ->add('lieu', EntityType::class, [
                 'class'=> Lieux::class,
             ])

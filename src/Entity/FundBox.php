@@ -5,10 +5,12 @@ namespace App\Entity;
 use App\Repository\FundBoxRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: FundBoxRepository::class)]
+#[UniqueEntity(fields: ['name'], message: 'Il y a déjà une caisse avec ce nom')]
 class FundBox
 {
     #[ORM\Id]

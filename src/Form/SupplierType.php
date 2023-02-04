@@ -19,9 +19,6 @@ class SupplierType extends AbstractType
     {
         $builder
             ->add('name')
-            ->add('chartOfAccounts', EntityType::class, [
-            'class' => ChartOfAccounts::class,
-        ])
             ->add('location', EntityType::class, [
             'class' => Location::class,
         ])

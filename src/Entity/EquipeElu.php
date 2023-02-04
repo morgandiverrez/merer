@@ -4,10 +4,14 @@ namespace App\Entity;
 
 use App\Repository\EquipeEluRepository;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: EquipeEluRepository::class)]
+#[UniqueEntity(fields: ['code'], message: 'Il y a déjà une équipe d\'elu avec ce code')]
+#[UniqueEntity(fields: ['name'], message: 'Il y a déjà une équipe d\'elu avec ce nom')]
+#[UniqueEntity(fields: ['adresse_mail'], message: 'Il y a déjà une équipe d\'elu avec cette email')]
 class EquipeElu
 {
     #[ORM\Id]

@@ -99,7 +99,17 @@ class CustomerController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             
-           
+            $chartOfAccount = new ChartOfAccounts;
+            $chartOfAccount->setName($form->get('name')->getData());
+           if (isset($entityManager->getRepository(ChartOfAccounts::class)->findMaxChartOfAccount(41000)[0])) {
+                $nbChartOfAccount = $entityManager->getRepository(ChartOfAccounts::class)->findMaxChartOfAccount(41000)[0]['code'];
+                $chartOfAccount->setCode($nbChartOfAccount + 1);
+            } else {
+                $chartOfAccount->setCode(41000);
+            }
+            $customer->setChartOfAccounts($chartOfAccount);
+            $entityManager->persist($chartOfAccount);
+
             $entityManager->persist($customer);
             $entityManager->flush();
             return $this->redirectToRoute('customer_show', ['customerID' => $customer->getId()]);

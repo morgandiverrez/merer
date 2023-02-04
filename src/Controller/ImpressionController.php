@@ -151,7 +151,7 @@ class ImpressionController extends AbstractController
             $entityManager->flush();
 
             $sender_email ='no-reply@fedeb.net';
-            $recipient_emails = [$form->get('customer')->getUser()->getEmail()];
+            $recipient_emails = [$impression->getCustomer()->getUser()->getEmail()];
 
             $subject = 'Merer - Nouvelle impression';
             $plaintext_body = 'Nouvelle impression' ;

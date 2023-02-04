@@ -5,9 +5,12 @@ namespace App\Entity;
 use App\Repository\CatalogServiceRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CatalogServiceRepository::class)]
+#[UniqueEntity(fields: ['code'], message: 'Il y a déjà un service avec ce code')]
+#[UniqueEntity(fields: ['name'], message: 'Il y a déjà un service avec ce nom')]
 class CatalogService
 {
     #[ORM\Id]
@@ -15,6 +18,9 @@ class CatalogService
     #[ORM\Column(type: 'integer')]
     private $id;
 
+    #[ORM\Column(length: 255, unique: true, nullable: true)]
+    private ?string $code = null;
+    
     #[ORM\Column(type: 'string',unique: true, length:255, nullable: true)]
     private $name;
 
@@ -33,8 +39,7 @@ class CatalogService
     #[ORM\OneToMany(mappedBy: 'CatalogService', targetEntity: InvoiceLine::class)]
     private $invoiceLines;
 
-    #[ORM\Column(length: 255,unique: true, nullable: true)]
-    private ?string $code = null;
+
 
     public function __construct()
     {

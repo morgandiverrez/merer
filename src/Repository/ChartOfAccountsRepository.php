@@ -101,4 +101,18 @@ class ChartOfAccountsRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+
+      public function findMaxChartOfAccount($value)
+    {
+        return $this->createQueryBuilder('account')
+            ->select('account.code')
+            ->where('account.code-?val > 0')
+            ->andWhere('t.code-?val < 999')
+            ->setParameter(val ,  $value)
+            ->orderBy('t.code', "DESC")
+            ->getQuery()
+            ->setMaxResults(1)
+            ->getResult();
+    }
+
 }

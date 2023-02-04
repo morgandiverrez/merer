@@ -5,9 +5,14 @@ namespace App\Entity;
 use App\Repository\AssociationRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: AssociationRepository::class)]
+#[UniqueEntity(fields: ['code'], message: 'Il y a déjà une association avec ce code')]
+#[UniqueEntity(fields: ['name'], message: 'Il y a déjà une association avec ce nom')]
+#[UniqueEntity(fields: ['sigle'], message: 'Il y a déjà une association avec ce sigle')]
+#[UniqueEntity(fields: ['adresse_mail'], message: 'Il y a déjà une association avec cette email')]
 class Association
 {
     #[ORM\Id]

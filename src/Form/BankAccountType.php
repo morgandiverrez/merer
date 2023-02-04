@@ -20,7 +20,6 @@ class BankAccountType extends AbstractType
             ->add('iban')
             ->add('bic')
             ->add('lastCountDate')
-            ->add('chartOfAccounts')
             ->add('location')
         ;
     }

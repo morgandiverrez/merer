@@ -4,23 +4,24 @@
 
     <p>Une nouvelle impression a été faite.</p>
 
-    <table >
+    <table style="border: 1px solid;">
         <thead>
-            <tr>
-                <th scope="col">Horrodataire</th>
-                <th scope="col">imprimeur</th>
-                <th scope="col">Format</th>
-                <th scope="col">Quantité</th>
+            <tr style="border: 1px solid;">
+                <th scope="col" style="border: 1px solid;">Horrodataire</th>
+                <th scope="col" style="border: 1px solid;">imprimeur.euse</th>
+                <th scope="col" style="border: 1px solid;">Format</th>
+                <th scope="col" style="border: 1px solid;">Quantitée</th>
+                 <th scope="col" style="border: 1px solid;">status</th>
             </tr>
         </thead>
 
         <tbody>
-            <tr>
-                <td>{{impression.getDatetime().format("d/m/Y H:i")}}</td> 
-                <td>{{impression.getName()}}</td>
-                <td>{{impression.getFormat()}}{% if impression.isRectoVerso() %} RV {% endif %} {% if impression.isCouleur() %} Couleur {% else %} NB {% endif %} </td>
-                <td>{{impression.getQuantite()}}</td>
-                 <td>{% if impression.isFactureFinDuMois() %} Facture en fin de mois {% else %} Facture direct {% endif %} </td>
+            <tr  style="border: 1px solid;">
+                <td  style="border: 1px solid;">{{impression.getDatetime().format("d/m/Y H:i")}}</td> 
+                <td  style="border: 1px solid;">{{impression.getName()}}</td>
+                <td  style="border: 1px solid;">{{impression.getFormat()}}{% if impression.isRectoVerso() %} RV {% endif %} {% if impression.isCouleur() %} Couleur {% else %} NB {% endif %} </td>
+                <td  style="border: 1px solid;">{{impression.getQuantite()}}</td>
+                 <td  style="border: 1px solid;">{% if impression.isFactureFinDuMois() %} Facture en fin de mois {% else %} Facture direct {% endif %} </td>
             </tr>
         </tbody>
     </table>

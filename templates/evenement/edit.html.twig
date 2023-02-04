@@ -62,13 +62,6 @@
                         {{ form_help(form.autorisationPhoto) }}
                     </div>
 
-                    <div class="visible my-5">
-                        {{ form_label(form.visible, 'rendre visible l\'évènement', {'label_attr': {'class': 'foo'}}) }}
-                        {{ form_errors(form.visible) }}
-                        {{ form_widget(form.visible) }}
-                        {{ form_help(form.visible) }}
-                    </div>
-
                     <div class="modePaiement my-5">
                         {{ form_label(form.modePaiement, 'mode de paiement disponible pour l\'évènement ', {'label_attr': {'class': 'foo'}}) }}
                         {{ form_errors(form.modePaiement) }}
@@ -132,12 +125,7 @@
                         {{ form_help(seance.datetime) }}
                     </div>
 
-                    <div class="visible my-5">
-                        {{ form_label(seance.visible, 'rendre visible ', {'label_attr': {'class': 'foo'}}) }}
-                        {{ form_errors(seance.visible) }}
-                        {{ form_widget(seance.visible) }}
-                        {{ form_help(seance.visible) }}
-                    </div>
+                
 
                     <div class="nombreplace my-5">
                         {{ form_label(seance.nombreplace, 'Nombre de place maximum ', {'label_attr': {'class': 'foo'}}) }}

@@ -6,9 +6,11 @@ use App\Entity\Badge;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\FormationRepository;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\Common\Collections\ArrayCollection;
 
 #[ORM\Entity(repositoryClass: FormationRepository::class)]
+#[UniqueEntity(fields: ['code'], message: 'Il y a déjà une formation avec ce code')]
 class Formation
 {
     #[ORM\Id]

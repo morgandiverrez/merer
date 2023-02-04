@@ -7,9 +7,11 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\ChequeBoxRepository;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\ORM\EntityManagerInterface;
 
 #[ORM\Entity(repositoryClass: ChequeBoxRepository::class)]
+#[UniqueEntity(fields: ['name'], message: 'Il y a déjà un boite de cheque avec ce nom')]
 class ChequeBox
 {
     #[ORM\Id]

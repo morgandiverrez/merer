@@ -34,10 +34,7 @@ class FundBoxType extends AbstractType
             ->add('hundredeuro', NumberType::class, ['required' => false,])
             ->add('twohundredeuro', NumberType::class, ['required' => false,])
             ->add('fivehundredeuro', NumberType::class, ['required' => false,])
-            
-            ->add('chartOfAccounts', EntityType::class, [
-            'class' => ChartOfAccounts::class,
-        ])
+       
             ->add('location', EntityType::class, [
             'class' => Location::class,
         ])

@@ -4,9 +4,13 @@ namespace App\Entity;
 
 use App\Repository\BankAccountRepository;
 use Doctrine\DBAL\Types\Types;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: BankAccountRepository::class)]
+#[UniqueEntity(fields: ['ribAccountNumber'], message: 'Il y a déjà un compte bancaire avec ce numéro de RIB')]
+#[UniqueEntity(fields: ['accountNumber'], message: 'Il y a déjà un compte bancaire avec ce numéro de compte')]
+#[UniqueEntity(fields: ['iban'], message: 'Il y a déjà un compte bancaire avec cette IBAN')]
 class BankAccount
 {
     #[ORM\Id]

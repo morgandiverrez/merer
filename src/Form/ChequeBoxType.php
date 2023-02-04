@@ -24,9 +24,6 @@ class ChequeBoxType extends AbstractType
             ->add('lastCountDate',DateType::class, [
                 'widget' => 'single_text',
             ])
-            ->add('chartOfAccounts', EntityType::class, [
-                'class' => ChartOfAccounts::class,
-        ])
         ->add('location', EntityType::class, [
             'class' => Location::class,
         ])

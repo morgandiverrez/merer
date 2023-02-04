@@ -5,10 +5,12 @@ namespace App\Entity;
 use App\Entity\Profil;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\SeanceRepository;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 
 #[ORM\Entity(repositoryClass: SeanceRepository::class)]
+#[UniqueEntity(fields: ['code'], message: 'Il y a déjà une séance avec ce code')]
 class Seance
 {
     #[ORM\Id]

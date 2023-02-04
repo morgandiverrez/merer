@@ -74,6 +74,17 @@ class EvenementRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+      public function findByName($value): array
+    {
+        return $this->createQueryBuilder('evenement')
+            ->andWhere('evenement.name = :val')
+            ->setParameter('val', $value)
+            ->orderBy('evenement.name', 'ASC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getResult();
+    }
+
     public function findAllOrderByDate(): array
    {
        return $this->createQueryBuilder('evenement')
