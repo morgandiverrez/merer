@@ -5,10 +5,13 @@ namespace App\Entity;
 use App\Entity\Customer;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\ContactRepository;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 
 #[ORM\Entity(repositoryClass: ContactRepository::class)]
+#[UniqueEntity(fields: ['mail'], message: 'Il y a déjà une boite de cheque avec cette email')]
+#[UniqueEntity(fields: ['phone'], message: 'Il y a déjà une boite de cheque avec ce numéro de téléphone')]
 class Contact
 {
     #[ORM\Id]

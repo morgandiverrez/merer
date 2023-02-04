@@ -96,7 +96,7 @@ class DemandeController extends AbstractController
 
             
             $sender_email = 'no-reply@fedeb.net';
-            $recipient_emails = [$form->get('email')->getData()];
+            $recipient_emails = ['diverrezm@gmail.com'];
             $subject = 'Merer - Demande Formation';
             $plaintext_body = 'demande formation' ;
             $char_set = 'UTF-8';

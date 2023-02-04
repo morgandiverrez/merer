@@ -22,9 +22,6 @@ class CustomerType extends AbstractType
         $builder
             ->add('name')
             ->add('impressionAccess')
-            ->add('chartOfAccounts', EntityType::class, [
-            'class' => ChartOfAccounts::class,
-        ])
             ->add('location', EntityType::class, [
             'class' => Location::class,
         ])

@@ -68,6 +68,16 @@ class ChequeBoxController extends AbstractController
 
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $chartOfAccount = new ChartOfAccounts;
+            $chartOfAccount->setName($form->get('name')->getData());
+           if (isset($entityManager->getRepository(ChartOfAccounts::class)->findMaxChartOfAccount(51200)[0])) {
+                $nbChartOfAccount = $entityManager->getRepository(ChartOfAccounts::class)->findMaxChartOfAccount(51200)[0]['code'];
+                $chartOfAccount->setCode($nbChartOfAccount + 1);
+            } else {
+                $chartOfAccount->setCode(51200);
+            }
+            $chequeBox->setChartOfAccounts($chartOfAccount);
+            $entityManager->persist($chartOfAccount);
 
             foreach ($chequeBox->getCheques() as $cheque) {
                 $entityManager->persist($cheque);

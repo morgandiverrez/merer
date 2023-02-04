@@ -4,10 +4,12 @@ namespace App\Entity;
 
 use App\Repository\SupplierRepository;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: SupplierRepository::class)]
+#[UniqueEntity(fields: ['name'], message: 'Il y a déjà un fournisseur avec ce nom')]
 class Supplier
 {
     #[ORM\Id]

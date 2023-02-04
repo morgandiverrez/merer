@@ -4,10 +4,13 @@ namespace App\Entity;
 
 use App\Repository\BadgeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: BadgeRepository::class)]
+#[UniqueEntity(fields: ['code'], message: 'Il y a déjà une badge avec ce code')]
+#[UniqueEntity(fields: ['name'], message: 'Il y a déjà une badge avec ce nom')]
 class Badge
 {
     #[ORM\Id]

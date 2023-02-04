@@ -57,7 +57,7 @@ class SeanceSoloType extends AbstractType
             ])
 
 
-            ->add('visible')
+         
            
 
           

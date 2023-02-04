@@ -11,6 +11,7 @@ use App\Form\InvoiceType;
 use App\Entity\Federation;
 use App\Entity\Institution;
 use App\Entity\Transaction;
+use Aws\Ses\SesClient;
 use App\Entity\TransactionLine;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -186,7 +187,7 @@ class InvoiceController extends AbstractController
 
         #[Route('/ready/{invoiceId}', name: 'ready')]
     #[IsGranted('ROLE_TRESO')]
-    public function ready(EntityManagerInterface $entityManager, Request $request, $invoiceId): Response
+    public function ready(EntityManagerInterface $entityManager, Request $request, $invoiceId, SesClient $ses): Response
     {
         $invoice = $entityManager->getRepository(Invoice::class)->findById($invoiceId);
 

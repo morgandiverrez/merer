@@ -7,9 +7,11 @@ use App\Entity\Lieux;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\EvenementRepository;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\Common\Collections\ArrayCollection;
 
 #[ORM\Entity(repositoryClass: EvenementRepository::class)]
+#[UniqueEntity(fields: ['name'], message: 'Il y a déjà un événement avec ce nom')]
 class Evenement
 {
     #[ORM\Id]

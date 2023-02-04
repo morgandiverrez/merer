@@ -3,7 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Entity\Profil;
 use App\Entity\Evenement;
+use App\Entity\Seance;
+use Aws\Ses\SesClient;
 use App\Form\EvenementType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -67,7 +70,7 @@ class EvenementController extends AbstractController
 
     #[Route('/new', name: 'new')]
     #[IsGranted('ROLE_BF')]
-    public function new(EntityManagerInterface $entityManager, Request $request): Response
+    public function new(EntityManagerInterface $entityManager, Request $request, SesClient $ses): Response
     {
         $evenement = new Evenement();
         $parcours =  [];
@@ -79,21 +82,66 @@ class EvenementController extends AbstractController
 
 
         if ($form->isSubmitted() && $form->isValid()) {
-            if ($evenement->getDateFinInscription() == null) {
-                $evenement->setDateFinInscription($evenement->getDateFin());
+           if($evenement->getDateFinInscription() == null){
+                $evenement->setDateFinInscription($evenement->getDateDebut());
             }
-            foreach($evenement->getSeances() as $seance){
-                $seance->setVisible($evenement->isVisible());
+
+            foreach($evenement->getSeances() as  $seance){
+               $seance->setVisible($evenement->isVisible());
                 $entityManager->persist($seance);
             }
-            // Récupérez la valeur du champ de formulaire 'names'
+            
             $parcours = $form->get('parcours')->getData();
-            print_r($parcours);
-
-            // Ajoutez les valeurs du champ 'names' à la propriété 'names' de la classe de formulaire
-            $evenement->setParcours(explode(',' ,$parcours));
+            $evenement->setParcours(explode(',', $parcours));
             $entityManager->persist($evenement);
             $entityManager->flush();
+            $evenement = $entityManager->getRepository(Evenement::class)->findByName($form->get('name')->getData())[0];
+            foreach ($form->get('seances') as $seance) {
+                foreach($seance->get('profil')->getData() as $formateurice ){
+
+                    $nameLastNameFormateurice = $formateurice;
+                    $namelastname = explode(" ", $nameLastNameFormateurice);
+                    $profil = $entityManager->getRepository(Profil::class)->findByName($namelastname[0], $namelastname[1])[0];
+                    $seance = $entityManager->getRepository(Seance::class)->findByEvenementAndParcourAndDatetime(
+                                                                                        $evenement,
+                                                                                        $seance->get('name')->getData(),
+                                                                                        $seance->get('datetime')->getData()
+                                                                                        )[0];
+                    $profil->addSeance($seance);
+                    $entityManager->persist($profil);
+
+                    $sender_email ='no-reply@fedeb.net';
+                    $recipient_emails = [$profil->getUser()->getEmail()];
+
+                    $subject = 'Merer - Formation alloué';
+                    $plaintext_body = 'Formation alloué' ;
+                    $char_set = 'UTF-8';
+                    $result = $ses->sendEmail([
+                        'Destination' => [
+                            'ToAddresses' => $recipient_emails,
+                        ],
+                        'ReplyToAddresses' => [$sender_email],
+                        'Source' => $sender_email,
+                        'Message' => [
+                            'Body' => [
+                                'Html' => [
+                                    'Charset' => $char_set,
+                                    'Data' =>$this->renderView('emails/formateur_alloue_event.html.twig',["seance" => $seance, 'evenement' => $evenement])
+                                ],
+                                'Text' => [
+                                    'Charset' => $char_set,
+                                    'Data' => $plaintext_body,
+                                ],
+                            ],
+                            'Subject' => [
+                                'Charset' => $char_set,
+                                'Data' => $subject,
+                            ],
+                        ],
+                    ]);
+                }
+            }
+            
             return $this->redirectToRoute('evenement_show', ['evenementID' => $evenement->getId()]);
         }
 
@@ -108,7 +156,7 @@ class EvenementController extends AbstractController
 
     #[Route('/edit/{evenementID}', name: 'edit')]
     #[IsGranted('ROLE_BF')]
-    public function edit(EntityManagerInterface $entityManager, Request $request, $evenementID): Response
+    public function edit(EntityManagerInterface $entityManager, Request $request, $evenementID, SesClient $ses): Response
     {
         $evenement = $entityManager->getRepository(Evenement::class)->findById($evenementID)[0];
        
@@ -125,23 +173,67 @@ class EvenementController extends AbstractController
             if($evenement->getDateFinInscription() == null){
                 $evenement->setDateFinInscription($evenement->getDateDebut());
             }
-            foreach ($evenement->getSeances() as $seance) {
-                $seance->setVisible($evenement->isVisible());
+
+            foreach($evenement->getSeances() as  $seance){
+               $seance->setVisible($evenement->isVisible());
                 $entityManager->persist($seance);
             }
-            // Récupérez la valeur du champ de formulaire 'names'
+            
             $parcours = $form->get('parcours')->getData();
-
-            // Ajoutez les valeurs du champ 'names' à la propriété 'names' de la classe de formulaire
             $evenement->setParcours(explode(',', $parcours));
-
-           
-           
             $entityManager->persist($evenement);
             $entityManager->flush();
+            $evenement = $entityManager->getRepository(Evenement::class)->findByName($form->get('name')->getData())[0];
+            foreach ($form->get('seances') as $seance) {
+                foreach($seance->get('profil')->getData() as $formateurice ){
+
+                    $nameLastNameFormateurice = $formateurice;
+                    $namelastname = explode(" ", $nameLastNameFormateurice);
+                    $profil = $entityManager->getRepository(Profil::class)->findByName($namelastname[0], $namelastname[1])[0];
+                    $seance = $entityManager->getRepository(Seance::class)->findByEvenementAndParcourAndDatetime(
+                                                                                        $evenement,
+                                                                                        $seance->get('name')->getData(),
+                                                                                        $seance->get('datetime')->getData()
+                                                                                        )[0];
+                    $profil->addSeance($seance);
+                    $entityManager->persist($profil);
+
+                    $sender_email ='no-reply@fedeb.net';
+                    $recipient_emails = [$profil->getUser()->getEmail()];
+
+                    $subject = 'Merer - Formation alloué';
+                    $plaintext_body = 'Formation alloué' ;
+                    $char_set = 'UTF-8';
+                    $result = $ses->sendEmail([
+                        'Destination' => [
+                            'ToAddresses' => $recipient_emails,
+                        ],
+                        'ReplyToAddresses' => [$sender_email],
+                        'Source' => $sender_email,
+                        'Message' => [
+                            'Body' => [
+                                'Html' => [
+                                    'Charset' => $char_set,
+                                    'Data' =>$this->renderView('emails/formateur_alloue_event.html.twig',["seance" => $seance, 'evenement' => $evenement])
+                                ],
+                                'Text' => [
+                                    'Charset' => $char_set,
+                                    'Data' => $plaintext_body,
+                                ],
+                            ],
+                            'Subject' => [
+                                'Charset' => $char_set,
+                                'Data' => $subject,
+                            ],
+                        ],
+                    ]);
+                }
+            }
+            
             return $this->redirectToRoute('evenement_show', ['evenementID' => $evenement->getId()]);
         }
-
+       
+            $entityManager->flush();
         return $this->render('evenement/edit.html.twig', [
             'evenement' => $evenement,
             'form' => $form->createView(),

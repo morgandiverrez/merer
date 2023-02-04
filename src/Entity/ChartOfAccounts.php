@@ -6,10 +6,13 @@ use App\Entity\Customer;
 use App\Entity\TransactionLine;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use App\Repository\ChartOfAccountsRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 
 #[ORM\Entity(repositoryClass: ChartOfAccountsRepository::class)]
+#[UniqueEntity(fields: ['code'], message: 'Il y a déjà un compte avec ce code')]
+#[UniqueEntity(fields: ['name'], message: 'Il y a déjà un compte avec ce nom')]
 class ChartOfAccounts
 {
     #[ORM\Id]
@@ -17,6 +20,8 @@ class ChartOfAccounts
     #[ORM\Column]
     private ?int $id = null;
 
+    #[ORM\Column(unique: true, nullable: true)]
+    private ?int $code = null;
    
     #[ORM\Column(length:512, unique: true, nullable: true)]
     private ?string $name = null;
@@ -26,9 +31,6 @@ class ChartOfAccounts
 
     #[ORM\OneToMany(mappedBy: 'chartOfAccounts', targetEntity: TransactionLine::class)]
     private Collection $transactionLines;
-
-    #[ORM\Column(unique: true, nullable: true)]
-    private ?int $code = null;
 
     #[ORM\OneToMany(mappedBy: 'chartOfAccounts', targetEntity: Customer::class)]
     private Collection $customers;

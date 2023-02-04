@@ -4,10 +4,13 @@ namespace App\Entity;
 
 use App\Repository\LieuxRepository;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: LieuxRepository::class)]
+#[UniqueEntity(fields: ['code'], message: 'Il y a déjà un lieu avec ce code')]
+#[UniqueEntity(fields: ['name'], message: 'Il y a déjà un lieu avec ce nom')]
 class Lieux
 {
     #[ORM\Id]

@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Customer;
 use App\Entity\Supplier;
+use App\Entity\ChartOfAccounts;
 use App\Form\CustomerType;
 use App\Form\SupplierType;
 use App\Controller\InvoiceController;
@@ -61,7 +62,16 @@ class SupplierController extends AbstractController
 
 
         if ($form->isSubmitted() && $form->isValid()) {
-           
+            $chartOfAccount = new ChartOfAccounts;
+            $chartOfAccount->setName($form->get('name')->getData());
+           if (isset($entityManager->getRepository(ChartOfAccounts::class)->findMaxChartOfAccount(40000)[0])) {
+                $nbChartOfAccount = $entityManager->getRepository(ChartOfAccounts::class)->findMaxChartOfAccount(40000)[0]['code'];
+                $chartOfAccount->setCode($nbChartOfAccount + 1);
+            } else {
+                $chartOfAccount->setCode(40000);
+            }
+            $supplier->setChartOfAccounts($chartOfAccount);
+            $entityManager->persist($chartOfAccount);
             $entityManager->persist($supplier);
             $entityManager->flush();
             return $this->redirectToRoute('supplier_show', ['supplierID' => $supplier->getId()]);

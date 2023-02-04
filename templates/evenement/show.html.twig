@@ -19,6 +19,17 @@
                         <li class="list-group-item">Date de Debut : {{evenement.getDateDebut().format("d/m/y H:i")}}</li>
                         <li class="list-group-item">Date de Fin : {{evenement.getDateFin().format("d/m/y H:i")}}</li>
                         <li class="list-group-item">Date de Fin Inscription: {{evenement.getDateFinInscription().format("d/m/y H:i")}}</li>
+                        <li class="list-group-item"> Visible :
+                            {% if evenement.visible == FALSE %}
+                                <a href="/evenement/visible/{{ evenement.iD }}" >
+                                    <i class="fa-sharp fa-solid fa-circle-xmark" style="color: red;" ></i>
+                                </a>
+                            {% else %}
+                                <a href="/evenement/unvisible/{{ evenement.iD }}" >
+                                    <i class="fa-sharp fa-solid fa-circle-check" style="color: green;"></i>
+                                </a>
+                            {% endif %}
+                        </li>
                     </ul>
                     <div class="card-body">
                         {% if is_granted('ROLE_BF')%}
@@ -26,7 +37,10 @@
  
                         {% endif %}
                         <a href="/evenement/" class="card-link"><i class="fa-solid fa-list"></i></a>
+                        {% if evenement.visible %}
                         <a href='/inscription/evenement/{{evenement.getId()}}' class="card-link">inscription</a>
+                        {% endif %}
+                       
                     </div>
                 </div> 
             </div>

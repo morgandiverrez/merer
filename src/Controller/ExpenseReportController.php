@@ -5,6 +5,7 @@ namespace App\Controller;
 use DateTime;
 use App\Entity\Customer;
 use App\Entity\Exercice;
+use Aws\Ses\SesClient;
 use App\Entity\Transaction;
 use App\Controller\CustomerController;
 use App\Entity\ExpenseReport;
@@ -307,7 +308,7 @@ class ExpenseReportController extends AbstractController
 
     #[Route('/comfirm/{expenseReportID}', name: 'comfirm')]
     #[IsGranted('ROLE_TRESO')]
-    public function comfirm(EntityManagerInterface $entityManager, Request $request, $expenseReportID): Response
+    public function comfirm(EntityManagerInterface $entityManager, Request $request, $expenseReportID, SesClient $ses): Response
     {
         $expenseReport = $entityManager->getRepository(ExpenseReport::class)->findById($expenseReportID)[0];
 
@@ -376,7 +377,7 @@ class ExpenseReportController extends AbstractController
         $nbFrais = count($expenseReport->getExpenseReportLines());
         $totale = 0;
 
-        for ($i = 0; $i < $nbTrajet; $i++) {
+        for ($i = 0; $i < $nbTrajet-1; $i++) {
 
             if ($expenseReport->getExpenseReportRouteLines()[$i]->getAmount() != null and  $expenseReport->getExpenseReportRouteLines()[$i]->getRepayGrid()->getAmount() == null ){  
                 $add = $expenseReport->getExpenseReportRouteLines()[$i]->getAmount();

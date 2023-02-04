@@ -160,4 +160,18 @@ class SeanceRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+      public function findByEvenementAndParcourAndDatetime($evenement, $name, $datetime ): array
+    {
+        return $this->createQueryBuilder('seance')
+            ->Where('seance.evenement = :evenement')
+            ->AndWhere('seance.name = :name')
+            ->AndWhere('seance.datetime LIKE :datetime')
+            ->setParameter('evenement', $evenement, )
+            ->setParameter('name', $name)
+            ->setParameter('datetime', $datetime)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getResult();
+    }
 }

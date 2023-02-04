@@ -59,6 +59,17 @@ class BankAccountController extends AbstractController
 
 
         if ($form->isSubmitted() && $form->isValid()) {
+            
+            $chartOfAccount = new ChartOfAccounts;
+            $chartOfAccount->setName(strval($form->get('accountNumber')->getData()));
+           if (isset($entityManager->getRepository(ChartOfAccounts::class)->findMaxChartOfAccount(51000)[0])) {
+                $nbChartOfAccount = $entityManager->getRepository(ChartOfAccounts::class)->findMaxChartOfAccount(51000)[0]['code'];
+                $chartOfAccount->setCode($nbChartOfAccount + 1);
+            } else {
+                $chartOfAccount->setCode(51000);
+            }
+            $supplier->setChartOfAccounts($chartOfAccount);
+            $entityManager->persist($chartOfAccount);
 
             $entityManager->persist($bankAccount);
             $entityManager->flush();
