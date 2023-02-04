@@ -23,7 +23,7 @@ class EquipeEluType extends AbstractType
                     'UFR' => 'UFR',
                     'Departement' =>  'Departement',
                     'Centraux' =>  'Centraux',
-                    'Ecole' =>    'Ecole',
+                    'Ecole' => 'Ecole',
                     'CROUS'=> 'CROUS',
                     'LBSU' =>  'LBSU',
                     'Nationaux' =>  'Nationaux',
