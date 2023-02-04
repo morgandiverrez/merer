@@ -25,7 +25,7 @@ class EquipeElu
     #[ORM\Column(type: 'string',unique: true, length:255, nullable: true)]
     private $name;
 
-    #[ORM\Column(type: 'string', nullable: true)]
+    #[ORM\Column(type: 'string', length:512, nullable: true)]
     private $categorie;
 
     #[ORM\Column(type: 'string', length: 2048, nullable: true)]
@@ -46,7 +46,7 @@ class EquipeElu
     #[ORM\Column(type: 'integer', nullable: true)]
     private $duree_mandat;
 
-    #[ORM\Column(type: 'string',length: 511,  nullable: true)]
+    #[ORM\Column(type: 'string', length: 512,  nullable: true)]
     private $fede_filliere ;
 
     #[ORM\ManyToMany(targetEntity: Demande::class, mappedBy: 'EquipeElu')]
@@ -92,12 +92,12 @@ class EquipeElu
         return $this;
     }
 
-    public function getCategorie(): ?array
+    public function getCategorie(): ?string
     {
         return $this->categorie;
     }
 
-    public function setCategorie(?array $categorie): self
+    public function setCategorie(?string $categorie): self
     {
         $this->categorie = $categorie;
 
@@ -188,12 +188,12 @@ class EquipeElu
         return $this;
     }
 
-    public function getFedeFilliere(): ?array
+    public function getFedeFilliere(): ?string
     {
         return $this->fede_filliere;
     }
 
-    public function setFedeFilliere(?array $fede_filliere): self
+    public function setFedeFilliere(?string $fede_filliere): self
     {
         $this->fede_filliere = $fede_filliere;
 
