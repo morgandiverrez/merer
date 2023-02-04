@@ -46,6 +46,13 @@
                         {{ form_help(form.etablissement) }}
                     </div>
 
+                     <div class="fede_filliere my-5">
+                        {{ form_label(form.fede_filliere, 'Fédé Fillière ', {'label_attr': {'class': 'foo'}}) }}
+                        {{ form_errors(form.fede_filliere) }}
+                        {{ form_widget(form.fede_filliere) }}
+                        {{ form_help(form.fede_filliere) }}
+                    </div>
+
                     <div class="date_election my-5">
                         {{ form_label(form.date_election, ' date de l\'élection ', {'label_attr': {'class': 'foo'}}) }}
                         {{ form_errors(form.date_election) }}
