@@ -6,6 +6,7 @@ use App\Entity\Customer;
 use App\Entity\Contact;
 use App\Entity\ChequeBox;
 use App\Form\CustomerType;
+use App\Entity\ChartOfAccounts;
 use App\Form\ChequeBoxType;
 use App\Controller\InvoiceController;
 use Doctrine\ORM\EntityManagerInterface;
