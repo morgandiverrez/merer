@@ -26,7 +26,7 @@
                 </div>
             </div>
             <br>
-            {% if customer.getBankDetails()[0] %}
+            {% if customer.getBankDetails() %}
                 <div class="d-flex text-center justify-content-evenly">
                     {% set bankDetail = customer.getBankDetails()[0] %} 
                     <div class="card justify-content-start" style="width: 18rem;">
