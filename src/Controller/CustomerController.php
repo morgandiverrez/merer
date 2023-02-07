@@ -103,11 +103,11 @@ class CustomerController extends AbstractController
             $chartOfAccount = new ChartOfAccounts;
             $chartOfAccount->setName('customer_'.$form->get('name')->getData());
             $chartOfAccount->setMovable(true);
-           if (isset($entityManager->getRepository(ChartOfAccounts::class)->findMaxChartOfAccount(41000)[0])) {
-                $nbChartOfAccount = $entityManager->getRepository(ChartOfAccounts::class)->findMaxChartOfAccount(41000)[0]['code'];
+           if (isset($entityManager->getRepository(ChartOfAccounts::class)->findMaxChartOfAccount(41100)[0])) {
+                $nbChartOfAccount = $entityManager->getRepository(ChartOfAccounts::class)->findMaxChartOfAccount(41100)[0]['code'];
                 $chartOfAccount->setCode($nbChartOfAccount + 1);
             } else {
-                $chartOfAccount->setCode(41000);
+                $chartOfAccount->setCode(41100);
             }
             $customer->setChartOfAccounts($chartOfAccount);
             $entityManager->persist($chartOfAccount);

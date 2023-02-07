@@ -174,4 +174,17 @@ class SeanceRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    
+    public function findForRetour($datetime): array
+    {
+        return $this->createQueryBuilder('seance')
+            ->innerJoin('seance.formation', 'formation')
+            ->Where('seance.datetime + formation.duration >= :datetime')
+            ->Where('seance.datetime + formation.duration <= :datetime+1')
+            ->setParameter('datetime', $datetime)
+            ->getQuery()
+            ->getResult();
+    }
+
 }
