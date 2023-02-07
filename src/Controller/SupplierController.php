@@ -7,7 +7,6 @@ use App\Entity\Supplier;
 use App\Entity\ChartOfAccounts;
 use App\Form\CustomerType;
 use App\Form\SupplierType;
-use App\Entity\ChartOfAccounts;
 use App\Controller\InvoiceController;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -64,7 +63,8 @@ class SupplierController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $chartOfAccount = new ChartOfAccounts;
-            $chartOfAccount->setName($form->get('name')->getData());
+            $chartOfAccount->setName('supplier_'.$form->get('name')->getData());
+            $chartOfAccount->setMovable(true);
            if (isset($entityManager->getRepository(ChartOfAccounts::class)->findMaxChartOfAccount(40000)[0])) {
                 $nbChartOfAccount = $entityManager->getRepository(ChartOfAccounts::class)->findMaxChartOfAccount(40000)[0]['code'];
                 $chartOfAccount->setCode($nbChartOfAccount + 1);
