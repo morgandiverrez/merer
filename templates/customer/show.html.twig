@@ -28,7 +28,7 @@
             <br>
             {% if customer.getBankDetails() %}
                 <div class="d-flex text-center justify-content-evenly">
-                    {% set bankDetail = customer.getBankDetails()[0] %} 
+                    {% for bankDetail in  customer.getBankDetails() %} 
                     <div class="card justify-content-start" style="width: 18rem;">
 
                         <ul class="list-group list-group-flush">
@@ -38,7 +38,8 @@
                         <div class="card-body ">
                             <a class="card-link" href="/bankDetail/edit/{{bankDetail.getId()}}"><i class="fa-solid fa-pen-to-square"></i></a> 
                         </div>
-                    </div>                      
+                    </div>
+                    {% endfor  %}                   
                 </div>
             {% endif %}
             <p class="display-6 no-wrap text-center">Liste des factures de ce client </p>

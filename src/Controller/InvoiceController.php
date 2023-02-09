@@ -81,7 +81,9 @@ class InvoiceController extends AbstractController
         $form->handleRequest($request);
         
         if ($form->isSubmitted() && $form->isValid()) {
-           
+            $invoice->setReady(false);
+            $invoice->setComfirm(false);
+            $invoice->setCreationDate(date_create());
             if (isset($entityManager->getRepository(Invoice::class)->findMaxDayTransaction(date("Ymd") * 100)[0])) {
                 $nbinvoice = $entityManager->getRepository(Invoice::class)->findMaxDayTransaction(date("Ymd") * 100)[0]['code'];
                 $invoice->setCode($nbinvoice + 1);
@@ -96,7 +98,7 @@ class InvoiceController extends AbstractController
             
             $entityManager->persist($invoice);
             $entityManager->flush();
-            return $this->redirectToRoute('invoice_show', ['invoiceId' => $invoice->getId()]); 
+            return $this->redirectToRoute('invoice_show', ['invoiceID' => $invoice->getId()]); 
         }
 
         return $this->render('invoice/new.html.twig', [
