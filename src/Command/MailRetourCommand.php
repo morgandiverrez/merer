@@ -3,6 +3,7 @@
 
 namespace App\Command;
 
+use DateTime;
 use Aws\Ses\SesClient;
 use Psr\Container\ContainerInterface;
 use Doctrine\ORM\EntityManagerInterface;
@@ -84,41 +85,43 @@ class SendEmailCommand extends Command
             '============'
         ]);
 
-        $seances = $this->entityManager->getRepository(Seance::class)->findForRetour();
+        $seances = $this->entityManager->getRepository(Seance::class)->findForRetour(new DateTime());
 
         foreach($seances as $seance){
             foreach($seance->getSeanceProfil() as $seanceProfil){
+                $profil = $seanceProfil->getProfil();
+                if( $this->entityManager->getRepository(Retour::class)->findBy2ID($seance, $profil) == []){
+                    $sender_email = 'no-reply@fedeb.net';
+                    $recipient_emails = [$profil->getUser()->getEmail()];
 
-                $sender_email = 'no-reply@fedeb.net';
-                $recipient_emails = [$seanceProfil->getProfil()->getUser()->getEmail()];
-
-                $subject = 'Merer - Retour de formation';
-                $plaintext_body = 'Retour de formation';
-                $char_set = 'UTF-8';
-                $result = $this->ses->sendEmail([
-                    'Destination' => [
-                        'ToAddresses' => $recipient_emails,
-                    ],
-                    'ReplyToAddresses' => [$sender_email],
-                    'Source' => $sender_email,
-                    'Message' => [
-                        'Body' => [
-                            'Html' => [
-                                'Charset' => $char_set,
-                                'Data' => $this->renderView('emails/retour.html.twig', ["seance" => $seance])
+                    $subject = 'Merer - Retour de formation';
+                    $plaintext_body = 'Retour de formation';
+                    $char_set = 'UTF-8';
+                    $result = $this->ses->sendEmail([
+                        'Destination' => [
+                            'ToAddresses' => $recipient_emails,
+                        ],
+                        'ReplyToAddresses' => [$sender_email],
+                        'Source' => $sender_email,
+                        'Message' => [
+                            'Body' => [
+                                'Html' => [
+                                    'Charset' => $char_set,
+                                    'Data' => $this->renderView('emails/retour.html.twig', ["seance" => $seance])
+                                ],
+                                'Text' => [
+                                    'Charset' => $char_set,
+                                    'Data' => $plaintext_body,
+                                ],
                             ],
-                            'Text' => [
+                            'Subject' => [
                                 'Charset' => $char_set,
-                                'Data' => $plaintext_body,
+                                'Data' => $subject,
                             ],
                         ],
-                        'Subject' => [
-                            'Charset' => $char_set,
-                            'Data' => $subject,
-                        ],
-                    ],
 
-                ]);
+                    ]);
+                }
             }
         }
 
