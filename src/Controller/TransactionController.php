@@ -245,7 +245,10 @@ class TransactionController extends AbstractController
     {
         $transaction = $entityManager->getRepository(Transaction::class)->findTransactionById($transactionId);
         $transaction->setClosure(true);
+
+        if ($transaction->getInvoice()) $transaction->getInvoice()->setAcquitted(true);
         $entityManager->persist($transaction);
+        $entityManager->persist($transaction->getInvoice());
         $entityManager->flush();
         return $this->redirectToRoute('transaction_showAll');
     }
@@ -255,7 +258,9 @@ class TransactionController extends AbstractController
     public function unclosure(EntityManagerInterface $entityManager, $transactionId): Response
     {
         $transaction = $entityManager->getRepository(Transaction::class)->findTransactionById($transactionId);
+        if ($transaction->getInvoice()) $transaction->getInvoice()->setAcquitted(false);
         $transaction->setClosure(false);
+        $entityManager->persist($transaction->getInvoice());
         $entityManager->persist($transaction);
         $entityManager->flush();
         return $this->redirectToRoute('transaction_showAll');

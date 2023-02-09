@@ -35,7 +35,6 @@ class Impression
     #[ORM\Column(type:'boolean')]
     private $factureFinDuMois = true;
 
-
     #[ORM\ManyToOne(targetEntity: Invoice::class, inversedBy: 'impressions')]
     private $invoice;
 
