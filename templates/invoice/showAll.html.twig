@@ -36,7 +36,6 @@
                             <th scope="col">Montant</th>
                             <th scope="col">Total Payé</th>
                             <th scope="col">Reste à charge</th>
-                            <th scope="col">Chèque</th>
                             <th scope="col"> détails</th>
                             <th scope="col">pdf</th>
                             <th scope="col">Comfirmer</th>
@@ -70,18 +69,6 @@
                                 {% endfor %}
                                 <td>{{ total }} €</td>
                                 <td>{{ totals[loop.index-1]-total }} €</td>
-                                {% set cheque=0 %}
-                                {% if invoice.transaction is not null %}
-                                    {% for transactionline in invoice.transaction.transactionlines %}
-                                        {% if transactionline.chartofaccounts  %}{% if transactionline.chartofaccounts.code==51120 or transactionline.chartofaccounts.code==51121 or transactionline.chartofaccounts.code==51122 %}{% endif %}
-                                            {% set cheque=cheque+transactionline.amount %}
-                                        {% endif %}
-                                        {% if "REM CHQ" in transactionline.label %}
-                                            {% set cheque=cheque+transactionline.amount %}
-                                        {% endif %}
-                                    {% endfor %}
-                                {% endif %}
-                                <td>{{ cheque }}</td>
                                 <td><a href="/invoice/show/{{ invoice.iD }}" ><i class = "fa-solid fa-eye"></i></a></td>
                                 <td><a href="/invoice/pdf/{{ invoice.iD }}" target="_blank"><i class="fa-sharp fa-solid fa-file"></i></a></td>
                                 <td>

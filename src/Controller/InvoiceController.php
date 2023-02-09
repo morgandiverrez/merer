@@ -302,7 +302,7 @@ class InvoiceController extends AbstractController
     public function delete(EntityManagerInterface $entityManager, $invoiceID): Response
     {
 
-        $invoice = $entityManager->getRepository(Invoice::class)->findById($invoiceID)[0];
+        $invoice = $entityManager->getRepository(Invoice::class)->findById($invoiceID);
         $entityManager->remove($invoice);
         $entityManager->flush();
 

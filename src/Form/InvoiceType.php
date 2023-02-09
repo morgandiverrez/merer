@@ -29,7 +29,6 @@ class InvoiceType extends AbstractType
                         ->orderBy('u.annee', 'DESC');
                 },
             ])
-            ->add('acquitted')
             ->add('credit')
             ->add('invoiceLines',
                 CollectionType::class,

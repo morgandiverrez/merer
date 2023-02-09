@@ -31,6 +31,7 @@
                     </ul>
                     {% if is_granted('ROLE_TRESO') %}
                         <div class="card-body">
+                            <a href="/invoice/pdf/{{ invoice.iD }}" class="card-link" target="_blank"><i class="fa-sharp fa-solid fa-file"></i></a>
                             <a href="/invoice/edit/{{ invoice.getId() }}" class="card-link"><i class="fa-solid fa-pen-to-square"></i></a>
                             <a href="/invoice/delete/{{ invoice.getId()}}" class="card-link"><i class="fa-solid fa-trash-can"></i></a>
                             <a href="/invoice/" class="card-link"><i class="fa-solid fa-list"></i></a>
