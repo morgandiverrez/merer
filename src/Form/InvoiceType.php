@@ -30,8 +30,6 @@ class InvoiceType extends AbstractType
                 },
             ])
             ->add('acquitted')
-            ->add('ready')
-            ->add('comfirm')
             ->add('credit')
             ->add('invoiceLines',
                 CollectionType::class,
