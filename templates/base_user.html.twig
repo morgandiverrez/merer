@@ -223,6 +223,7 @@
                               
                             </ul>
                         </div>
+                        <br><br><br>
                     {% endif %}
                         <div class="d-flex justify-content-end">
                            {% if is_granted('ROLE_USER')%}
@@ -246,6 +247,17 @@
         {% endblock %}
 
         {% block footer %}
+        <br><br><br><br><br><br><br><br>
+            <footer class="sticky-footer"  style="background-color:#F0AD42 ;">
+                <div class="container">
+                    <div class="text-center mobile-size">
+                        <small>© 
+                           <a  href="/mentionlegale">Merer</a> 2023 V1.0
+                           <a  href="/mentionlegale">mention légale</a>
+                        </small>
+                    </div>
+                </div>
+            </footer> 
         {% endblock %} 
     </body>
 </html>
