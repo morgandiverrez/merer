@@ -93,7 +93,7 @@ class SendEmailCommand extends Command
                 if( $this->entityManager->getRepository(Retour::class)->findBy2ID($seance, $profil) == []){
                     $sender_email = 'no-reply@fedeb.net';
                     $recipient_emails = [$profil->getUser()->getEmail()];
-
+                    $output->writeln('Successful you test');
                     $subject = 'Merer - Retour de formation';
                     $plaintext_body = 'Retour de formation';
                     $char_set = 'UTF-8';
