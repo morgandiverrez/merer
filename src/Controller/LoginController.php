@@ -42,5 +42,32 @@ class LoginController extends AbstractController
         throw new \Exception('Don\'t forget to activate logout in security.yaml');
     }
 
-    
+
+    #[Route('/mentionlegale', name: 'mentionlegale')]
+    public function mentionlegale()
+    {   
+        return $this->render('login/mentionlegale.html.twig', [
+        ]);
+    }
+
+    #[Route('/download/politique_confidentialite', name: 'politique_confidentialite')]
+    public function downloadPlanning()
+    {
+       
+
+        $finaleFile = "build/politique_confidentialite.pdf";
+
+        header('Content-Description: File Transfer');
+        header('Content-Type: application/octet-stream');
+        header('Content-Disposition: attachment; filename="' . basename($finaleFile) . '"');
+        header('Expires: 0');
+        header('Cache-Control: must-revalidate');
+        header('Pragma: public');
+        header('Content-Length: ' . filesize($finaleFile));
+        readfile($finaleFile);
+
+
+        return $this->redirectToRoute('index');
+        
+    }
 }
