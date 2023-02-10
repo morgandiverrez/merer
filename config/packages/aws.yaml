@@ -1,6 +1,4 @@
 aws:
     version: latest
-    region: "%env(AWS_REGION)%"
-    credentials:
-        key: "%env(AWS_KEY)%"
-        secret: "%env(AWS_SECRET)%"
+    region: eu-west-3
+    credentials: ~
