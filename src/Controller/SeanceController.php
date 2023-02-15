@@ -173,7 +173,7 @@ class SeanceController extends AbstractController
 
         $dompdf->render();
 
-        $dompdf->stream("inscription.pdf", [
+        $dompdf->stream("inscription_seance_".$seance->getName().$seance->getDatetime()->format("d/m/Y H:i").".pdf", [
             "Attachment" => true
         ]);
     }
