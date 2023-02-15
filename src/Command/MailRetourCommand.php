@@ -1,5 +1,5 @@
 <?php
-//src/Command/SendEmailCommand.php
+//src/Command/MailRetourCommand.php
 
 namespace App\Command;
 
@@ -12,7 +12,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class SendEmailCommand extends Command
+class MailRetourCommand extends Command
 {
     protected static $defaultName = 'send:email';
 
