@@ -108,7 +108,6 @@ class FundBoxController extends AbstractController
         $form = $this->createForm(FundBoxType::class);
         $form->get('name')->setData($fundBox->getName());
         $form->get('description')->setData($fundBox->getDescription());
-        $form->get('chartOfAccounts')->setData($fundBox->getChartOfAccounts());
         $form->get('location')->setData($fundBox->getLocation());
 
         $form->handleRequest($request);
