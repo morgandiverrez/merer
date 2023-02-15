@@ -4301,3 +4301,5 @@ phpMyAdmin/vendor/williamdes/mariadb-mysql-kbs/src/KBEntry.php
 phpMyAdmin/vendor/williamdes/mariadb-mysql-kbs/src/KBException.php
 phpMyAdmin/vendor/williamdes/mariadb-mysql-kbs/src/Search.php
 phpMyAdmin/vendor/williamdes/mariadb-mysql-kbs/src/SlimData.php
+config/packages/endroid_qr_code.yaml
+config/routes/endroid_qr_code.yaml
