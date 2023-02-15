@@ -2,11 +2,22 @@
 
 namespace App\Controller;
 
+use Dompdf\Dompdf;
+use Dompdf\Options;
 use App\Entity\Profil;
 use App\Entity\Retour;
 use App\Entity\Seance;
 use App\Form\RetourType;
+use App\Entity\Evenement;
+use Endroid\QrCode\QrCode;
+use App\Form\RetourEventType;
+use Endroid\QrCode\Logo\Logo;
+use Endroid\QrCode\Color\Color;
+use Endroid\QrCode\Label\Label;
 use Symfony\UX\Chartjs\Model\Chart;
+use Endroid\QrCode\Writer\PngWriter;
+use Endroid\QrCode\Encoding\Encoding;
+use Endroid\QrCode\Label\Font\NotoSans;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,6 +25,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Endroid\QrCode\ErrorCorrectionLevel\ErrorCorrectionLevelLow;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[Route('/retour', name: 'retour_')]
@@ -50,6 +62,40 @@ class RetourController extends AbstractController
 
         return $this->render('retour/new.html.twig', [
             'retour' => $retour,
+            'form' => $form->createView(),
+        ]);
+    }
+
+    #[Route('/newEvent/{evenementID}', name: 'newEvent')]
+    #[IsGranted('ROLE_USER')]
+    public function newEvent(EntityManagerInterface $entityManager, Request $request, $evenementID): Response
+    {
+        $retour = new Retour();
+
+        $evenement = $entityManager->getRepository(Evenement::class)->findById($evenementID)[0];
+        
+
+        $user = $this->getUser();
+        $profil = $user->getProfil();
+        $retour->setProfil($profil);
+
+        $form = $this->createForm(RetourEventType::class, $retour, ['liste_seance' => $evenement->getSeances()]);
+        $form->handleRequest($request);
+
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            if ($retour->getSeance()->getFormation()->getBadge()) {
+                $profil->addBadge($retour->getSeance()->getFormation()->getBadge());
+            }
+            $entityManager->persist($retour);
+            $entityManager->persist($profil);
+            $entityManager->flush();
+            return $this->redirectToRoute('profil_show', []);
+        }
+
+        return $this->render('retour/newEvent.html.twig', [
+            'retour' => $retour,
+            'evenement' => $evenement,
             'form' => $form->createView(),
         ]);
     }
@@ -360,6 +406,107 @@ class RetourController extends AbstractController
             'dataMoyenne' => $dataMoyenne,
             'dataRemarque' => $dataRemarque,
             'dataQuestion' => $dataQuestion,
+        ]);
+    }
+
+    #[Route('/QRCodeGen/{seanceID}', name: 'qrcode')]
+    #[IsGranted('ROLE_FORMATEURICE')]
+    public function qrCode(EntityManagerInterface $entityManager, $seanceID)
+    {
+        $seance = $entityManager->getRepository(Seance::class)->findByID(strval($seanceID))[0];
+
+        $writer = new PngWriter();
+        $qrCode = QrCode::create('https://15.236.191.187/retour/new/'.$seanceID)
+        ->setEncoding(new Encoding('UTF-8'))
+        ->setErrorCorrectionLevel(new ErrorCorrectionLevelLow())
+            ->setSize(120)
+            ->setMargin(0)
+            ->setForegroundColor(new Color(0, 0, 0))
+            ->setBackgroundColor(new Color(255, 255, 255));
+        $logo = Logo::create('build/images/logo_FEDEB.png')
+        ->setResizeToWidth(60);
+        $label = Label::create('retour')->setFont(new NotoSans(8));
+
+        $qrCodes = [];;
+
+        $qrCode->setSize(400)->setForegroundColor(new Color(0, 0, 0))->setBackgroundColor(new Color(255, 255, 255));
+        $qrCodes['withImage'] = $writer->write(
+            $qrCode,
+            $logo,
+            $label->setText('retour')->setFont(new NotoSans(20))
+        )->getDataUri();
+
+        $pdfOptions = new Options();
+        $pdfOptions->set('defaultFont', 'Arial');
+
+        $dompdf = new Dompdf($pdfOptions);
+
+        $dompdf->set_option('isHtml5ParserEnabled', true);
+
+        $html = $this->renderView('retour/retourQRCodePDF.html.twig', [
+            'seance' => $seance,
+            'qrCodes' => $qrCodes
+        ]);
+
+        $dompdf->loadHtml($html);
+
+        $dompdf->setPaper('A4', 'portrait');
+
+        $dompdf->render();
+
+        $dompdf->stream("retourQRCode".$seance->getName().".pdf", [
+            "Attachment" => true
+        ]);
+    }
+
+
+    #[Route('/QRCodeEventGen/{evenementID}', name: 'qrcodeEvent')]
+    #[IsGranted('ROLE_FORMATEURICE')]
+    public function qrCodeEvent(EntityManagerInterface $entityManager, $evenementID)
+    {
+        $evenement = $entityManager->getRepository(Evenement::class)->findById($evenementID)[0];
+
+        $writer = new PngWriter();
+        $qrCode = QrCode::create('https://15.236.191.187/retour/newEvent/' . $evenementID)
+            ->setEncoding(new Encoding('UTF-8'))
+            ->setErrorCorrectionLevel(new ErrorCorrectionLevelLow())
+            ->setSize(120)
+            ->setMargin(0)
+            ->setForegroundColor(new Color(0, 0, 0))
+            ->setBackgroundColor(new Color(255, 255, 255));
+        $logo = Logo::create('build/images/logo_FEDEB.png')
+        ->setResizeToWidth(60);
+        $label = Label::create('retour')->setFont(new NotoSans(8));
+
+        $qrCodes = [];;
+
+        $qrCode->setSize(400)->setForegroundColor(new Color(0, 0, 0))->setBackgroundColor(new Color(255, 255, 255));
+        $qrCodes['withImage'] = $writer->write(
+            $qrCode,
+            $logo,
+            $label->setText('retour')->setFont(new NotoSans(20))
+        )->getDataUri();
+
+        $pdfOptions = new Options();
+        $pdfOptions->set('defaultFont', 'Arial');
+
+        $dompdf = new Dompdf($pdfOptions);
+
+        $dompdf->set_option('isHtml5ParserEnabled', true);
+
+        $html = $this->renderView('retour/retourEventQRCodePDF.html.twig', [
+            'evenement' => $evenement,
+            'qrCodes' => $qrCodes
+        ]);
+
+        $dompdf->loadHtml($html);
+
+        $dompdf->setPaper('A4', 'portrait');
+
+        $dompdf->render();
+
+        $dompdf->stream("retourQRCode" . $evenement->getName() . ".pdf", [
+            "Attachment" => true
         ]);
     }
 }

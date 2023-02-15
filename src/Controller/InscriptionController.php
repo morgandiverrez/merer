@@ -3,19 +3,29 @@
 namespace App\Controller;
 
 use DateTime;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 use App\Entity\Profil;
 use App\Entity\Seance;
-use App\Entity\Evenement;
-use App\Entity\SeanceProfil;
 use Aws\Ses\SesClient;
+use App\Entity\Evenement;
+use Endroid\QrCode\QrCode;
+use App\Entity\SeanceProfil;
 use App\Form\PonctuelleType;
 use App\Form\InscriptionType;
+use Endroid\QrCode\Logo\Logo;
 use App\Form\SeanceProfilType;
+use Endroid\QrCode\Color\Color;
+use Endroid\QrCode\Label\Label;
+use Endroid\QrCode\Writer\PngWriter;
+use Endroid\QrCode\Encoding\Encoding;
+use Endroid\QrCode\Label\Font\NotoSans;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Endroid\QrCode\ErrorCorrectionLevel\ErrorCorrectionLevelLow;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[Route('/inscription', name: 'inscription_')]
@@ -277,6 +287,103 @@ class InscriptionController extends AbstractController
 
         return $this->redirectToRoute('seance_liste_inscrit', ['seanceID' => $seanceID]);
     }
+
+    #[Route('/QRCodeGen/{seanceID}', name: 'qrcode')]
+    #[IsGranted('ROLE_BF')]
+    public function qrCode(EntityManagerInterface $entityManager, $seanceID)
+    {
+        $seance = $entityManager->getRepository(Seance::class)->findByID($seanceID)[0];
+        if (empty($seance->getEvenement())) {
+            $writer = new PngWriter();
+            $qrCode = QrCode::create('https://15.236.191.187/inscription/'. $seanceID)
+                ->setEncoding(new Encoding('UTF-8'))
+                ->setErrorCorrectionLevel(new ErrorCorrectionLevelLow())
+                ->setSize(120)
+                ->setMargin(0)
+                ->setForegroundColor(new Color(0, 0, 0))
+                ->setBackgroundColor(new Color(255, 255, 255));
+            $logo = Logo::create('build/images/logo_FEDEB.png')
+                ->setResizeToWidth(60);
+            $label = Label::create('inscription')->setFont(new NotoSans(8));
+
+            $qrCodes = [];;
+           
+           
+
+            $qrCode->setSize(400)->setForegroundColor(new Color(0, 0, 0))->setBackgroundColor(new Color(255, 255, 255));
+            $qrCodes['withImage'] = $writer->write(
+                $qrCode,
+                $logo,
+                $label->setText('Inscription')->setFont(new NotoSans(20))
+            )->getDataUri();
+
+            $pdfOptions = new Options();
+            $pdfOptions->set('defaultFont', 'Arial');
+
+            $dompdf = new Dompdf($pdfOptions);
+
+            $dompdf->set_option('isHtml5ParserEnabled', true);
+
+            $html = $this->renderView('inscription/InscriptionQRCodePDF.html.twig', [
+                'seance'=> $seance,
+                'qrCodes' => $qrCodes]);
+
+            $dompdf->loadHtml($html);
+
+            $dompdf->setPaper('A4', 'portrait');
+
+            $dompdf->render();
+
+            $dompdf->stream("InscriptionQRCode".$seance->getName().".pdf", [
+                "Attachment" => true
+            ]);
+            
+        } else {
+            $writer = new PngWriter();
+            $qrCode = QrCode::create('https://15.236.191.187/inscription/' . $seanceID)
+                ->setEncoding(new Encoding('UTF-8'))
+                ->setErrorCorrectionLevel(new ErrorCorrectionLevelLow())
+                ->setSize(120)
+                ->setMargin(0)
+                ->setForegroundColor(new Color(0, 0, 0))
+                ->setBackgroundColor(new Color(255, 255, 255));
+            $logo = Logo::create('build/images/logo_FEDEB.png')
+                ->setResizeToWidth(60);
+            $label = Label::create('inscription')->setFont(new NotoSans(8));
+
+            $qrCodes = [];;
+
+            $qrCode->setSize(400)->setForegroundColor(new Color(0, 0, 0))->setBackgroundColor(new Color(255, 255, 255));
+            $qrCodes['withImage'] = $writer->write(
+                $qrCode,
+                $logo,
+                $label->setText('Inscription')->setFont(new NotoSans(20))
+            )->getDataUri();
+
+            $pdfOptions = new Options();
+            $pdfOptions->set('defaultFont', 'Arial');
+
+            $dompdf = new Dompdf($pdfOptions);
+
+            $dompdf->set_option('isHtml5ParserEnabled', true);
+
+            $html = $this->renderView('inscription/InscriptionQRCodePDF.html.twig', [
+                'seance' => $seance,
+                'qrCodes' => $qrCodes
+            ]);
+
+            $dompdf->loadHtml($html);
+
+            $dompdf->setPaper('A4', 'portrait');
+
+            $dompdf->render();
+
+            $dompdf->stream("InscriptionQRCode".$seance->getEvenement()->getName().".pdf", [
+                "Attachment" => true
+            ]);
+        }
+    }
+
 } 
 
 

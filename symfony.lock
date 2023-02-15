@@ -59,6 +59,9 @@
             "./migrations/.gitignore"
         ]
     },
+    "endroid/qr-code-bundle": {
+        "version": "4.2.1"
+    },
     "gregwar/captcha-bundle": {
         "version": "v2.2.0"
     },

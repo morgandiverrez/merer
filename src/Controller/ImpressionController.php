@@ -3,25 +3,87 @@
 namespace App\Controller;
 
 use DateTime;
+use Dompdf\Dompdf;
+use Dompdf\Options;
+use Aws\Ses\SesClient;
 use App\Entity\Invoice;
 use App\Entity\Customer;
 use App\Entity\Exercice;
 use App\Entity\Impression;
-use Aws\Ses\SesClient;
+use Endroid\QrCode\QrCode;
 use App\Entity\InvoiceLine;
 use App\Form\ImpressionType;
+use Endroid\QrCode\Logo\Logo;
 use App\Entity\CatalogService;
+use Endroid\QrCode\Color\Color;
+use Endroid\QrCode\Label\Label;
+use Endroid\QrCode\Writer\PngWriter;
+use Endroid\QrCode\Encoding\Encoding;
+use Endroid\QrCode\Label\Font\NotoSans;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Endroid\QrCode\ErrorCorrectionLevel\ErrorCorrectionLevelLow;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 
 #[Route('/impression', name: 'impression_')]
 class ImpressionController extends AbstractController
 {
+    #[Route('/QRCodeGen', name: 'qrcode')]
+    #[IsGranted('ROLE_BF')]
+    public function qrCode()
+    {
+       
+       
+            $writer = new PngWriter();
+            $qrCode = QrCode::create('https://15.236.191.187/impression/new')
+                ->setEncoding(new Encoding('UTF-8'))
+                ->setErrorCorrectionLevel(new ErrorCorrectionLevelLow())
+                ->setSize(120)
+                ->setMargin(0)
+                ->setForegroundColor(new Color(0, 0, 0))
+                ->setBackgroundColor(new Color(255, 255, 255));
+            $logo = Logo::create('build/images/logo_FEDEB.png')
+            ->setResizeToWidth(60);
+            $label = Label::create('impression')->setFont(new NotoSans(8));
+
+            $qrCodes = [];;
+
+            $qrCode->setSize(400)->setForegroundColor(new Color(0, 0, 0))->setBackgroundColor(new Color(255, 255, 255));
+            $qrCodes['withImage'] = $writer->write(
+                $qrCode,
+                $logo,
+                $label->setText('impression')->setFont(new NotoSans(20))
+            )->getDataUri();
+
+            $pdfOptions = new Options();
+            $pdfOptions->set('defaultFont', 'Arial');
+
+            $dompdf = new Dompdf($pdfOptions);
+
+            $dompdf->set_option('isHtml5ParserEnabled', true);
+
+            $html = $this->renderView('impression/impressionQRCodePDF.html.twig', [
+                
+                'qrCodes' => $qrCodes
+            ]);
+
+            $dompdf->loadHtml($html);
+
+            $dompdf->setPaper('A4', 'portrait');
+
+            $dompdf->render();
+
+            $dompdf->stream("ImpressionQRCode.pdf", [
+                "Attachment" => true
+            ]);
+        
+    }
+
+
     #[Route('/', name: 'showAll')]
     #[IsGranted('ROLE_BF')]
     public function showAll(EntityManagerInterface $entityManager, Request $request): Response

@@ -19,4 +19,5 @@ return [
     SymfonyCasts\Bundle\ResetPassword\SymfonyCastsResetPasswordBundle::class => ['all' => true],
     Gregwar\CaptchaBundle\GregwarCaptchaBundle::class => ['all' => true],
     Aws\Symfony\AwsBundle::class => ['all' => true],
+    Endroid\QrCodeBundle\EndroidQrCodeBundle::class => ['all' => true],
 ];
