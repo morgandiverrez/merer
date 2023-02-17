@@ -53,6 +53,7 @@ class FundBoxController extends AbstractController
 
 
         if ($form->isSubmitted() && $form->isValid()) {
+            
             $types = ['onecent', "twocent", "fivecent", "tencent", 'twentycent', 'fiftycent', 'oneeuro', 'twoeuro', 'fiveeuro', 'teneuro', 'twentyeuro', "fiftyeuro", "hundredeuro", "twohundredeuro", "fivehundredeuro" ];
             $fundTypes = $entityManager->getRepository(FundType::class)->findAllInOrder();
             $i=0;
@@ -63,9 +64,11 @@ class FundBoxController extends AbstractController
                 $data = $form->get($type)->getData();
                 if(! $data) $data = 0;
                 $fundTypeJoin->setQuantity($data);
+                $fundTypeJoin->setHorrodateur(new DateTime());
                 $entityManager->persist($fundTypeJoin);
                 
                 $i++;
+                
             }
             $fundBox->setName($form->get("name")->getData());
             $fundBox->setDescription($form->get("description")->getData());
@@ -118,17 +121,19 @@ class FundBoxController extends AbstractController
             $fundTypes = $entityManager->getRepository(FundType::class)->findAllInOrder();
             $i = 0;
             foreach ($types as $type) {
-                $fundTypeJoin = $entityManager->getRepository(FundTypeFundBox::class)->findBy2ID($fundTypes[$i]->getId(), $fundBox->getId())[0];
+                $fundTypeJoin = new FundTypeFundBox();
+                $fundTypeJoin->setFundBox($fundBox);
+                $fundTypeJoin->setFundType($fundTypes[$i]);
                 $data = $form->get($type)->getData();
                 if (!$data) $data = 0;
                 $fundTypeJoin->setQuantity($data);
+                $fundTypeJoin->setHorrodateur(new DateTime());
                 $entityManager->persist($fundTypeJoin);
 
                 $i++;
             }
             $fundBox->setName($form->get("name")->getData());
             $fundBox->setDescription($form->get("description")->getData());
-            $fundBox->setChartOfAccounts($form->get("chartOfAccounts")->getData());
             $fundBox->setLocation($form->get("location")->getData());
             $fundBox->setLastCountDate(new DateTime());
 
@@ -149,12 +154,18 @@ class FundBoxController extends AbstractController
     public function show(EntityManagerInterface $entityManager,  $fundBoxID): Response
     {
         $fundBox = $entityManager->getRepository(FundBox::class)->findById($fundBoxID)[0];
-
+        $types =   $entityManager->getRepository(FundType::class)->findAllInOrder();
         $total = $entityManager->getRepository(FundBox::class)->montantTotale($fundBox->getId())[0]['total_amount'];
         if ($total == null) $total = 0;
 
+        $fundTypeJoins = [];
+        foreach ($fundBox->getFundTypeJoin() as $fundTypeJoin) {
+            $fundTypeJoins[strval($fundTypeJoin->getHorrodateur()->format("d/m/Y H:i"))][$fundTypeJoin->getFundType()->getName()] = $fundTypeJoin;
+        }
         return $this->render('fundBox/show.html.twig', [
             'fundBox' => $fundBox,
+            'types' => $types,
+            'fundTypeJoins' => $fundTypeJoins,
             'total' => $total,
 
         ]);

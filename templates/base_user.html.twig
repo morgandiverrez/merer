@@ -2,7 +2,6 @@
 <html>
     <head style="margin: 0; padding: 0;">
         <meta charset="UTF-8">
-        <title>{% block title %} Welcome!{% endblock %}</title>
         {# favicon du site#}
         <link rel="icon" type="png" height="auto" sizes="16x16" href="{{asset('build/images/logo_FEDEB.png')}}">
 
@@ -38,7 +37,12 @@
             <header >
                 <nav height="60" style="background-color:#F0AD42 ;" class="navbar navbar-expand-lg">
                     <div class="container-fluid">
-                        <a class="navbar-brand" href="/account/"><img src="{{asset('build/images/logo_FEDEB_Noir.png')}}" height="60" alt="logo Fédé B"></a>
+                        <a class="navbar-brand" href="/account/">
+				            <img src="{{asset('build/images/logo_MERER.svg')}}" height="60" alt="logo Merer">
+					        <span class="align-middle mr-2 ml-2">X</span>
+                           <img src="{{asset('build/images/logo_FEDEB_Noir.png')}}" height="60" alt="logo Fédé B">
+			            </a>
+                        
                         {% if is_granted('ROLE_USER') %}
                             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"  >
                                 <span class="navbar-toggler-icon"></span>
@@ -114,7 +118,18 @@
                                             <li class="nav-item">
                                                 <a class="nav-link" href="/expenseReport/new"> Demande de NDF </a>
                                             </li>
-                                        
+                                            {% if is_granted('ROLE_FORMA') %}
+                                                <li><hr class="dropdown-divider"> Espace Tortue </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link" target="_blank" href="/retour/sdf">Générer le fichier SDF </a>
+                                                </li>
+                                            {% endif %}
+                                            {% if is_granted('ROLE_ADMIN') %}
+                                                <li><hr class="dropdown-divider">Espace Admin </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link" href="/account/roles">Gestionnaire des rôles</a>
+                                                </li>
+                                            {% endif %}
                                         </ul>
                                     </li>
                                 {% endif %}
@@ -175,29 +190,7 @@
                                         </ul>
                                     </li>
                                 {% endif %}
-                                {% if is_granted('ROLE_FORMA') %}
-                                    <li class="nav-item dropdown">
-                                        <a class="nav-link dropdown-toggle"  id="navbarDropdown2" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                        Espace Tortue </a>
-                                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown2">
-                                            <li class="nav-item">
-                                                <a class="nav-link" target="_blank" href="/retour/sdf">Générer le fichier SDF </a>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                {% endif %}
-                                {% if is_granted('ROLE_ADMIN') %}
-                                    <li class="nav-item dropdown">
-                                        <a class="nav-link dropdown-toggle"  id="navbarDropdown2" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                        Espace Admin </a>
-                                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown2">
-                                            <li class="nav-item">
-                                                <a class="nav-link" href="/account/roles">Gestionnaire des rôles</a>
-                                            </li>
-                                            
-                                        </ul>
-                                    </li>
-                                {% endif %}
+
                                 {% if app.user.getProfil() is not null %}
                                     {% if app.user.profil.getEquipeElu() is not empty %}
                                         {% if 'Centraux UBO' in app.user.profil.getEquipeElu() or 'CROUS Rennes-Bretagne' in app.user.profil.getEquipeElu() or is_granted('ROLE_BF') %}   

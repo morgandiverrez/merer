@@ -8,7 +8,8 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: SeanceProfilRepository::class)]
 class SeanceProfil
 {
- 
+  
+
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $Horrodateur;
 
@@ -39,6 +40,11 @@ class SeanceProfil
     private $modePaiement;
 
 
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
     
     public function getHorrodateur(): ?\DateTimeInterface
     {
