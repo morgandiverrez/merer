@@ -1,7 +1,7 @@
 <p>Bonjour,</p>
 
 <p>Voici le récapitulatif de votre inscription à la séance {{seance.getName()}}.</p>
-<p> La séance aura lieu le  {% if seance.getDateTime() is null %} - {% else %} {{seance.getDatetime().format("d/m/Y H:i")}} {% endif %}. 
+<p> La séance aura lieu le  {% if seance.getDateTime() is null %} - {% else %} {{seance.getDatetime().format("d/m/Y à H:i")}} {% endif %}. 
     Cette séance durera  {% if seance.formation.getDuration() is null %} - {% else %} {{seance.formation.getDuration().format("H:i")}} {% endif %}. 
     Elle aura lieu à {{inscription.lieu.getName()}}, {{inscription.lieu.getSalle()}} {{inscription.lieu.getAdresse()}}{{inscription.lieu.getCodePostale()}}{{inscription.lieu.getVille()}}.                         
 </p>
