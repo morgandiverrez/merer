@@ -82,7 +82,7 @@ class FundBoxController extends AbstractController
                 $nbChartOfAccount = $entityManager->getRepository(ChartOfAccounts::class)->findMaxChartOfAccount(53000)[0]['code'];
                 $chartOfAccount->setCode($nbChartOfAccount + 1);
             } else {
-                $chartOfAccount->setCode(53000);
+                $chartOfAccount->setCode(53001);
             }
             $fundBox->setChartOfAccounts($chartOfAccount);
             $entityManager->persist($chartOfAccount);

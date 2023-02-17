@@ -68,7 +68,7 @@ class BankAccountController extends AbstractController
                 $nbChartOfAccount = $entityManager->getRepository(ChartOfAccounts::class)->findMaxChartOfAccount(53100)[0]['code'];
                 $chartOfAccount->setCode($nbChartOfAccount + 1);
             } else {
-                $chartOfAccount->setCode(53100);
+                $chartOfAccount->setCode(53101);
             }
             $bankAccount->setChartOfAccounts($chartOfAccount);
             $entityManager->persist($chartOfAccount);
