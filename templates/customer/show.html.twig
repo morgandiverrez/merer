@@ -18,8 +18,11 @@
                          <li class="list-group-item">SIRET : {% if customer.getAdministrativeIdentifier() %}{{customer.getAdministrativeIdentifier().getSiret()}}{% endif %}</li>
                         <li class="list-group-item"> Localisation :{% if customer.getLocation() %} <a href="/location/show/{{customer.getLocation().getId()}}">  {{customer.getLocation().getName()}}</a>{% endif %}</li>
                         <li class="list-group-item">Compte associé :{% if customer.getChartOfAccounts() %}<a href="/chartOfAccounts/show/{{customer.getChartOfAccounts().getId()}}">   {{customer.getChartOfAccounts().getName()}} | {{customer.getChartOfAccounts().getCode()}}</a>{% endif %}</li>                   
+                        {% if customer.getUser()  is null %}
+                            <li class="list-group-item">créer les accès au compte <a href="/reset-password/createNewUserProfileForCustomer/{{customer.getId()}}" target="_blank"><i class="fa-sharp fa-solid fa-circle-plus"></i></a></li>                   
+                         {% endif %}           
                     </ul>
-                    <div class="card-body">             
+                    <div class="card-body"> 
                         <a href="/customer/edit/{{ customer.getId() }}" class="card-link"><i class="fa-solid fa-pen-to-square"></i></a>       
                         <a href="/customer/" class="card-link"><i class="fa-solid fa-list"></i></a>
                     </div>
