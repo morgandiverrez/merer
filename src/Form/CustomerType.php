@@ -26,18 +26,21 @@ class CustomerType extends AbstractType
             'class' => Location::class,
         ])
             ->add('administrativeIdentifier', EntityType::class, [
+                'required' => false,
             'class' => AdministrativeIdentifier::class,
         ])
             ->add('contacts', EntityType::class, [
             'class' => Contact::class,
+            'required' => false,
             'multiple' => true,
         ])
             ->add('user', EntityType::class, [
                 'class' => User::class,
+                'required' => false,
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('user')
                     ->leftJoin('user.customer', 'customer')
-                     ->where('  customer.id IS NULL  ');
+                     ->where('  customer.id IS NULL');
                 },
             ])
 

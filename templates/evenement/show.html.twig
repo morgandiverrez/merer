@@ -20,16 +20,20 @@
                         <li class="list-group-item">Date de Fin : {{evenement.getDateFin().format("d/m/y H:i")}}</li>
                         <li class="list-group-item">Date de Fin Inscription: {{evenement.getDateFinInscription().format("d/m/y H:i")}}</li>
                         <li class="list-group-item"> Visible :
-                            {% if evenement.visible == FALSE %}
-                                <a href="/evenement/visible/{{ evenement.iD }}" >
-                                    <i class="fa-sharp fa-solid fa-circle-xmark" style="color: red;" ></i>
-                                </a>
-                            {% else %}
-                                <a href="/evenement/unvisible/{{ evenement.iD }}" >
-                                    <i class="fa-sharp fa-solid fa-circle-check" style="color: green;"></i>
-                                </a>
-                            {% endif %}
-                        </li>
+                        {% if evenement.visible == FALSE %}
+                            <a href="/evenement/visible/{{ evenement.iD }}" >
+                                <i class="fa-sharp fa-solid fa-circle-xmark" style="color: red;" ></i>
+                            </a>
+                        {% else %}
+                            <a href="/evenement/unvisible/{{ evenement.iD }}" >
+                                <i class="fa-sharp fa-solid fa-circle-check" style="color: green;"></i>
+                            </a>
+                        {% endif %}
+                       </li>
+                         {% if is_granted('ROLE_FORMATEURICE') %}
+                            <li class="list-group-item"> QR code inscription : <a href="/inscription/QRCodeGen/{{seance.getId()}}" class="card-link"><i class="fa-solid fa-qrcode"></a></i>
+                             <li class="list-group-item"> QR code retour : <a href="/retour/QRCodeEventGen/{{evenement.getId()}}" class="card-link"><i class="fa-solid fa-qrcode"></a></i>
+                        {% endif %}
                     </ul>
                     <div class="card-body">
                         {% if is_granted('ROLE_BF')%}

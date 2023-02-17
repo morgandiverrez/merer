@@ -18,13 +18,15 @@
                     </div>
                     <ul class="list-group list-group-flush">
                         {% if seance.getEvenement() is not null %}
-                            <li class="list-group-item">Evènement : {{seance.getEvenement()}}</li>
+                            <li class="list-group-item">Evènement :<a href="/evenement/show/{{seance.getEvenement().getId()}}" class="card-link"> {{seance.getEvenement()}}</a></li>
                          {% endif %}
                         <li class="list-group-item">Date et Heure : {% if seance.getDateTime() is null %} - {% else %} {{seance.getDatetime().format("d/m/Y H:i")}} {% endif %}</li>
                         <li class="list-group-item">Nombre de Place Maximum : {{seance.getNombrePlace()}}</li>   
                         {% for formateurice in seance.getProfil() %}
-                            <li class="list-group-item">Formateurice : {{formateurice.getName()}} {{formateurice.getLastName()}}</li>
+                            <li class="list-group-item">Formateurice :<a href="/account/show/{{formateurice.getId()}}" class="card-link"> {{formateurice.getName()}} {{formateurice.getLastName()}}</a></li>
                         {% endfor %}
+                         <li class="list-group-item"> QR code inscription : <a href="/inscription/QRCodeGen/{{seance.getId()}}" class="card-link"><i class="fa-solid fa-qrcode"></a></i>
+                         <li class="list-group-item"> QR code retour : <a href="/retour/QRCodeGen/{{seance.getId()}}" class="card-link"><i class="fa-solid fa-qrcode"></a></i>
                     </ul>  
                    
                 </div>

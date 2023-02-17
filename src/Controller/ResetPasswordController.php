@@ -3,8 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Entity\Customer;
+use Faker\Factory;
 use App\Form\ChangePasswordFormType;
 use App\Form\ResetPasswordRequestFormType;
+use App\Form\CreateNewUserProfileForCustomerFormType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -32,6 +35,44 @@ class ResetPasswordController extends AbstractController
         $this->entityManager = $entityManager;
     }
 
+    /**
+     * Display & process form to send a email for create the user profil of the customer.
+     */
+    #[Route('/createNewUserProfileForCustomer/{customerID}', name: 'createNewUserProfileForCustomer')]
+    #[IsGranted('ROLE_TRESO')]
+    public function requestNewUser(Request $request, SesClient $ses, TranslatorInterface $translator, $customerID, UserPasswordHasherInterface $userPasswordHasher): Response
+    {  
+         $faker = Factory::create('fr_FR');
+        $customer = $this->entityManager->getRepository(Customer::class)->findById($customerID)[0];
+
+        $form = $this->createForm(CreateNewUserProfileForCustomerFormType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+               $user = new User;
+                $user->setEmail($form->get('email')->getData());
+                $user->setCustomer($customer);
+                $encodedPassword = $userPasswordHasher->hashPassword(
+                    $user,
+                    $faker->sentence()
+            );
+            $user->setPassword($encodedPassword);
+            $this->entityManager->persist($user);
+            $this->entityManager->flush();
+
+            return $this->processSendingPasswordCreateEmail(
+                $translator,
+                $ses,
+                $user
+            );
+        }
+
+        return $this->render('reset_password/request.html.twig', [
+            'requestForm' => $form->createView(),
+        ]);
+    }
+
+   
     /**
      * Display & process form to request a password reset.
      */
@@ -176,6 +217,53 @@ class ResetPasswordController extends AbstractController
                     'Html' => [
                         'Charset' => $char_set,
                     'Data' => $this->renderView('reset_password/email.html.twig',["resetToken" => $resetToken]),
+                    ],
+                    'Text' => [
+                        'Charset' => $char_set,
+                        'Data' => $plaintext_body,
+                    ],
+                ],
+                'Subject' => [
+                    'Charset' => $char_set,
+                    'Data' => $subject,
+                ],
+            ],
+           
+        ]);
+
+        // Store the token object in session for retrieval in check-email route.
+        $this->setTokenObjectInSession($resetToken);
+
+        return $this->redirectToRoute('passwordForgotapp_check_email');
+    }
+
+
+     private function processSendingPasswordCreateEmail(TranslatorInterface $translator, SesClient $ses, User $user): RedirectResponse
+    {
+      
+
+       
+     
+        $resetToken = $this->resetPasswordHelper->generateResetToken($user);
+      
+
+        $sender_email = 'no-reply@fedeb.net';
+         $recipient_emails = [$user->getEmail()];
+        $subject = 'Merer - Reset Password';
+        $plaintext_body = 'reset Password' ;
+       
+        $char_set = 'UTF-8';
+        $result = $ses->sendEmail([
+            'Destination' => [
+                'ToAddresses' => $recipient_emails,
+            ],
+            'ReplyToAddresses' => [$sender_email],
+            'Source' => $sender_email,
+            'Message' => [
+                'Body' => [
+                    'Html' => [
+                        'Charset' => $char_set,
+                    'Data' => $this->renderView('reset_password/emailNewUser.html.twig',["resetToken" => $resetToken]),
                     ],
                     'Text' => [
                         'Charset' => $char_set,
