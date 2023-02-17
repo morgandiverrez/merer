@@ -76,7 +76,7 @@ class ChequeBoxController extends AbstractController
                 $nbChartOfAccount = $entityManager->getRepository(ChartOfAccounts::class)->findMaxChartOfAccount(51200)[0]['code'];
                 $chartOfAccount->setCode($nbChartOfAccount + 1);
             } else {
-                $chartOfAccount->setCode(51200);
+                $chartOfAccount->setCode(51201);
             }
             $chequeBox->setChartOfAccounts($chartOfAccount);
             $entityManager->persist($chartOfAccount);
