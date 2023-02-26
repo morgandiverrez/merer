@@ -3,6 +3,7 @@
     <head style="margin: 0; padding: 0;">
         <meta charset="UTF-8">
         {# favicon du site#}
+        <title>{% block title %} Welcome!{% endblock %}</title>
         <link rel="icon" type="png" height="auto" sizes="16x16" href="{{asset('build/images/logo_FEDEB.png')}}">
 
         {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
@@ -32,7 +33,8 @@
 
     </head>
 
-    <body style="height: 100%; width:100%;">
+    <body style="  position: relative;
+  min-height: 100vh;">
         {% block header %}
             <header >
                 <nav height="60" style="background-color:#F0AD42 ;" class="navbar navbar-expand-lg">
@@ -240,8 +242,10 @@
         {% endblock %}
 
         {% block footer %}
-        <br><br><br><br><br><br><br><br>
-            <footer class="sticky-footer"  style="background-color:#F0AD42 ;">
+        <br><br><br><br><br><br><br><br><br><br>
+            <footer class="sticky-footer"  style="  position: absolute;
+  bottom: 0;
+  width: 100%;    background-color:#F0AD42 ;">
                 <div class="container">
                     <div class="text-center mobile-size">
                         <small>© 

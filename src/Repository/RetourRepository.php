@@ -91,9 +91,11 @@ class RetourRepository extends ServiceEntityRepository
     public function findBy2ID($seanceID, $profilID): array
     {
         return $this->createQueryBuilder('retour')
-        ->Where('retour.seance = :seanceID')
+        ->innerJoin("retour.seance", "seance")
+        ->Where('seance.id = :seanceID')
         ->setParameter('seanceID', $seanceID)
-        ->andWhere('seanceProfil.profil = :profilID')
+         ->innerJoin("retour.profil", "profil")
+        ->andWhere('profil.id = :profilID')
         ->setParameter('profilID', $profilID)
         ->getQuery()
         ->getResult();

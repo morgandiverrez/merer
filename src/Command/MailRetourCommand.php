@@ -4,6 +4,8 @@
 namespace App\Command;
 
 use DateTime;
+use App\Entity\Seance;
+use App\Entity\Retour;
 use Aws\Ses\SesClient;
 use Psr\Container\ContainerInterface;
 use Doctrine\ORM\EntityManagerInterface;
@@ -22,9 +24,9 @@ class MailRetourCommand extends Command
     protected $container;
  
     public function setContainer(ContainerInterface $container): ?ContainerInterface
-    {
-        $previous = $this->container;
+    { 
         $this->container = $container;
+        $previous = $this->container;
 
         return $previous;
     }
@@ -34,31 +36,21 @@ class MailRetourCommand extends Command
      */
     protected $entityManager;
 
-    public function setEntityManagerInterface(EntityManagerInterface $entityManager): ?EntityManagerInterface
-    {
-        $previous = $this->entityManager;
-        $this->entityManager = $entityManager;
-
-        return $previous;
-    }
+ 
 
     /**
      * @var SesClient
      */
     protected $ses;
 
-    public function setSesClient(SesClient $ses): ?SesClient
-    {
-        $previous = $this->ses;
-        $this->ses = $ses;
-
-        return $previous;
-    }
+  
     
 
-    public function __construct()
+    public function __construct(EntityManagerInterface $entityManager, SesClient $ses)
     {
-        
+          $this->entityManager = $entityManager;
+          $this->ses = $ses;
+          
 
         parent::__construct();
     }
@@ -71,7 +63,7 @@ class MailRetourCommand extends Command
 
     protected function renderView(string $view, array $parameters = []): string
     {
-        if (!$this->container->has('twig')) {
+        if (! $this->container->has('twig')) {
             throw new \LogicException('You cannot use the "renderView" method if the Twig Bundle is not available. Try running "composer require symfony/twig-bundle".');
         }
 
@@ -80,20 +72,15 @@ class MailRetourCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $output->writeln([
-            'Command Send Self Email',
-            '============'
-        ]);
-
-        $seances = $this->entityManager->getRepository(Seance::class)->findForRetour(new DateTime());
-
+        
+        $seances = $this->entityManager->getRepository(Seance::class)->findAllByYear((new Datetime)->modify(" -1 day"), date("Y-m-d H:i"));
+        
         foreach($seances as $seance){
             foreach($seance->getSeanceProfil() as $seanceProfil){
                 $profil = $seanceProfil->getProfil();
-                if( $this->entityManager->getRepository(Retour::class)->findBy2ID($seance, $profil) == []){
+                if(  $this->entityManager->getRepository(Retour::class)->findBy2ID($seance->getId(), $profil->getId()) == []){
                     $sender_email = 'no-reply@fedeb.net';
                     $recipient_emails = [$profil->getUser()->getEmail()];
-                    $output->writeln('Successful you test');
                     $subject = 'Merer - Retour de formation';
                     $plaintext_body = 'Retour de formation';
                     $char_set = 'UTF-8';
@@ -107,7 +94,10 @@ class MailRetourCommand extends Command
                             'Body' => [
                                 'Html' => [
                                     'Charset' => $char_set,
-                                    'Data' => $this->renderView('emails/retour.html.twig', ["seance" => $seance])
+                                    'Data' => " <p>Bonjour,</p>
+                                                <p>Suite à la formation ".$seance->getName()." du ".$seance->getDateTime()->format('d/m/Y à H:i').".</p>
+                                                <p>Veuillez répondre au formulaire de retour via ce <a href='https://15.236.191.187/retour/new/{{seance.getId()}}'>lien</a>.</p>
+                                                <p>Lien pour vous connecter à la plateforme Merer <a href='https://15.236.191.187/'>Merer - Fédé B</a>.</p>"
                                 ],
                                 'Text' => [
                                     'Charset' => $char_set,
@@ -125,6 +115,7 @@ class MailRetourCommand extends Command
             }
         }
 
-        $output->writeln('Successful you send a self email');
+      
+        return 1;
     }
 }

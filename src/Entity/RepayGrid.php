@@ -35,7 +35,7 @@ class RepayGrid
 
     public function  __toString()
     {
-        return ('de'.$this->getStart().'à'.$this->getEnd().'en'.$this->getTravelMean());
+        return ('de '.$this->getStart().' à '.$this->getEnd().' en '.$this->getTravelMean());
     }
 
     public function getTravelMean(): ?string
