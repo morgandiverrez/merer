@@ -2,12 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\AdministrativeIdentifierRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Faker\Factory;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+use App\Repository\AdministrativeIdentifierRepository;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: AdministrativeIdentifierRepository::class)]
 #[UniqueEntity(fields: ['siret'], message: 'Il y a déjà un identifiant avec ce SIRET')]
@@ -18,7 +19,7 @@ class AdministrativeIdentifier
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
-
+    
     #[ORM\Column(type: Types::BIGINT,unique: true, nullable: true)]
     private ?string $siret = null;
 
