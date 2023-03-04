@@ -22,7 +22,7 @@ class EvenementController extends AbstractController
     #[IsGranted('ROLE_FORMATEURICE')]
     public function showAll(EntityManagerInterface $entityManager, Request $request): Response
     {
-        $evenements = $entityManager->getRepository(Evenement::class)->findAllOrderByDate();
+        $evenements = $entityManager->getRepository(Evenement::class)->findAll();
         if ($request->isMethod('post')) {
             $posts = $request->request->all();
             if ($posts['name']) {
@@ -34,7 +34,7 @@ class EvenementController extends AbstractController
         
            
         }
-        return $this->render('evenement/showAll.html.twig', [
+        return $this->render('login/showAll.html.twig', [
             'evenements' => $evenements,
 
         ]);
