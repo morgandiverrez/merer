@@ -11,18 +11,27 @@ use Psr\Container\ContainerInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Mime\TemplatedEmail;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+#[AsCommand(   
+    name: 'send:email', 
+    description: 'envoi des emails de rappel pour les formations de la journée',
+    hidden: false,
+    aliases: ['send:email']
+)]
 class MailRetourCommand extends Command
 {
-    protected static $defaultName = 'send:email';
+    //protected static $defaultName = 'send:email';
 
     /**
      * @var ContainerInterface
      */
     protected $container;
+
  
+
     public function setContainer(ContainerInterface $container): ?ContainerInterface
     { 
         $this->container = $container;
@@ -45,7 +54,6 @@ class MailRetourCommand extends Command
 
   
     
-
     public function __construct(EntityManagerInterface $entityManager, SesClient $ses)
     {
           $this->entityManager = $entityManager;

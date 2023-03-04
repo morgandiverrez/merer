@@ -120,12 +120,12 @@
                                             <li class="nav-item">
                                                 <a class="nav-link" href="/expenseReport/new"> Demande de NDF </a>
                                             </li>
-                                            {% if is_granted('ROLE_FORMA') %}
+                                            {# {% if is_granted('ROLE_FORMA') %}
                                                 <li><hr class="dropdown-divider"> Espace Tortue </li>
                                                 <li class="nav-item">
                                                     <a class="nav-link" target="_blank" href="/retour/sdf">Générer le fichier SDF </a>
                                                 </li>
-                                            {% endif %}
+                                            {% endif %} #}
                                             {% if is_granted('ROLE_ADMIN') %}
                                                 <li><hr class="dropdown-divider">Espace Admin </li>
                                                 <li class="nav-item">
@@ -242,14 +242,14 @@
         {% endblock %}
 
         {% block footer %}
-        <br><br><br><br><br><br><br><br><br><br>
+        <br><br>
             <footer class="sticky-footer"  style="  position: absolute;
-  bottom: 0;
+  bottom: 0; 
   width: 100%;    background-color:#F0AD42 ;">
                 <div class="container">
                     <div class="text-center mobile-size">
                         <small>© 
-                           <a  href="/mentionlegale">Merer</a> 2023 V1.0
+                           <a  href="/mentionlegale">Merer</a> {{ "now"|date("Y") }} V1.0
                            <a  href="/mentionlegale">mention légale</a>
                         </small>
                     </div>

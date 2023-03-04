@@ -384,6 +384,8 @@ class InscriptionController extends AbstractController
         }
     }
 
+    
+
 } 
 
 
