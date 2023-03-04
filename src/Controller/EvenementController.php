@@ -49,7 +49,7 @@ class EvenementController extends AbstractController
         $evenement = $entityManager->getRepository(Evenement::class)->findById($evenementID)[0];
         
         $seances = $evenement->getSeances(); //on recup tt les seances qui ont un groupe qui commence par la variable groupe
-
+    
         foreach ($seances as $seance) {
             if ($seance->getParcours() != null) {
                 $seanceByCreneauAndParcours[strval($seance->getDatetime()->format("d/m/Y H:i"))][$seance->getParcours()] = $seance;
