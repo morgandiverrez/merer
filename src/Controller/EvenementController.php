@@ -31,10 +31,8 @@ class EvenementController extends AbstractController
             if ($posts['description']) {
                 $evenements = array_intersect($evenements, $entityManager->getRepository(Evenement::class)->findAllByDescription($posts['description']));
             }
-        
-           
         }
-        return $this->render('login/showAll.html.twig', [
+        return $this->render('evenement/showAll.html.twig', [
             'evenements' => $evenements,
 
         ]);
