@@ -66,7 +66,7 @@ class ImpressionController extends AbstractController
 
             $dompdf->set_option('isHtml5ParserEnabled', true);
 
-            $html = $this->renderView('impression/impressionQRCodePDF.html.twig', [
+            $html = $this->renderView('impression/ImpressionQRCodePDF.html.twig', [
                 
                 'qrCodes' => $qrCodes
             ]);
@@ -164,7 +164,7 @@ class ImpressionController extends AbstractController
                     $invoice->setComfirm(false);
                     $invoice->setReady(false);
                     $invoice->setCategory('Impression');
-                    $invoice->setCode('impression mois'.date('m'));
+                    $invoice->setCode(c);
                     $invoice->setCustomer($impression->getCustomer());
                     $invoice->setCreationDate(new Datetime());
                 }
@@ -195,7 +195,7 @@ class ImpressionController extends AbstractController
                 $invoice = new Invoice();
                 $invoice->setExercice($exercice);
                 $invoice->setCategory('Impression');
-                $invoice->setCode('impression direct' . date('d/m/y h:i'));
+                $invoice->setCode('impressionDirect'.$impression->getCustomer()->getName() . date('d/m/y h:i'));
                 $invoice->setCustomer($impression->getCustomer());
                 $invoice->setCreationDate(new Datetime());
                 
@@ -211,39 +211,45 @@ class ImpressionController extends AbstractController
             $entityManager->persist($invoiceLine);
             $entityManager->persist($impression);
             $entityManager->flush();
-
-            $sender_email ='no-reply@fedeb.net';
-            $recipient_emails = [$impression->getCustomer()->getUser()->getEmail()];
-
-            $subject = 'Merer - Nouvelle impression';
-            $plaintext_body = 'Nouvelle impression' ;
-            $char_set = 'UTF-8';
-            $result = $ses->sendEmail([
-                'Destination' => [
-                    'ToAddresses' => $recipient_emails,
-                ],
-                'ReplyToAddresses' => [$sender_email],
-                'Source' => $sender_email,
-                'Message' => [
-                    'Body' => [
-                        'Html' => [
-                            'Charset' => $char_set,
-                            'Data' =>$this->renderView('emails/impression.html.twig',["impression" => $impression])
-                        ],
-                        'Text' => [
-                            'Charset' => $char_set,
-                            'Data' => $plaintext_body,
-                        ],
-                    ],
-                    'Subject' => [
-                        'Charset' => $char_set,
-                        'Data' => $subject,
-                    ],
-                ],
             
-            ]);
+            try{
+                $sender_email ='no-reply@fedeb.net';
+                $recipient_emails = [$impression->getCustomer()->getUser()->getEmail()];
 
-            return $this->redirectToRoute('impression_validation', []);
+                $subject = 'Merer - Nouvelle impression';
+                $plaintext_body = 'Nouvelle impression' ;
+                $char_set = 'UTF-8';
+                $result = $ses->sendEmail([
+                    'Destination' => [
+                        'ToAddresses' => $recipient_emails,
+                    ],
+                    'ReplyToAddresses' => [$sender_email],
+                    'Source' => $sender_email,
+                    'Message' => [
+                        'Body' => [
+                            'Html' => [
+                                'Charset' => $char_set,
+                                'Data' =>$this->renderView('emails/impression.html.twig',["impression" => $impression])
+                            ],
+                            'Text' => [
+                                'Charset' => $char_set,
+                                'Data' => $plaintext_body,
+                            ],
+                        ],
+                        'Subject' => [
+                            'Charset' => $char_set,
+                            'Data' => $subject,
+                        ],
+                    ],
+                
+                ]);
+            }catch(Exception $e){
+
+            }finally{
+                return $this->redirectToRoute('impression_validation', []);
+            }
+
+            
         }
         return $this->render('impression/new.html.twig', [
             'impression' => $impression,
@@ -264,7 +270,7 @@ class ImpressionController extends AbstractController
     public function delete(EntityManagerInterface $entityManager, $impressionId): Response
     {
 
-        $impression = $entityManager->getRepository(Impression::class)->findById($impressionId)[0];
+        $impression = $entityManager->getRepository(Impression::class)->findById($impressionId);
 
         $customers = $entityManager->getRepository(Customer::class)->findAll();
         $i = 0;

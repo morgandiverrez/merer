@@ -4,10 +4,12 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Entity\Profil;
+use Aws\Ses\SesClient;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class LoginController extends AbstractController
@@ -69,5 +71,48 @@ class LoginController extends AbstractController
 
         return $this->redirectToRoute('index');
         
+    }
+
+    #[Route('/support', name: 'support')]
+    public function support(Request $request, SesClient $ses)
+    {
+           if ($request->isMethod('post')) {
+            $posts = $request->request->all();
+
+            $sender_email ='no-reply@fedeb.net';
+                $recipient_emails = ['diverrezm@gmail.com', 'numerique@fedeb.net'];
+
+                $subject = 'Merer - Support';
+                $plaintext_body = 'Support Merer' ;
+                $char_set = 'UTF-8';
+                $result = $ses->sendEmail([
+                    'Destination' => [
+                        'ToAddresses' => $recipient_emails,
+                    ],
+                    'ReplyToAddresses' => [$sender_email],
+                    'Source' => $sender_email,
+                    'Message' => [
+                        'Body' => [
+                            'Html' => [
+                                'Charset' => $char_set,
+                                'Data' =>$this->renderView('emails/support.html.twig',["posts" => $posts])
+                            ],
+                            'Text' => [
+                                'Charset' => $char_set,
+                                'Data' => $plaintext_body,
+                            ],
+                        ],
+                        'Subject' => [
+                            'Charset' => $char_set,
+                            'Data' => $subject,
+                        ],
+                    ],
+                
+                ]);
+            return $this->redirectToRoute('profil_show');
+        }
+
+        return $this->render('login/support.html.twig', [
+        ]);
     }
 }
