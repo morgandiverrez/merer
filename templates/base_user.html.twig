@@ -252,10 +252,11 @@
                            <a  href="/mentionlegale">Merer</a> {{ "now"|date("Y") }} V1.0
                            <a  href="/mentionlegale">mention légale</a>
                         </small>
-                    
-                        <small style="text-align:right;">
+                    {% if is_granted('ROLE_USER') %}
+                        <small >
                            <a  href="/support">support <i class="fa-sharp fa-solid fa-arrow-up-right-from-square"></i></a>
                         </small>
+                    {% endif %}
                     </div>
                 </div>
             </footer> 
