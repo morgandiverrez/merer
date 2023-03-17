@@ -6,10 +6,12 @@ use App\Entity\BP;
 use App\Form\BPType;
 use App\Entity\Exercice;
 use App\Entity\TransactionLine;
+use Symfony\UX\Chartjs\Model\Chart;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
@@ -47,7 +49,7 @@ class BPController extends AbstractController
 
     #[Route('/exercice/{exercice}', name: 'showAll')]
     #[IsGranted('ROLE_TRESO')]
-    public function showAll(EntityManagerInterface $entityManager , Request $request, $exercice): Response
+    public function showAll(ChartBuilderInterface $chartBuilder, EntityManagerInterface $entityManager , Request $request, $exercice): Response
     {
         $bpProduits = $entityManager->getRepository(BP::class)->findAllByExerciceProduit($exercice);
         $totalsProduits = [];
@@ -61,10 +63,51 @@ class BPController extends AbstractController
             $totalsCharges[$charge->getId()] = $entityManager->getRepository(TransactionLine::class)->totalByBP($charge)['total'];
         }
 
-        
+        $comptes6 = $entityManager->getRepository(ChartOfAccounts::class)->findAllByCategorie(60000);
+        $comptes7 = $entityManager->getRepository(ChartOfAccounts::class)->findAllByCategorie(70000);
+        $chart = $chartBuilder->createChart(Chart::TYPE_BAR);
 
+        $datas = array(
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        );
 
-       
+        foreach ($comptes6 as $compte) {
+            if($compte->getExercice()->getAnnee() == intval(date("Y")) )
+            $datas[0][intval(date('m'))] +=  $entityManager->getRepository(ChartOfAccounts::class)->totalByChartOfAccounts($compte->getId());;
+        }
+        foreach ($comptes7 as $compte) {
+            $datas[1][intval(date('m'))] +=  $entityManager->getRepository(ChartOfAccounts::class)->totalByChartOfAccounts($compte->getId());;
+        }
+
+        $chart->setData([
+            'labels' => ['Janvier', 'Fevrier', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Aout', 'Septembre', 'Octobre', 'Novembre', 'Décembre'],            'datasets' => [
+                [
+                    'label' => 'Dépense',
+                    'backgroundColor' => 'red',
+                    'stack' => 'Stack 0',
+                    'data' => $datas[0],
+                ],
+                [
+                    'label' => 'Recette',
+                    'backgroundColor' => 'green',
+                    'stack' => 'Stack 0',
+                    'data' => $datas[1],
+                ],
+
+            ],
+        ]);
+
+        $chart->setOptions([
+            'indexAxis' => 'y',
+            'scales' => [
+                'y' => [
+                    'suggestedMin' => 0,
+                    'suggestedMax' => 100,
+                ],
+            ],
+        ]);
+
         return $this->render('bp/showAll.html.twig', [
             'bpProduits' => $bpProduits,
             'bpCharges' => $bpCharges,
@@ -76,7 +119,7 @@ class BPController extends AbstractController
 
     #[Route('/show/{bpID}', name: 'show')]
     #[IsGranted('ROLE_TRESO')]
-    public function show(EntityManagerInterface $entityManager, $bpID): Response
+    public function show( EntityManagerInterface $entityManager, $bpID): Response
     {
         $bp = $entityManager->getRepository(BP::class)->findById($bpID)[0];
         $total = $entityManager->getRepository(TransactionLine::class)->totalByBP($bp)['total'];
@@ -163,4 +206,6 @@ class BPController extends AbstractController
 
         return $this->redirectToRoute('bp_showAllBPActual');
     }
+
+    
 }

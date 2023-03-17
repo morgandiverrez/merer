@@ -73,6 +73,7 @@ class ChartOfAccountsRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
     public function findAllByCode($value): ?array
     {
         return $this->createQueryBuilder('chartOfAccounts')
@@ -82,6 +83,30 @@ class ChartOfAccountsRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function findAllByCategorie($value): ?array
+    {
+        return $this->createQueryBuilder('chartOfAccounts')
+        ->andWhere('chartOfAccounts.code >= :val1')
+            ->andWhere('chartOfAccounts.code <:val2')
+        ->setParameter('val1',  $value)
+        ->setParameter('val2',  $value + 10000)
+            ->orderBy('chartOfAccounts.code', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function totalByChartOfAccounts($id): array
+    {
+        return $this->createQueryBuilder('ChartOfAccounts')
+        ->innerJoin('ChartOfAccounts.transactionLine', 'transactionLine')
+        ->select(" SUM(transactionLine.amount) as total")
+        ->Where('ChartOfAccounts.id = :id')
+        ->setParameter('id', $id)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
 
     // public function findAllByMovable($value): ?array
     // {
