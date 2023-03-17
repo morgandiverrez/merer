@@ -16,7 +16,7 @@ class ExpenseReportLineType extends AbstractType
     {
         $builder
             ->add('date', DateType::class, ['widget' => 'single_text',])
-            ->add('object')
+            ->add('object',['required' => false,])
             ->add('amount', MoneyType::class)
             ->add('document', FileType::class, [
                 'required' => false,

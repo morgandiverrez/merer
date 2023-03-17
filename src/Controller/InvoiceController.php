@@ -163,6 +163,7 @@ class InvoiceController extends AbstractController
         $transaction = new Transaction();
         $transaction->setExercice($invoice->getExercice());
         $invoice->setTransaction($transaction);
+         $transaction->setQuote('Fac-'.$invoice->getCode());
         if (isset($entityManager->getRepository(Transaction::class)->findMaxDayTransaction(date("Ymd") * 100)[0]['code'])){
             $nbtransaction = $entityManager->getRepository(Transaction::class)->findMaxDayTransaction(date("Ymd") * 100)[0]['code'];
     }
@@ -173,6 +174,7 @@ class InvoiceController extends AbstractController
         $transaction->setClosure(false);
         $transactionline = new TransactionLine();
         $transactionline->setTransaction($transaction);
+        $transactionline->setQuote('Fac-'.$invoice->getCode());
         $transactionline->setDate(new \DateTime());
         $transactionline->setAmount(InvoiceController::invoiceTotale($invoice));
         $transactionline->setLabel("Fact-" . $invoice->getCode());

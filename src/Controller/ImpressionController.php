@@ -132,83 +132,85 @@ class ImpressionController extends AbstractController
           
             $impression->setExercice($exercice);
             $invoiceLine = new InvoiceLine();
-            
-            if($impression->isFactureFinDuMois()){ //si facture fin mois
-                
-                if($impression->getFormat() == 'plastification'){
-                    $impression->setCouleur(false);
-                    $impression->setRectoVerso(false);
-                    $invoiceLine->setCatalogService($entityManager->getRepository(CatalogService::class)->findByCode('plastification'));
-                   
-                } else {
-                    if($impression->isRectoVerso()){
-                        if($impression->isCouleur()){
-                            $invoiceLine->setCatalogService($entityManager->getRepository(CatalogService::class)->findByCode($impression->getFormat().'_RV'.'_couleur'));
-                        }else{
-                            $invoiceLine->setCatalogService($entityManager->getRepository(CatalogService::class)->findByCode($impression->getFormat() . '_RV'));
-                        }
+
+            if($impression->getCustomer()->getName() != 'Fédé B'){
+                if($impression->isFactureFinDuMois()){ //si facture fin mois
+                    
+                    if($impression->getFormat() == 'plastification'){
+                        $impression->setCouleur(false);
+                        $impression->setRectoVerso(false);
+                        $invoiceLine->setCatalogService($entityManager->getRepository(CatalogService::class)->findByCode('plastification'));
+                    
                     } else {
-                        if ($impression->isCouleur()) {
-                            $invoiceLine->setCatalogService($entityManager->getRepository(CatalogService::class)->findByCode($impression->getFormat() .'_R' . '_couleur'));
+                        if($impression->isRectoVerso()){
+                            if($impression->isCouleur()){
+                                $invoiceLine->setCatalogService($entityManager->getRepository(CatalogService::class)->findByCode($impression->getFormat().'_RV'.'_couleur'));
+                            }else{
+                                $invoiceLine->setCatalogService($entityManager->getRepository(CatalogService::class)->findByCode($impression->getFormat() . '_RV'));
+                            }
                         } else {
-                            $invoiceLine->setCatalogService($entityManager->getRepository(CatalogService::class)->findByCode($impression->getFormat() . '_R'));
+                            if ($impression->isCouleur()) {
+                                $invoiceLine->setCatalogService($entityManager->getRepository(CatalogService::class)->findByCode($impression->getFormat() .'_R' . '_couleur'));
+                            } else {
+                                $invoiceLine->setCatalogService($entityManager->getRepository(CatalogService::class)->findByCode($impression->getFormat() . '_R'));
+                            }
                         }
                     }
-                }
-                $invoice = $entityManager->getRepository(Invoice::class)->findCurrentInvoiceImpressionOfCustomer($impression->getCustomer());
+                    $invoice = $entityManager->getRepository(Invoice::class)->findCurrentInvoiceImpressionOfCustomer($impression->getCustomer());
+                    
+                    if($invoice == Null){
+                        $invoice = new Invoice();
+                        $invoice->setExercice($exercice);
+                        $invoice->setAcquitted(false);
+                        $invoice->setComfirm(false);
+                        $invoice->setReady(false);
+                        $invoice->setCategory('Impression');
+                        $invoice->setCode(c);
+                        $invoice->setCustomer($impression->getCustomer());
+                        $invoice->setCreationDate(new Datetime());
+                    }
                 
-                if($invoice == Null){
+                }else{ // donc facture direct 
+                    $invoiceLine = new InvoiceLine();
+                    
+                    if ($impression->getFormat() == 'plastification') {
+                        $impression->setCouleur(false);
+                        $impression->setRectoVerso(false);
+                        $invoiceLine->setCatalogService($entityManager->getRepository(CatalogService::class)->findByCode('plastification'));
+                    } else {
+                        if ($impression->isRectoVerso()) {
+                            if ($impression->isCouleur()) {
+                                $invoiceLine->setCatalogService($entityManager->getRepository(CatalogService::class)->findByCode($impression->getFormat() . 'RV' . 'couleur'));
+                            } else {
+                                $invoiceLine->setCatalogService($entityManager->getRepository(CatalogService::class)->findByCode($impression->getFormat() . 'RV'));
+                            }
+                        } else {
+                            if ($impression->isCouleur()) {
+                                $invoiceLine->setCatalogService($entityManager->getRepository(CatalogService::class)->findByCode($impression->getFormat() . 'R' . 'couleur'));
+                            } else {
+                                $invoiceLine->setCatalogService($entityManager->getRepository(CatalogService::class)->findByCode($impression->getFormat() . 'R'));
+                            }
+                        }
+                    }
+
                     $invoice = new Invoice();
                     $invoice->setExercice($exercice);
+                    $invoice->setCategory('Impression');
+                    $invoice->setCode('impressionDirect'.$impression->getCustomer()->getName() . date('d/m/y h:i'));
+                    $invoice->setCustomer($impression->getCustomer());
+                    $invoice->setCreationDate(new Datetime());
+                    
                     $invoice->setAcquitted(false);
                     $invoice->setComfirm(false);
                     $invoice->setReady(false);
-                    $invoice->setCategory('Impression');
-                    $invoice->setCode(c);
-                    $invoice->setCustomer($impression->getCustomer());
-                    $invoice->setCreationDate(new Datetime());
+                    
                 }
-              
-            }else{ // donc facture direct 
-                $invoiceLine = new InvoiceLine();
-                
-                if ($impression->getFormat() == 'plastification') {
-                    $impression->setCouleur(false);
-                    $impression->setRectoVerso(false);
-                    $invoiceLine->setCatalogService($entityManager->getRepository(CatalogService::class)->findByCode('plastification'));
-                } else {
-                    if ($impression->isRectoVerso()) {
-                        if ($impression->isCouleur()) {
-                            $invoiceLine->setCatalogService($entityManager->getRepository(CatalogService::class)->findByCode($impression->getFormat() . 'RV' . 'couleur'));
-                        } else {
-                            $invoiceLine->setCatalogService($entityManager->getRepository(CatalogService::class)->findByCode($impression->getFormat() . 'RV'));
-                        }
-                    } else {
-                        if ($impression->isCouleur()) {
-                            $invoiceLine->setCatalogService($entityManager->getRepository(CatalogService::class)->findByCode($impression->getFormat() . 'R' . 'couleur'));
-                        } else {
-                            $invoiceLine->setCatalogService($entityManager->getRepository(CatalogService::class)->findByCode($impression->getFormat() . 'R'));
-                        }
-                    }
-                }
-
-                $invoice = new Invoice();
-                $invoice->setExercice($exercice);
-                $invoice->setCategory('Impression');
-                $invoice->setCode('impressionDirect'.$impression->getCustomer()->getName() . date('d/m/y h:i'));
-                $invoice->setCustomer($impression->getCustomer());
-                $invoice->setCreationDate(new Datetime());
-                
-                $invoice->setAcquitted(false);
-                $invoice->setComfirm(false);
-                $invoice->setReady(false);
-                
+                 $impression->setInvoice($invoice);
+                $invoiceLine->setInvoice($invoice);
+                $entityManager->persist($invoice);
+                $entityManager->persist($invoiceLine);
             }
-            $impression->setInvoice($invoice);
-            $invoiceLine->setInvoice($invoice);
-
-            $entityManager->persist($invoice);
-            $entityManager->persist($invoiceLine);
+           
             $entityManager->persist($impression);
             $entityManager->flush();
             

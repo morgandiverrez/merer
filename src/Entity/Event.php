@@ -22,7 +22,7 @@ class Event
     private ?string $name = null;
 
     #[ORM\Column(unique: true)]
-    private ?int $code = null;
+    private ?string $code = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $startDate = null;
@@ -77,12 +77,12 @@ class Event
         return $this;
     }
 
-    public function getCode(): ?int
+    public function getCode(): ?string
     {
         return $this->code;
     }
 
-    public function setCode(int $code): self
+    public function setCode(string $code): self
     {
         $this->code = $code;
 

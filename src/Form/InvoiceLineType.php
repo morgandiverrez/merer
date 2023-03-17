@@ -17,13 +17,19 @@ class InvoiceLineType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('discount', MoneyType::class)
-            ->add('quote', TextAreaType::class)
+            ->add('discount', MoneyType::class,[
+                'required' => false
+            ])
+            ->add('quote', TextAreaType::class, [
+                'required' => false,
+            ])
             ->add('catalogDiscount',  EntityType::class, [
             'class' => CatalogDiscount::class,
+            'required' => false,
         ])
             ->add('catalogService',  EntityType::class, [
             'class' => CatalogService::class,
+            'required' => false,
         ])
         ;
     }
