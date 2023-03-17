@@ -39,12 +39,14 @@ class Impression
     private $invoice;
 
     #[ORM\ManyToOne(inversedBy: 'impressions')]
-    #[ORM\JoinColumn(nullable: false)]
     private ?Customer $customer = null;
 
     #[ORM\ManyToOne(inversedBy: 'impressions')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Exercice $exercice = null;
+
+    #[ORM\ManyToOne(inversedBy: 'impression')]
+    private ?Event $event = null;
 
     public function  __toString()
     {
@@ -173,6 +175,18 @@ class Impression
     public function setExercice(?Exercice $exercice): self
     {
         $this->exercice = $exercice;
+
+        return $this;
+    }
+
+    public function getEvent(): ?Event
+    {
+        return $this->event;
+    }
+
+    public function setEvent(?Event $event): self
+    {
+        $this->event = $event;
 
         return $this;
     }

@@ -49,9 +49,13 @@ class Event
     #[ORM\ManyToOne(inversedBy: 'events')]
     private ?FinancementLine $financementLine = null;
 
+    #[ORM\OneToMany(mappedBy: 'event', targetEntity: impression::class)]
+    private Collection $impression;
+
     public function __construct()
     {
         $this->transactions = new ArrayCollection();
+        $this->impression = new ArrayCollection();
     }
 
     public function  __toString()
@@ -199,6 +203,36 @@ class Event
     public function setFinancementLine(?FinancementLine $financementLine): self
     {
         $this->financementLine = $financementLine;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, impression>
+     */
+    public function getImpression(): Collection
+    {
+        return $this->impression;
+    }
+
+    public function addImpression(impression $impression): self
+    {
+        if (!$this->impression->contains($impression)) {
+            $this->impression->add($impression);
+            $impression->setEvent($this);
+        }
+
+        return $this;
+    }
+
+    public function removeImpression(impression $impression): self
+    {
+        if ($this->impression->removeElement($impression)) {
+            // set the owning side to null (unless already changed)
+            if ($impression->getEvent() === $this) {
+                $impression->setEvent(null);
+            }
+        }
 
         return $this;
     }

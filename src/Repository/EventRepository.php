@@ -3,6 +3,8 @@
 namespace App\Repository;
 
 use App\Entity\Event;
+
+use App\Entity\Exercice;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -69,6 +71,17 @@ class EventRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('event')
         ->andWhere('event.name LIKE :val')
         ->setParameter('val', '%' . $value . '%')
+            ->orderBy('event.startDate', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
+     public function findAllByExercice( $value): ?array
+    {
+        return $this->createQueryBuilder('event')
+        ->innerJoin('event.exercice', 'exercice')
+        ->andWhere('exercice.annee LIKE :val')
+        ->setParameter('val',  $value )
             ->orderBy('event.startDate', 'DESC')
             ->getQuery()
             ->getResult();

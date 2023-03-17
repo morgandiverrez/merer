@@ -8,10 +8,12 @@ use Dompdf\Options;
 use Aws\Ses\SesClient;
 use App\Entity\Invoice;
 use App\Entity\Customer;
+use App\Entity\Event;
 use App\Entity\Exercice;
 use App\Entity\Impression;
 use Endroid\QrCode\QrCode;
 use App\Entity\InvoiceLine;
+use App\Form\ImpressionForBFType;
 use App\Form\ImpressionType;
 use Endroid\QrCode\Logo\Logo;
 use App\Entity\CatalogService;
@@ -83,6 +85,8 @@ class ImpressionController extends AbstractController
         
     }
 
+
+   
 
     #[Route('/', name: 'showAll')]
     #[IsGranted('ROLE_BF')]
@@ -254,6 +258,45 @@ class ImpressionController extends AbstractController
             
         }
         return $this->render('impression/new.html.twig', [
+            'impression' => $impression,
+            'form' => $form->createView(),
+
+        ]);
+    }
+
+
+     #[Route('/newForBF', name: 'newForBF')]
+      #[IsGranted('ROLE_BF')]
+    public function newForBF(EntityManagerInterface $entityManager, Request $request): Response
+    {
+        $exercice = $entityManager->getRepository(Exercice::class)->findOneByAnnee(intval(date('Y')));
+
+        if (!$exercice) {
+            $exercice = new Exercice();
+            $exercice->setAnnee(intval(date('Y')));
+            $entityManager->persist($exercice);
+            $entityManager->flush();
+        }
+        $impression = new Impression();
+        $form = $this->createForm(ImpressionForBFType::class, $impression, ['liste_event' =>  $entityManager->getRepository(Event::class)->findAllByExercice($exercice->getAnnee())]);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            
+            $impression->setDatetime(new DateTime());
+          
+            $impression->setExercice($exercice);
+    
+            $entityManager->persist($impression);
+            $entityManager->flush();
+            
+          
+            return $this->redirectToRoute('impression_validation', []);
+            
+
+            
+        }
+        return $this->render('impression/newForBF.html.twig', [
             'impression' => $impression,
             'form' => $form->createView(),
 
