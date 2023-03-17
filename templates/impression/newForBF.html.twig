@@ -1,27 +1,26 @@
 {% extends 'base_user.html.twig' %}
 
-{% block title %}Nouvelle impression{% endblock %}
+{% block title %}Nouvelle impression en interne{% endblock %}
 
 {% block body %}
     <div class="container-fluid">
         <div style = "margin-left: auto ; margin-right: auto ; max-width : 900px;">
             <p class="display-6 no-wrap text-center">Enregistrer une nouvelle impression</p>
-             {% if is_granted('ROLE_BF') %}
-                <br>
-                <p class="display-6 no-wrap text-center"> 
-                    <a class="btn btn-primary" href="/impression/newForBF">Nouvelle impression en interne (projet BF)</a> 
-                </p>
-            {% endif %}
+            <br>
+            <p class="display-6 no-wrap text-center"> 
+                <a class="btn btn-primary" href="/impression/new">Nouvelle impression pour les associations</a> 
+            </p>
+      
             <div class="form-control form-control-lg mx-auto corps text-center">
                 {{ form_start(form) }}
                 <div class="mx-auto mt-5 mb-5">
 
 
-                    <div class="customer my-5">
-                        {{ form_label(form.customer, 'Client (ex : association) ', {'label_attr': {'class': 'foo'}}) }}
-                        {{ form_errors(form.customer) }}
-                        {{ form_widget(form.customer) }}
-                        {{ form_help(form.customer) }}
+                    <div class="event my-5">
+                        {{ form_label(form.event, 'Projet ', {'label_attr': {'class': 'foo'}}) }}
+                        {{ form_errors(form.event) }}
+                        {{ form_widget(form.event) }}
+                        {{ form_help(form.event) }}
                     </div>
 
                     <div class="name my-5">
@@ -59,12 +58,7 @@
                         {{ form_help(form.quantite) }}
                     </div>
 
-                    <div class="factureFinDuMois my-5">
-                        {{ form_label(form.factureFinDuMois, ' Souhaites tu avoir une facture globale à la fin du mois ?', {'label_attr': {'class': 'foo'}}) }}
-                        {{ form_errors(form.factureFinDuMois) }}
-                        {{ form_widget(form.factureFinDuMois) }}
-                        {{ form_help(form.factureFinDuMois) }}
-                    </div>
+                  
 
             
                 
