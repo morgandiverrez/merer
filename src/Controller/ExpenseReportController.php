@@ -328,6 +328,7 @@ class ExpenseReportController extends AbstractController
         $transaction = new Transaction();
         $transaction->setExercice($expenseReport->getExercice());
         $expenseReport->setTransaction($transaction);
+        $transaction->setQuote('NDF-'.$expenseReport->getCode());
         if (isset($entityManager->getRepository(Transaction::class)->findMaxDayTransaction(date("Ymd") * 100)[0]['code'])) {
             $nbtransaction = $entityManager->getRepository(Transaction::class)->findMaxDayTransaction(date("Ymd") * 100)[0]['code'];
         } else {
@@ -338,6 +339,7 @@ class ExpenseReportController extends AbstractController
 
 
         $transactionline = new TransactionLine();
+        $transactionline->setQuote('NDF-'.$expenseReport->getCode());
         $transactionline->setTransaction($transaction);
         $transactionline->setDate(new \DateTime());
         $transactionline->setAmount(ExpenseReportController::expenseReportTotale($expenseReport));

@@ -37,7 +37,7 @@ class EventType extends AbstractType
             'date_widget' => 'single_text',
             'time_widget' => 'single_text',
         ])
-            ->add('description', TextareaType::class)
+            ->add('description', TextareaType::class, ['required' => false,])
             ->add('location' ,  EntityType::class, [
             'class' => Location::class,
         ])

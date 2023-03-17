@@ -96,14 +96,17 @@ class ChartOfAccountsRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    public function totalByChartOfAccounts($id): array
+    public function totalByChartOfAccounts($id ): array
     {
         return $this->createQueryBuilder('ChartOfAccounts')
-        ->innerJoin('ChartOfAccounts.transactionLine', 'transactionLine')
-        ->select(" SUM(transactionLine.amount) as total")
+        ->innerJoin('ChartOfAccounts.transactionLines', 'transactionLines')
+         ->innerJoin('transactionLines.transaction', 'transaction')
+         ->innerJoin('transaction.exercice', 'exercice')
+        ->select(" SUM(transactionLines.amount) as total")
         ->Where('ChartOfAccounts.id = :id')
+         
         ->setParameter('id', $id)
-            ->getQuery()
+             ->getQuery()
             ->getOneOrNullResult();
     }
 

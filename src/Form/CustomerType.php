@@ -24,6 +24,7 @@ class CustomerType extends AbstractType
             ->add('impressionAccess')
             ->add('location', EntityType::class, [
             'class' => Location::class,
+            'required' =>false,
         ])
             ->add('administrativeIdentifier', EntityType::class, [
                 'required' => false,

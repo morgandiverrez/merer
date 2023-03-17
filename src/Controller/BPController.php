@@ -14,6 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Entity\ChartOfAccounts;
 
 
 #[Route('/bp', name: 'bp_')]
@@ -73,15 +74,16 @@ class BPController extends AbstractController
         );
 
         foreach ($comptes6 as $compte) {
-            if($compte->getExercice()->getAnnee() == intval(date("Y")) )
-            $datas[0][intval(date('m'))] +=  $entityManager->getRepository(ChartOfAccounts::class)->totalByChartOfAccounts($compte->getId());;
+           
+            $datas[0][intval(date('m'))] +=  $entityManager->getRepository(ChartOfAccounts::class)->totalByChartOfAccounts($compte->getId())['total'];
         }
         foreach ($comptes7 as $compte) {
-            $datas[1][intval(date('m'))] +=  $entityManager->getRepository(ChartOfAccounts::class)->totalByChartOfAccounts($compte->getId());;
+            $datas[1][intval(date('m'))] +=  $entityManager->getRepository(ChartOfAccounts::class)->totalByChartOfAccounts($compte->getId())['total'];
         }
 
         $chart->setData([
-            'labels' => ['Janvier', 'Fevrier', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Aout', 'Septembre', 'Octobre', 'Novembre', 'Décembre'],            'datasets' => [
+            'labels' => ['Janvier', 'Fevrier', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Aout', 'Septembre', 'Octobre', 'Novembre', 'Décembre'],          
+              'datasets' => [
                 [
                     'label' => 'Dépense',
                     'backgroundColor' => 'red',
@@ -99,13 +101,19 @@ class BPController extends AbstractController
         ]);
 
         $chart->setOptions([
-            'indexAxis' => 'y',
-            'scales' => [
-                'y' => [
-                    'suggestedMin' => 0,
-                    'suggestedMax' => 100,
-                ],
-            ],
+            'indexAxis' => 'x',
+    "responsive"=>true,
+    "plugins"=>[
+      "legend"=>[
+        "position"=>'top',
+      ],
+      "title"=>[
+        "display"=>true,
+        "text"=>''
+      ]
+    ]
+
+            
         ]);
 
         return $this->render('bp/showAll.html.twig', [
@@ -114,6 +122,7 @@ class BPController extends AbstractController
             'totalsProduits' => $totalsProduits,
             'totalsCharges' => $totalsCharges,
             'exercice' => $exercice,
+            'chart' => $chart,
         ]);
     }
 
