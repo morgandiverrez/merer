@@ -78,8 +78,8 @@ class FundBoxController extends AbstractController
              $chartOfAccount = new ChartOfAccounts;
              $chartOfAccount->setMovable(true);
             $chartOfAccount->setName('fundBox_'.$form->get('name')->getData());
-           if (isset($entityManager->getRepository(ChartOfAccounts::class)->findMaxChartOfAccount(53000)[0])) {
-                $nbChartOfAccount = $entityManager->getRepository(ChartOfAccounts::class)->findMaxChartOfAccount(53000)[0]['code'];
+           if (isset($entityManager->getRepository(ChartOfAccounts::class)->findMaxChartOfAccount(5300000)[0])) {
+                $nbChartOfAccount = $entityManager->getRepository(ChartOfAccounts::class)->findMaxChartOfAccount(5300000)[0]['code'];
                 $chartOfAccount->setCode($nbChartOfAccount + 1);
             } else {
                 $chartOfAccount->setCode(53001);

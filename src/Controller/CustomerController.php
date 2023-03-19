@@ -2,12 +2,13 @@
 
 namespace App\Controller;
 
-use App\Entity\Customer;
 use App\Entity\Contact;
+use App\Entity\Customer;
+use App\Entity\Supplier;
 use App\Entity\ChequeBox;
 use App\Form\CustomerType;
-use App\Entity\ChartOfAccounts;
 use App\Form\ChequeBoxType;
+use App\Entity\ChartOfAccounts;
 use App\Controller\InvoiceController;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Controller\ExpenseReportController;
@@ -159,7 +160,7 @@ class CustomerController extends AbstractController
         $customer->setUser($user);
         $supplier->setCustomer($customer);
         $customer->addContact($contact);
-        $supplier->addContact($contact);
+        $supplier->setContact($contact);
         
         $contact->setMail($user->getEmail());
         if($user->getProfil()){
@@ -183,15 +184,15 @@ class CustomerController extends AbstractController
             $contact->setPhone($profil->getTelephone());
         }
           
-        $chartOfAccount->setName('customer_'.$customer->getName());
-        $chartOfAccount->setMovable(true);
+        $chartOfAccounts->setName('customer_'.$customer->getName());
+        $chartOfAccounts->setMovable(true);
         if (isset($entityManager->getRepository(ChartOfAccounts::class)->findMaxChartOfAccount(41100)[0])) {
             $nbChartOfAccount = $entityManager->getRepository(ChartOfAccounts::class)->findMaxChartOfAccount(41100)[0]['code'];
-            $chartOfAccount->setCode($nbChartOfAccount + 1);
+            $chartOfAccounts->setCode($nbChartOfAccount + 1);
         } else {
-            $chartOfAccount->setCode(41100);
+            $chartOfAccounts->setCode(4110000);
         }
-        $customer->setChartOfAccounts($chartOfAccount);
+        $customer->setChartOfAccounts($chartOfAccounts);
 
         $chartOfAccounts2->setName('supplier_'.$supplier->getName());
         $chartOfAccounts2->setMovable(true);
@@ -199,9 +200,9 @@ class CustomerController extends AbstractController
             $nbChartOfAccount = $entityManager->getRepository(ChartOfAccounts::class)->findMaxChartOfAccount(40000)[0]['code'];
             $chartOfAccounts2->setCode($nbChartOfAccount + 1);
         } else {
-            $chartOfAccount->setCode(40000);
+            $chartOfAccounts2->setCode(4000000);
         }
-        $supplier->setChartOfAccounts($chartOfAccount2);
+        $supplier->setChartOfAccounts($chartOfAccounts2);
 
         $entityManager->persist($user);
         $entityManager->persist($customer);

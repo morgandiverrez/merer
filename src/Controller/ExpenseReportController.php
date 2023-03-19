@@ -6,7 +6,7 @@ use DateTime;
 use Dompdf\Dompdf;
 use Dompdf\Options;
 use Aws\Ses\SesClient;
-use App\Entity\Customer;
+use App\Entity\Supplier;
 use App\Entity\Exercice;
 use Endroid\QrCode\QrCode;
 use App\Entity\Transaction;
@@ -64,17 +64,11 @@ class ExpenseReportController extends AbstractController
     {
 
         $expenseReport = $entityManager->getRepository(ExpenseReport::class)->findById($expenseReportID)[0];
-        $customers = $entityManager->getRepository(Customer::class)->findAll();
-        $i = 0;
-        while (!isset($customer) and isset($customers[$i])) {
-            if ($customers[$i]->getUser() == $this->getUser()) {
-                $customer = $customers[$i];;
-            }
-            $i++;
-        }
+        $customer = $this->getUser()->getCustomer();
+        
 
 
-        if (($customer == $expenseReport->getCustomer() or $this->isGranted("ROLE_TRESO")) and !$expenseReport->isComfirm()) {
+        if (($customer == $expenseReport->getSupplier()->getCustomer() or $this->isGranted("ROLE_TRESO")) and !$expenseReport->isComfirm()) {
             $entityManager->remove($expenseReport);
             $entityManager->flush();
             if($this->isGranted("ROLE_TRESO")){
@@ -202,7 +196,7 @@ class ExpenseReportController extends AbstractController
        
 
         
-        if (($customer == $expenseReport->getCustomer() or $this->isGranted("ROLE_TRESO")) and !$expenseReport->isComfirm()) {
+        if (($customer == $expenseReport->getSupplier()->getCustomer() or $this->isGranted("ROLE_TRESO")) and !$expenseReport->isComfirm()) {
             
             $form = $this->createForm(ExpenseReportType::class, $expenseReport);
             $form->handleRequest($request);
@@ -211,7 +205,7 @@ class ExpenseReportController extends AbstractController
             if ($form->isSubmitted() && $form->isValid()) {
                
                 $expenseReport->setDate(new DateTime());
-                $expenseReport->setCustomer($customer);
+                $expenseReport->setSupplier($customer->getSupplier());
                
                 foreach ($expenseReport->getExpenseReportLines() as $expenseReportLine) {
                     $entityManager->persist($expenseReportLine);
@@ -306,7 +300,7 @@ class ExpenseReportController extends AbstractController
          $user = $this->getUser();
         $customer = $user->getCustomer();
         $expenseReport = $entityManager->getRepository(ExpenseReport::class)->findExpenseReportById($expenseReportID);
-        if ($customer == $expenseReport->getCustomer() or $this->isGranted("ROLE_TRESO")) {
+        if ($customer == $expenseReport->getSupplier()->getCustomer() or $this->isGranted("ROLE_TRESO")) {
         return $this->render('expense_report/show.html.twig', [
             'expenseReport' => $expenseReport,
         ]);
@@ -352,7 +346,7 @@ class ExpenseReportController extends AbstractController
         $entityManager->flush();
 
                 $sender_email = 'no-reply@fedeb.net';
-        $recipient_emails = [$expenseReport->getCustomer()->getUser()->getEmail()];
+        $recipient_emails = [$expenseReport->getSupplier()->getCustomer()->getUser()->getEmail()];
 
         $subject = 'Merer - Confirmation NDF';
         $plaintext_body = 'Confirmation NDF' ;

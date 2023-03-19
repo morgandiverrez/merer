@@ -72,8 +72,8 @@ class ChequeBoxController extends AbstractController
             $chartOfAccount = new ChartOfAccounts;
             $chartOfAccount->setName('chequeBox_'.$form->get('name')->getData());
             $chartOfAccount->setMovable(true);
-           if (isset($entityManager->getRepository(ChartOfAccounts::class)->findMaxChartOfAccount(51200)[0])) {
-                $nbChartOfAccount = $entityManager->getRepository(ChartOfAccounts::class)->findMaxChartOfAccount(51200)[0]['code'];
+           if (isset($entityManager->getRepository(ChartOfAccounts::class)->findMaxChartOfAccount(5120000)[0])) {
+                $nbChartOfAccount = $entityManager->getRepository(ChartOfAccounts::class)->findMaxChartOfAccount(5120000)[0]['code'];
                 $chartOfAccount->setCode($nbChartOfAccount + 1);
             } else {
                 $chartOfAccount->setCode(51201);
