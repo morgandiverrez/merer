@@ -102,16 +102,17 @@ class ExpenseReportController extends AbstractController
         $form = $this->createForm(ExpenseReportType::class, $expenseReport);
         $form->handleRequest($request);
 
-
         $customer = $this->getUser()->getCustomer();
         if( ! $customer){
            $customer = (new CustomerController)->newCustomerForUser(  $entityManager, $user);
         }
 
+        $supplier = $customer->getSupplier();
+
         if ($form->isSubmitted() && $form->isValid()) {
       
             $expenseReport->setDate( new DateTime());
-            $expenseReport->setCustomer($customer);
+            $expenseReport->setSupplier($supplier);
             if (isset($entityManager->getRepository(ExpenseReport::class)->findMaxDayExpenseReport(date("Ymd") * 100)[0])) {
                 $nbtransaction = $entityManager->getRepository(ExpenseReport::class)->findMaxDayExpenseReport(date("Ymd") * 100)[0]['code'];
                 $expenseReport->setCode($nbtransaction + 1);
@@ -134,7 +135,7 @@ class ExpenseReportController extends AbstractController
             }
 
             $entityManager->persist($expenseReport);
-            $entityManager->persist($customer);
+            $entityManager->persist($supplier);
             $entityManager->flush();
 
             $expenseReport = $entityManager->getRepository(ExpenseReport::class)->findExpenseReportByCode($expenseReport->getCode());

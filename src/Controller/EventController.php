@@ -6,6 +6,7 @@ use App\Entity\Event;
 use App\Form\EventType;
 use App\Entity\Exercice;
 use App\Entity\TransactionLine;
+use App\Controller\ImpressionController;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -50,11 +51,16 @@ class EventController extends AbstractController
         foreach($event->getTransactions() as $transaction ){
             $totalTransaction[$transaction->getId()] = $entityManager->getRepository(TransactionLine::class)->totalByTransaction($transaction->getId())['total'];
         }
+        $totalImpression = [];
+        foreach($event->getImpressions() as $impression ){
+            $totalImpression[$impression->getId()] =(new ImpressionController)->impressionTotale( $entityManager, $impression->getId());
+        }
 
         return $this->render('event/show.html.twig', [
             'event' => $event,
             'total' => $total,
             'totalTransaction' => $totalTransaction,
+             'totalImpression' => $totalImpression
 
         ]);
     }

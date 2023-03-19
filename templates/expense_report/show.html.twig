@@ -27,7 +27,7 @@
                         </li>
                         <li class="list-group-item"> {{expenseReport.getDate().format('d/m/y h:i')}}  </li>
                         {% if is_granted('ROLE_TRESO') %}
-                            <li class="list-group-item">Client : <a href="/customer/show/{{ expenseReport.getCustomer().getId() }}" class="card-link"> {{expenseReport.getCustomer().getName()}} </a> </li>
+                            <li class="list-group-item">Fournisseur : <a href="/supplier/show/{{ expenseReport.getSupplier().getId() }}" class="card-link"> {{expenseReport.getSupplier().getName()}} </a> </li>
                             <li class="list-group-item">Transaction : {% if expenseReport.getTransaction() != null %}<a href="/transaction/show/{{ expenseReport.transaction.getId() }}" class="card-link"> {{expenseReport.getTransaction().getCode()}} </a>{% endif %}</li>
                        {% endif %}
                       
@@ -62,22 +62,22 @@
                 </thead>
 
                 <tbody> 
-                {% set totalAmount = 0 %}
-                {% for expenseReportRouteLine in expenseReport.expenseReportRouteLines %} 
-                    <tr>
-                        <td>{{expenseReportRouteLine.date.format('d/m/y hh:ii')}} </td>
-                        <td> {% if expenseReportRouteLine.repayGrid %} {{expenseReportRouteLine.repayGrid.start }} {% else %} {{expenseReportRouteLine.start}} {% endif %}</td>
-                        <td> {% if expenseReportRouteLine.repayGrid %} {{expenseReportRouteLine.repayGrid.end }} {% else %} {{expenseReportRouteLine.end}} {% endif %}</td>
-                        <td> {% if expenseReportRouteLine.repayGrid %} {{expenseReportRouteLine.repayGrid.distance }} {% else %} {{expenseReportRouteLine.distance}} {% endif %}</td>
-                        <td> {% if expenseReportRouteLine.repayGrid %} {{expenseReportRouteLine.repayGrid.travelMean }} {% else %} {{expenseReportRouteLine.travelMean}} {% endif %}</td>
-                        <td> {% if expenseReportRouteLine.repayGrid %} {{expenseReportRouteLine.repayGrid.amount }} € {% else %} {{expenseReportRouteLine.amount}} €{% endif %}</td>
-                        {% if expenseReportRouteLine.repayGrid %} {% set totalAmount = totalAmount + expenseReportRouteLine.repayGrid.amount %} {% else %}  {% set totalAmount = totalAmount + expenseReportRouteLine.amount %}  {% endif %}
-                        {% if  expenseReport.comfirm == false  %}
-                        <td><a href="/expenseReportRouteLine/edit/{{expenseReport.id}}/{{ expenseReportRouteLine.getId()}}" class="card-link"><i class="fa-solid fa-pen-to-square"></i></a></td>
-                        <td><a href="/expenseReportRouteLine/delete/{{ expenseReportRouteLine.getId()}}" class="card-link"><i class="fa-solid fa-trash-can"></i></a></td>
-                        {% endif %}
-                    </tr>
-                {% endfor %}
+                    {% set totalAmount = 0 %}
+                    {% for expenseReportRouteLine in expenseReport.expenseReportRouteLines %} 
+                        <tr>
+                            <td>{{expenseReportRouteLine.date.format('d/m/y hh:ii')}} </td>
+                            <td> {% if expenseReportRouteLine.repayGrid %} {{expenseReportRouteLine.repayGrid.start }} {% else %} {{expenseReportRouteLine.start}} {% endif %}</td>
+                            <td> {% if expenseReportRouteLine.repayGrid %} {{expenseReportRouteLine.repayGrid.end }} {% else %} {{expenseReportRouteLine.end}} {% endif %}</td>
+                            <td> {% if expenseReportRouteLine.repayGrid %} {{expenseReportRouteLine.repayGrid.distance }} {% else %} {{expenseReportRouteLine.distance}} {% endif %}</td>
+                            <td> {% if expenseReportRouteLine.repayGrid %} {{expenseReportRouteLine.repayGrid.travelMean }} {% else %} {{expenseReportRouteLine.travelMean}} {% endif %}</td>
+                            <td> {% if expenseReportRouteLine.repayGrid %} {{expenseReportRouteLine.repayGrid.amount }} € {% else %} {{expenseReportRouteLine.amount}} €{% endif %}</td>
+                            {% if expenseReportRouteLine.repayGrid %} {% set totalAmount = totalAmount + expenseReportRouteLine.repayGrid.amount %} {% else %}  {% set totalAmount = totalAmount + expenseReportRouteLine.amount %}  {% endif %}
+                            {% if  expenseReport.comfirm == false  %}
+                            <td><a href="/expenseReportRouteLine/edit/{{expenseReport.id}}/{{ expenseReportRouteLine.getId()}}" class="card-link"><i class="fa-solid fa-pen-to-square"></i></a></td>
+                            <td><a href="/expenseReportRouteLine/delete/{{ expenseReportRouteLine.getId()}}" class="card-link"><i class="fa-solid fa-trash-can"></i></a></td>
+                            {% endif %}
+                        </tr>
+                    {% endfor %}
                 </tbody>
                 <tfoot>
                     <tr> 

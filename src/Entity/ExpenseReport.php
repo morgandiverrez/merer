@@ -33,7 +33,7 @@ class ExpenseReport
 
     #[ORM\ManyToOne(inversedBy: 'expenseReports')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Customer $customer = null;
+    private ?Supplier $supplier = null;
 
     #[ORM\Column]
     private ?bool $comfirm = false;
@@ -114,14 +114,14 @@ class ExpenseReport
         return $this;
     }
 
-    public function getCustomer(): ?Customer
+    public function getSupplier(): ?Supplier
     {
-        return $this->customer;
+        return $this->supplier;
     }
 
-    public function setCustomer(?Customer $customer): self
+    public function setSupplier(?Supplier $supplier): self
     {
-        $this->customer = $customer;
+        $this->supplier = $supplier;
 
         return $this;
     }

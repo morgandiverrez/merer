@@ -37,7 +37,7 @@
                         <tr>
                             <td>{{ expenseReport.code }}</td>
                             <td>{{ expenseReport.date.format('d/m/y') }}</td>
-                            <td>{{ expenseReport.customer.name }}</td>
+                            <td>{{ expenseReport.supplier.name }}</td>
                             <td>
                             {% if expenseReport.comfirm == FALSE %}
                                 <a href="/expenseReport/comfirm/{{ expenseReport.iD }}" >

@@ -35,7 +35,7 @@
                     </div>
                 </div>
             </div>
-             <p class="display-6 no-wrap text-center">Liste des transactions de cette Evènement </p>
+             <p class="display-6 no-wrap text-center">Liste des transactions de ce projet </p>
             <table class="table table-striped">
                 <thead>
                     <tr>
@@ -47,6 +47,7 @@
                     </tr>
                 </thead>
                 <tbody>
+                     {% set totalAmount = 0 %}
                     {% for transaction in event.getTransactions() %} 
                         <tr>
                             <td>{{transaction.code}}</td>
@@ -57,10 +58,55 @@
                             {% endif %}
                             <td>{{transaction.quote}}</td>
                              <td>{{totalTransaction[transaction.getId()]}} €</td>
+                             {% set totalAmount = totalAmount + totalTransaction[transaction.getId()] %} 
                             <td><a href="/transaction/show/{{ transaction.id }}"><i class = "fa-solid fa-eye"></i></a></td>
                         </tr> 
                     {% endfor %}
                 </tbody>
+                 <tfoot>
+                    <tr> 
+                        <th> </th>
+                        <th> </th>
+                         <th> </th>
+                        <th>{{ totalAmount }} € </th>
+                       <th> </th>
+                    </tr>
+                </tfoot>
+            </table>
+            <br>
+             <p class="display-6 no-wrap text-center">Liste des impressions de ce projet </p>
+             <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">Horrodataire</th>
+                        <th scope="col">imprimeur</th>
+                        <th scope="col">format</th>
+                        <th scope="col">quantité</th>
+                         <th scope="col">prix</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                 {% set totalAmount = 0 %}
+                {% for impression in event.getImpressions() %} 
+                    <tr>
+                        <td>{{impression.getDatetime().format("d/m/Y H:i")}}</td>
+                        <td>{{impression.getName()}}</td>
+                        <td>{{impression.getFormat()}}{% if impression.isRectoVerso() %} RV {% endif %} {% if impression.isCouleur() %} Couleur {% else %} NB {% endif %} </td>
+                        <td>{{impression.getQuantite()}}</td>
+                        <td> {{totalImpression[impression.getId()]}}€</td>
+                          {% set totalAmount = totalAmount + totalImpression[impression.getId()] %} </tr>
+                {% endfor %}
+                </tbody>
+                 <tfoot>
+                    <tr> 
+                        <th> </th>
+                         <th> </th>
+                         <th> </th>
+                         <th> </th>
+                        <th>{{ totalAmount }} € </th>
+                    </tr>
+                </tfoot>
             </table>
         </div>
     </div>

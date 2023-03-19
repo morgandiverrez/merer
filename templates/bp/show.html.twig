@@ -38,6 +38,7 @@
                             </tr>
                         </thead>
                         <tbody>
+                            {% set totalAmount = 0 %}
                             {% for transaction in bp.getTransactions() %} 
                                 <tr>
                                     <td>{{transaction.code}}</td>
@@ -48,12 +49,24 @@
                                     {% endif %}
                                     <td>{{transaction.quote}}</td>
                                      <td>{{totalsTransactions[transaction.id()]}} €</th>
+                                      {% set totalAmount = totalAmount + totalImpression[transaction.getId()] %} </tr>
                                     <td><a href="/transaction/show/{{ transaction.id }}"><i class = "fa-solid fa-eye"></i></a></td>
                                 </tr> 
                             {% endfor %}
                         </tbody>
+                        <tfoot>
+                            <tr> 
+                                <th> </th>
+                                <th> </th>
+                                <th> </th>
+                                <th> </th>
+                                <th> </th>
+                                <th>{{ totalAmount }} € </th>
+                            </tr>
+                        </tfoot>
                     </table>
-                </div> 
+                 </div>  
+            </div> 
         </div>
     </div>
 
