@@ -99,8 +99,8 @@ class ExpenseReportRepository extends ServiceEntityRepository
     public function findAllByDemandeur($value): ?array
     {
         return $this->createQueryBuilder('expenseReport')
-            ->innerJoin('expenseReport.customer', 'customer')
-        ->andWhere('customer.name LIKE :val')
+            ->innerJoin('expenseReport.supplier', 'supplier')
+        ->andWhere('supplier.name LIKE :val')
         ->setParameter('val', '%' . $value . '%')
             ->orderBy('expenseReport.date', 'DESC')
             ->getQuery()
