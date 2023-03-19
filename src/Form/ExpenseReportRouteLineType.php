@@ -22,9 +22,9 @@ class ExpenseReportRouteLineType extends AbstractType
                 'label' => 'selectionner un trajet habituel',
                 'required' => false,
             ])
-            ->add('start',['required' => false,])
-            ->add('end',['required' => false,])
-            ->add('distance',['required' => false,])
+            ->add('start')
+            ->add('end')
+            ->add('distance')
             ->add( 'travelMean', ChoiceType::class, [
             'choices' => [
                 'voiture' => 'voiture',

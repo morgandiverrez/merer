@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Entity\User;
+use App\Entity\Invoice;
 use App\Entity\Contact;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\CustomerRepository;
@@ -32,7 +33,6 @@ class Customer
     #[ORM\ManyToOne(inversedBy: 'customers')]
     private ?AdministrativeIdentifier $administrativeIdentifier = null;
 
-
     #[ORM\ManyToMany(targetEntity: Contact::class, mappedBy: 'customer')]
     private Collection $contacts;
 
@@ -42,14 +42,14 @@ class Customer
     #[ORM\Column( nullable: true)]
     private ?bool $impressionAccess = false;
 
-    #[ORM\OneToMany(mappedBy: 'customer', targetEntity: ExpenseReport::class)]
-    private Collection $expenseReports;
-
     #[ORM\OneToOne(mappedBy: 'customer', cascade: ['persist', 'remove'])]
     private ?User $user = null;
 
     #[ORM\OneToMany(mappedBy: 'customer', targetEntity: BankDetail::class, orphanRemoval: true)]
     private Collection $bankDetails;
+
+    #[ORM\OneToOne(mappedBy: 'customer', cascade: ['persist', 'remove'])]
+    private ?Supplier $supplier = null;
 
  
 
@@ -58,7 +58,6 @@ class Customer
         $this->invoices = new ArrayCollection();
         $this->contacts = new ArrayCollection();
         $this->impressions = new ArrayCollection();
-        $this->expenseReports = new ArrayCollection();
         $this->bankDetails = new ArrayCollection();
     }
 
@@ -223,35 +222,7 @@ class Customer
         return $this;
     }
 
-    /**
-     * @return Collection<int, ExpenseReport>
-     */
-    public function getExpenseReports(): Collection
-    {
-        return $this->expenseReports;
-    }
 
-    public function addExpenseReport(ExpenseReport $expenseReport): self
-    {
-        if (!$this->expenseReports->contains($expenseReport)) {
-            $this->expenseReports->add($expenseReport);
-            $expenseReport->setCustomer($this);
-        }
-
-        return $this;
-    }
-
-    public function removeExpenseReport(ExpenseReport $expenseReport): self
-    {
-        if ($this->expenseReports->removeElement($expenseReport)) {
-            // set the owning side to null (unless already changed)
-            if ($expenseReport->getCustomer() === $this) {
-                $expenseReport->setCustomer(null);
-            }
-        }
-
-        return $this;
-    }
 
     public function getUser(): ?User
     {
@@ -301,6 +272,28 @@ class Customer
                 $bankDetail->setCustomer(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getSupplier(): ?Supplier
+    {
+        return $this->supplier;
+    }
+
+    public function setSupplier(?Supplier $supplier): self
+    {
+        // unset the owning side of the relation if necessary
+        if ($supplier === null && $this->supplier !== null) {
+            $this->supplier->setCustomer(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($supplier !== null && $supplier->getCustomer() !== $this) {
+            $supplier->setCustomer($this);
+        }
+
+        $this->supplier = $supplier;
 
         return $this;
     }

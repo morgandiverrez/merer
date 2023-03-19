@@ -128,29 +128,30 @@
                 <br>
                 <br>
                 <br>
-                <p class="display-6 no-wrap text-center mb-5">Liste de mes notes de frais 
-                        <a href="/expenseReport/new"><i class="fa-solid fa-plus align-left"></i></a>
-                </p>
-                <table class="table table-striped">
-                    <thead>
-                    <tr>
-                        <th scope="col">Date</th>
-                        <th scope="col">Motif</th>
-                        <th scope="col">Détails</th>
-                    </tr>
-                    </thead>
-
-                    <tbody>
-                    {% for expenseReport in app.user.customer.getExpenseReports() %} 
+                {% if app.user.customer is not null %}
+                    <p class="display-6 no-wrap text-center mb-5">Liste de mes notes de frais 
+                            <a href="/expenseReport/new"><i class="fa-solid fa-plus align-left"></i></a>
+                    </p>
+                    <table class="table table-striped">
+                        <thead>
                         <tr>
-                            <td>{{ expenseReport.date.format('d/m/y') }}</td>
-                            <td>{{ expenseReport.motif }}</td>
-                            <td><a href="/expenseReport/show/{{ expenseReport.iD }}" ><i class = "fa-solid fa-eye"></i></a></td>
-                        </tr> 
-                    {% endfor %}
-                    </tbody>
-                </table>
-                
+                            <th scope="col">Date</th>
+                            <th scope="col">Motif</th>
+                            <th scope="col">Détails</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        {% for expenseReport in app.user.customer.supplier.getExpenseReports() %} 
+                            <tr>
+                                <td>{{ expenseReport.date.format('d/m/y') }}</td>
+                                <td>{{ expenseReport.motif }}</td>
+                                <td><a href="/expenseReport/show/{{ expenseReport.iD }}" ><i class = "fa-solid fa-eye"></i></a></td>
+                            </tr> 
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                {% endif %}
                 <br>
                 <br>
                 <br>

@@ -40,9 +40,14 @@ class Contact
     #[ORM\ManyToOne]
     private ?Location $Location = null;
 
+   #[ORM\ManyToMany(targetEntity: Supplier::class, inversedBy: 'contacts')]
+    private Collection $supplier;
+
+
     public function __construct()
     {
         $this->customer = new ArrayCollection();
+        $this->supplier = new ArrayCollection();
     }
 
     public function  __toString()
@@ -148,6 +153,36 @@ class Contact
     public function setLocation(?Location $Location): self
     {
         $this->Location = $Location;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Supplier>
+     */
+    public function getSupplier(): Collection
+    {
+        return $this->supplier;
+    }
+
+    public function addSupplier(Supplier $supplier): self
+    {
+        if (!$this->supplier->contains($supplier)) {
+            $this->supplier->add($supplier);
+            $supplier->setContact($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSupplier(Supplier $supplier): self
+    {
+        if ($this->supplier->removeElement($supplier)) {
+            // set the owning side to null (unless already changed)
+            if ($supplier->getContact() === $this) {
+                $supplier->setContact(null);
+            }
+        }
 
         return $this;
     }

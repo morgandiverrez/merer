@@ -29,9 +29,20 @@ class Supplier
     #[ORM\Column(unique: true, length: 255)]
     private ?string $name = null;
 
+    #[ORM\OneToOne(inversedBy: 'supplier', cascade: ['persist', 'remove'])]
+    private ?Customer $customer = null;
+
+    #[ORM\ManyToMany(targetEntity: Contact::class, mappedBy: 'supplier')]
+    private Collection $contacts;
+
+    #[ORM\OneToMany(mappedBy: 'supplier', targetEntity: ExpenseReport::class)]
+    private Collection $expenseReports;
+
+    
+
     public function __construct()
     {
-        $this->administrativeIdentifiers = new ArrayCollection();
+        $this->expenseReports = new ArrayCollection();
     }
 
     public function  __toString()
@@ -90,6 +101,60 @@ class Supplier
     public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    public function getCustomer(): ?Customer
+    {
+        return $this->customer;
+    }
+
+    public function setCustomer(?Customer $customer): self
+    {
+        $this->customer = $customer;
+
+        return $this;
+    }
+
+    public function getContact(): ?Contact
+    {
+        return $this->contact;
+    }
+
+    public function setContact(?Contact $contact): self
+    {
+        $this->contact = $contact;
+
+        return $this;
+    }
+
+     /**
+     * @return Collection<int, ExpenseReport>
+     */
+    public function getExpenseReports(): Collection
+    {
+        return $this->expenseReports;
+    }
+
+    public function addExpenseReport(ExpenseReport $expenseReport): self
+    {
+        if (!$this->expenseReports->contains($expenseReport)) {
+            $this->expenseReports->add($expenseReport);
+            $expenseReport->setCustomer($this);
+        }
+
+        return $this;
+    }
+
+    public function removeExpenseReport(ExpenseReport $expenseReport): self
+    {
+        if ($this->expenseReports->removeElement($expenseReport)) {
+            // set the owning side to null (unless already changed)
+            if ($expenseReport->getCustomer() === $this) {
+                $expenseReport->setCustomer(null);
+            }
+        }
 
         return $this;
     }

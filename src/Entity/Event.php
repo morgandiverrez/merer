@@ -50,12 +50,12 @@ class Event
     private ?FinancementLine $financementLine = null;
 
     #[ORM\OneToMany(mappedBy: 'event', targetEntity: impression::class)]
-    private Collection $impression;
+    private Collection $impressions;
 
     public function __construct()
     {
         $this->transactions = new ArrayCollection();
-        $this->impression = new ArrayCollection();
+        $this->impressions = new ArrayCollection();
     }
 
     public function  __toString()
@@ -208,17 +208,17 @@ class Event
     }
 
     /**
-     * @return Collection<int, impression>
+     * @return Collection<int, impressions>
      */
-    public function getImpression(): Collection
+    public function getImpressions(): Collection
     {
-        return $this->impression;
+        return $this->impressions;
     }
 
     public function addImpression(impression $impression): self
     {
-        if (!$this->impression->contains($impression)) {
-            $this->impression->add($impression);
+        if (!$this->impressions->contains($impression)) {
+            $this->impressions->add($impression);
             $impression->setEvent($this);
         }
 

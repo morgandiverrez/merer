@@ -36,7 +36,7 @@
                 <thead>
                     <tr>
                         <th scope="col">Horrodataire</th>
-                        <th scope="col">Structure</th>
+                        <th scope="col">Structure / Projet</th>
                         <th scope="col">imprimeur</th>
                         <th scope="col">Format</th>
                         <th scope="col">Quantité</th>
@@ -48,7 +48,17 @@
                 {% for impression in impressions %} 
                     <tr>
                         <td>{{impression.getDatetime().format("d/m/Y H:i")}}</td>
-                        <td>{{impression.getCustomer().getName()}}</td>   
+                        <td>{% if impression.getCustomer() %}
+                             <a href="/customer/show/{{impression.getCustomer().getId()}}">
+                                {{ impression.customer.getId() }} 
+                            </a>
+                            {% else %}
+                            <a href="/event/show/{{impression.getEvent().getId()}}">
+                                 {{ impression.getEvent().getName() }}
+                            </a>
+                             {% endif %}
+                            
+                        </td>   
                         <td>{{impression.getName()}}</td>
                         <td>{{impression.getFormat()}}{% if impression.isRectoVerso() %} RV {% endif %} {% if impression.isCouleur() %} Couleur {% else %} NB {% endif %} </td>
                         <td>{{impression.getQuantite()}}</td>
