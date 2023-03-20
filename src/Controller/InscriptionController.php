@@ -288,10 +288,22 @@ class InscriptionController extends AbstractController
         return $this->redirectToRoute('seance_liste_inscrit', ['seanceID' => $seanceID]);
     }
 
+    #[Route('/QRCodeEventGen/{evenementID}', name: 'qrcodeEvent')]
+    #[IsGranted('ROLE_BF')]
+    public function qrCodeEvent(EntityManagerInterface $entityManager, $evenementID)
+    {$seances = $entityManager->getRepository(Seance::class)->findAllSuperiorByDatetimeAndVisibleAndWithoutEvenement(date('y/m/d H:i:s'));
+      
+        $evenement = $entityManager->getRepository(Evenement::class)->findById($evenementID)[0];
+        $seance = $evenement->getSeances()[0];
+        return $this->redirectToRoute('inscription_qrcode', ['seanceID' => $seance->getId() ]);
+    }
+
+
     #[Route('/QRCodeGen/{seanceID}', name: 'qrcode')]
     #[IsGranted('ROLE_BF')]
     public function qrCode(EntityManagerInterface $entityManager, $seanceID)
-    {
+    {$seances = $entityManager->getRepository(Seance::class)->findAllSuperiorByDatetimeAndVisibleAndWithoutEvenement(date('y/m/d H:i:s'));
+      
         $seance = $entityManager->getRepository(Seance::class)->findByID($seanceID)[0];
         if (empty($seance->getEvenement())) {
             $writer = new PngWriter();

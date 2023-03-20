@@ -462,7 +462,8 @@ class RetourController extends AbstractController
     #[Route('/QRCodeEventGen/{evenementID}', name: 'qrcodeEvent')]
     #[IsGranted('ROLE_FORMATEURICE')]
     public function qrCodeEvent(EntityManagerInterface $entityManager, $evenementID)
-    {
+    {   $seances = $entityManager->getRepository(Seance::class)->findAllSuperiorByDatetimeAndVisibleAndWithoutEvenement(date('y/m/d H:i:s'));
+      
         $evenement = $entityManager->getRepository(Evenement::class)->findById($evenementID)[0];
 
         $writer = new PngWriter();

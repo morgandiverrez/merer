@@ -15,6 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
+
 #[Route('/evenement', name: 'evenement_')]
 class EvenementController extends AbstractController
 {
@@ -22,7 +23,10 @@ class EvenementController extends AbstractController
     #[IsGranted('ROLE_FORMATEURICE')]
     public function showAll(EntityManagerInterface $entityManager, Request $request): Response
     {
-        $evenements = $entityManager->getRepository(Evenement::class)->findAll();
+        
+        $seances = $entityManager->getRepository(Seance::class)->findAllSuperiorByDatetimeAndVisibleAndWithoutEvenement(date('y/m/d H:i:s'));
+      
+        $evenements = $entityManager->getRepository(Evenement::class)->findAllOrderByDate();
         if ($request->isMethod('post')) {
             $posts = $request->request->all();
             if ($posts['name']) {
@@ -42,6 +46,7 @@ class EvenementController extends AbstractController
     #[IsGranted('ROLE_USER')]
     public function show(EntityManagerInterface $entityManager, $evenementID): Response
     {
+          $seances = $entityManager->getRepository(Seance::class)->findAllSuperiorByDatetimeAndVisibleAndWithoutEvenement(date('y/m/d H:i:s'));
         $seanceByCreneauAndParcours = [];
 
         $evenement = $entityManager->getRepository(Evenement::class)->findById($evenementID)[0];
@@ -155,7 +160,8 @@ class EvenementController extends AbstractController
     #[Route('/edit/{evenementID}', name: 'edit')]
     #[IsGranted('ROLE_BF')]
     public function edit(EntityManagerInterface $entityManager, Request $request, $evenementID, SesClient $ses): Response
-    {
+    { $seances = $entityManager->getRepository(Seance::class)->findAllSuperiorByDatetimeAndVisibleAndWithoutEvenement(date('y/m/d H:i:s'));
+      
         $evenement = $entityManager->getRepository(Evenement::class)->findById($evenementID)[0];
        
 
@@ -244,7 +250,8 @@ class EvenementController extends AbstractController
     #[Route('/visible/{evenementID}', name: 'cloture')]
     #[IsGranted('ROLE_FORMA')]
     public function visible(EntityManagerInterface $entityManager, $evenementID): Response
-    {
+    {  $seances = $entityManager->getRepository(Seance::class)->findAllSuperiorByDatetimeAndVisibleAndWithoutEvenement(date('y/m/d H:i:s'));
+       
         $evenement = $entityManager->getRepository(Evenement::class)->findById($evenementID)[0];
         $evenement->setVisible(true);
         $entityManager->persist($evenement);
@@ -255,7 +262,8 @@ class EvenementController extends AbstractController
     #[Route('/unvisible/{evenementID}', name: 'uncloture')]
     #[IsGranted('ROLE_FORMA')]
     public function unvisible(EntityManagerInterface $entityManager, $evenementID): Response
-    {
+    {  $seances = $entityManager->getRepository(Seance::class)->findAllSuperiorByDatetimeAndVisibleAndWithoutEvenement(date('y/m/d H:i:s'));
+       
         $evenement = $entityManager->getRepository(Evenement::class)->findById($evenementID)[0];
         $evenement->setVisible(false);
         $entityManager->persist($evenement);

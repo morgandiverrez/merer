@@ -53,11 +53,11 @@
                             {% if is_granted('ROLE_BF')%}
                                 <td>
                                     {% if evenement.visible == FALSE %}
-                                        <a href="/evenement/visible/{{ evenement.iD }}" >
+                                        <a href="/evenement/visible/{{ evenement.getId() }}" >
                                             <i class="fa-sharp fa-solid fa-circle-xmark" style="color: red;" ></i>
                                         </a>
                                     {% else %}
-                                        <a href="/evenement/unvisible/{{ evenement.iD }}" >
+                                        <a href="/evenement/unvisible/{{ evenement.getId() }}" >
                                             <i class="fa-sharp fa-solid fa-circle-check" style="color: green;"></i>
                                         </a>
                                     {% endif %}
