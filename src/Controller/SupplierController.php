@@ -65,8 +65,8 @@ class SupplierController extends AbstractController
             $chartOfAccount = new ChartOfAccounts;
             $chartOfAccount->setName('supplier_'.$form->get('name')->getData());
             $chartOfAccount->setMovable(true);
-           if (isset($entityManager->getRepository(ChartOfAccounts::class)->findMaxChartOfAccount(400000)[0])) {
-                $nbChartOfAccount = $entityManager->getRepository(ChartOfAccounts::class)->findMaxChartOfAccount(400000)[0]['code'];
+           if (isset($entityManager->getRepository(ChartOfAccounts::class)->findMaxChartOfAccount(4000000)[0])) {
+                $nbChartOfAccount = $entityManager->getRepository(ChartOfAccounts::class)->findMaxChartOfAccount(4000000)[0]['code'];
                 $chartOfAccount->setCode($nbChartOfAccount + 1);
             } else {
                 $chartOfAccount->setCode(4000000);

@@ -32,10 +32,12 @@ class EvenementType extends AbstractType
             ->add( 'dateFin', DateTimeType::class, [
             'date_widget' => 'single_text',
             'time_widget' => 'single_text',
+             'required' => false,
         ])
             ->add( 'dateFinInscription', DateTimeType::class, [
             'date_widget' => 'single_text',
             'time_widget' => 'single_text',
+             'required' => false,
         ])
             ->add('URL')
             ->add('autorisationPhoto')
@@ -52,6 +54,7 @@ class EvenementType extends AbstractType
             ->add('parcoursObligatoire')
             ->add('lieu', EntityType::class, [
                 'class'=> Lieux::class,
+                 'required' => false,
             ])
 
             ->add('seances',
@@ -64,7 +67,9 @@ class EvenementType extends AbstractType
                     'by_reference' => false,
                     'entry_options' => [
                         'parcours' => $options['parcours_event'],
-                    ]
+                    ],
+                     'required' => false,
+
                 ]
             )
         ;

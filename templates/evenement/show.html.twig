@@ -32,7 +32,7 @@
                        </li>
                          {% if is_granted('ROLE_FORMATEURICE') %}
                             {% if  evenement.visible %}
-                                <li class="list-group-item"> QR code inscription : <a href="/inscription/QRCodeGen/{{  (evenement.getSeances()|slice(0)).getId()}}" class="card-link"><i class="fa-solid fa-qrcode"></a></i> 
+                                <li class="list-group-item"> QR code inscription : <a href="/inscription/QRCodeEventGen/{{evenement.getId()}}" class="card-link"><i class="fa-solid fa-qrcode"></a></i> 
                                 <li class="list-group-item"> QR code retour : <a href="/retour/QRCodeEventGen/{{evenement.getId()}}" class="card-link"><i class="fa-solid fa-qrcode"></a></i>
                              {% endif %}
                         {% endif %}
@@ -75,18 +75,19 @@
                                         <td colspan="{{length}}" >
                                                 <div class="card" style="width: 18rem;">
                                                 <div class=" card-body ">
-                                                    <h5 class="card-title">{{formation[parcours].getFormation().getName()}}</h5>
-                                                    <p class="card-text">{{formation[parcours].getFormation().getDescription()}}</p>
-                                                    <p class="card-text">OPG :{{formation[parcours].getFormation().getOpg()}}</p>
+                                                    <h5 class="card-title">{% if formation[parcours].getFormation() %} {{formation[parcours].getFormation().getName()}} {% endif %} </h5>
+                                                    <p class="card-text">{% if formation[parcours].getFormation() %} {{formation[parcours].getFormation().getDescription()}} {% endif %} </p>
+                                                    <p class="card-text">OPG :{% if formation[parcours].getFormation() %} {{formation[parcours].getFormation().getOpg()}} {% endif %} </p>
                                                 </div>
                                                 <ul class="list-group list-group-flush">
-                                                    <li class="list-group-item">Pré-requis : {{formation[parcours].getFormation().getPreRequis()}}</li>
-                                                    <li class="list-group-item">Durée : {% if formation[parcours].getFormation().getDuration() is null %}0 {% else %} {{formation[parcours].getFormation().getDuration().format("H:i")}} {% endif %} </li>
-                                                    <li class="list-group-item">Public Cible : {{formation[parcours].getFormation().getPublicCible()}}</li>
-                                                    {% if formation[parcours].getFormation().getBadge() is not null and formation[parcours].getFormation().getBadge().getImage() %}
-                                                        <li class="list-group-item"> <img  src="{{asset(formation[parcours].getFormation().badge.getImage())}}" alt="image de {{formation[parcours].getFormation().badge.getName()}}" ></li>
-                                                    {% endif %}                 
-                                                    
+                                                    <li class="list-group-item">Pré-requis : {% if formation[parcours].getFormation() %} {{formation[parcours].getFormation().getPreRequis()}} {% endif %} </li>
+                                                    <li class="list-group-item">Durée :{% if formation[parcours].getFormation() %} {% if formation[parcours].getFormation().getDuration() is null %}0 {% else %} {{formation[parcours].getFormation().getDuration().format("H:i")}} {% endif %} {% endif %}</li>
+                                                    <li class="list-group-item">Public Cible : {% if formation[parcours].getFormation() %} {{formation[parcours].getFormation().getPublicCible()}} {% endif %} </li>
+                                                     {% if formation[parcours].getFormation() %}  
+                                                        {% if formation[parcours].getFormation().getBadge() is not null and formation[parcours].getFormation().getBadge().getImage() %}
+                                                            <li class="list-group-item"> <img  src="{{asset(formation[parcours].getFormation().badge.getImage())}}" alt="image de {{formation[parcours].getFormation().badge.getName()}}" ></li>
+                                                        {% endif %}                 
+                                                    {% endif %}  
                                                 </ul>        
                                             </div>
                                         </td >

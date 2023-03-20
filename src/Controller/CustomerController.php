@@ -104,11 +104,11 @@ class CustomerController extends AbstractController
             $chartOfAccount = new ChartOfAccounts;
             $chartOfAccount->setName('customer_'.$form->get('name')->getData());
             $chartOfAccount->setMovable(true);
-           if (isset($entityManager->getRepository(ChartOfAccounts::class)->findMaxChartOfAccount(41100)[0])) {
-                $nbChartOfAccount = $entityManager->getRepository(ChartOfAccounts::class)->findMaxChartOfAccount(41100)[0]['code'];
+           if (isset($entityManager->getRepository(ChartOfAccounts::class)->findMaxChartOfAccount(4110000)[0])) {
+                $nbChartOfAccount = $entityManager->getRepository(ChartOfAccounts::class)->findMaxChartOfAccount(4110000)[0]['code'];
                 $chartOfAccount->setCode($nbChartOfAccount + 1);
             } else {
-                $chartOfAccount->setCode(41100);
+                $chartOfAccount->setCode(4110000);
             }
             $customer->setChartOfAccounts($chartOfAccount);
             $entityManager->persist($chartOfAccount);
@@ -186,8 +186,8 @@ class CustomerController extends AbstractController
           
         $chartOfAccounts->setName('customer_'.$customer->getName());
         $chartOfAccounts->setMovable(true);
-        if (isset($entityManager->getRepository(ChartOfAccounts::class)->findMaxChartOfAccount(41100)[0])) {
-            $nbChartOfAccount = $entityManager->getRepository(ChartOfAccounts::class)->findMaxChartOfAccount(41100)[0]['code'];
+        if (isset($entityManager->getRepository(ChartOfAccounts::class)->findMaxChartOfAccount(4110000)[0])) {
+            $nbChartOfAccount = $entityManager->getRepository(ChartOfAccounts::class)->findMaxChartOfAccount(4110000)[0]['code'];
             $chartOfAccounts->setCode($nbChartOfAccount + 1);
         } else {
             $chartOfAccounts->setCode(4110000);
@@ -196,8 +196,8 @@ class CustomerController extends AbstractController
 
         $chartOfAccounts2->setName('supplier_'.$supplier->getName());
         $chartOfAccounts2->setMovable(true);
-        if (isset($entityManager->getRepository(ChartOfAccounts::class)->findMaxChartOfAccount(40000)[0])) {
-            $nbChartOfAccount = $entityManager->getRepository(ChartOfAccounts::class)->findMaxChartOfAccount(40000)[0]['code'];
+        if (isset($entityManager->getRepository(ChartOfAccounts::class)->findMaxChartOfAccount(4000000)[0])) {
+            $nbChartOfAccount = $entityManager->getRepository(ChartOfAccounts::class)->findMaxChartOfAccount(4000000)[0]['code'];
             $chartOfAccounts2->setCode($nbChartOfAccount + 1);
         } else {
             $chartOfAccounts2->setCode(4000000);
