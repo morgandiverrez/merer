@@ -30,6 +30,13 @@
                      <a href="/discount/new" target="_blank"><i class="fa-sharp fa-solid fa-circle-plus"></i></button></a>
                 </div>
 
+                <div class="quantity">
+                    {{ form_label(form.quantity, 'Quantité ', {'label_attr': {'class': 'foo'}}) }}
+                    {{ form_errors(form.quantity) }}
+                    {{ form_widget(form.quantity)}}
+                    {{ form_help(form.quantity) }}
+                </div>
+
                 <div class="catalogService my-5">
                     {{ form_label(form.catalogService, 'Service ', {'label_attr': {'class': 'foo'}}) }}
                     {{ form_errors(form.catalogService) }}

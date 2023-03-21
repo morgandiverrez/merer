@@ -28,6 +28,9 @@ class InvoiceLine
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $quote = null;
 
+    #[ORM\Column(type: 'float', precision: 10, scale: 0, nullable: false)]
+    private ?float $quantity = 1;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -94,6 +97,18 @@ class InvoiceLine
     public function setQuote(?string $quote): self
     {
         $this->quote = $quote;
+
+        return $this;
+    }
+
+    public function getQuantity(): ?float
+    {
+        return $this->quantity;
+    }
+
+    public function setQuantity(float $quantity): self
+    {
+        $this->quantity = $quantity;
 
         return $this;
     }
