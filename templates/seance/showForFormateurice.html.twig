@@ -28,31 +28,32 @@
                          <li class="list-group-item"> QR code inscription : <a href="/inscription/QRCodeGen/{{seance.getId()}}" class="card-link"><i class="fa-solid fa-qrcode"></a></i>
                          <li class="list-group-item"> QR code retour : <a href="/retour/QRCodeGen/{{seance.getId()}}" class="card-link"><i class="fa-solid fa-qrcode"></a></i>
                     </ul>  
-                   
                 </div>
             </div>
              <br>
             {# début information formation #}
-            <h2 class="display-8 no-wrap text-center mb-5"> Details Formation </h2>
-            <div class=" d-flex text-center justify-content-evenly">
-                 <div class="card justify-content-start" style="width: 18rem;">
-                    <div class=" card-body ">
-                        <p class="card-text">{{seance.formation.getDescription()}}</p>
-                        <p class="card-text">OPG :{{seance.formation.getOpg()}}</p>
-                    </div>
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item">Pré-requis : {{seance.formation.getPreRequis()}}</li>
-                        <li class="list-group-item">Durée : {% if seance.formation.getDuration() is null %}0 {% else %} {{seance.formation.getDuration().format("H:i")}} {% endif %} </li>
-                        <li class="list-group-item">Public Cible : {{seance.formation.getPublicCible()}}</li>                         
-                    </ul>
-                    
-                    {% if is_granted('ROLE_BF')%}
-                        <div class="card-body">
-                            <a href="/catalogue/edit/{{ seance.formation.getId() }}" class="card-link"><i class="fa-solid fa-pen-to-square"></i></a>
+            {% if seance.formation %}
+                <h2 class="display-8 no-wrap text-center mb-5"> Details Formation </h2>
+                <div class=" d-flex text-center justify-content-evenly">
+                    <div class="card justify-content-start" style="width: 18rem;">
+                        <div class=" card-body ">
+                            <p class="card-text">{{seance.formation.getDescription()}}</p>
+                            <p class="card-text">OPG :{{seance.formation.getOpg()}}</p>
                         </div>
-                    {% endif %}
-                </div>
-            </div> 
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">Pré-requis : {{seance.formation.getPreRequis()}}</li>
+                            <li class="list-group-item">Durée : {% if seance.formation.getDuration() is null %}0 {% else %} {{seance.formation.getDuration().format("H:i")}} {% endif %} </li>
+                            <li class="list-group-item">Public Cible : {{seance.formation.getPublicCible()}}</li>                         
+                        </ul>
+                        
+                        {% if is_granted('ROLE_BF')%}
+                            <div class="card-body">
+                                <a href="/catalogue/edit/{{ seance.formation.getId() }}" class="card-link"><i class="fa-solid fa-pen-to-square"></i></a>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div> 
+             {% endif %}
              {# fin information formation #}
             <br>
             {# début information lieux #}
@@ -114,6 +115,7 @@
     <footer class="d-flex justify-content-center" >
         {% if is_granted('ROLE_BF')%}
             <a  class="btn btn-primary" href="/seance/edit/{{seance.getId()}}">Modifier la Seance</i></a>
+            <a class="btn btn-primary"  href="/seance/delete/{{seance.getId()}}">Supprimé</a>
         {% endif %}
         <br>    
         <br>

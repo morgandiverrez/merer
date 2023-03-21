@@ -53,9 +53,9 @@
                         {% set verif = true %}
                     {% endif %}
                     <tr> 
-                        <td>{{seance.getDatetime().format("d/m/Y H:i")}}</td>
+                        <td>{% if seance.getDatetime()  %}{{seance.getDatetime().format("d/m/Y H:i")}}{% endif %}</td>
                         <td>{{seance.getName()}}</td>
-                        <td>{{seance.formation.getDuration().format("H:i")}}</td>
+                        <td>{% if seance.formation %}{{seance.formation.getDuration().format("H:i")}}{% endif %}</td>
                         <td>
                         {% if seance.getLieux() is not null %}
                             {% for lieu in seance.getLieux() %}

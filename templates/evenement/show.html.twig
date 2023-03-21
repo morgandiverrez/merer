@@ -99,7 +99,12 @@
                         </tr>
                     {% endfor %}
                 </tbody> 
-            </table>                 
+            </table> 
+             {% if  evenement.visible == false  %}
+                <div class="text-center">
+                    <a href="/seance/newForEvent/{{ evenement.id }}"><button class="btn btn-success mt-3 mb-3" type="submit" name="show">{{ button_label|default('Ajouter une ligne ') }}<i class = "fa text-light fa-plus-square me-2"></i></button></a>
+                </div>
+            {% endif %}               
         </div>
     </div>
 
