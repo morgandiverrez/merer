@@ -144,6 +144,7 @@ class BadgeController extends AbstractController
     {
 
         $badge = $entityManager->getRepository(Badge::class)->findById($badgeID)[0];
+        unlink($badge->getImage());
         $entityManager->remove($badge);
         $entityManager->flush();
        

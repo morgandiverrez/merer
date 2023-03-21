@@ -19,22 +19,22 @@ class Exercice
     #[ORM\Column(unique: true)]
     private ?int $annee;
     
-    #[ORM\OneToMany(mappedBy: 'exercice', targetEntity: Event::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'exercice', targetEntity: Event::class)]
     private Collection $events;
 
-    #[ORM\OneToMany(mappedBy: 'exercice', targetEntity: Invoice::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'exercice', targetEntity: Invoice::class)]
     private Collection $invoices;
 
-    #[ORM\OneToMany(mappedBy: 'exercice', targetEntity: Transaction::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'exercice', targetEntity: Transaction::class)]
     private Collection $transactions;
 
-    #[ORM\OneToMany(mappedBy: 'exercice', targetEntity: ExpenseReport::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'exercice', targetEntity: ExpenseReport::class)]
     private Collection $expenseReports;
 
-    #[ORM\OneToMany(mappedBy: 'exercice', targetEntity: BP::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'exercice', targetEntity: BP::class)]
     private Collection $bPs;
 
-    #[ORM\OneToMany(mappedBy: 'exercice', targetEntity: Impression::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'exercice', targetEntity: Impression::class)]
     private Collection $impressions;
 
    

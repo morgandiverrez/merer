@@ -53,7 +53,7 @@ class Association
     #[ORM\Column(type: 'date', nullable: true)]
     private $date_election;
 
-    #[ORM\ManyToMany(targetEntity: Demande::class, mappedBy: 'association' , cascade: ['persist', 'remove'])]
+    #[ORM\ManyToMany(targetEntity: Demande::class, mappedBy: 'association' , cascade: ['persist'])]
     private $demandes;
 
 

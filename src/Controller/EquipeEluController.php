@@ -107,15 +107,13 @@ class EquipeEluController extends AbstractController
     }
 
     #[Route('/delete/{equipeEluID}', name: 'delete')]
-    #[IsGranted('ROLE_ADMIN')]
+    #[IsGranted('ROLE_FORMA')]
     public function delete(EntityManagerInterface $entityManager, $equipeEluID): Response
     {
         $equipeElu = $entityManager->getRepository(EquipeElu::class)->findById($equipeEluID)[0];
-        
-       
+           
         $entityManager->remove($equipeElu);
         $entityManager->flush();
-        echo ("dfg");
         return $this->redirectToRoute('equipeElu_showAll');
     }
 
@@ -123,7 +121,7 @@ class EquipeEluController extends AbstractController
 
     #[Route('/remove/{equipeEluID}', name: 'remove')]
     #[IsGranted('ROLE_ADMIN')]
-    public function remove(EntityManagerInterface $entityManager, $equipeEluID): Response
+    public function remove1(EntityManagerInterface $entityManager, $equipeEluID): Response
     {
 
         $equipeElu = $entityManager->getRepository(EquipeElu::class)->findById($equipeEluID)[0];

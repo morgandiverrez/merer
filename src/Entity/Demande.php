@@ -37,7 +37,7 @@ class Demande
     #[ORM\Column(type: 'integer', nullable: true)]
     private $nombrePersonne;
 
-    #[ORM\ManyToMany(targetEntity: Formation::class, inversedBy: 'demandes', cascade: ['persist', 'remove'])]
+    #[ORM\ManyToMany(targetEntity: Formation::class, inversedBy: 'demandes',  cascade: ['persist'])]
     private $formation;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]

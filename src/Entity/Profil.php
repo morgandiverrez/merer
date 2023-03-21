@@ -54,10 +54,10 @@ class Profil
     #[ORM\OneToMany(mappedBy: 'profil', targetEntity: SeanceProfil::class, orphanRemoval:true)]
     private $seanceProfil;
 
-    #[ORM\OneToOne(mappedBy: 'profil', targetEntity: User::class, cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(mappedBy: 'profil', targetEntity: User::class, cascade: ['persist'])]
     private $user;
 
-    #[ORM\OneToMany(mappedBy: 'profil', targetEntity: Demande::class, orphanRemoval:true)]
+    #[ORM\OneToMany(mappedBy: 'profil', targetEntity: Demande::class, cascade: ['persist'])]
     private $demandes;
 
 
