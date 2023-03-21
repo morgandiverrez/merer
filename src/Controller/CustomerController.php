@@ -47,10 +47,8 @@ class CustomerController extends AbstractController
         }
 
         $totalExpenseReports = array();
-        if($customer->getSupplier()){
-            foreach ($customer->getSupplier()->getExpenseReports() as $expenseReport) {
-                array_push($totalExpenseReports, (new ExpenseReportController)->expenseReportTotale($expenseReport));
-            }
+        foreach ($customer->getSupplier()->getExpenseReports() as $expenseReport) {
+            array_push($totalExpenseReports, (new ExpenseReportController)->expenseReportTotale($expenseReport));
         }
         
         return $this->render('customer/show.html.twig', [

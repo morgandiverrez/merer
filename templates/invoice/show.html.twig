@@ -47,12 +47,13 @@
                         <th scope="col">Quantité</th>
                         <th scope="col">Description</th>
                         <th scope="col">Montant HT</th>
+
                         <th scope="col">taux TVA</th>
                         <th scope="col">Montant TTC</th>
                         <th scope="col">Réduction</th>
                         <th scope="col">Description réduction</th>
                         <th scope="col">Montant réduction</th>
-                        <th scope="col"> total</th>
+                        <th scope="col">Totale</th>
                          {% if is_granted('ROLE_TRESO') %}
                             <th scope="col">edit</th>
                             <th scope="col">delete</th>
@@ -64,28 +65,29 @@
                 <tbody> 
                 {% set totalHT = 0 %}
                 {% set totalTTC = 0 %}
+                {% set totalTTCetReduc = 0 %}
                 {% set totalDiscount = 0 %}
-                {% set totaux = 0 %}
-                {% set montantHt = 0 %}
+                {% set montantLine = 0 %}
                 {% for invoiceLine in invoice.invoiceLines %} 
                     <tr>
+                        {% set montantLine = 0 %}
                         <td>{% if invoiceLine.catalogService %}{{invoiceLine.catalogService.name}} {% endif %}</td>
                         <td>{{invoiceLine.quantity}} </td>
                         <td>{% if invoiceLine.catalogService %}{{invoiceLine.catalogService.description}} - {{invoiceLine.quote}}{% endif %}</td>
                         <td>{% if invoiceLine.catalogService %}{{invoiceLine.catalogService.amountHt}} €{% endif %}</td>
-                        {% set montantHt = invoiceLine.catalogService.amountHt %}
                         {% if invoiceLine.catalogService %}{% set totalHT  = totalHT + invoiceLine.catalogService.amountHt %}{% endif %}
                         <td>{% if invoiceLine.catalogService %}{{invoiceLine.catalogService.tvaRate}} %{% endif %}</td>
                         <td>{% if invoiceLine.catalogService %}{{invoiceLine.catalogService.amountTtc}} €{% endif %}</td>
                         {% if invoiceLine.catalogService %}{% set totalTTC = totalTTC + invoiceLine.catalogService.amountTtc %}{% endif %}
-                        {% set total = invoiceLine.quantity * montantHt %}
-                        
                         <td>{% if invoiceLine.catalogDiscount %}{{invoiceLine.catalogDiscount.name}}{% endif %}</td>
                         <td>{% if invoiceLine.catalogDiscount %}{{invoiceLine.catalogDiscount.description}}{% endif %}</td>
                         <td>{{invoiceLine.discount}} € </td>
                         <td>{{total}} €</td>
                         {% set totaux = totaux + total %}
                         {% set totalDiscount = totalDiscount + invoiceLine.discount %}
+                        {% set montantLine = (invoiceLine.quantity * invoiceLine.catalogService.amountTtc ) - invoiceLine.discount  %}
+                        <td>{{montantLine}} € </td>
+                        {% set totalTTCetReduc  = totalTTCetReduc + montantLine %}
                         {% if is_granted('ROLE_TRESO') %}
                             <td><a href="/invoiceLine/edit/{{ invoiceLine.getId()}}" class="card-link"><i class="fa-solid fa-pen-to-square"></i></a></td>
                             <td><a href="/invoiceLine/delete/{{ invoiceLine.getId()}}" class="card-link"><i class="fa-solid fa-trash-can"></i></a></td>
@@ -100,13 +102,14 @@
                         <th> </th>
                         <th>{{ totalHT }} € </th>
                         <th> </th>
+                         <th> </th>
                         <th>{{ totalTTC }} €</th>
                         <th> </th>
                         <th> </th>
                         <th>{{ totalDiscount }} € </th>
-                        <th>{{ totaux }}€</th>
+                        <th> {{totalTTCetReduc}} €</th>
                         <th> </th>
-                        <th> </th>
+                         <th> </th>
                     </tr>
                 </tfoot>
             </table>
