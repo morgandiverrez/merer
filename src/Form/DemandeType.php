@@ -27,6 +27,7 @@ class DemandeType extends AbstractType
             ->add('dateFin', DateTimeType::class, [
                 'date_widget' => 'single_text',
               'time_widget' => 'single_text',
+              'required'=>false,
             ])
             ->add('nombrePersonne')
             ->add('planning', FileType::class, [
@@ -37,14 +38,17 @@ class DemandeType extends AbstractType
             ->add('association', EntityType::class, [
                 'class'=> Association::class,
                  'multiple' => true,
+                 'required' => false,
             ])
             ->add( 'equipeElu', EntityType::class, [
             'class' => EquipeElu::class,
             'multiple' => true,
+            'required' => false,
             ])
             ->add('formation', EntityType::class, [
                 'class'=> Formation::class,
                 'multiple'=>true,
+                 'required' => false,
                 
             ])
         ;

@@ -49,7 +49,7 @@ class EquipeElu
     #[ORM\Column(type: 'string', length: 512,  nullable: true)]
     private $fede_filliere ;
 
-    #[ORM\ManyToMany(targetEntity: Demande::class, mappedBy:'EquipeElu', cascade: ['persist'])]
+    #[ORM\ManyToMany(targetEntity: Demande::class, mappedBy:'equipeElu', cascade: ['persist'])]
     private $demandes;
 
     public function __construct()
