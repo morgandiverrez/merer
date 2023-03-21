@@ -157,6 +157,9 @@ class Contact
         return $this;
     }
 
+  
+
+
     /**
      * @return Collection<int, Supplier>
      */
@@ -169,7 +172,7 @@ class Contact
     {
         if (!$this->supplier->contains($supplier)) {
             $this->supplier->add($supplier);
-            $supplier->setContact($this);
+            $supplier->addContact($this);
         }
 
         return $this;
@@ -177,12 +180,8 @@ class Contact
 
     public function removeSupplier(Supplier $supplier): self
     {
-        if ($this->supplier->removeElement($supplier)) {
-            // set the owning side to null (unless already changed)
-            if ($supplier->getContact() === $this) {
-                $supplier->setContact(null);
-            }
-        }
+         $this->customer->removeElement($customer);
+
 
         return $this;
     }

@@ -131,7 +131,7 @@ class Supplier
     {
         if (!$this->contacts->contains($contact)) {
             $this->contacts->add($contact);
-            $contact->addCustomer($this);
+            $contact->addSupplier($this);
         }
 
         return $this;
@@ -140,7 +140,7 @@ class Supplier
     public function removeContact(Contact $contact): self
     {
         if ($this->contacts->removeElement($contact)) {
-            $contact->removeCustomer($this);
+            $contact->removeSupplier($this);
         }
 
         return $this;
