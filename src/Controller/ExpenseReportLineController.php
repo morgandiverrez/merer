@@ -225,9 +225,9 @@ class ExpenseReportLineController extends AbstractController
 
          $user = $this->getUser();
         $customer = $user->getCustomer();
-
         if ($customer == $expenseReport->getSupplier()->getCustomer() or $this->isGranted("ROLE_TRESO")) {
             $finaleFile = $expenseReportLine->getDocument();
+            echo($finaleFile);
 
             header('Content-Description: File Transfer');
             header('Content-Type: application/octet-stream');
@@ -237,12 +237,8 @@ class ExpenseReportLineController extends AbstractController
             header('Pragma: public');
             header('Content-Length: ' . filesize($finaleFile));
             readfile($finaleFile);
-            if($customer->getBankDetails()[0]){
-                if($customer->getBankDetails()[0]->getIBAN() and $customer->getBankDetails()[0]->getBIC()){
-                    return $this->redirectToRoute('expenseReport_show', ['expenseReportID' => $expenseReport->getId()]);
-                }
-            }
-            return $this->redirectToRoute('bankDetail_new', []);
+            return $this->redirectToRoute('expenseReport_show', ['expenseReportID' => $expenseReport->getId()]);
+            
          } else {
             return $this->redirectToRoute('account');
         }

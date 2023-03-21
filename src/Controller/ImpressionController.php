@@ -136,6 +136,7 @@ class ImpressionController extends AbstractController
           
             $impression->setExercice($exercice);
             $invoiceLine = new InvoiceLine();
+            $invoiceLine->setQuantity($impression->getQuantite());
             if($impression->isFactureFinDuMois()){ //si facture fin mois
                     
                 if($impression->getFormat() == 'plastification'){
@@ -173,8 +174,6 @@ class ImpressionController extends AbstractController
                 }
             
             }else{ // donc facture direct 
-                $invoiceLine = new InvoiceLine();
-                
                 if ($impression->getFormat() == 'plastification') {
                     $impression->setCouleur(false);
                     $impression->setRectoVerso(false);
@@ -339,19 +338,19 @@ class ImpressionController extends AbstractController
         
                     
         if ($impression->getFormat() == 'plastification') {
-            return ($entityManager->getRepository(CatalogService::class)->findByCode('plastification'))->getAmountTtc();
+            return ($impression->getQuantite() * $entityManager->getRepository(CatalogService::class)->findByCode('plastification'))->getAmountTtc();
         } else {
             if ($impression->isRectoVerso()) {
                 if ($impression->isCouleur()) {
-                     return ($entityManager->getRepository(CatalogService::class)->findByCode($impression->getFormat() . '_RV_' . 'couleur'))->getAmountTtc();
+                     return ($impression->getQuantite() * $entityManager->getRepository(CatalogService::class)->findByCode($impression->getFormat() . '_RV_' . 'couleur'))->getAmountTtc();
                 } else {
-                   return  ($entityManager->getRepository(CatalogService::class)->findByCode($impression->getFormat() . '_RV'))->getAmountTtc();
+                   return  ($impression->getQuantite() * $entityManager->getRepository(CatalogService::class)->findByCode($impression->getFormat() . '_RV'))->getAmountTtc();
                 }
             } else {
                 if ($impression->isCouleur()) {
-                  return   ($entityManager->getRepository(CatalogService::class)->findByCode($impression->getFormat() . '_R_' . 'couleur'))->getAmountTtc();
+                  return   ($impression->getQuantite() * $entityManager->getRepository(CatalogService::class)->findByCode($impression->getFormat() . '_R_' . 'couleur'))->getAmountTtc();
                 } else {
-                   return  ($entityManager->getRepository(CatalogService::class)->findByCode($impression->getFormat() . '_R_'))->getAmountTtc();
+                   return  ($impression->getQuantite() * $entityManager->getRepository(CatalogService::class)->findByCode($impression->getFormat() . '_R_'))->getAmountTtc();
                 }
             }
         }

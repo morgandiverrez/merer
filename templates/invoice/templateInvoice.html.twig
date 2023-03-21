@@ -1731,32 +1731,43 @@ hXcS2sYPcYLmAwAcku4f0XwBAOBbsHEPVgcAAHQfAADQfQAA+CIkFGMBABwUlWpg/jsAAA5G948z
                 <tr>
                     <th scope="col">Code article</th>
                     <th scope="col">Nom</th>
+                    <th scope="col">Quantité</th>
                     <th scope="col">Prix TTC</th>
                     <th scope="col">Commentaire</th>
+                    {% if invoiceline.catalogdiscount.code is defined %}
+                        <th scope="col">Code réduction</th>
+                        <th scope="col">Nom réduction</th>
+                        <th scope="col">Montant réduction</th>
+                    {% endif %}
                 </tr>
                 </thead>
-
+                {% set countArticle = 0 %}
+                {% set x = 0 %}
                 <tbody class="text-left table-secondary">
-                {% for invoiceline in invoice.invoicelines %} <tr>
+                {% for invoiceline in invoice.invoicelines %} 
+                <tr>
+                    {% set countArticle = 0 + invoiceline.quantity %}
                     {% if invoiceline.catalogservice.code is defined %}
                         <th>{{invoiceline.catalogservice.code}}</th>
                         <th>{{invoiceline.catalogservice.name}}</th>
+                        <th>{{invoiceline.quantity}}</th>
                         <th>{{invoiceline.catalogservice.amountTtc}}{{ federation.currency }}</th>
                         <th>{{invoiceline.quote}}</th>
                     {% endif %}
                     {% if invoiceline.catalogdiscount.code is defined %}
                         <th>{{invoiceline.catalogdiscount.code}}</th>
                         <th>{{invoiceline.catalogdiscount.name}}</th>
-                        <th>-{{invoiceline.discount}}{{ federation.currency }}</th>
-                        <th>{{invoiceline.quote}}</th>
+                        <th>- {{invoiceline.discount}}{{ federation.currency }}</th>
                     {% endif %}
+                    {% set x =  x +  countArticle * invoiceline.catalogservice.amountTtc - invoiceline.discount  %}
 
                 </tr> {% endfor %}
 
                 <tr>
                     <th>Total</th>
-                    <th>Nombre d'article : {{invoice.invoicelines.count}}</th>
-                    <th class="font-weight-bold">{{ total }}{{ federation.currency }}</th>
+                     <th></th>
+                    <th>Nombre d'article : {{countArticle}}</th>
+                    <th class="font-weight-bold"> {{x}}{{ federation.currency }}</th>
                     <th></th>
                 </tr>
 

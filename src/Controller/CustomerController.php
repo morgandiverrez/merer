@@ -47,7 +47,7 @@ class CustomerController extends AbstractController
         }
 
         $totalExpenseReports = array();
-        foreach ($customer->getExpenseReports() as $expenseReport) {
+        foreach ($customer->getSupplier()->getExpenseReports() as $expenseReport) {
             array_push($totalExpenseReports, (new ExpenseReportController)->expenseReportTotale($expenseReport));
         }
         

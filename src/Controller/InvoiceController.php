@@ -318,7 +318,7 @@ class InvoiceController extends AbstractController
 
         for ($i = 0; $i < $nbInvoiceLine; $i++) {
             if ($invoice->getInvoiceLines()[$i]->getCatalogservice()) {
-                $totale += $invoice->getInvoiceLines()[$i]->getCatalogservice()->getAmountTtc();
+                $totale += $invoice->getInvoiceLines()[$i]->getQuantity() * $invoice->getInvoiceLines()[$i]->getCatalogservice()->getAmountTtc();
             }
             $totale -= $invoice->getInvoiceLines()[$i]->getDiscount();
         }

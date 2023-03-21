@@ -31,7 +31,6 @@
                     <th scope="col">Cloturé</th>
                     <th scope="col">Commentaire</th>
                     <th scope="col">Show</th>
-                    <th scope="col">Edit</th>
                 </tr>
                 </thead>
 
@@ -45,7 +44,6 @@
                     {% endif %}
                     <td>{{transaction.quote}}</td>
                     <td><a href="/transaction/show/{{ transaction.id }}"><i class = "fa-solid fa-eye"></i></a></td>
-                    <td><a href="/transaction/edit/{{ transaction.id }}"><i class = "fa-solid fa-pen-to-square"></i></a></td>
 
                 </tr> {% endfor %}
                 </tbody>
