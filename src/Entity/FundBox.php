@@ -24,7 +24,7 @@ class FundBox
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $lastCountDate = null;
 
-    #[ORM\ManyToOne]
+    #[ORM\ManyToOne(cascade: ['persist', 'remove'])]
     private ?ChartOfAccounts $chartOfAccounts = null;
 
     #[ORM\ManyToOne( cascade: ['persist'])]

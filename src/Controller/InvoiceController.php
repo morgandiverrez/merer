@@ -299,8 +299,8 @@ class InvoiceController extends AbstractController
         exit(0);
     }
 
-        #[Route('/delete/{invoiceID}', name: 'delete')]
-    #[IsGranted('ROLE_ADMIN')]
+    #[Route('/delete/{invoiceID}', name: 'delete')]
+    #[IsGranted('ROLE_TRESO')]
     public function delete(EntityManagerInterface $entityManager, $invoiceID): Response
     {
 

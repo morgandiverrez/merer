@@ -124,11 +124,11 @@ class ChequeBoxController extends AbstractController
 
 
     #[Route('/delete/{chequeBoxID}', name: 'delete')]
-    #[IsGranted('ROLE_ADMIN')]
+    #[IsGranted('ROLE_TRESO')]
     public function delete(EntityManagerInterface $entityManager, $chequeBoxID): Response
     {
 
-        $chequeBox = $entityManager->getRepository(ChequeBox::class)->findById($chequeBoxID);
+        $chequeBox = $entityManager->getRepository(ChequeBox::class)->findById($chequeBoxID)[0];
         $entityManager->remove($chequeBox);
         $entityManager->flush();
 

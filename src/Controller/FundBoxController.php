@@ -171,5 +171,17 @@ class FundBoxController extends AbstractController
         ]);
     }
 
+    #[Route('/delete/{fundBoxID}', name: 'delete')]
+    #[IsGranted('ROLE_TRESO')]
+    public function delete(EntityManagerInterface $entityManager, $fundBoxID): Response
+    {
+
+        $fundBox = $entityManager->getRepository(FundBox::class)->findById($fundBoxID)[0];
+        $entityManager->remove($fundBox);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('fundBox_showAll');
+    }
+
     
 }

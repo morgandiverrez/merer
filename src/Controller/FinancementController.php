@@ -107,7 +107,7 @@ class FinancementController extends AbstractController
     }
 
     #[Route('/delete/{financementID}', name: 'delete')]
-    #[IsGranted('ROLE_ADMIN')]
+    #[IsGranted('ROLE_TRESO')]
     public function delete(EntityManagerInterface $entityManager, $financementID): Response
     {
 

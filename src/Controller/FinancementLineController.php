@@ -98,7 +98,7 @@ class FinancementLineController extends AbstractController
     #[IsGranted('ROLE_TRESO')]
     public function delete(EntityManagerInterface $entityManager, $financementLineID): Response
     {
-        $financementLine = $entityManager->getRepository(FinancementLine::class)->findById($financementLineID);
+        $financementLine = $entityManager->getRepository(FinancementLine::class)->findFinancementLineById($financementLineID);
         $entityManager->remove($financementLine);
         $entityManager->flush();
         return $this->redirectToRoute('financement_show', ['financementID' => $financementLine->getFinancement()->getId()]);

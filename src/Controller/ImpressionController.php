@@ -3,22 +3,23 @@
 namespace App\Controller;
 
 use DateTime;
+use Exception;
 use Dompdf\Dompdf;
 use Dompdf\Options;
+use App\Entity\Event;
 use Aws\Ses\SesClient;
 use App\Entity\Invoice;
 use App\Entity\Customer;
-use App\Entity\Event;
 use App\Entity\Exercice;
 use App\Entity\Impression;
 use Endroid\QrCode\QrCode;
 use App\Entity\InvoiceLine;
-use App\Form\ImpressionForBFType;
 use App\Form\ImpressionType;
 use Endroid\QrCode\Logo\Logo;
 use App\Entity\CatalogService;
 use Endroid\QrCode\Color\Color;
 use Endroid\QrCode\Label\Label;
+use App\Form\ImpressionForBFType;
 use Endroid\QrCode\Writer\PngWriter;
 use Endroid\QrCode\Encoding\Encoding;
 use Endroid\QrCode\Label\Font\NotoSans;
@@ -167,7 +168,7 @@ class ImpressionController extends AbstractController
                     $invoice->setComfirm(false);
                     $invoice->setReady(false);
                     $invoice->setCategory('Impression');
-                    $invoice->setCode(c);
+                    $invoice->setCode('Impress_'.$impression->getCustomer()->getName().date('m'));
                     $invoice->setCustomer($impression->getCustomer());
                     $invoice->setCreationDate(new Datetime());
                 }

@@ -17,7 +17,7 @@ class Supplier
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne]
+    #[ORM\ManyToOne(cascade: ['persist', 'remove'])]
     private ?ChartOfAccounts $chartOfAccounts = null;
 
     #[ORM\ManyToOne(inversedBy: 'suppliers', cascade: ['persist'])]

@@ -265,4 +265,17 @@ class TransactionController extends AbstractController
         $entityManager->flush();
         return $this->redirectToRoute('transaction_showAll');
     }
+
+    #[Route('/delete/{transactionID}', name: 'delete')]
+    #[IsGranted('ROLE_TRESO')]
+    public function delete(EntityManagerInterface $entityManager, $transactionID): Response
+    {
+
+        $transaction = $entityManager->getRepository(Transaction::class)->findTransactionById($transactionID);
+        $entityManager->remove($transaction);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('transaction_showAll');
+    }
+
 }

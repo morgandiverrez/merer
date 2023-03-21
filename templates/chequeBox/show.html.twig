@@ -22,8 +22,9 @@
                         <li class="list-group-item">Compte associé :  {{chequeBox.getChartOfAccounts().getName()}} | {{chequeBox.getChartOfAccounts().getCode()}}</li>                    
                     </ul>
                     <div class="card-body">             
-                            <a href="/chequeBox/edit/{{ chequeBox.getId() }}" class="card-link"><i class="fa-solid fa-pen-to-square"></i></a>       
-                            <a href="/chequeBox/" class="card-link"><i class="fa-solid fa-list"></i></a>
+                        <a href="/chequeBox/edit/{{ chequeBox.getId() }}" class="card-link"><i class="fa-solid fa-pen-to-square"></i></a>       
+                        <a href="/chequeBox/delete/{{ chequeBox.getId()}}" class="card-link"><i class="fa-solid fa-trash-can"></i></a>   
+                        <a href="/chequeBox/" class="card-link"><i class="fa-solid fa-list"></i></a>
                     </div>
                 </div>
             </div>
