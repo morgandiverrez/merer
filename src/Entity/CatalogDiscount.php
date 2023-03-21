@@ -27,7 +27,7 @@ class CatalogDiscount
     #[ORM\Column(type: 'string', length: 1024, nullable: true)]
     private $description;
 
-    #[ORM\OneToMany(mappedBy: 'catalogDiscount', targetEntity: InvoiceLine::class)]
+    #[ORM\OneToMany(mappedBy: 'catalogDiscount', targetEntity: InvoiceLine::class, cascade: ['persist'])]
     private $invoiceLines;
 
 

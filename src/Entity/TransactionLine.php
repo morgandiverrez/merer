@@ -29,10 +29,10 @@ class TransactionLine
     #[ORM\Column(length: 1024, nullable: true)]
     private ?string $quote = null;
 
-    #[ORM\ManyToOne(inversedBy: 'transactionlines')]
+    #[ORM\ManyToOne(inversedBy: 'transactionlines', cascade: ['persist'])]
     private ?Transaction $transaction = null;
 
-    #[ORM\ManyToOne(inversedBy: 'transactionLines')]
+    #[ORM\ManyToOne(inversedBy: 'transactionLines', cascade: ['persist'])]
     private ?ChartOfAccounts $chartOfAccounts = null;
 
     public function getId(): ?int

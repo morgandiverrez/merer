@@ -39,12 +39,7 @@
                         {{ form_help(form.description) }}
                     </div>
 
-                    <div class="date_creation my-5">
-                        {{ form_label(form.date_creation, 'Date de création', {'label_attr': {'class': 'foo'}}) }}
-                        {{ form_errors(form.date_creation) }}
-                        {{ form_widget(form.date_creation) }}
-                        {{ form_help(form.date_creation) }}
-                    </div>
+                  
                 
                     <button class="btn btn-success mt-3 mb-3">{{ button_label|default('Valider ') }}<i class = "fa text-light fa-save me-2"></i></button>
                 </div>

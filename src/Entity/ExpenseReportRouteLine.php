@@ -33,7 +33,7 @@ class ExpenseReportRouteLine
     private ?float $amount = null;
 
     
-    #[ORM\ManyToOne]
+    #[ORM\ManyToOne( cascade: ['persist'])]
     private ?RepayGrid $RepayGrid = null;
 
     #[ORM\ManyToOne(inversedBy: 'expenseReportRouteLines')]

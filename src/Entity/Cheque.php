@@ -20,7 +20,7 @@ class Cheque
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $dateOfCollection = null;
 
-    #[ORM\ManyToOne(inversedBy: 'cheques')]
+    #[ORM\ManyToOne(inversedBy: 'cheques', cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
     private ?ChequeBox $chequeBox = null;
 

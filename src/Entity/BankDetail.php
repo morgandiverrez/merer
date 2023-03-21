@@ -19,7 +19,7 @@ class BankDetail
     #[ORM\Column(length: 64, nullable: true)]
     private ?string $BIC = null;
 
-    #[ORM\ManyToOne(inversedBy: 'bankDetails')]
+    #[ORM\ManyToOne(inversedBy: 'bankDetails', cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
     private ?customer $customer = null;
 

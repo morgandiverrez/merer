@@ -36,13 +36,13 @@ class Lieux
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $ville;
 
-    #[ORM\ManyToMany(targetEntity: Seance::class, mappedBy: 'lieux')]
+    #[ORM\ManyToMany(targetEntity: Seance::class, mappedBy: 'lieux', cascade: ['persist'])]
     private $seance;
 
-    #[ORM\OneToMany(mappedBy: 'lieu', targetEntity: SeanceProfil::class)]
+    #[ORM\OneToMany(mappedBy: 'lieu', targetEntity: SeanceProfil::class, cascade: ['persist'])]
     private $seanceProfils;
 
-    #[ORM\OneToMany(mappedBy: 'lieu', targetEntity: Evenement::class)]
+    #[ORM\OneToMany(mappedBy: 'lieu', targetEntity: Evenement::class, cascade: ['persist'])]
     private $evenements;
 
 

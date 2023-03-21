@@ -16,9 +16,9 @@
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item">Description : {{evenement.getDescription()}}</li>
                         <li class="list-group-item">Url de redirection : {{evenement.getURL()}}</li>
-                        <li class="list-group-item">Date de Debut : {{evenement.getDateDebut().format("d/m/y H:i")}}</li>
-                        <li class="list-group-item">Date de Fin : {{evenement.getDateFin().format("d/m/y H:i")}}</li>
-                        <li class="list-group-item">Date de Fin Inscription: {{evenement.getDateFinInscription().format("d/m/y H:i")}}</li>
+                        <li class="list-group-item">Date de Debut : {% if evenement.getDateDebut() %} {{evenement.getDateDebut().format("d/m/y H:i")}} {% endif %} </li>
+                        <li class="list-group-item">Date de Fin :{% if evenement.getDateFin() %} {{evenement.getDateFin().format("d/m/y H:i")}}{% endif %}</li>
+                        <li class="list-group-item">Date de Fin Inscription: {% if evenement.getDateFinInscription() %}  {{evenement.getDateFinInscription().format("d/m/y H:i")}}{% endif %}</li>
                         <li class="list-group-item"> Visible :
                         {% if evenement.visible == FALSE %}
                             <a href="/evenement/visible/{{ evenement.iD }}" >
@@ -40,7 +40,9 @@
                     <div class="card-body">
                         {% if is_granted('ROLE_BF')%}
                             <a href="/evenement/edit/{{ evenement.getId() }}" class="card-link"><i class="fa-solid fa-pen-to-square"></i></a>
- 
+                            {% if is_granted('ROLE_FORMA') %}
+                                <a href="/evenement/delete/{{ evenement.getId()}}" class="card-link"><i class="fa-solid fa-trash-can"></i></a>
+                            {% endif %}
                         {% endif %}
                         <a href="/evenement/" class="card-link"><i class="fa-solid fa-list"></i></a>
                         {% if evenement.visible %}
@@ -88,7 +90,19 @@
                                                             <li class="list-group-item"> <img  src="{{asset(formation[parcours].getFormation().badge.getImage())}}" alt="image de {{formation[parcours].getFormation().badge.getName()}}" ></li>
                                                         {% endif %}                 
                                                     {% endif %}  
-                                                </ul>        
+                                                </ul>
+                                                <div class="card-body">
+                                                    {% if is_granted('ROLE_FORMATEURICE') %}
+                                                        {% if is_granted('ROLE_BF') %}
+                                                            <a href="/seance/editForEvent/{{ formation[parcours].getId() }}" class="card-link"><i class="fa-solid fa-pen-to-square"></i></a>
+                                                            {% if is_granted('ROLE_FORMA') %}
+                                                                <a href="/seance/delete/{{ formation[parcours].getId()}}" class="card-link"><i class="fa-solid fa-trash-can"></i></a>
+                                                            {% endif %}
+                                                        {% endif %}
+                                                            <a href="/seance/showForFormateurice/{{formation[parcours].getId()}}" class="card-link"><i class="fa-solid fa-eye"></i></a>
+                                                    {% endif %}
+                                                            
+                                                </div>     
                                             </div>
                                         </td >
                                     {% else %}

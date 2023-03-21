@@ -27,7 +27,9 @@
                         {% if is_granted('ROLE_FORMATEURICE') %}
                             {% if is_granted('ROLE_BF') %}
                                 <a href="/association/edit/{{ association.getId() }}" class="card-link"><i class="fa-solid fa-pen-to-square"></i></a>
-                               
+                                 {% if is_granted('ROLE_FORMA') %}
+                                     <a href="/association/delete/{{ association.getId()}}" class="card-link"><i class="fa-solid fa-trash-can"></i></a>
+                                {% endif %}
                             {% endif %}
                                 <a href="/association/" class="card-link"><i class="fa-solid fa-list"></i></a>
                         {% endif %}

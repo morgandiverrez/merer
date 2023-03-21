@@ -26,26 +26,26 @@ class Transaction
     #[ORM\Column(length: 1024, nullable: true)]
     private ?string $quote = null;
 
-    #[ORM\OneToMany(mappedBy: 'transaction', targetEntity: Invoice::class)]
+    #[ORM\OneToMany(mappedBy: 'transaction', targetEntity: Invoice::class, cascade: ['persist'])]
     private Collection $invoices;
 
-    #[ORM\OneToMany(mappedBy: 'transaction', targetEntity: TransactionLine::class)]
+    #[ORM\OneToMany(mappedBy: 'transaction', targetEntity: TransactionLine::class, orphanRemoval:true)]
     private Collection $transactionLines;
 
-    #[ORM\OneToMany(mappedBy: 'transaction', targetEntity: ExpenseReport::class)]
+    #[ORM\OneToMany(mappedBy: 'transaction', targetEntity: ExpenseReport::class,cascade: ['persist'])]
     private Collection $expenseReports;
 
-    #[ORM\ManyToOne(inversedBy: 'transaction')]
+    #[ORM\ManyToOne(inversedBy: 'transaction', cascade: ['persist'])]
     private ?Event $event = null;
 
-    #[ORM\ManyToOne(inversedBy: 'transaction')]
+    #[ORM\ManyToOne(inversedBy: 'transaction', cascade: ['persist'])]
     private ?BP $BP = null;
 
-    #[ORM\ManyToOne(inversedBy: 'transactions')]
+    #[ORM\ManyToOne(inversedBy: 'transactions', cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
     private ?Exercice $exercice = null;
 
-    #[ORM\ManyToOne(inversedBy: 'transactions')]
+    #[ORM\ManyToOne(inversedBy: 'transactions', cascade: ['persist'])]
     private ?FinancementLine $financementLine = null;
 
     public function __construct()

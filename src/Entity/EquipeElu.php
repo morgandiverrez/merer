@@ -37,7 +37,7 @@ class EquipeElu
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $etablissement;
 
-    #[ORM\ManyToMany(targetEntity: Profil::class, inversedBy: 'equipeElu')]
+    #[ORM\ManyToMany(targetEntity: Profil::class, inversedBy: 'equipeElu', cascade: ['persist'])]
     private $profil;
 
     #[ORM\Column(type: 'date', nullable: true)]
@@ -49,7 +49,7 @@ class EquipeElu
     #[ORM\Column(type: 'string', length: 512,  nullable: true)]
     private $fede_filliere ;
 
-    #[ORM\ManyToMany(targetEntity: Demande::class, mappedBy: 'EquipeElu')]
+    #[ORM\ManyToMany(targetEntity: Demande::class, mappedBy:'EquipeElu', cascade: ['persist'])]
     private $demandes;
 
     public function __construct()

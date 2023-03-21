@@ -24,17 +24,17 @@ class FinancementLine
     #[ORM\Column(length: 1024, nullable: true)]
     private ?string $description = null;
 
-    #[ORM\ManyToOne(inversedBy: 'financementLines')]
+    #[ORM\ManyToOne(inversedBy:'financementLines', cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
     private ?Financement $financement = null;
 
     #[ORM\Column(nullable: true)]
     private ?float $reporter = null;
 
-    #[ORM\OneToMany(mappedBy: 'financementLine', targetEntity: Transaction::class)]
+    #[ORM\OneToMany(mappedBy: 'financementLine', targetEntity: Transaction::class, cascade: ['persist'])]
     private Collection $transactions;
 
-    #[ORM\OneToMany(mappedBy: 'financementLine', targetEntity: Event::class)]
+    #[ORM\OneToMany(mappedBy: 'financementLine', targetEntity: Event::class, cascade: ['persist'])]
     private Collection $events;
 
     public function __construct()

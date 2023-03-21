@@ -13,12 +13,12 @@ class SeanceProfil
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $Horrodateur;
 
-    #[ORM\ManyToOne(targetEntity: Profil::class, inversedBy: 'seanceProfil')]
+    #[ORM\ManyToOne(targetEntity: Profil::class, inversedBy: 'seanceProfil', cascade: ['persist'])]
     #[ORM\Id]
     #[ORM\JoinColumn(name: "profil_ID", referencedColumnName: "id")]
     private $profil;
 
-    #[ORM\ManyToOne(targetEntity: Seance::class, inversedBy: 'seanceProfil')]
+    #[ORM\ManyToOne(targetEntity: Seance::class, inversedBy: 'seanceProfil', cascade: ['persist'])]
     #[ORM\Id]
     #[ORM\JoinColumn(name: "seance_ID", referencedColumnName: "id")]
     private $seance;
@@ -26,7 +26,7 @@ class SeanceProfil
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $attente;
 
-    #[ORM\ManyToOne(targetEntity: Lieux::class, inversedBy: 'seanceProfils')]
+    #[ORM\ManyToOne(targetEntity: Lieux::class, inversedBy: 'seanceProfils', cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
     private $lieu;
 
@@ -41,10 +41,7 @@ class SeanceProfil
 
 
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
+   
     
     public function getHorrodateur(): ?\DateTimeInterface
     {

@@ -21,10 +21,10 @@ class Customer
     #[ORM\Column(length:255, nullable: true)]
     private ?string $name = null; 
 
-    #[ORM\ManyToOne(inversedBy: 'customers')]
+    #[ORM\ManyToOne(inversedBy:'customers', cascade: ['persist', 'remove'])]
     private ?ChartOfAccounts $chartOfAccounts = null;
 
-    #[ORM\OneToMany(mappedBy: 'customer', targetEntity: Invoice::class)]
+    #[ORM\OneToMany(mappedBy: 'customer', targetEntity: Invoice::class, cascade: ['persist'])]
     private Collection $invoices;
    
     #[ORM\ManyToOne(inversedBy: 'customers')]
@@ -33,10 +33,10 @@ class Customer
     #[ORM\ManyToOne(inversedBy: 'customers')]
     private ?AdministrativeIdentifier $administrativeIdentifier = null;
 
-    #[ORM\ManyToMany(targetEntity: Contact::class, mappedBy: 'customer')]
+    #[ORM\ManyToMany(targetEntity: Contact::class, mappedBy: 'customer', cascade: ['persist'])]
     private Collection $contacts;
 
-    #[ORM\OneToMany(mappedBy: 'customer', targetEntity: Impression::class)]
+    #[ORM\OneToMany(mappedBy: 'customer', targetEntity: Impression::class, cascade: ['persist'])]
     private Collection $impressions;
 
     #[ORM\Column( nullable: true)]

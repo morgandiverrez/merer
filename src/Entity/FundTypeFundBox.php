@@ -13,11 +13,11 @@ class FundTypeFundBox
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(inversedBy: 'fundTypeFundBoxes')]
+    #[ORM\ManyToOne(inversedBy: 'fundTypeFundBoxes', cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
     private ?FundType $fundType = null;
 
-    #[ORM\ManyToOne(inversedBy: 'fundTypeFundBoxes')]
+    #[ORM\ManyToOne(inversedBy: 'fundTypeFundBoxes', cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
     private ?FundBox $fundBox = null;
 

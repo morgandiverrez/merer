@@ -19,7 +19,7 @@ class Exercice
     #[ORM\Column(unique: true)]
     private ?int $annee;
     
-    #[ORM\OneToMany(mappedBy: 'exercice', targetEntity: Event::class)]
+    #[ORM\OneToMany(mappedBy: 'exercice', targetEntity: Event::class, orphanRemoval: true)]
     private Collection $events;
 
     #[ORM\OneToMany(mappedBy: 'exercice', targetEntity: Invoice::class, orphanRemoval: true)]

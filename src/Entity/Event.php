@@ -33,23 +33,23 @@ class Event
     #[ORM\Column(length: 1024, nullable: true)]
     private ?string $description = null;
 
-    #[ORM\ManyToOne]
+    #[ORM\ManyToOne( cascade: ['persist'])]
     private ?Location $location = null;
 
-    #[ORM\OneToMany(mappedBy: 'event', targetEntity: Transaction::class)]
+    #[ORM\OneToMany(mappedBy: 'event', targetEntity: Transaction::class, cascade: ['persist'])]
     private Collection $transactions;
 
-    #[ORM\ManyToOne(inversedBy: 'events')]
+    #[ORM\ManyToOne(inversedBy:'events', cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
     private ?Exercice $exercice = null;
 
     #[ORM\Column(precision: 10, scale: 0, nullable: true)]
     private ?float $amount = null;
 
-    #[ORM\ManyToOne(inversedBy: 'events')]
+    #[ORM\ManyToOne(inversedBy:'events', cascade: ['persist'])]
     private ?FinancementLine $financementLine = null;
 
-    #[ORM\OneToMany(mappedBy: 'event', targetEntity: impression::class)]
+    #[ORM\OneToMany(mappedBy: 'event', targetEntity: impression::class, cascade: ['persist'])]
     private Collection $impressions;
 
     public function __construct()
@@ -227,7 +227,7 @@ class Event
 
     public function removeImpression(impression $impression): self
     {
-        if ($this->impression->removeElement($impression)) {
+        if ($this->impressions->removeElement($impression)) {
             // set the owning side to null (unless already changed)
             if ($impression->getEvent() === $this) {
                 $impression->setEvent(null);

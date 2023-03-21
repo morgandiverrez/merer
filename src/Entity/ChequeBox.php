@@ -26,16 +26,16 @@ class ChequeBox
     private ?\DateTimeInterface $lastCountDate = null;
 
     #[ORM\ManyToOne]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: false, cascade: ['persist', 'remove'])]
     private ?ChartOfAccounts $chartOfAccounts ;
 
     #[ORM\Column(length:255, unique: true, nullable: true)]
     private ?string $name = null;
 
-    #[ORM\ManyToOne]
+    #[ORM\ManyToOne(cascade: ['persist'])]
     private ?Location $location = null;
 
-    #[ORM\OneToMany(mappedBy: 'chequeBox', targetEntity: Cheque::class)]
+    #[ORM\OneToMany(mappedBy: 'chequeBox', targetEntity: Cheque::class, orphanRemoval:true)]
     private Collection $cheques;
 
     public function __construct()

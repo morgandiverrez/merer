@@ -28,17 +28,17 @@ class ExpenseReport
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $date = null;
 
-    #[ORM\ManyToOne(inversedBy: 'expenseReports')]
+    #[ORM\ManyToOne(inversedBy:'expenseReports', cascade: ['persist'])]
     private ?Transaction $transaction = null;
 
-    #[ORM\ManyToOne(inversedBy: 'expenseReports')]
+    #[ORM\ManyToOne(inversedBy:'expenseReports', cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
     private ?Supplier $supplier = null;
 
     #[ORM\Column]
     private ?bool $comfirm = false;
 
-    #[ORM\ManyToOne(inversedBy: 'expenseReports')]
+    #[ORM\ManyToOne(inversedBy: 'expenseReports', cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
     private ?Exercice $exercice = null;
 

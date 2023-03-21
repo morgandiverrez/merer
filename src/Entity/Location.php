@@ -28,10 +28,10 @@ class Location
     private ?string $city = null;
 
 
-    #[ORM\OneToMany(mappedBy: 'location', targetEntity: Supplier::class)]
+    #[ORM\OneToMany(mappedBy: 'location', targetEntity: Supplier::class, cascade: ['persist'])]
     private Collection $suppliers;
 
-    #[ORM\OneToMany(mappedBy: 'location', targetEntity: Customer::class)]
+    #[ORM\OneToMany(mappedBy: 'location', targetEntity: Customer::class, cascade: ['persist'])]
     private Collection $customers;
 
  

@@ -16,13 +16,13 @@ class InvoiceLine
     #[ORM\Column(type: 'float', precision: 10, scale: 0, nullable: true)]
     private $discount;
 
-    #[ORM\ManyToOne(targetEntity: Invoice::class, inversedBy: 'invoiceLines')]
+    #[ORM\ManyToOne(targetEntity: Invoice::class, inversedBy: 'invoiceLines', cascade: ['persist'])]
     private $invoice;
 
-    #[ORM\ManyToOne(targetEntity: CatalogDiscount::class, inversedBy: 'invoiceLines')]
+    #[ORM\ManyToOne(targetEntity: CatalogDiscount::class, inversedBy: 'invoiceLines', cascade: ['persist'])]
     private $catalogDiscount;
 
-    #[ORM\ManyToOne(targetEntity: CatalogService::class, inversedBy: 'invoiceLines')]
+    #[ORM\ManyToOne(targetEntity: CatalogService::class, inversedBy: 'invoiceLines', cascade: ['persist'])]
     private $CatalogService;
 
     #[ORM\Column(length: 255, nullable: true)]

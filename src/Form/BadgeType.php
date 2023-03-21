@@ -24,9 +24,7 @@ class BadgeType extends AbstractType
             ->add('name')
             ->add('categorie')
             ->add('description', TextareaType::class)
-            ->add( 'date_creation', DateType::class, [
-            'widget' => 'single_text',
-        ])
+          
         ;
     }
 

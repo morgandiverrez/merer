@@ -36,7 +36,7 @@ class CatalogService
     #[ORM\Column(type: 'string', length: 1024, nullable: true)]
     private $description;
 
-    #[ORM\OneToMany(mappedBy: 'CatalogService', targetEntity: InvoiceLine::class)]
+    #[ORM\OneToMany(mappedBy: 'CatalogService', targetEntity: InvoiceLine::class, cascade: ['persist'])]
     private $invoiceLines;
 
 

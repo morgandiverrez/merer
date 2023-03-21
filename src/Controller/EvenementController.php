@@ -84,7 +84,10 @@ class EvenementController extends AbstractController
 
 
         if ($form->isSubmitted() && $form->isValid()) {
-           if($evenement->getDateFinInscription() == null){
+            if ($evenement->getDateFin() == null) {
+                $evenement->setDateFin($evenement->getDateDebut());
+            }
+            if($evenement->getDateFinInscription() == null){
                 $evenement->setDateFinInscription($evenement->getDateDebut());
             }
 

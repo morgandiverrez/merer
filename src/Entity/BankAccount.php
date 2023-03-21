@@ -42,10 +42,10 @@ class BankAccount
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $lastCountDate = null;
 
-    #[ORM\ManyToOne]
+    #[ORM\ManyToOne( orphanRemoval:true)]
     private ?ChartOfAccounts $chartOfAccounts = null;
 
-    #[ORM\ManyToOne]
+    #[ORM\ManyToOne(cascade: ['persist'])]
     private ?Location $location = null;
 
     public function getId(): ?int

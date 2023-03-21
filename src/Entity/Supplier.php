@@ -20,22 +20,22 @@ class Supplier
     #[ORM\ManyToOne]
     private ?ChartOfAccounts $chartOfAccounts = null;
 
-    #[ORM\ManyToOne(inversedBy: 'suppliers')]
+    #[ORM\ManyToOne(inversedBy: 'suppliers', cascade: ['persist'])]
     private ?Location $location = null;
 
-    #[ORM\ManyToOne(inversedBy: 'suppliers')]
+    #[ORM\ManyToOne(inversedBy: 'suppliers', cascade: ['persist'])]
     private ?AdministrativeIdentifier $administrativeIdentifier = null;
 
     #[ORM\Column(unique: true, length: 255)]
     private ?string $name = null;
 
-    #[ORM\OneToOne(inversedBy: 'supplier', cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(inversedBy: 'supplier', cascade: ['persist'])]
     private ?Customer $customer = null;
 
-    #[ORM\ManyToMany(targetEntity: Contact::class, mappedBy: 'supplier')]
+    #[ORM\ManyToMany(targetEntity: Contact::class, mappedBy: 'supplier', cascade: ['persist'])]
     private Collection $contacts;
 
-    #[ORM\OneToMany(mappedBy: 'supplier', targetEntity: ExpenseReport::class)]
+    #[ORM\OneToMany(mappedBy: 'supplier', targetEntity: ExpenseReport::class, orphanRemoval:true)]
     private Collection $expenseReports;
 
     
@@ -131,7 +131,7 @@ class Supplier
     {
         if (!$this->contacts->contains($contact)) {
             $this->contacts->add($contact);
-            $contact->addCustomer($this);
+            $contact->addSupplier($this);
         }
 
         return $this;
@@ -140,7 +140,7 @@ class Supplier
     public function removeContact(Contact $contact): self
     {
         if ($this->contacts->removeElement($contact)) {
-            $contact->removeCustomer($this);
+            $contact->removeSupplier($this);
         }
 
         return $this;
@@ -158,7 +158,7 @@ class Supplier
     {
         if (!$this->expenseReports->contains($expenseReport)) {
             $this->expenseReports->add($expenseReport);
-            $expenseReport->setCustomer($this);
+            $expenseReport->setSupplier($this);
         }
 
         return $this;
@@ -168,8 +168,8 @@ class Supplier
     {
         if ($this->expenseReports->removeElement($expenseReport)) {
             // set the owning side to null (unless already changed)
-            if ($expenseReport->getCustomer() === $this) {
-                $expenseReport->setCustomer(null);
+            if ($expenseReport->getSupplier() === $this) {
+                $expenseReport->setSupplier(null);
             }
         }
 
