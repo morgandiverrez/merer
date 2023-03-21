@@ -36,23 +36,23 @@ class Seance
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $parcours;
 
-    #[ORM\ManyToOne(targetEntity: Formation::class, inversedBy: 'seance')]
+    #[ORM\ManyToOne(targetEntity: Formation::class, inversedBy: 'seance', cascade: ['persist'])]
     private $formation;
 
-    #[ORM\ManyToMany(targetEntity: Lieux::class, inversedBy: 'seance')]
+    #[ORM\ManyToMany(targetEntity: Lieux::class, inversedBy: 'seance', cascade: ['persist'])]
     private $lieux;
 
-    #[ORM\OneToMany(mappedBy: 'seance', targetEntity: Retour::class)]
+    #[ORM\OneToMany(mappedBy: 'seance', targetEntity: Retour::class, orphanRemoval:true)]
     private $retour;
 
-    #[ORM\ManyToMany(targetEntity: Profil::class, mappedBy: 'seance')]
+    #[ORM\ManyToMany(targetEntity: Profil::class, mappedBy: 'seance', cascade: ['persist'])]
     private $profil;
 
-    #[ORM\OneToMany(mappedBy: 'seance', targetEntity: SeanceProfil::class)]
+    #[ORM\OneToMany(mappedBy: 'seance', targetEntity: SeanceProfil::class, orphanRemoval: true)]
     private $seanceProfil;
 
   
-    #[ORM\ManyToOne(targetEntity: Evenement::class, inversedBy: 'seance')]
+    #[ORM\ManyToOne(targetEntity: Evenement::class, inversedBy: 'seance', cascade: ['persist'])]
     private $evenement;
 
     public function __construct()

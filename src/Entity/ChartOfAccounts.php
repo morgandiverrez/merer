@@ -29,10 +29,10 @@ class ChartOfAccounts
     #[ORM\Column( nullable : false)]
     private ?bool $movable;
 
-    #[ORM\OneToMany(mappedBy: 'chartOfAccounts', targetEntity: TransactionLine::class)]
+    #[ORM\OneToMany(mappedBy: 'chartOfAccounts', targetEntity: TransactionLine::class, cascade: ['persist'])]
     private Collection $transactionLines;
 
-    #[ORM\OneToMany(mappedBy: 'chartOfAccounts', targetEntity: Customer::class)]
+    #[ORM\OneToMany(mappedBy: 'chartOfAccounts', targetEntity: Customer::class, cascade: ['persist'])]
     private Collection $customers;
 
     public function __construct()

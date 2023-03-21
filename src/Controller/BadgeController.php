@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use DateTime;
 use App\Entity\Badge;
 use App\Form\BadgeType;
 use Doctrine\ORM\EntityManager;
@@ -66,7 +67,7 @@ class BadgeController extends AbstractController
         
 
         if ($form->isSubmitted() && $form->isValid()) {
-
+            $badge->setDateCreation(new Datetime());
             $logoUpload = $form->get('image')->getData();
             $name = $form->get('name')->getData();
             $nameMajuscule = strtoupper($name);

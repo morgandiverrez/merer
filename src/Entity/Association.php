@@ -47,13 +47,13 @@ class Association
     #[ORM\Column(type: 'string', length: 255,unique: true, nullable: true)]
     private $adresse_mail;
 
-    #[ORM\ManyToMany(targetEntity: Profil::class, inversedBy: 'association')]
+    #[ORM\ManyToMany(targetEntity: Profil::class, inversedBy: 'association', cascade: ['persist'])]
     private $profil;
 
     #[ORM\Column(type: 'date', nullable: true)]
     private $date_election;
 
-    #[ORM\ManyToMany(targetEntity: Demande::class, mappedBy: 'association')]
+    #[ORM\ManyToMany(targetEntity: Demande::class, mappedBy: 'association' , cascade: ['persist', 'remove'])]
     private $demandes;
 
 

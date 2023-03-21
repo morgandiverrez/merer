@@ -45,17 +45,17 @@ class Formation
     #[ORM\OneToMany(mappedBy: 'formation', targetEntity: Seance::class)]
     private $seance;
 
-    #[ORM\ManyToOne(targetEntity: Badge::class, inversedBy: 'formations')]
+    #[ORM\ManyToOne(targetEntity: Badge::class, inversedBy:'formations', cascade: ['persist'])]
     private $badge;
 
-    #[ORM\ManyToMany(targetEntity: Demande::class, mappedBy: 'formation')]
+    #[ORM\ManyToMany(targetEntity: Demande::class, mappedBy:'formation', cascade: ['persist'])]
     private $demandes;
 
    
 
     public function __construct()
     {
-        $this->Seance = new ArrayCollection();
+        $this->seance = new ArrayCollection();
         $this->demandes = new ArrayCollection();
 
     }

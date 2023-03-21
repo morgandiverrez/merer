@@ -38,19 +38,19 @@ class Invoice
     #[ORM\Column(length: 64, nullable: true)]
     private ?string $category = null; // pour impression par exemple
 
-    #[ORM\ManyToOne(inversedBy: 'invoices')]
+    #[ORM\ManyToOne(inversedBy: 'invoices', cascade: ['persist'])]
     private ?Transaction $transaction = null;
 
-    #[ORM\ManyToOne(inversedBy: 'invoices')]
+    #[ORM\ManyToOne(inversedBy: 'invoices', cascade: ['persist'])]
     private ?Customer $customer = null;
 
-    #[ORM\OneToMany(mappedBy: 'invoice', targetEntity: PaymentDeadline::class)]
+    #[ORM\OneToMany(mappedBy: 'invoice', targetEntity: PaymentDeadline::class, orphanRemoval: true)]
     private $paymentDeadlines;
 
-    #[ORM\OneToMany(mappedBy: 'invoice', targetEntity: InvoiceLine::class)]
+    #[ORM\OneToMany(mappedBy: 'invoice', targetEntity: InvoiceLine::class, orphanRemoval:true)]
     private $invoiceLines;
 
-    #[ORM\ManyToOne(inversedBy: 'invoices')]
+    #[ORM\ManyToOne(inversedBy: 'invoices', cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
     private ?Exercice $exercice = null;
 
@@ -60,7 +60,6 @@ class Invoice
     {
         $this->paymentDeadlines = new ArrayCollection();
         $this->invoiceLines = new ArrayCollection();
-        $this->impressions = new ArrayCollection();
     }
 
 

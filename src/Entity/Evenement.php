@@ -34,7 +34,7 @@ class Evenement
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $URL;
 
-    #[ORM\OneToMany(mappedBy: 'evenement', targetEntity: seance::class)]
+    #[ORM\OneToMany(mappedBy: 'evenement', targetEntity: seance::class, cascade: ['persist', 'remove'])]
     private $seances;
 
     #[ORM\Column(type: 'array', nullable: true)]
@@ -58,7 +58,7 @@ class Evenement
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $dateFinInscription;
 
-    #[ORM\ManyToOne(targetEntity: lieux::class, inversedBy: 'evenements')]
+    #[ORM\ManyToOne(targetEntity: lieux::class, inversedBy:'evenements', cascade: ['persist'])]
     private $lieu;
 
     #[ORM\Column(type: 'integer', nullable: true)]

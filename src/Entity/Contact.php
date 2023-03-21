@@ -31,7 +31,7 @@ class Contact
     #[ORM\Column(nullable: true, unique: true)]
     private ?string $phone = null;
 
-    #[ORM\ManyToMany(targetEntity: Customer::class, inversedBy: 'contacts')]
+    #[ORM\ManyToMany(targetEntity: Customer::class, inversedBy: 'contacts', cascade: ['persist'])]
     private Collection $customer;
 
     #[ORM\Column(length: 64, nullable: true)]
@@ -40,7 +40,7 @@ class Contact
     #[ORM\ManyToOne]
     private ?Location $Location = null;
 
-   #[ORM\ManyToMany(targetEntity: Supplier::class, inversedBy: 'contacts')]
+   #[ORM\ManyToMany(targetEntity: Supplier::class, cascade: ['persist'], inversedBy: 'contacts')]
     private Collection $supplier;
 
 
@@ -169,7 +169,7 @@ class Contact
     {
         if (!$this->supplier->contains($supplier)) {
             $this->supplier->add($supplier);
-            $supplier->setContact($this);
+            $supplier-> addContact($this);
         }
 
         return $this;
@@ -179,8 +179,8 @@ class Contact
     {
         if ($this->supplier->removeElement($supplier)) {
             // set the owning side to null (unless already changed)
-            if ($supplier->getContact() === $this) {
-                $supplier->setContact(null);
+            if ($supplier->getContacts() === $this) {
+                $supplier->removeContact($this);
             }
         }
 

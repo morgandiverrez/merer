@@ -70,10 +70,10 @@ class Retour
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $mot_fin;
 
-    #[ORM\ManyToOne(targetEntity: Seance::class, inversedBy: 'retour')]
+    #[ORM\ManyToOne(targetEntity: Seance::class, inversedBy: 'retour', cascade: ['persist'])]
     private $seance;
 
-    #[ORM\ManyToOne(targetEntity: Profil::class, inversedBy: 'retour')]
+    #[ORM\ManyToOne(targetEntity: Profil::class, inversedBy: 'retour', cascade: ['persist'])]
     private $profil;
 
 

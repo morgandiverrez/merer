@@ -23,7 +23,7 @@ class ExpenseReportLine
     #[ORM\Column(precision: 10, scale: 0, nullable: true)]
     private ?float $amount = null;
 
-    #[ORM\ManyToOne(inversedBy: 'expenseReportLine')]
+    #[ORM\ManyToOne(inversedBy:'expenseReportLine', cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
     private ?ExpenseReport $expenseReport = null;
 

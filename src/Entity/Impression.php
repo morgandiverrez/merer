@@ -35,17 +35,17 @@ class Impression
     #[ORM\Column(type:'boolean')]
     private $factureFinDuMois = true;
 
-    #[ORM\ManyToOne(targetEntity: Invoice::class, inversedBy: 'impressions')]
+    #[ORM\ManyToOne(targetEntity: Invoice::class, inversedBy: 'impressions', cascade: ['persist'])]
     private $invoice;
 
-    #[ORM\ManyToOne(inversedBy: 'impressions')]
+    #[ORM\ManyToOne(inversedBy: 'impressions', cascade: ['persist'])]
     private ?Customer $customer = null;
 
-    #[ORM\ManyToOne(inversedBy: 'impressions')]
+    #[ORM\ManyToOne(inversedBy: 'impressions', cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
     private ?Exercice $exercice = null;
 
-    #[ORM\ManyToOne(inversedBy: 'impression')]
+    #[ORM\ManyToOne(inversedBy: 'impression', cascade: ['persist'])]
     private ?Event $event = null;
 
     public function  __toString()

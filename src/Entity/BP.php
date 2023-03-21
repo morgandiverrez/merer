@@ -27,10 +27,10 @@ class BP
     #[ORM\Column(precision: 10, scale: 0, nullable: true)]
     private ?float $reallocateAmount = null;
 
-    #[ORM\OneToMany(mappedBy: 'BP', targetEntity: Transaction::class)]
+    #[ORM\OneToMany(mappedBy: 'BP', targetEntity: Transaction::class, cascade: ['persist'])]
     private Collection $transactions;
 
-    #[ORM\ManyToOne(inversedBy: 'bPs')]
+    #[ORM\ManyToOne(inversedBy: 'bPs', cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
     private ?Exercice $exercice = null;
 

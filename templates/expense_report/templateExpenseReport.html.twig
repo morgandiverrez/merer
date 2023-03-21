@@ -1680,7 +1680,7 @@ hXcS2sYPcYLmAwAcku4f0XwBAOBbsHEPVgcAAHQfAADQfQAA+CIkFGMBABwUlWpg/jsAAA5G948z
             <tr><th class="mx-5">{{ federation.socialReason }}</th><th class="mx-5 ">Demandeur :</th></tr>
             <tr><th class="mx-5">{{ institution.location.adress }}</th><th class="mx-5 ">{% if expenseReport.supplier.getContacts() %}{{ expenseReport.supplier.getContacts()[0].name }} <b>{{ expenseReport.supplier.contacts[0].lastName }}{% endif %}</b></th></tr>
             <tr><th class="mx-5">{{ institution.location.zipCode }} {{ institution.location.city }}</th><th class="mx-5">{% if expenseReport.supplier.location %} {{ expenseReport.supplier.location.zipCode }} {{ expenseReport.supplier.location.city }} {% endif %}</th></tr>
-            <tr><th class="mx-5">Email : tresorerie@fedeb.net</th><th class="mx-5 ">{{ expenseReport.supplier.customer.user.email }}</th></tr>
+            <tr><th class="mx-5">Email : tresorerie@fedeb.net</th><th class="mx-5 ">{% if expenseReport.supplier.getContacts() %}{{ expenseReport.supplier.getContacts[0].email }}{% endif %}</th></tr>
             <tr><th class="mx-5">Tel : 06-52-32-97-64</th><th class="mx-5">{% if expenseReport.supplier.getContacts() %} {{ expenseReport.supplier.getContacts()[0].phone}}{% endif %}</th></tr>  
                     
                     Fournisseurs -{{  expenseReport.supplier.chartofaccounts.code|slice(4) }}</th></tr>

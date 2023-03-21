@@ -19,13 +19,13 @@ class Demande
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\ManyToOne(targetEntity: Profil::class, inversedBy: 'demandes')]
+    #[ORM\ManyToOne(targetEntity: Profil::class, inversedBy: 'demandes', cascade: ['persist'])]
     private $profil;
 
-    #[ORM\ManyToMany(targetEntity: Association::class, inversedBy: 'demandes')]
+    #[ORM\ManyToMany(targetEntity: Association::class, inversedBy:'demandes', cascade: ['persist'])]
     private $association;
 
-    #[ORM\ManyToMany(targetEntity: EquipeElu::class, inversedBy: 'demandes')]
+    #[ORM\ManyToMany(targetEntity: EquipeElu::class, inversedBy:'demandes', cascade: ['persist'])]
     private $equipeElu;
 
     #[ORM\Column(type: 'datetime', nullable: true)]
@@ -37,7 +37,7 @@ class Demande
     #[ORM\Column(type: 'integer', nullable: true)]
     private $nombrePersonne;
 
-    #[ORM\ManyToMany(targetEntity: Formation::class, inversedBy: 'demandes')]
+    #[ORM\ManyToMany(targetEntity: Formation::class, inversedBy: 'demandes', cascade: ['persist', 'remove'])]
     private $formation;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]

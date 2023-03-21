@@ -36,28 +36,28 @@ class Profil
     #[ORM\Column(type: 'date')]
     private $date_of_birth;
 
-    #[ORM\OneToMany(mappedBy: 'profil', targetEntity: Retour::class)]
+    #[ORM\OneToMany(mappedBy: 'profil', targetEntity: Retour::class, orphanRemoval:true)]
     private $retour;
 
-    #[ORM\ManyToMany(targetEntity: EquipeElu::class, mappedBy: 'profil')]
+    #[ORM\ManyToMany(targetEntity: EquipeElu::class, mappedBy: 'profil',cascade: ['persist'])]
     private $equipeElu;
 
-    #[ORM\ManyToMany(targetEntity: Association::class, mappedBy: 'profil')]
+    #[ORM\ManyToMany(targetEntity: Association::class, mappedBy: 'profil', cascade: ['persist'])]
     private $association;
 
-    #[ORM\ManyToMany(targetEntity: Badge::class, mappedBy: 'profil')]
+    #[ORM\ManyToMany(targetEntity: Badge::class, mappedBy: 'profil', cascade: ['persist'])]
     private $badge;
 
-    #[ORM\ManyToMany(targetEntity: Seance::class, inversedBy: 'profil')]
+    #[ORM\ManyToMany(targetEntity: Seance::class, inversedBy: 'profil', cascade: ['persist'])]
     private $seance;
 
-    #[ORM\OneToMany(mappedBy: 'profil', targetEntity: SeanceProfil::class)]
+    #[ORM\OneToMany(mappedBy: 'profil', targetEntity: SeanceProfil::class, orphanRemoval:true)]
     private $seanceProfil;
 
     #[ORM\OneToOne(mappedBy: 'profil', targetEntity: User::class, cascade: ['persist', 'remove'])]
     private $user;
 
-    #[ORM\OneToMany(mappedBy: 'profil', targetEntity: Demande::class)]
+    #[ORM\OneToMany(mappedBy: 'profil', targetEntity: Demande::class, orphanRemoval:true)]
     private $demandes;
 
 

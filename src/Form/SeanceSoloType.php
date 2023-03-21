@@ -34,17 +34,20 @@ class SeanceSoloType extends AbstractType
 
             ->add('formation', EntityType::class, [
             'class' => Formation::class,
+            'required' => false,
             
         ])
             ->add('lieux', EntityType::class, [    
             'class' => Lieux::class,
             'multiple' => true,
+            'required' => false,
       
         ])
 
             ->add('profil', EntityType::class, [
                 'class' => Profil::class,
                  'multiple' => true,
+                 'required' => false,
                 'query_builder' => function (EntityRepository $er) {
                 return $er->createQueryBuilder('profil')
                     ->innerJoin('profil.user', 'u')

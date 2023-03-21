@@ -19,13 +19,13 @@ class Institution
     #[ORM\Column]
     private ?bool $open = null;
 
-    #[ORM\ManyToOne(inversedBy: 'institutions')]
+    #[ORM\ManyToOne(inversedBy: 'institutions', cascade: ['persist'])]
     private ?AdministrativeIdentifier $administrativeIdentifier = null;
 
-    #[ORM\ManyToOne(inversedBy: 'institutions')]
+    #[ORM\ManyToOne(inversedBy: 'institutions', cascade: ['persist'])]
     private ?Federation $federation = null;
 
-    #[ORM\ManyToOne]
+    #[ORM\ManyToOne(cascade: ['persist'])]
     private ?Location $location = null;
 
     public function getId(): ?int

@@ -31,7 +31,7 @@ class PaymentDeadline
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $actualMeans;
 
-    #[ORM\ManyToOne(targetEntity: Invoice::class, inversedBy: 'paymentDeadlines')]
+    #[ORM\ManyToOne(targetEntity: Invoice::class, inversedBy: 'paymentDeadlines', cascade: ['persist'])]
     private $invoice;
 
     public function getId(): ?int

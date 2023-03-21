@@ -36,11 +36,11 @@ class Badge
     #[ORM\Column(type: 'date', nullable: true)]
     private $date_creation;
 
-    #[ORM\ManyToMany(targetEntity: Profil::class, inversedBy:'badge')]
+    #[ORM\ManyToMany(targetEntity: Profil::class, cascade: ['persist'],inversedBy:'badge')]
     private $profil;
 
 
-    #[ORM\OneToMany(mappedBy: 'badge', targetEntity: Formation::class)]
+    #[ORM\OneToMany(mappedBy: 'badge', cascade: ['persist'], targetEntity: Formation::class)]
     private $formations;
 
 
