@@ -138,7 +138,7 @@ class AssociationController extends AbstractController
 
 
     #[Route('/delete/{associationID}', name: 'delete')]
-    #[IsGranted('ROLE_ADMIN')]
+    #[IsGranted('ROLE_FORMA')]
     public function delete(EntityManagerInterface $entityManager, $associationID): Response
     {
 

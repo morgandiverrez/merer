@@ -14,6 +14,7 @@ use App\Entity\Evenement;
 use App\Entity\Formation;
 use App\Entity\SeanceProfil;
 use App\Form\SeanceSoloType;
+use App\Form\SeanceType;
 use Aws\Ses\SesClient;
 use Doctrine\ORM\PersistentCollection;
 use Doctrine\ORM\EntityManagerInterface;
@@ -305,6 +306,63 @@ class SeanceController extends AbstractController
                     ],
                 ]);
             }
+        }
+    }
+
+
+    #[Route('/newForEvent/{evenementID}', name: 'newForEvent')]
+    #[IsGranted('ROLE_BF')]
+    public function newForEvent(EntityManagerInterface $entityManager, Request $request, SesClient $ses , $evenementID): Response
+    {
+        $seance = new Seance();
+        $evenement = $entityManager->getRepository(Evenement::class)->findById($evenementID)[0];
+        
+         $parcours =  [];
+        foreach ($evenement->getParcours() as $parcour) {
+            $parcours[$parcour] = $parcour;
+        }
+        $form = $this->createForm(SeanceType::class, $seance,  ['parcours' => $parcours]);
+        $form->handleRequest($request);
+        
+        if ($form->isSubmitted() && $form->isValid()) {
+            $seance->setEvenement($evenement);
+           foreach($form->get('profil')->getData() as  $formateurice){
+                $nameLastNameFormateurice = $formateurice;
+                $namelastname = explode(" ", $nameLastNameFormateurice);
+                $profil = $entityManager->getRepository(Profil::class)->findByName($namelastname[0], $namelastname[1])[0];
+                $profil->addSeance($seance);
+                $entityManager->persist($profil);
+
+                $sender_email = 'no-reply@fedeb.net';
+                $recipient_emails = [$profil->getUser()->getEmail()];
+
+                $subject = 'Merer - Formation alloué';
+                $plaintext_body = 'Formation alloué' ;
+                $char_set = 'UTF-8';
+                $result = $ses->sendEmail([
+                    'Destination' => [
+                        'ToAddresses' => $recipient_emails,
+                    ],
+                    'ReplyToAddresses' => [$sender_email],
+                    'Source' => $sender_email,
+                    'Message' => [
+                        'Body' => [
+                            'Html' => [
+                                'Charset' => $char_set,
+                                'Data' =>$this->renderView('emails/formateur_alloue.html.twig',["seance" => $seance])
+                            ],
+                            'Text' => [
+                                'Charset' => $char_set,
+                                'Data' => $plaintext_body,
+                            ],
+                        ],
+                        'Subject' => [
+                            'Charset' => $char_set,
+                            'Data' => $subject,
+                        ],
+                    ],
+                ]);
+            }
 
             foreach ($form->get('lieux')->getData() as  $lieu) {
                     $nameLieux = $lieu;
@@ -352,6 +410,19 @@ class SeanceController extends AbstractController
         $entityManager->persist($seance);
         $entityManager->flush();
         return $this->redirectToRoute('seance_archivage');
+    }
+
+        #[Route('/delete/{seanceID}', name: 'delete')]
+    #[IsGranted('ROLE_FORMA')]
+    public function delete(EntityManagerInterface $entityManager, $seanceID): Response
+    {
+
+        $seance = $entityManager->getRepository(Seance::class)->findById($seanceID)[0];
+        $entityManager->remove($seance);
+        $entityManager->flush();
+        
+
+        return $this->redirectToRoute('seance_showAll', []);
     }
 
 

@@ -269,4 +269,17 @@ class EvenementController extends AbstractController
         $entityManager->flush();
         return $this->redirectToRoute('evenement_showAll');
     }
+
+    
+    #[Route('/delete/{evenementID}', name: 'delete')]
+    #[IsGranted('ROLE_FORMA')]
+    public function delete(EntityManagerInterface $entityManager, $evenementID): Response
+    {
+
+        $evenement = $entityManager->getRepository(Evenement::class)->findById($evenementID)[0];
+        $entityManager->remove($evenement);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('evenement_showAll', []);
+    }
 }
