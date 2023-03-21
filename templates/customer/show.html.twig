@@ -50,7 +50,6 @@
                 <thead>
                     <tr>
                         <th scope="col">Numéro</th>
-                        <th scope="col">Transaction</th>
                         <th scope="col">Montant</th>
                         <th scope="col">Total Payé</th>
                         <th scope="col">Reste à charge</th>
@@ -74,8 +73,7 @@
                                     <td>Dev-{{ invoice.code }}</td>
                                 {% endif %}
                             {% endif %}
-                            <td>{% if invoice.transaction %}{{ invoice.transaction.id }}{% endif %}</td>
-                            <td>{{ totals[loop.index-1] }} €</td>
+                            <td>{{ totals[loop.index - 1] }} €</td>
                              {% set totaux = totaux + totals[loop.index - 1] %}
                             {% set total = 0 %}
                             {% for paymentdeadline in  invoice.paymentdeadlines %}
