@@ -160,7 +160,7 @@ class CustomerController extends AbstractController
         $customer->setUser($user);
         $supplier->setCustomer($customer);
         $customer->addContact($contact);
-        $supplier->setContact($contact);
+        $supplier->addContact($contact);
         
         $contact->setMail($user->getEmail());
         if($user->getProfil()){
@@ -190,7 +190,7 @@ class CustomerController extends AbstractController
             $nbChartOfAccount = $entityManager->getRepository(ChartOfAccounts::class)->findMaxChartOfAccount(4110000)[0]['code'];
             $chartOfAccounts->setCode($nbChartOfAccount + 1);
         } else {
-            $chartOfAccounts->setCode(4110000);
+            $chartOfAccounts->setCode(4110001);
         }
         $customer->setChartOfAccounts($chartOfAccounts);
 
@@ -200,7 +200,7 @@ class CustomerController extends AbstractController
             $nbChartOfAccount = $entityManager->getRepository(ChartOfAccounts::class)->findMaxChartOfAccount(4000000)[0]['code'];
             $chartOfAccounts2->setCode($nbChartOfAccount + 1);
         } else {
-            $chartOfAccounts2->setCode(4000000);
+            $chartOfAccounts2->setCode(4000001);
         }
         $supplier->setChartOfAccounts($chartOfAccounts2);
 

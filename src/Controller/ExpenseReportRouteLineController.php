@@ -30,7 +30,7 @@ class ExpenseReportRouteLineController extends AbstractController
          $user = $this->getUser();
         $customer = $user->getCustomer();
 
-        if (($customer == $expenseReport->getCustomer() or $this->isGranted("ROLE_TRESO")) and !$expenseReport->isComfirm()) {
+        if (($customer == $expenseReport->getSupplier()->getCustomer() or $this->isGranted("ROLE_TRESO")) and !$expenseReport->isComfirm()) {
             $form = $this->createForm(ExpenseReportRouteLineType::class, $expenseReportRouteLine);
             $form->handleRequest($request);
 
@@ -76,7 +76,7 @@ class ExpenseReportRouteLineController extends AbstractController
          $user = $this->getUser();
         $customer = $user->getCustomer();
 
-        if (($customer == $expenseReport->getCustomer() or $this->isGranted("ROLE_TRESO")) and !$expenseReport->isComfirm()) {
+        if (($customer == $expenseReport->getSupplier()->getCustomer() or $this->isGranted("ROLE_TRESO")) and !$expenseReport->isComfirm()) {
             $form = $this->createForm(ExpenseReportRouteLineType::class, $expenseReportRouteLine);
              $form->handleRequest($request);
 
@@ -123,7 +123,7 @@ class ExpenseReportRouteLineController extends AbstractController
          $user = $this->getUser();
         $customer = $user->getCustomer();
 
-        if (($customer == $expenseReport->getCustomer() or $this->isGranted("ROLE_TRESO")) and !$expenseReport->isComfirm()) {
+        if (($customer == $expenseReport->getSupplier()->getCustomer() or $this->isGranted("ROLE_TRESO")) and !$expenseReport->isComfirm()) {
             $entityManager->remove($expenseReportRouteLine);
             $entityManager->flush();
             if($customer->getBankDetails()[0]){
