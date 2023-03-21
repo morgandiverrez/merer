@@ -32,7 +32,7 @@ class ExpenseReportLineController extends AbstractController
          $user = $this->getUser();
         $customer = $user->getCustomer();
 
-        if (($customer == $expenseReport->getCustomer() or $this->isGranted("ROLE_TRESO")) and !$expenseReport->isComfirm()) {
+        if (($customer == $expenseReport->getSupplier()->getCustomer() or $this->isGranted("ROLE_TRESO")) and !$expenseReport->isComfirm()) {
             $form = $this->createForm(ExpenseReportLineType::class, $expenseReportLine);
             $form->handleRequest($request);
 
@@ -68,8 +68,9 @@ class ExpenseReportLineController extends AbstractController
                     if($customer->getBankDetails()[0]->getIBAN() and $customer->getBankDetails()[0]->getBIC()){
                         return $this->redirectToRoute('expenseReport_show', ['expenseReportID' => $expenseReport->getId()]);
                     }
+                }else{
+                     return $this->redirectToRoute('bankDetail_new', []);
                 }
-                return $this->redirectToRoute('bankDetail_new', []);
             }
 
 
@@ -95,7 +96,7 @@ class ExpenseReportLineController extends AbstractController
          $user = $this->getUser();
         $customer = $user->getCustomer();
 
-        if (($customer == $expenseReport->getCustomer() or $this->isGranted("ROLE_TRESO")) and !$expenseReport->isComfirm()) {
+        if (($customer == $expenseReport->getSupplier()->getCustomer() or $this->isGranted("ROLE_TRESO")) and !$expenseReport->isComfirm()) {
             $form = $this->createForm(ExpenseReportLineType::class, $expenseReportLine);
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
@@ -180,7 +181,7 @@ class ExpenseReportLineController extends AbstractController
          $user = $this->getUser();
         $customer = $user->getCustomer();
 
-        if (($customer == $expenseReport->getCustomer() or $this->isGranted("ROLE_TRESO")) and !$expenseReport->isComfirm()) {
+        if (($customer == $expenseReport->getSupplier()->getCustomer() or $this->isGranted("ROLE_TRESO")) and !$expenseReport->isComfirm()) {
             $path = $expenseReportLine->getDocument();
             $elements = explode(".", $path);
             $extension = end($elements);
@@ -215,17 +216,17 @@ class ExpenseReportLineController extends AbstractController
         
     }
 
-    #[Route('/download/{expenseReportLine}', name: 'download')]
+    #[Route('/download/{expenseReportLineID}', name: 'download')]
     #[IsGranted('ROLE_USER')]
-    public function download(EntityManagerInterface $entityManager,  $expenseReportLine)
+    public function download(EntityManagerInterface $entityManager,  $expenseReportLineID)
     {
-        $expenseReportLine = $entityManager->getRepository(ExpenseReportLine::class)->findById($expenseReportLine)[0];
+        $expenseReportLine = $entityManager->getRepository(ExpenseReportLine::class)->findById($expenseReportLineID)[0];
         $expenseReport = $expenseReportLine->getExpenseReport();
 
          $user = $this->getUser();
         $customer = $user->getCustomer();
 
-        if ($customer == $expenseReport->getCustomer() or $this->isGranted("ROLE_TRESO")) {
+        if ($customer == $expenseReport->getSupplier()->getCustomer() or $this->isGranted("ROLE_TRESO")) {
             $finaleFile = $expenseReportLine->getDocument();
 
             header('Content-Description: File Transfer');

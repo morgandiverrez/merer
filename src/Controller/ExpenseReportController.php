@@ -10,6 +10,8 @@ use App\Entity\Supplier;
 use App\Entity\Exercice;
 use Endroid\QrCode\QrCode;
 use App\Entity\Transaction;
+use App\Entity\Federation;
+use App\Entity\Institution;
 use App\Entity\ExpenseReport;
 use App\Form\TransactionType;
 use Endroid\QrCode\Logo\Logo;
@@ -426,7 +428,40 @@ class ExpenseReportController extends AbstractController
         ]);
     }
 
-    
+     #[Route('/pdf/{expenseReportID}', name: 'expenseReportPDF')]
+    #[IsGranted('ROLE_TRESO')]
+    public function expenseReportPDF(EntityManagerInterface $entityManager, $expenseReportID){
+        $expenseReport = $entityManager->getRepository(ExpenseReport::class)->findById($expenseReportID)[0];
+        
+       
+        $federation = $entityManager->getRepository(Federation::class)->findBySocialReason("Fédé B")[0];
+     
+        $institution = $entityManager->getRepository(Institution::class)->findHeadquarterById($federation->getId());
+
+        $options = new Options();
+        $options->set('defaultFont', 'Roboto');
+        $options->setIsRemoteEnabled(true);
+
+        $dompdf = new Dompdf($options);
+     $html = $this->renderView('expense_report/templateExpenseReport.html.twig', [
+            'expenseReport' => $expenseReport,
+            'federation'=>$federation,
+            'institution'=>$institution,
+        ]);
+
+
+        $dompdf->loadHtml($html);
+
+
+        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->render();
+        //file_put_contents("../files/invoices/Fac-".$invoice->getCode().".pdf", $dompdf->output());
+        $dompdf->stream("Fac-".$expenseReport->getCode(), [
+            "Attachment" => false
+        ]);
+
+        exit(0);
+    }
     public function expenseReportTotale($expenseReport)
     {
         $nbTrajet = count($expenseReport->getExpenseReportRouteLines());

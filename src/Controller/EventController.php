@@ -20,9 +20,9 @@ class EventController extends AbstractController
     #[Route('/', name: 'showAll')]
     #[IsGranted('ROLE_TRESO')]
     public function showAll(EntityManagerInterface $entityManager, Request $request): Response
-    {
+    {   $seances = $entityManager->getRepository(Seance::class)->findAllSuperiorByDatetimeAndVisibleAndWithoutEvenement(date('y/m/d H:i:s'));
+       
         $events = $entityManager->getRepository(Event::class)->findAllInOrder();
-
         if ($request->isMethod('post')) {
             $posts = $request->request->all();
             if ($posts['name']) {

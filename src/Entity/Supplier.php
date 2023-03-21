@@ -42,6 +42,7 @@ class Supplier
 
     public function __construct()
     {
+         $this->contacts = new ArrayCollection();
         $this->expenseReports = new ArrayCollection();
     }
 
@@ -117,14 +118,30 @@ class Supplier
         return $this;
     }
 
-    public function getContact(): ?Contact
+
+    /**
+     * @return Collection<int, Contact>
+     */
+    public function getContacts(): Collection
     {
-        return $this->contact;
+        return $this->contacts;
     }
 
-    public function setContact(?Contact $contact): self
+    public function addContact(Contact $contact): self
     {
-        $this->contact = $contact;
+        if (!$this->contacts->contains($contact)) {
+            $this->contacts->add($contact);
+            $contact->addCustomer($this);
+        }
+
+        return $this;
+    }
+
+    public function removeContact(Contact $contact): self
+    {
+        if ($this->contacts->removeElement($contact)) {
+            $contact->removeCustomer($this);
+        }
 
         return $this;
     }

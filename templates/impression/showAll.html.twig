@@ -50,7 +50,7 @@
                         <td>{{impression.getDatetime().format("d/m/Y H:i")}}</td>
                         <td>{% if impression.getCustomer() %}
                              <a href="/customer/show/{{impression.getCustomer().getId()}}">
-                                {{ impression.customer.getId() }} 
+                                {{ impression.customer.getName() }} 
                             </a>
                             {% else %}
                             <a href="/event/show/{{impression.getEvent().getId()}}">
