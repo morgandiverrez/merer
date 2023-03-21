@@ -30,6 +30,8 @@
                                 {{ form_help(form.credit) }}
                             </div>
 
+
+
                            
                             {% set compteur = 0 %}
                             {% for invoiceLine in form.invoiceLines %}
@@ -49,6 +51,8 @@
                                         {{ form_help(invoiceLine.quote) }}
                                     </div>
 
+                                    
+
                                     <div class="catalogDiscount my-5">
                                         {{ form_label(invoiceLine.catalogDiscount, 'réduction ', {'label_attr': {'class': 'foo'}}) }}
                                         {{ form_errors(invoiceLine.catalogDiscount) }}
@@ -57,6 +61,13 @@
                                          <a href="/discount/new" target="_blank"><i class="fa-sharp fa-solid fa-circle-plus"></i></button></a>
                                     </div>
 
+                                     <div class="quantity">
+                                        {{ form_label(form.quantity, 'Quantité ', {'label_attr': {'class': 'foo'}}) }}
+                                        {{ form_errors(form.quantity) }}
+                                        {{ form_widget(form.quantity)}}
+                                        {{ form_help(form.quantity) }}
+                                    </div>
+                                    
                                     <div class="catalogService my-5">
                                         {{ form_label(invoiceLine.catalogService, 'Service ', {'label_attr': {'class': 'foo'}}) }}
                                         {{ form_errors(invoiceLine.catalogService) }}

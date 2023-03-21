@@ -20,6 +20,9 @@ class InvoiceLineType extends AbstractType
             ->add('discount', MoneyType::class,[
                 'required' => false
             ])
+
+            ->add('quantity')
+
             ->add('quote', TextAreaType::class, [
                 'required' => false,
             ])

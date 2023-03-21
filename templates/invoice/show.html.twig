@@ -44,6 +44,7 @@
                 <thead>
                     <tr>
                         <th scope="col">Service</th>
+                        <th scope="col">Quantité</th>
                         <th scope="col">Description</th>
                         <th scope="col">Montant HT</th>
                          <th scope="col">taux TVA</th>
@@ -63,15 +64,20 @@
                 {% set totalHT = 0 %}
                 {% set totalTTC = 0 %}
                 {% set totalDiscount = 0 %}
+                {% set montantHt = 0 %}
                 {% for invoiceLine in invoice.invoiceLines %} 
                     <tr>
                         <td>{% if invoiceLine.catalogService %}{{invoiceLine.catalogService.name}} {% endif %}</td>
+                        <td>{{invoiceLine.quantity}} </td>
                         <td>{% if invoiceLine.catalogService %}{{invoiceLine.catalogService.description}} - {{invoiceLine.quote}}{% endif %}</td>
                         <td>{% if invoiceLine.catalogService %}{{invoiceLine.catalogService.amountHt}} €{% endif %}</td>
+                        {% set montantHt = invoiceLine.catalogService.amountHt %}
                         {% if invoiceLine.catalogService %}{% set totalHT  = totalHT + invoiceLine.catalogService.amountHt %}{% endif %}
                         <td>{% if invoiceLine.catalogService %}{{invoiceLine.catalogService.tvaRate}} %{% endif %}</td>
                         <td>{% if invoiceLine.catalogService %}{{invoiceLine.catalogService.amountTtc}} €{% endif %}</td>
                         {% if invoiceLine.catalogService %}{% set totalTTC = totalTTC + invoiceLine.catalogService.amountTtc %}{% endif %}
+                        {% total = invoiceLine.quantity * montantHt %}
+                        <td>{{totalHt}}</td>
                         <td>{% if invoiceLine.catalogDiscount %}{{invoiceLine.catalogDiscount.name}}{% endif %}</td>
                         <td>{% if invoiceLine.catalogDiscount %}{{invoiceLine.catalogDiscount.description}}{% endif %}</td>
                         <td>{{invoiceLine.discount}} € </td>
