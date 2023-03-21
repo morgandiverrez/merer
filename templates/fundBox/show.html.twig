@@ -20,8 +20,9 @@
                         <li class="list-group-item">Compte associé :  {{fundBox.getChartOfAccounts().getName()}} | {{fundBox.getChartOfAccounts().getCode()}}</li>                    
                     </ul>
                     <div class="card-body">             
-                            <a href="/fundBox/edit/{{ fundBox.getId() }}" class="card-link"><i class="fa-solid fa-pen-to-square"></i></a>       
-                            <a href="/fundBox/" class="card-link"><i class="fa-solid fa-list"></i></a>
+                        <a href="/fundBox/edit/{{ fundBox.getId() }}" class="card-link"><i class="fa-solid fa-pen-to-square"></i></a>       
+                        <a href="/fundBox/delete/{{ fundBox.getId()}}" class="card-link"><i class="fa-solid fa-trash-can"></i></a>     
+                        <a href="/fundBox/" class="card-link"><i class="fa-solid fa-list"></i></a>
                     </div>
                 </div>
             </div>

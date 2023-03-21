@@ -76,7 +76,7 @@ class ChartOfAccountsController extends AbstractController
         $entityManager->remove($account);
         $entityManager->flush();
 
-        return $this->redirectToRoute('ChartOfAccounts_showAll');
+        return $this->redirectToRoute('chartOfAccounts_showAll');
     }
 
     #[Route('/new', name: 'new')]

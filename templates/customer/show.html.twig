@@ -158,8 +158,9 @@
                 {% endfor %}
                 </tbody>
             </table>
-            <p class="display-6 no-wrap text-center mb-5">Liste des notes de frais de ce client</p>
-            <table class="table table-striped">
+            {% if customer.supplier %}
+                <p class="display-6 no-wrap text-center mb-5">Liste des notes de frais de ce client</p>
+                <table class="table table-striped">
                     <thead>
                     <tr>
                         <th scope="col">Code</th>
@@ -173,7 +174,7 @@
 
                     <tbody>
                         {% set totaux = 0 %}
-                        {% for expenseReport in customer.getExpenseReports() %} 
+                        {% for expenseReport in customer.supplier.getExpenseReports() %} 
                             <tr>
                                 <td>{{ expenseReport.code }}</td>
                                 <td>{{ expenseReport.date.format('d/m/y') }}</td>
@@ -202,27 +203,28 @@
                         <th></th>
                     </tfoot>
                 </table>
-                <p class="display-6 no-wrap text-center">Liste des contacts de ce client </p>
-                <table class="table table-striped">
-                    <thead>
+            {% endif %}
+            <p class="display-6 no-wrap text-center">Liste des contacts de ce client </p>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">Nom</th>
+                        <th scope="col">Prénom</th>
+                        <th scope="col">Civilité</th>
+                        <th scope="col">Détails</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for contact in customer.getContacts() %} 
                         <tr>
-                            <th scope="col">Nom</th>
-                            <th scope="col">Prénom</th>
-                            <th scope="col">Civilité</th>
-                            <th scope="col">Détails</th>
+                            <td>{{contact.getName()}}</td>   
+                            <td>{{contact.getLastName()}}</td>   
+                            <td>{{contact.getCivility()}}</td>
+                            <td><a href="/contact/show/{{contact.getId()}}"><i class="fa-solid fa-eye"></i></a></td> 
                         </tr>
-                    </thead>
-                    <tbody>
-                        {% for contact in customer.getContacts() %} 
-                            <tr>
-                                <td>{{contact.getName()}}</td>   
-                                <td>{{contact.getLastName()}}</td>   
-                                <td>{{contact.getCivility()}}</td>
-                                <td><a href="/contact/show/{{contact.getId()}}"><i class="fa-solid fa-eye"></i></a></td> 
-                            </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+                    {% endfor %}
+                </tbody>
+            </table>
             </div>
         </div>
     </div>

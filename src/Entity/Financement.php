@@ -23,7 +23,7 @@ class Financement
     private ?string $financeur = null;
 
     #[ORM\Column(precision: 10, scale: 0, nullable: true)]
-    private ?float $Amount = null;
+    private ?float $amount = null;
 
     #[ORM\Column(nullable: true)]
     private ?int $pluriannuel = null;
@@ -82,12 +82,12 @@ class Financement
 
     public function getAmount(): ?float
     {
-        return $this->Amount;
+        return $this->amount;
     }
 
-    public function setAmount(float $Amount): self
+    public function setAmount(float $amount): self
     {
-        $this->Amount = $Amount;
+        $this->amount = $amount;
 
         return $this;
     }
@@ -97,6 +97,13 @@ class Financement
     public function getPluriannuel(): ?int
     {
         return $this->pluriannuel;
+    }
+
+    public function setPluriannuel(float $pluriannuel): self
+    {
+        $this->pluriannuel = $pluriannuel;
+
+        return $this;
     }
 
     public function getDateVersement(): ?\DateTimeInterface

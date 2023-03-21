@@ -47,11 +47,12 @@
                         <th scope="col">Quantité</th>
                         <th scope="col">Description</th>
                         <th scope="col">Montant HT</th>
-                         <th scope="col">taux TVA</th>
-                          <th scope="col">Montant TTC</th>
+                        <th scope="col">taux TVA</th>
+                        <th scope="col">Montant TTC</th>
                         <th scope="col">Réduction</th>
                         <th scope="col">Description réduction</th>
                         <th scope="col">Montant réduction</th>
+                        <th scope="col"> total</th>
                          {% if is_granted('ROLE_TRESO') %}
                             <th scope="col">edit</th>
                             <th scope="col">delete</th>
@@ -64,6 +65,7 @@
                 {% set totalHT = 0 %}
                 {% set totalTTC = 0 %}
                 {% set totalDiscount = 0 %}
+                {% set totaux = 0 %}
                 {% set montantHt = 0 %}
                 {% for invoiceLine in invoice.invoiceLines %} 
                     <tr>
@@ -76,11 +78,13 @@
                         <td>{% if invoiceLine.catalogService %}{{invoiceLine.catalogService.tvaRate}} %{% endif %}</td>
                         <td>{% if invoiceLine.catalogService %}{{invoiceLine.catalogService.amountTtc}} €{% endif %}</td>
                         {% if invoiceLine.catalogService %}{% set totalTTC = totalTTC + invoiceLine.catalogService.amountTtc %}{% endif %}
-                        {% total = invoiceLine.quantity * montantHt %}
-                        <td>{{totalHt}}</td>
+                        {% set total = invoiceLine.quantity * montantHt %}
+                        
                         <td>{% if invoiceLine.catalogDiscount %}{{invoiceLine.catalogDiscount.name}}{% endif %}</td>
                         <td>{% if invoiceLine.catalogDiscount %}{{invoiceLine.catalogDiscount.description}}{% endif %}</td>
                         <td>{{invoiceLine.discount}} € </td>
+                        <td>{{total}} €</td>
+                        {% set totaux = totaux + total %}
                         {% set totalDiscount = totalDiscount + invoiceLine.discount %}
                         {% if is_granted('ROLE_TRESO') %}
                             <td><a href="/invoiceLine/edit/{{ invoiceLine.getId()}}" class="card-link"><i class="fa-solid fa-pen-to-square"></i></a></td>
@@ -93,12 +97,14 @@
                     <tr> 
                         <th> </th>
                         <th> </th>
+                        <th> </th>
                         <th>{{ totalHT }} € </th>
                         <th> </th>
                         <th>{{ totalTTC }} €</th>
                         <th> </th>
                         <th> </th>
                         <th>{{ totalDiscount }} € </th>
+                        <th>{{ totaux }}€</th>
                         <th> </th>
                         <th> </th>
                     </tr>

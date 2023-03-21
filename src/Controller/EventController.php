@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Event;
+use App\Entity\Seance;
 use App\Form\EventType;
 use App\Entity\Exercice;
 use App\Entity\TransactionLine;
@@ -83,6 +84,7 @@ class EventController extends AbstractController
 
 
         if ($form->isSubmitted() && $form->isValid()) {
+          
             $entityManager->persist($event);
             $entityManager->flush();
             return $this->redirectToRoute('event_show', ['eventID' => $event->getId()]);
@@ -129,7 +131,7 @@ class EventController extends AbstractController
     }
 
     #[Route('/delete/{eventID}', name: 'delete')]
-    #[IsGranted('ROLE_ADMIN')]
+    #[IsGranted('ROLE_TRESO')]
     public function delete(EntityManagerInterface $entityManager, $eventID): Response
     {
 

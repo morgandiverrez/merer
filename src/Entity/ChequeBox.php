@@ -26,7 +26,7 @@ class ChequeBox
     private ?\DateTimeInterface $lastCountDate = null;
 
     #[ORM\ManyToOne]
-    #[ORM\JoinColumn(nullable: false, )]
+    #[ORM\JoinColumn(nullable: false, cascade: ['persist', 'remove'])]
     private ?ChartOfAccounts $chartOfAccounts ;
 
     #[ORM\Column(length:255, unique: true, nullable: true)]

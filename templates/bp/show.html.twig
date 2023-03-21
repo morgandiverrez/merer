@@ -19,7 +19,7 @@
                     </div>
                     <div class="card-body">
                         <a href="/bp/edit/{{ bp.getId() }}" class="card-link"><i class="fa-solid fa-pen-to-square"></i></a>      
-                        
+                        <a href="/bp/delete/{{ bp.getId()}}" class="card-link"><i class="fa-solid fa-trash-can"></i></a>   
                         <a href="/bp/exercice/{{date('Y').format('Y')}}" class="card-link"><i class="fa-solid fa-list"></i></a>
                     </div>
                 </div>
@@ -59,9 +59,8 @@
                                 <th> </th>
                                 <th> </th>
                                 <th> </th>
-                                <th> </th>
-                                <th> </th>
                                 <th>{{ totalAmount }} € </th>
+                                <th> </th>
                             </tr>
                         </tfoot>
                     </table>

@@ -27,8 +27,9 @@
                         <li class="list-group-item">Compte associé : {% if bankAccount.getChartOfAccounts() %}<a href="/chartOfAccounts/show/{{ bankAccount.getChartOfAccounts().getId() }}" class="card-link">  {{bankAccount.getChartOfAccounts().getName()}} | {{bankAccount.getChartOfAccounts().getCode()}}</a> {% endif %} </li>                   
                     </ul>
                     <div class="card-body">             
-                            <a href="/bankAccount/edit/{{ bankAccount.getId() }}" class="card-link"><i class="fa-solid fa-pen-to-square"></i></a>       
-                            <a href="/bankAccount/" class="card-link"><i class="fa-solid fa-list"></i></a>
+                        <a href="/bankAccount/edit/{{ bankAccount.getId() }}" class="card-link"><i class="fa-solid fa-pen-to-square"></i></a>       
+                        <a href="/bankAccount/delete/{{ bankAccount.getId()}}" class="card-link"><i class="fa-solid fa-trash-can"></i></a>   
+                         <a href="/bankAccount/" class="card-link"><i class="fa-solid fa-list"></i></a>
                     </div>
                 </div>
             </div>

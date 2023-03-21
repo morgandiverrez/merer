@@ -108,4 +108,17 @@ class BankAccountController extends AbstractController
 
         ]);
     }
+
+
+    #[Route('/delete/{bankAccountID}', name: 'delete')]
+    #[IsGranted('ROLE_TRESO')]
+    public function delete(EntityManagerInterface $entityManager, $bankAccountID): Response
+    {
+
+        $bankAccount = $entityManager->getRepository(BankAccount::class)->findById($bankAccountID)[0];
+        $entityManager->remove($bankAccount);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('bankAccount_show', ['bankAccountID' => $bankAccount->getId()]);
+    }
 }
