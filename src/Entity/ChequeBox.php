@@ -19,17 +19,17 @@ class ChequeBox
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length:1024, nullable: true)]
+    #[ORM\Column(length: 1024, nullable: true)]
     private ?string $description = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $lastCountDate = null;
 
     #[ORM\ManyToOne]
-    #[ORM\JoinColumn(nullable: false, cascade: ['persist', 'remove'])]
-    private ?ChartOfAccounts $chartOfAccounts ;
+    #[ORM\JoinColumn(nullable: false)]
+    private ?ChartOfAccounts $chartOfAccounts;
 
-    #[ORM\Column(length:255, unique: true, nullable: true)]
+    #[ORM\Column(length: 255, unique: true, nullable: true)]
     private ?string $name = null;
 
     #[ORM\ManyToOne]
@@ -54,7 +54,7 @@ class ChequeBox
     {
         return $this->getName();
     }
-    
+
     public function getDescription(): ?string
     {
         return $this->description;
@@ -144,5 +144,4 @@ class ChequeBox
 
         return $this;
     }
-
 }

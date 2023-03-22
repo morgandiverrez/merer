@@ -14,6 +14,9 @@ class RepayGrid
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    private ?string $caracteristique = null;
+
+    #[ORM\Column(length: 255)]
     private ?string $travelMean = null;
 
     #[ORM\Column(length: 255)]
@@ -26,7 +29,7 @@ class RepayGrid
     private ?float $amount = null;
 
     #[ORM\Column]
-    private ?float $distance = null;
+    private ?int $numberPeople = 0;
 
     public function getId(): ?int
     {
@@ -35,8 +38,21 @@ class RepayGrid
 
     public function  __toString()
     {
-        return ('de '.$this->getStart().' à '.$this->getEnd().' en '.$this->getTravelMean());
+        return ('de '.$this->getStart().' à '.$this->getEnd().' en '.$this->travelMean.' comme '.$this->caracteristique.' à '.$this->numberPeople);
     }
+
+    public function getCaracteristique(): ?string
+    {
+        return $this->caracteristique;
+    }
+
+    public function setCaracteristique(string $caracteristique): self
+    {
+        $this->caracteristique = $caracteristique;
+
+        return $this;
+    }
+    
 
     public function getTravelMean(): ?string
     {
@@ -86,14 +102,14 @@ class RepayGrid
         return $this;
     }
 
-    public function getDistance(): ?float
+    public function getNumberPeople(): ?int
     {
-        return $this->distance;
+        return $this->numberPeople;
     }
 
-    public function setDistance(?float $distance): self
+    public function setNumberPeople(?int $numberPeople): self
     {
-        $this->distance = $distance;
+        $this->numberPeople = $numberPeople;
 
         return $this;
     }

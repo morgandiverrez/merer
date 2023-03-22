@@ -19,19 +19,19 @@ class ExpenseReportRouteLineType extends AbstractType
             ->add('date',  DateType::class, ['widget' => 'single_text',] )
             ->add('repayGrid', EntityType::class,[
                 'class' => RepayGrid::class,
-                'label' => 'selectionner un trajet habituel',
+                'label' => 'selectionner un trajet',
                 'required' => false,
             ])
-            ->add('start')
-            ->add('end')
-            ->add('distance')
-            ->add( 'travelMean', ChoiceType::class, [
-            'choices' => [
-                'voiture' => 'voiture',
-                'bus' =>  'bus',
-                'train' =>  'train',
-            ],
-        ])
+            // ->add('start')
+            // ->add('end')
+            // ->add('distance')
+            // ->add( 'travelMean', ChoiceType::class, [
+            // 'choices' => [
+            //     'voiture' => 'voiture',
+            //     'bus' =>  'bus',
+            //     'train' =>  'train',
+            // ],
+        
         ;
     }
 

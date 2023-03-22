@@ -339,19 +339,19 @@ class ImpressionController extends AbstractController
         
                     
         if ($impression->getFormat() == 'plastification') {
-            return ($impression->getQuantite() * $entityManager->getRepository(CatalogService::class)->findByCode('plastification'))->getAmountTtc();
+            return $impression->getQuantite() * $entityManager->getRepository(CatalogService::class)->findByCode('plastification')->getAmountTtc();
         } else {
             if ($impression->isRectoVerso()) {
                 if ($impression->isCouleur()) {
-                     return ($impression->getQuantite() * $entityManager->getRepository(CatalogService::class)->findByCode($impression->getFormat() . '_RV_' . 'couleur'))->getAmountTtc();
+                     return $impression->getQuantite() * $entityManager->getRepository(CatalogService::class)->findByCode($impression->getFormat() . '_RV_' . 'couleur')->getAmountTtc();
                 } else {
-                   return  ($impression->getQuantite() * $entityManager->getRepository(CatalogService::class)->findByCode($impression->getFormat() . '_RV'))->getAmountTtc();
+                   return  $impression->getQuantite() * $entityManager->getRepository(CatalogService::class)->findByCode($impression->getFormat() . '_RV')->getAmountTtc();
                 }
             } else {
                 if ($impression->isCouleur()) {
-                  return   ($impression->getQuantite() * $entityManager->getRepository(CatalogService::class)->findByCode($impression->getFormat() . '_R_' . 'couleur'))->getAmountTtc();
+                  return   $impression->getQuantite() * $entityManager->getRepository(CatalogService::class)->findByCode($impression->getFormat() . '_R_' . 'couleur')->getAmountTtc();
                 } else {
-                   return  ($impression->getQuantite() * $entityManager->getRepository(CatalogService::class)->findByCode($impression->getFormat() . '_R_'))->getAmountTtc();
+                   return  $impression->getQuantite() * $entityManager->getRepository(CatalogService::class)->findByCode($impression->getFormat() . '_R_')->getAmountTtc();
                 }
             }
         }
