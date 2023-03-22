@@ -142,6 +142,7 @@ class DemandeController extends AbstractController
     {
 
         $demande = $entityManager->getRepository(Demande::class)->findById($demandeID);
+        unlink($demande->getPlanning());
         $entityManager->remove($demande);
         $entityManager->flush();
 
