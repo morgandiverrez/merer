@@ -22,10 +22,6 @@ class CatalogServiceController extends AbstractController
         
         if ($request->isMethod('post')) {
             $posts = $request->request->all();
-                 
-            if ($posts['code']) {
-                $services = array_intersect($services, $entityManager->getRepository(CatalogService::class)->findAllByCode($posts['code']));
-            }
             if ($posts['name']) {
                 $services = array_intersect($services, $entityManager->getRepository(CatalogService::class)->findAllByName($posts['name']));
             }
