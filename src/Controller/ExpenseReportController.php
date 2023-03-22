@@ -71,10 +71,32 @@ class ExpenseReportController extends AbstractController
 
 
         if (($customer == $expenseReport->getSupplier()->getCustomer() or $this->isGranted("ROLE_TRESO")) and !$expenseReport->isComfirm()) {
-            $entityManager->remove($expenseReport);
+           
+            foreach($expenseReport->getExpenseReportLines() as $line){
+                $path = $expenseReportLine->getDocument();
+                $elements = explode(".", $path);
+                $extension = end($elements);
+                $document = 'expenseReportLineProof_' .  $expenseReportLine->getId() . '.' . $extension;
+                $patho =  "build/expenseReport/".$expenseReport->getCode()."/";
+                if (glob ($path)) {
+                    $pathOld = $patho."old/".$document;
+                    if (!is_dir($patho.'old/')) {
+                        mkdir($patho.'old/');
+                    }
+                    $i=0;
+                    while(is_dir($pathOld)){
+                        $pathOld = $patho."old/expenseReportLineProof_" .  $expenseReportLine->getId()."_".$i . '.' . $extension;
+                        $i++;
+                    }
+                    rename($path, $pathOld);
+                }
+            }
+             $entityManager->remove($expenseReport);
             $entityManager->flush();
             if($this->isGranted("ROLE_TRESO")){
                 return $this->redirectToRoute('expenseReport_showAll', []);
+            }else{
+                return $this->redirectToRoute('account');
             }
         } else {
             return $this->redirectToRoute('account');
