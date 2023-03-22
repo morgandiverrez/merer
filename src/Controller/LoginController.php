@@ -59,7 +59,6 @@ class LoginController extends AbstractController
     public function downloadPlanning()
     {
        
-
         $finaleFile = "build/politique_confidentialite.pdf";
 
         header('Content-Description: File Transfer');

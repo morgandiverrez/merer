@@ -60,6 +60,26 @@ class ExpenseReportController extends AbstractController
         ]);
     }
 
+     #[Route('/download/modalitéfinanciereremboursement', name: 'modalitéfinanciereremboursement')]
+    public function downloadPlanning()
+    {
+       
+        $finaleFile = "build\Modalités-financières-de-remboursement-2023-2025.pdf";
+
+        header('Content-Description: File Transfer');
+        header('Content-Type: application/octet-stream');
+        header('Content-Disposition: attachment; filename="' . basename($finaleFile) . '"');
+        header('Expires: 0');
+        header('Cache-Control: must-revalidate');
+        header('Pragma: public');
+        header('Content-Length: ' . filesize($finaleFile));
+        readfile($finaleFile);
+
+
+        return $this->redirectToRoute('index');
+        
+    }
+
     #[Route('/delete/{expenseReportID}', name: 'delete')]
     #[IsGranted('ROLE_USER')]
     public function delete(EntityManagerInterface $entityManager, $expenseReportID): Response
@@ -72,7 +92,7 @@ class ExpenseReportController extends AbstractController
 
         if (($customer == $expenseReport->getSupplier()->getCustomer() or $this->isGranted("ROLE_TRESO")) and !$expenseReport->isComfirm()) {
            
-            foreach($expenseReport->getExpenseReportLines() as $line){
+            foreach($expenseReport->getExpenseReportLines() as $expenseReportLine){
                 $path = $expenseReportLine->getDocument();
                 $elements = explode(".", $path);
                 $extension = end($elements);
