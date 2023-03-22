@@ -29,6 +29,7 @@
                         <li class="list-group-item"> {{expenseReport.getDate().format('d/m/y h:i')}}  </li>
                         {% if is_granted('ROLE_TRESO') %}
                             <li class="list-group-item">Fournisseur : <a href="/supplier/show/{{ expenseReport.getSupplier().getId() }}" class="card-link"> {{expenseReport.getSupplier().getName()}} </a> </li>
+                             <li class="list-group-item">Customer : <a href="/customer/show/{{ expenseReport.getSupplier().getCustomer().getId() }}" class="card-link"> {{expenseReport.getSupplier().getCustomer().getName()}} </a> </li>
                             <li class="list-group-item">Transaction : {% if expenseReport.getTransaction() != null %}<a href="/transaction/show/{{ expenseReport.transaction.getId() }}" class="card-link"> {{expenseReport.getTransaction().getCode()}} </a>{% endif %}</li>
                        {% endif %}
                       
