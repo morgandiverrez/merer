@@ -123,7 +123,7 @@ class ExpenseReportController extends AbstractController
         }
     }
 
-    #[Route('/new', name: 'new')]
+    #[Route('/nex', name: 'new')]
     #[IsGranted('ROLE_USER')]
     public function new(EntityManagerInterface $entityManager, Request $request): Response
     {
