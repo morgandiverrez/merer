@@ -56,10 +56,10 @@ class LoginController extends AbstractController
     }
 
     #[Route('/download/politique_confidentialite', name: 'politique_confidentialite')]
-    public function downloadPlanning()
+    public function download()
     {
        
-        $finaleFile = "build/politique_confidentialite.pdf";
+        $finaleFile = "build/document/politique_confidentialité.pdf";
 
         header('Content-Description: File Transfer');
         header('Content-Type: application/octet-stream');
@@ -69,6 +69,7 @@ class LoginController extends AbstractController
         header('Pragma: public');
         header('Content-Length: ' . filesize($finaleFile));
         readfile($finaleFile);
+
 
 
         return $this->redirectToRoute('index');
