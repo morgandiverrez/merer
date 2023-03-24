@@ -90,7 +90,7 @@
                 <tfoot>
                     <tr> 
                         <th> </th>
-                        <th> </th>
+                        
                         <th> </th>
                         <th> </th>
                         <th> </th>
@@ -136,8 +136,9 @@
                         {% set totalAmount = totalAmount + expenseReportLine.amount %}
                         {% if expenseReportLine.getDocument() is not null %}
                             <td><a href="/expenseReportLine/download/{{ expenseReportLine.getId()}}" target="_blank" class="card-link"><i class="fa-sharp fa-solid fa-file"></i></a></td>
+                        {% else %}
+                             <td>pas de document</td>
                         {% endif %}
-                        <td>pas de document</td>
                         {% if  expenseReport.comfirm == false  %}
                             <td><a href="/expenseReportLine/edit/{{expenseReport.id}}/{{ expenseReportLine.getId()}}" class="card-link"><i class="fa-solid fa-pen-to-square"></i></a></td>
                             <td><a href="/expenseReportLine/delete/{{ expenseReportLine.getId()}}" class="card-link"><i class="fa-solid fa-trash-can"></i></a></td>
@@ -150,6 +151,7 @@
                         <th> </th>
                         <th> </th>
                         <th>{{ totalAmount }} € </th>
+                        <th> </th>
                         {% if  expenseReport.comfirm == false  %}
                             <th> </th>
 
