@@ -201,7 +201,7 @@ class ResetPasswordController extends AbstractController
         }
         
         $sender_email = 'no-reply@fedeb.net';
-         $recipient_emails = [$form->get('email')->getData()];
+         $recipient_emails = [$emailFormData];
         $subject = 'Merer - Reset Password';
         $plaintext_body = 'reset Password' ;
        
