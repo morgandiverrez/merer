@@ -61,10 +61,11 @@ class ExpenseReportController extends AbstractController
     }
 
      #[Route('/download/modalitéfinanciereremboursement', name: 'modalitéfinanciereremboursement')]
-    public function downloadPlanning()
+    public function download()
     {
-       
-        $finaleFile = "build\Modalités-financières-de-remboursement-2023-2025.pdf";
+          
+
+        $finaleFile = "build/document/Modalités-financières-de-remboursement-2023-2025.pdf";
 
         header('Content-Description: File Transfer');
         header('Content-Type: application/octet-stream');
@@ -75,8 +76,7 @@ class ExpenseReportController extends AbstractController
         header('Content-Length: ' . filesize($finaleFile));
         readfile($finaleFile);
 
-
-        return $this->redirectToRoute('index');
+        return $this->redirectToRoute('expenseReport/');
         
     }
 
