@@ -2,24 +2,25 @@
 
 namespace App\Controller;
 
-use App\Entity\User;
-use App\Entity\Customer;
 use Faker\Factory;
+use App\Entity\User;
+use Aws\Ses\SesClient;
 use App\Form\ChangePasswordFormType;
-use App\Form\ResetPasswordRequestFormType;
-use App\Form\CreateNewUserProfileForCustomerFormType;
+use App\Entity\Comptability\Customer;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\RedirectResponse;
+use App\Form\ResetPasswordRequestFormType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Aws\Ses\SesClient;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Form\Comptability\CreateNewUserProfileForCustomerFormType;
+use SymfonyCasts\Bundle\ResetPassword\ResetPasswordHelperInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use SymfonyCasts\Bundle\ResetPassword\Controller\ResetPasswordControllerTrait;
 use SymfonyCasts\Bundle\ResetPassword\Exception\ResetPasswordExceptionInterface;
-use SymfonyCasts\Bundle\ResetPassword\ResetPasswordHelperInterface;
 
 #[Route('/reset-password')]
 class ResetPasswordController extends AbstractController
