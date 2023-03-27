@@ -31,16 +31,21 @@ class Post
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $endDate = null;
 
-    #[ORM\ManyToMany(targetEntity: Group::class, inversedBy: 'posts')]
+    #[ORM\ManyToMany(targetEntity: Group::class, inversedBy:'posts', cascade: ['persist'])]
     private Collection $groups;
 
-    #[ORM\ManyToOne(inversedBy: 'posts')]
+    #[ORM\ManyToOne(inversedBy:'posts', cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
     private ?Editor $editor = null;
 
     public function __construct()
     {
         $this->groups = new ArrayCollection();
+    }
+
+    public function  __toString()
+    {
+        return $this->getTitre();
     }
 
     public function getId(): ?int

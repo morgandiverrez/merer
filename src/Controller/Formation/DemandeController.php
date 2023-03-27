@@ -24,7 +24,7 @@ class DemandeController extends AbstractController
     {
         $demandes = $entityManager->getRepository(Demande::class)->findAllOrderByDateDebut();
         
-        return $this->render('demande/showAll.html.twig', [
+        return $this->render('Formation_/demande/showAll.html.twig', [
             'demandes' => $demandes,
 
         ]);
@@ -36,7 +36,7 @@ class DemandeController extends AbstractController
     {
         $demande = $entityManager->getRepository(Demande::class)->findById($demandeID);
 
-        return $this->render('demande/show.html.twig', [
+        return $this->render('Formation_/demande/show.html.twig', [
             'demande' => $demande,
 
         ]);
@@ -127,7 +127,7 @@ class DemandeController extends AbstractController
             return $this->redirectToRoute('profil_show', []);
         }
 
-        return $this->render('demande/new.html.twig', [
+        return $this->render('Formation_/demande/new.html.twig', [
             'demande' => $demande,
             'form' => $form->createView(),
         ]);

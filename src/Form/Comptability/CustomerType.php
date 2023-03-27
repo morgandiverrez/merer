@@ -35,15 +35,7 @@ class CustomerType extends AbstractType
             'required' => false,
             'multiple' => true,
         ])
-            ->add('user', EntityType::class, [
-                'class' => User::class,
-                'required' => false,
-                'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('user')
-                    ->leftJoin('user.customer', 'customer')
-                     ->where('  customer.id IS NULL');
-                },
-            ])
+          
 
         ;
     }

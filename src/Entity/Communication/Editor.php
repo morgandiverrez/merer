@@ -9,8 +9,13 @@ use ApiPlatform\Metadata\ApiResource;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 
+#[ApiResource(security: "is_granted('ROLE_ADMIN')")]
+// #[Get]
+// #[Put(security: "is_granted('ROLE_ADMIN')")]
+// #[GetCollection]
+// #[Post(security: "is_granted('ROLE_ADMIN')")]
 #[ORM\Entity(repositoryClass: EditorRepository::class)]
-#[ApiResource]
+
 class Editor
 {
     #[ORM\Id]
@@ -40,7 +45,6 @@ class Editor
     private ?string $description = null;
 
     #[ORM\OneToOne(inversedBy: 'editor', cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -49,6 +53,11 @@ class Editor
     public function __construct()
     {
         $this->posts = new ArrayCollection();
+    }
+
+    public function  __toString()
+    {
+        return $this->getName();
     }
 
     public function getId(): ?int

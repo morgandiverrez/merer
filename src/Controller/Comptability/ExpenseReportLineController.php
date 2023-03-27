@@ -75,7 +75,7 @@ class ExpenseReportLineController extends AbstractController
 
 
 
-            return $this->render('expense_report_line/edit.html.twig', [
+            return $this->render('Comptability/expense_report_line/edit.html.twig', [
                 'expenseReportLine' => $expenseReportLine,
                 'form' => $form->createView(),
             ]);
@@ -161,7 +161,7 @@ class ExpenseReportLineController extends AbstractController
 
 
 
-            return $this->render('expense_report_line/edit.html.twig', [
+            return $this->render('Comptability/expense_report_line/edit.html.twig', [
                 'expenseReportLine' => $expenseReportLine,
                 'form' => $form->createView(),
             ]);

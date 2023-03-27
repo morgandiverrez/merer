@@ -73,6 +73,43 @@ class ResetPasswordController extends AbstractController
         ]);
     }
 
+    /**
+     * Display & process form to send a email for create the user profil of the editor.
+     */
+    #[Route('/createNewUserProfileForEditor/{editorID}', name: 'createNewUserProfileForEditor')]
+    #[IsGranted('ROLE_TRESO')]
+    public function requestNewUserForEditor(Request $request, SesClient $ses, TranslatorInterface $translator, $editorID, UserPasswordHasherInterface $userPasswordHasher): Response
+    {
+        $faker = Factory::create('fr_FR');
+        $editor = $this->entityManager->getRepository(Editor::class)->findById($editorID)[0];
+
+        $form = $this->createForm(CreateNewUserProfileForCustomerFormType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $user = new User;
+            $user->setEmail($form->get('email')->getData());
+            $user->setEditor($editor);
+            $encodedPassword = $userPasswordHasher->hashPassword(
+                $user,
+                $faker->sentence()
+            );
+            $user->setPassword($encodedPassword);
+            $this->entityManager->persist($user);
+            $this->entityManager->flush();
+
+            return $this->processSendingPasswordCreateEmail(
+                $translator,
+                $ses,
+                $user
+            );
+        }
+
+        return $this->render('reset_password/request.html.twig', [
+            'requestForm' => $form->createView(),
+        ]);
+    }
+
    
     /**
      * Display & process form to request a password reset.

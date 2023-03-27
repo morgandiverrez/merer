@@ -38,7 +38,7 @@ class BadgeController extends AbstractController
                 $badges = array_intersect($badges, $entityManager->getRepository(Badge::class)->findAllByDescription($posts['description']));
             }
         }
-        return $this->render('badge/showAll.html.twig', [     
+        return $this->render('Formation_/badge/showAll.html.twig', [     
             'badges' => $badges,
             
         ]);
@@ -51,7 +51,7 @@ class BadgeController extends AbstractController
 
         $badge = $entityManager->getRepository(Badge::class)->findById($badgeID)[0];
         
-        return $this->render('badge/show.html.twig', [
+        return $this->render('Formation_/badge/show.html.twig', [
             'badge'=> $badge,
             
         ]);
@@ -74,7 +74,7 @@ class BadgeController extends AbstractController
 
             if ($logoUpload) {
                 $logoFileName = 'badge_' . $nameMajuscule . '.' . $logoUpload->guessExtension();
-                $badge->setImage('build/badge/'.$logoFileName);
+                $badge->setImage('build/badgeFormation//'.$logoFileName);
                 try {
                     $logoUpload->move(
                         'build/badge',
@@ -89,7 +89,7 @@ class BadgeController extends AbstractController
             return $this->redirectToRoute('badge_showAll', []);
         }
 
-        return $this->render('badge/new.html.twig', [
+        return $this->render('Formation_/badge/new.html.twig', [
             'badge' => $badge,
             'form' => $form->createView(),
             
@@ -115,7 +115,7 @@ class BadgeController extends AbstractController
 
             if ($logoUpload) {
                 $logoFileName = 'logo_' . $nameMajuscule . '.' . $logoUpload->guessExtension();
-                $badge->setImage('build/badge/' . $logoFileName);
+                $badge->setImage('build/badgeFormation//' . $logoFileName);
                 try {
                     $logoUpload->move(
                         'files/badge',
@@ -129,7 +129,7 @@ class BadgeController extends AbstractController
             return $this->redirectToRoute('badge_showAll');
         }
 
-        return $this->render('badge/edit.html.twig', [
+        return $this->render('Formation_/badge/edit.html.twig', [
             'badge' => $badge,
             'form' => $form->createView(),
             

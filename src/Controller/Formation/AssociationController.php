@@ -36,7 +36,7 @@ class AssociationController extends AbstractController
                 $associations = array_intersect($associations, $entityManager->getRepository(Association::class)->findAllByFedeFi($posts['fedefi']));
             }
         }
-        return $this->render('association/showAll.html.twig', [
+        return $this->render('Formation_/association/showAll.html.twig', [
             'associations' => $associations,
            
         ]);
@@ -49,7 +49,7 @@ class AssociationController extends AbstractController
         // find renvoi tjr un array (tableau), donc faut mettre [0] pour enlever l'array, si on veut plus d'une valeur s'il y en a, on met pas ou [nombre]
         $association = $entityManager->getRepository(Association::class)->findById($associationID)[0];
        
-        return $this->render('association/show.html.twig', [
+        return $this->render('Formation_/association/show.html.twig', [
             'association' => $association,
                
         ]);
@@ -71,7 +71,7 @@ class AssociationController extends AbstractController
 
             if($logoUpload){
                 $logoFileSigle = 'logo_'. $sigleMajuscule . '.' . $logoUpload->guessExtension();
-                $association->setImage('build/association/' . $logoFileSigle);
+                $association->setImage('build/associationFormation//' . $logoFileSigle);
                 try {
                     $logoUpload->move(
                         'build/association',
@@ -87,7 +87,7 @@ class AssociationController extends AbstractController
             return $this->redirectToRoute('association_show', ['associationID' => $association -> getId()]);
         }
 
-        return $this->render('association/new.html.twig', [
+        return $this->render('Formation_/association/new.html.twig', [
             'association' => $association,
             'form' => $form->createView(),
             
@@ -113,7 +113,7 @@ class AssociationController extends AbstractController
             
             if ($logoUpload) {
                 $logoFileSigle = 'logo_' . $sigleMajuscule . '.' . $logoUpload->guessExtension();
-                $association->setImage('build/association/' . $logoFileSigle);
+                $association->setImage('build/associationFormation//' . $logoFileSigle);
                 try {
                     $logoUpload->move(
                         'build/association',
@@ -128,7 +128,7 @@ class AssociationController extends AbstractController
             return $this->redirectToRoute('association_show', ['associationID' => $associationID]);
         }
 
-        return $this->render('association/edit.html.twig', [
+        return $this->render('Formation_/association/edit.html.twig', [
             'association' => $association,
             'form' => $form->createView(),
             

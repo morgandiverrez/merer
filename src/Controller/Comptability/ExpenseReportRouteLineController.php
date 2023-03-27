@@ -55,7 +55,7 @@ class ExpenseReportRouteLineController extends AbstractController
                 }
                 return $this->redirectToRoute('bankDetail_new', []);
             }
-            return $this->render('expense_report_route_line/edit.html.twig', [
+            return $this->render('Comptability/expense_report_route_line/edit.html.twig', [
                 'expenseReportRouteLine' => $expenseReportRouteLine,
                 'form' => $form->createView(),
             ]);
@@ -103,7 +103,7 @@ class ExpenseReportRouteLineController extends AbstractController
 
 
 
-            return $this->render('expense_report_route_line/edit.html.twig', [
+            return $this->render('Comptability/expense_report_route_line/edit.html.twig', [
                 'expenseReportRouteLine' => $expenseReportRouteLine,
                 'form' => $form->createView(),
             ]);

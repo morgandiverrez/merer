@@ -35,7 +35,7 @@ class ContactController extends AbstractController
             }
           
         }
-        return $this->render('contact/showAll.html.twig', [
+        return $this->render('Comptability/contact/showAll.html.twig', [
             'contacts' => $contacts,
 
         ]);
@@ -47,7 +47,7 @@ class ContactController extends AbstractController
     {
          $contact = $entityManager->getRepository(Contact::class)->findById($contactID)[0];
 
-        return $this->render('contact/show.html.twig', [
+        return $this->render('Comptability/contact/show.html.twig', [
             'contact' => $contact,
 
         ]);
@@ -73,7 +73,7 @@ class ContactController extends AbstractController
             return $this->redirectToRoute('contact_show', ['contactID' => $contact->getId()]);
         }
 
-        return $this->render('contact/new.html.twig', [
+        return $this->render('Comptability/contact/new.html.twig', [
             'contact' => $contact,
             'form' => $form->createView(),
         ]);
@@ -96,7 +96,7 @@ class ContactController extends AbstractController
             return $this->redirectToRoute('contact_show', ['contactID' => $contactID]);
         }
 
-        return $this->render('contact/edit.html.twig', [
+        return $this->render('Comptability/contact/edit.html.twig', [
             'contact' => $contact,
             'form' => $form->createView(),
 

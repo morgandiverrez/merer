@@ -4,8 +4,8 @@ namespace App\Entity\Communication;
 
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\Communication\GroupRepository;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: GroupRepository::class)]
@@ -24,13 +24,13 @@ class Group
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $description = null;
 
-    #[ORM\ManyToOne(inversedBy: 'contains', targetEntity: self::class )]
+    #[ORM\ManyToOne(inversedBy: 'contains', targetEntity: self::class, cascade: ['persist'] )]
     private ?self $include = null;
 
-    #[ORM\OneToMany(targetEntity: self::class, mappedBy: 'include')]
+    #[ORM\OneToMany(targetEntity: self::class, mappedBy:'include', cascade: ['persist'])]
     private Collection $contains;
 
-    #[ORM\ManyToMany(targetEntity: Post::class, mappedBy: 'groups')]
+    #[ORM\ManyToMany(targetEntity: Post::class, mappedBy:'groups', cascade: ['persist'])]
     private Collection $posts;
 
     public function __construct()
@@ -39,6 +39,11 @@ class Group
         $this->contains = new ArrayCollection();
     }
 
+    public function  __toString()
+    {
+        return $this->getName();
+    }
+    
     public function getId(): ?int
     {
         return $this->id;

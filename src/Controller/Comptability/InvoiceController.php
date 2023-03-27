@@ -56,7 +56,7 @@ class InvoiceController extends AbstractController
         }
       
 
-        return $this->render('invoice/showAll.html.twig', [
+        return $this->render('Comptability/invoice/showAll.html.twig', [
             'invoices' => $invoices,
             'totals' => $totals,
         ]);
@@ -101,7 +101,7 @@ class InvoiceController extends AbstractController
             return $this->redirectToRoute('invoice_show', ['invoiceID' => $invoice->getId()]); 
         }
 
-        return $this->render('invoice/new.html.twig', [
+        return $this->render('Comptability/invoice/new.html.twig', [
             'invoice' => $invoice,
             'form' => $form->createView(),
         ]);
@@ -144,7 +144,7 @@ class InvoiceController extends AbstractController
             return $this->redirectToRoute('invoice_show', ['invoiceID' => $invoice->getId()]);
         }
 
-        return $this->render('invoice/edit.html.twig', [
+        return $this->render('Comptability/invoice/edit.html.twig', [
             'invoice' => $invoice,
             'form' => $form->createView(),
         ]);
@@ -253,7 +253,7 @@ class InvoiceController extends AbstractController
     {
         $invoice = $entityManager->getRepository(Invoice::class)->findById($invoiceID);
 
-        return $this->render('invoice/show.html.twig', [
+        return $this->render('Comptability/invoice/show.html.twig', [
             'invoice' => $invoice,
 
         ]);
@@ -277,7 +277,7 @@ class InvoiceController extends AbstractController
         $options->setIsRemoteEnabled(true);
 
         $dompdf = new Dompdf($options);
-     $html = $this->renderView('invoice/templateInvoice.html.twig', [
+     $html = $this->renderView('Comptability/invoice/templateInvoice.html.twig', [
             'invoice' => $invoice,
             'federation'=>$federation,
             'institution'=>$institution,

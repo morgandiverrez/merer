@@ -38,7 +38,7 @@ class TransactionController extends AbstractController
                 $transactions = array_intersect($transactions, $entityManager->getRepository(Transaction::class)->findAllNotComfirm());
             }
         }
-        return $this->render('transaction/showAll.html.twig', [
+        return $this->render('Comptability/transaction/showAll.html.twig', [
             'transactions' => $transactions,
           
         ]);
@@ -89,7 +89,7 @@ class TransactionController extends AbstractController
                     $transaction->getTransactionLines()[$i]->setUrlProof("build/transaction/".$transaction->getCode()."/" . $urlProof);
                     try {
                         $logoUpload[0]->move(
-                            "build/transaction/".$transaction->getCode()."/",
+                            "build/transactionComptability//".$transaction->getCode()."/",
                             $urlProof
                         );
                     } catch (FileException $e) {
@@ -105,7 +105,7 @@ class TransactionController extends AbstractController
             return $this->redirectToRoute('transaction_show', ['transactionId' => $transaction->getId()]);
         }
 
-        return $this->render('transaction/new.html.twig', [
+        return $this->render('Comptability/transaction/new.html.twig', [
             'transaction' => $transaction,
             'form' => $form->createView(),
         ]);
@@ -203,7 +203,7 @@ class TransactionController extends AbstractController
             return $this->redirectToRoute('transaction_show', ['transactionId' => $transaction->getId()]);
         }
 
-        return $this->render('transaction/edit.html.twig', [
+        return $this->render('Comptability/transaction/edit.html.twig', [
             'transaction' => $transaction,
             'form' => $form->createView(),
         ]);
@@ -214,7 +214,7 @@ class TransactionController extends AbstractController
     public function show(EntityManagerInterface $entityManager, $transactionId): Response
     {
         $transaction = $entityManager->getRepository(Transaction::class)->findTransactionById($transactionId);
-        return $this->render('transaction/show.html.twig', [
+        return $this->render('Comptability/transaction/show.html.twig', [
             'transaction' => $transaction,
         ]);
     }

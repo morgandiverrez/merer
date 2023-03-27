@@ -135,6 +135,24 @@
                                         </ul>
                                     </li>
                                 {% endif %}
+                                  {% if is_granted('ROLE_COM') %}
+                                    <li class="nav-item dropdown">
+                                        <a class="nav-link dropdown-toggle"  id="navbarDropdown2" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Espace Com </a>
+                                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown2">
+                                        
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="/editor/">Liste des Editeurs</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="/group/">Liste des groupes de diffusion</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="/post/">Liste des postes</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                {% endif %}
                                 {% if is_granted('ROLE_TRESO') %}
                                     <li class="nav-item dropdown">
                                         <a class="nav-link dropdown-toggle"  id="navbarDropdown2" role="button" data-bs-toggle="dropdown" aria-expanded="false">

@@ -26,19 +26,7 @@ class GroupController extends AbstractController
         ]);
     }
 
-    #[Route('/show/{groupID}', name: 'show')]
-    #[IsGranted('ROLE_COM')]
-    public function show(EntityManagerInterface $entityManager, $groupID): Response
-    {
-        $group = $entityManager->getRepository(Group::class)->findById($groupID)[0];
   
-
-        return $this->render('Communication/group/show.html.twig', [
-            'group' => $group,
-         
-
-        ]);
-    }
 
     #[Route('/new', name: 'new')]
     #[IsGranted('ROLE_COM')]
@@ -53,7 +41,7 @@ class GroupController extends AbstractController
 
             $entityManager->persist($group);
             $entityManager->flush();
-            return $this->redirectToRoute('group_show', ['groupID' => $group->getId()]);
+            return $this->redirectToRoute('group_showAll', );
         }
 
         return $this->render('Communication/group/new.html.twig', [
@@ -78,7 +66,7 @@ class GroupController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($group);
             $entityManager->flush();
-            return $this->redirectToRoute('group_show', ['groupID' => $groupID]);
+            return $this->redirectToRoute('group_showAll', );
         }
 
         return $this->render('Communication/group/edit.html.twig', [

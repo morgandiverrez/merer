@@ -4,10 +4,13 @@ namespace App\Form\Communication;
 
 use App\Entity\Communication\Post;
 use Doctrine\ORM\EntityRepository;
+use App\Entity\Communication\Group;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 class PostType extends AbstractType
 {
@@ -15,7 +18,7 @@ class PostType extends AbstractType
     {
         $builder
             ->add('titre')
-            ->add( 'description', TextArea::class, [])
+            ->add( 'description', TextareaType::class, [])
             ->add('visible')
             ->add( 'endDate', DateTimeType::class, [
                 'date_widget' => 'single_text',
@@ -24,6 +27,7 @@ class PostType extends AbstractType
             ->add('groups', EntityType::class, [
                 'class' => Group::class,
                 'required' => false,
+                'multiple' => true,
             ])
         ;
     }

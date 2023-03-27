@@ -42,7 +42,7 @@ class ImpressionController extends AbstractController
        
        
             $writer = new PngWriter();
-            $qrCode = QrCode::create('https://15.236.191.187/impression/new')
+            $qrCode = QrCode::create('https://15.236.191.187/Comptability/impression/new')
                 ->setEncoding(new Encoding('UTF-8'))
                 ->setErrorCorrectionLevel(new ErrorCorrectionLevelLow())
                 ->setSize(120)
@@ -69,7 +69,7 @@ class ImpressionController extends AbstractController
 
             $dompdf->set_option('isHtml5ParserEnabled', true);
 
-            $html = $this->renderView('impression/ImpressionQRCodePDF.html.twig', [
+            $html = $this->renderView('Comptability/impression/ImpressionQRCodePDF.html.twig', [
                 
                 'qrCodes' => $qrCodes
             ]);
@@ -111,7 +111,7 @@ class ImpressionController extends AbstractController
             }
          }
 
-        return $this->render('impression/showAll.html.twig', [
+        return $this->render('Comptability/impression/showAll.html.twig', [
             'impressions' => $impressions,
         ]);
     }
@@ -253,7 +253,7 @@ class ImpressionController extends AbstractController
             }    
         }
 
-        return $this->render('impression/new.html.twig', [
+        return $this->render('Comptability/impression/new.html.twig', [
             'impression' => $impression,
             'form' => $form->createView(),
 
@@ -292,7 +292,7 @@ class ImpressionController extends AbstractController
 
             
         }
-        return $this->render('impression/newForBF.html.twig', [
+        return $this->render('Comptability/impression/newForBF.html.twig', [
             'impression' => $impression,
             'form' => $form->createView(),
 
@@ -302,7 +302,7 @@ class ImpressionController extends AbstractController
     #[Route('/validation', name: 'validation')]
     public function validation(): Response
     {
-        return $this->render('impression/validation.html.twig', [
+        return $this->render('Comptability/impression/validation.html.twig', [
         ]);
     }
 
