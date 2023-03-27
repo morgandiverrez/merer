@@ -32,7 +32,7 @@ class LieuxController extends AbstractController
             }
         }
         
-        return $this->render('lieux/showAll.html.twig', [
+        return $this->render('Formation_/lieux/showAll.html.twig', [
             'lieux' => $lieux,
           
         ]);
@@ -45,7 +45,7 @@ class LieuxController extends AbstractController
        
         $lieu = $entityManager->getRepository(Lieux::class)->findById($lieuID)[0];
         
-        return $this->render('lieux/show.html.twig', [
+        return $this->render('Formation_/lieux/show.html.twig', [
             'lieu' => $lieu,
             
         ]);
@@ -67,7 +67,7 @@ class LieuxController extends AbstractController
             return $this->redirectToRoute('lieux_show', ['lieuID' => $lieuID]);
         }
 
-        return $this->render('lieux/edit.html.twig', [
+        return $this->render('Formation_/lieux/edit.html.twig', [
             'lieu' => $lieu,
             'form' => $form->createView(),
             
@@ -90,7 +90,7 @@ class LieuxController extends AbstractController
             return $this->redirectToRoute('lieux_showAll', []);
         }
 
-        return $this->render('lieux/new.html.twig', [
+        return $this->render('Formation_/lieux/new.html.twig', [
             'lieu' => $lieu,
             'form' => $form->createView(),
             'user' => $user,

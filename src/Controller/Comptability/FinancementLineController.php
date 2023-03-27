@@ -40,7 +40,7 @@ class FinancementLineController extends AbstractController
 
 
 
-        return $this->render('financement_line/edit.html.twig', [
+        return $this->render('Comptability/financement_line/edit.html.twig', [
             'financementLine' => $financementLine,
             'form' => $form->createView(),
         ]);
@@ -63,7 +63,7 @@ class FinancementLineController extends AbstractController
             return $this->redirectToRoute('financement_show', ['financementID' => $financementID]);
         }
 
-        return $this->render('financement_line/edit.html.twig', [
+        return $this->render('Comptability/financement_line/edit.html.twig', [
             'financement' => $financementLine,
             'form' => $form->createView(),
         ]);
@@ -85,7 +85,7 @@ class FinancementLineController extends AbstractController
             $totalsEvents[$event->getId()] = $entityManager->getRepository(TransactionLine::class)->totalByEvent($event)['total'];
         }
 
-        return $this->render('financement_line/show.html.twig', [
+        return $this->render('Comptability/financement_line/show.html.twig', [
             'financementLine' => $financementLine,
             'total' => $total,
             'totalsTransactions' => $totalsTransactions,

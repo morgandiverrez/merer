@@ -40,7 +40,7 @@ class SeanceController extends AbstractController
       
         $evenements = $entityManager->getRepository(Evenement::class)->findAllSuperiorByDatetimeAndVisible(date('y/m/d H:i:s'));
         
-    return $this->render('seance/showAll.html.twig', [
+    return $this->render('Formation_/seance/showAll.html.twig', [
             'evenements' => $evenements,
              'seances' => $seances,
 
@@ -93,7 +93,7 @@ class SeanceController extends AbstractController
             }      
         }
 
-        return $this->render('seance/archivage.html.twig', [
+        return $this->render('Formation_/seance/archivage.html.twig', [
             'seances' => $seances,
         ]);
     }
@@ -105,7 +105,7 @@ class SeanceController extends AbstractController
     {
         $seance = $entityManager->getRepository(Seance::class)->findByID($seanceID)[0];
 
-        return $this->render('seance/showForFormateurice.html.twig', [
+        return $this->render('Formation_/seance/showForFormateurice.html.twig', [
             'seance' => $seance,
         ]);
     }
@@ -131,7 +131,7 @@ class SeanceController extends AbstractController
             $retours[$i] = $retour['id'];
             $i++;
         }
-        return $this->render('seance/show.html.twig', [
+        return $this->render('Formation_/seance/show.html.twig', [
             'seance' => $seance,
             'inscrits' => $inscrits,
             'dateActuelle' => $dateActuelle,
@@ -145,7 +145,7 @@ class SeanceController extends AbstractController
     {
         $seance = $entityManager->getRepository(Seance::class)->findByID($seanceID)[0];
 
-        return $this->render('seance/listeInscrit.html.twig', [
+        return $this->render('Formation_/seance/listeInscrit.html.twig', [
             'seance' => $seance,
         ]);
     }
@@ -164,7 +164,7 @@ class SeanceController extends AbstractController
 
         $dompdf->set_option('isHtml5ParserEnabled', true);
 
-        $html = $this->renderView('seance/listeInscritPDF.html.twig', [
+        $html = $this->renderView('Formation_/seance/listeInscritPDF.html.twig', [
             'title' => "Welcome to our PDF Test",
             'seance' => $seance,
         ]);
@@ -252,7 +252,7 @@ class SeanceController extends AbstractController
             return $this->redirectToRoute('seance_showForFormateurice', ['seanceID' => $seance->getID()]);
         }
 
-        return $this->render('seance/editForEvent.html.twig', [
+        return $this->render('Formation_/seance/editForEvent.html.twig', [
             'seance' => $seance,
             'form' => $form->createView(),
         ]);
@@ -325,7 +325,7 @@ class SeanceController extends AbstractController
             return $this->redirectToRoute('seance_showForFormateurice', ['seanceID' => $seance->getID()]);
         }
 
-        return $this->render('seance/edit.html.twig', [
+        return $this->render('Formation_/seance/edit.html.twig', [
             'seance' => $seance,
             'form' => $form->createView(),
         
@@ -459,7 +459,7 @@ class SeanceController extends AbstractController
             return $this->redirectToRoute('seance_showForFormateurice', ['seanceID' => $seance->getID()]);
         }
 
-        return $this->render('seance/newForEvent.html.twig', [
+        return $this->render('Formation_/seance/newForEvent.html.twig', [
             'seance' => $seance,
             'form' => $form->createView(), 
         ]);

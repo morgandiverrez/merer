@@ -30,7 +30,7 @@ class InstitutionController extends AbstractController
             return $this->redirectToRoute('profil_show', []);
         }
 
-        return $this->render('institution/new.html.twig', [
+        return $this->render('Comptability/institution/new.html.twig', [
             'institution' => $institution,
             'form' => $form->createView(),
 
@@ -53,7 +53,7 @@ class InstitutionController extends AbstractController
             return $this->redirectToRoute('profil_show');
         }
 
-        return $this->render('institution/new.html.twig', [
+        return $this->render('Comptability/institution/new.html.twig', [
             'institution' => $institution,
             'controler_title' => "new",
             'form' => $form->createView(),

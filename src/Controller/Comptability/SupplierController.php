@@ -30,7 +30,7 @@ class SupplierController extends AbstractController
             }
            
         }
-        return $this->render('supplier/showAll.html.twig', [
+        return $this->render('Comptability/supplier/showAll.html.twig', [
             'suppliers' => $suppliers,
 
         ]);
@@ -45,7 +45,7 @@ class SupplierController extends AbstractController
         
         
         
-        return $this->render('supplier/show.html.twig', [
+        return $this->render('Comptability/supplier/show.html.twig', [
             'supplier' => $supplier,
 
         ]);
@@ -78,7 +78,7 @@ class SupplierController extends AbstractController
             return $this->redirectToRoute('supplier_show', ['supplierID' => $supplier->getId()]);
         }
 
-        return $this->render('supplier/new.html.twig', [
+        return $this->render('Comptability/supplier/new.html.twig', [
             'supplier' => $supplier,
             'form' => $form->createView(),
 
@@ -102,7 +102,7 @@ class SupplierController extends AbstractController
             return $this->redirectToRoute('supplier_show', ['supplierID' => $supplierID]);
         }
 
-        return $this->render('supplier/edit.html.twig', [
+        return $this->render('Comptability/supplier/edit.html.twig', [
             'supplier' => $supplier,
             'form' => $form->createView(),
 

@@ -26,7 +26,7 @@
                         <tr>
                             <td>{{group.getName()}}</td>
                             <td>{{group.getDescription()}}</td>
-                            <td>{{group.getContains().getName()}}</td>
+                            <td> {% if group.getInclude() %} {{group.getInclude().getName()}} {% endif %} </td>
                             <td><a href="/group/edit/{{group.getId()}}"><i class="fa-solid fa-pen-to-square"></i></i></a></td> 
                             <td><a href="/group/delete/{{group.getId()}}"><i class="fa-solid fa-trash-can"></i></i></a></td> 
                         </tr> 

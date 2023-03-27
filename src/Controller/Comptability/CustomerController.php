@@ -28,7 +28,7 @@ class CustomerController extends AbstractController
         $customers = $entityManager->getRepository(Customer::class)->findAll();
        
 
-        return $this->render('customer/showAll.html.twig', [
+        return $this->render('Comptability/customer/showAll.html.twig', [
             'customers' => $customers,
 
         ]);
@@ -53,7 +53,7 @@ class CustomerController extends AbstractController
             }
         }
         
-        return $this->render('customer/show.html.twig', [
+        return $this->render('Comptability/customer/show.html.twig', [
             'customer' => $customer,
             'totals' => $totals,
             'totalExpenseReports' => $totalExpenseReports,
@@ -83,7 +83,7 @@ class CustomerController extends AbstractController
             array_push($totals, (new InvoiceController)->invoiceTotale($invoice));
         }
 
-        return $this->render('customer/show.html.twig', [
+        return $this->render('Comptability/customer/show.html.twig', [
             'customer' => $customer,
             'totals' => $totals,
 
@@ -119,7 +119,7 @@ class CustomerController extends AbstractController
             $entityManager->flush();
             return $this->redirectToRoute('customer_show', ['customerID' => $customer->getId()]);
         }
-        return $this->render('customer/new.html.twig', [
+        return $this->render('Comptability/customer/new.html.twig', [
             'customer' => $customer,
             'form' => $form->createView(),
 
@@ -143,7 +143,7 @@ class CustomerController extends AbstractController
             return $this->redirectToRoute('customer_show', ['customerID' => $customerID]);
         }
 
-        return $this->render('customer/edit.html.twig', [
+        return $this->render('Comptability/customer/edit.html.twig', [
             'customer' => $customer,
             'form' => $form->createView(),
 

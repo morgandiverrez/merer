@@ -32,7 +32,7 @@ class InvoiceLineController extends AbstractController
 
             return $this->redirectToRoute('invoice_show', ['invoiceID' => $invoiceID]);
         }
-        return $this->render('invoiceLine/edit.html.twig', [
+        return $this->render('Comptability/invoiceLine/edit.html.twig', [
             'invoiceLine' => $invoiceLine,
             'form' => $form->createView(),
         ]);
@@ -57,7 +57,7 @@ class InvoiceLineController extends AbstractController
             return $this->redirectToRoute('invoice_show', ['invoiceID' => $invoiceLine->getInvoice()->getId()]);
         }
 
-        return $this->render('invoiceLine/edit.html.twig', [
+        return $this->render('Comptability/invoiceLine/edit.html.twig', [
             'invoiceLine' => $invoiceLine,
             'form' => $form->createView(),
         ]);

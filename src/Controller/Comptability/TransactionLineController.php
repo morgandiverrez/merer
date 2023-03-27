@@ -57,7 +57,7 @@ class TransactionLineController extends AbstractController
 
          
 
-        return $this->render('transactionLine/edit.html.twig', [
+        return $this->render('Comptability/transactionLine/edit.html.twig', [
             'transaction' => $transactionLine,
             'form' => $form->createView(),
         ]);
@@ -124,7 +124,7 @@ class TransactionLineController extends AbstractController
             return $this->redirectToRoute('transaction_show', ['transactionId' => $transactionId]);
         }
 
-        return $this->render('transactionLine/edit.html.twig', [
+        return $this->render('Comptability/transactionLine/edit.html.twig', [
             'transaction' => $transactionLine,
             'form' => $form->createView(),
         ]);

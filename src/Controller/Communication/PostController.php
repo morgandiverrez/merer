@@ -3,6 +3,7 @@
 namespace App\Controller\Communication;
 
 use App\Entity\Communication\Post;
+use App\Form\Communication\PostType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -44,15 +45,15 @@ class PostController extends AbstractController
     #[Route('/new', name: 'new')]
     #[IsGranted('ROLE_USER')]
     public function new(EntityManagerInterface $entityManager, Request $request): Response
-    {
-        if ($this->getUser()->getEditor() or $this->isGranted('ROLE_COM')) {
+    {   $editor = $this->getUser()->getEditor();
+        if ($editor or $this->isGranted('ROLE_COM')) {
             
             $post = new Post();
             $form = $this->createForm(PostType::class, $post);
             $form->handleRequest($request);
 
             if ($form->isSubmitted() && $form->isValid()) {
-                $post->setEditor($this->getUser()->getEditor());
+                $post->setEditor($editor);
                 $entityManager->persist($post);
                 
                 $entityManager->flush();

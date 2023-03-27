@@ -54,7 +54,7 @@ class ExpenseReportController extends AbstractController
                 $expenseReports = array_intersect($expenseReports, $entityManager->getRepository(ExpenseReport::class)->findAllNotComfirm());
             }
         }
-        return $this->render('expense_report/showAll.html.twig', [
+        return $this->render('Comptability/expense_report/showAll.html.twig', [
             'expenseReports' => $expenseReports,
 
         ]);
@@ -214,7 +214,7 @@ class ExpenseReportController extends AbstractController
             return $this->redirectToRoute('bankDetail_new', []);
         }
 
-        return $this->render('expense_report/new.html.twig', [
+        return $this->render('Comptability/expense_report/new.html.twig', [
             'expenseReport' => $expenseReport,
             'form' => $form->createView(),
         ]);
@@ -327,7 +327,7 @@ class ExpenseReportController extends AbstractController
                 return $this->redirectToRoute('bankDetail_new', []);
             }
 
-            return $this->render('expense_report/edit.html.twig', [
+            return $this->render('Comptability/expense_report/edit.html.twig', [
                 'expenseReport' => $expenseReport,
                 'form' => $form->createView(),
             ]);
@@ -343,7 +343,7 @@ class ExpenseReportController extends AbstractController
          $user = $this->getUser();
         $expenseReport = $entityManager->getRepository(ExpenseReport::class)->findExpenseReportById($expenseReportID);
         if ($user == $expenseReport->getSupplier()->getCustomer()->getUser() or $this->isGranted("ROLE_TRESO")) {
-        return $this->render('expense_report/show.html.twig', [
+        return $this->render('Comptability/expense_report/show.html.twig', [
             'expenseReport' => $expenseReport,
         ]);
         } else {
@@ -452,7 +452,7 @@ class ExpenseReportController extends AbstractController
 
         $dompdf->set_option('isHtml5ParserEnabled', true);
 
-        $html = $this->renderView('expense_report/expenseReportQRCodePDF.html.twig', [
+        $html = $this->renderView('Comptability/expense_report/expenseReportQRCodePDF.html.twig', [
 
             'qrCodes' => $qrCodes
         ]);
@@ -483,7 +483,7 @@ class ExpenseReportController extends AbstractController
         $options->setIsRemoteEnabled(true);
 
         $dompdf = new Dompdf($options);
-     $html = $this->renderView('expense_report/templateExpenseReport.html.twig', [
+     $html = $this->renderView('Comptability/expense_report/templateExpenseReport.html.twig', [
             'expenseReport' => $expenseReport,
             'federation'=>$federation,
             'institution'=>$institution,

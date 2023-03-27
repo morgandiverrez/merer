@@ -57,10 +57,19 @@ class SeanceType extends AbstractType
                     return $er->createQueryBuilder('profil')
                         ->innerJoin('profil.user', 'user')
                         ->orderBy('user.email', 'ASC')
-                        ->andWhere('user.roles LIKE :val0 OR  user.roles LIKE :val1')
+                        ->andWhere('user.roles LIKE :val0 
+                                    OR  user.roles LIKE :val1 
+                                    OR  user.roles LIKE :val1 
+                                    OR  user.roles LIKE :val3
+                                    OR  user.roles LIKE :val4
+                                    OR  user.roles LIKE :val5')
                         ->setParameter('val0', '%ROLE_FORMATEURICE%')
-                        ->setParameter('val1', '%ROLE_BF%');
-                },
+                        ->setParameter('val1', '%ROLE_BF%')
+                        ->setParameter('val2', '%ROLE_ADMIN%')
+                        ->setParameter('val3', '%ROLE_TRESO%')
+                        ->setParameter('val4', '%ROLE_COM%')
+                        ->setParameter('val5', '%ROLE_FORMA%');
+                 },
             ])
 
           

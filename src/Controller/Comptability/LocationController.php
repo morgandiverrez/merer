@@ -30,7 +30,7 @@ class LocationController extends AbstractController
             return $this->redirectToRoute('profil_show');
         }
 
-        return $this->render('location/new.html.twig', [
+        return $this->render('Comptability/location/new.html.twig', [
             'location' => $location,
             'form' => $form->createView(),
         ]);
@@ -65,7 +65,7 @@ class LocationController extends AbstractController
 
         $location = $entityManager->getRepository(Location::class)->findById($locationID)[0];
 
-        return $this->render('location/show.html.twig', [
+        return $this->render('Comptability/location/show.html.twig', [
             'location' => $location,
 
         ]);
@@ -87,7 +87,7 @@ class LocationController extends AbstractController
             return $this->redirectToRoute('location_show', ['locationID' => $locationID]);
         }
 
-        return $this->render('location/new.html.twig', [
+        return $this->render('Comptability/location/new.html.twig', [
             'location' => $location,
             'form' => $form->createView(),
 

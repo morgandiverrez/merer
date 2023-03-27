@@ -63,11 +63,11 @@ class InscriptionController extends AbstractController
         //on verifie qu'il reste des places
         
         if( $seance->getNombrePlace() <= $entityManager->getRepository(SeanceProfil::class)->CountBySeance($seance)[0][1]){
-            return $this->render('inscription/noPlace.html.twig');
+            return $this->render('Formation_/inscription/noPlace.html.twig');
         }
 
         if($seance->getDatetime() <= date('d/m/y H:i:s')){
-            return $this->render('inscription/close.html.twig');
+            return $this->render('Formation_/inscription/close.html.twig');
         }
 
         if($entityManager->getRepository(SeanceProfil::class)->findBy2ID($seance->getId(), $profil->getId())) {
@@ -129,7 +129,7 @@ class InscriptionController extends AbstractController
             return $this->redirectToRoute('seance_show', ['seanceID' => $seance->getID()]);
         }
 
-        return $this->render('inscription/ponctuelle.html.twig', [
+        return $this->render('Formation_/inscription/ponctuelle.html.twig', [
             'seanceProfil' => $seanceProfil,
             'form' => $form->createView(),
             'seance' => $seance ,
@@ -149,12 +149,12 @@ class InscriptionController extends AbstractController
         }
          // on verifie qu'il reste des places
         if (  $entityManager->getRepository(SeanceProfil::class)->CountByEvenement($evenement)[0][1] >= $evenement->getNombrePlace()) {
-            return $this->render('inscription/noPlace.html.twig');
+            return $this->render('Formation_/inscription/noPlace.html.twig');
         }
 
         //on verifie que les inscriptions ne sont pas cloturé
         if ($evenement->getDateFinInscription() <= date('y/m/d H:i:s')) {
-            return $this->render('inscription/close.html.twig');
+            return $this->render('Formation_/inscription/close.html.twig');
         }
 
         $seances = $evenement->getSeances(); //on recup tt les seances qui ont un groupe qui commence par la variable groupe
@@ -266,7 +266,7 @@ class InscriptionController extends AbstractController
         }
 
        
-        return $this->render('inscription/WEF.html.twig', [
+        return $this->render('Formation_/inscription/WEF.html.twig', [
             'seances'=> $seances,
             'evenement'=>$evenement,
             'seanceByCreneauAndParcours'=> $seanceByCreneauAndParcours,
@@ -307,7 +307,7 @@ class InscriptionController extends AbstractController
         $seance = $entityManager->getRepository(Seance::class)->findByID($seanceID)[0];
         if (empty($seance->getEvenement())) {
             $writer = new PngWriter();
-            $qrCode = QrCode::create('https://15.236.191.187/inscription/'. $seanceID)
+            $qrCode = QrCode::create('https://15.236.191.187/inscriptionFormation_//'. $seanceID)
                 ->setEncoding(new Encoding('UTF-8'))
                 ->setErrorCorrectionLevel(new ErrorCorrectionLevelLow())
                 ->setSize(120)
@@ -336,7 +336,7 @@ class InscriptionController extends AbstractController
 
             $dompdf->set_option('isHtml5ParserEnabled', true);
 
-            $html = $this->renderView('inscription/InscriptionQRCodePDF.html.twig', [
+            $html = $this->renderView('Formation_/inscription/InscriptionQRCodePDF.html.twig', [
                 'seance'=> $seance,
                 'qrCodes' => $qrCodes]);
 
@@ -352,7 +352,7 @@ class InscriptionController extends AbstractController
             
         } else {
             $writer = new PngWriter();
-            $qrCode = QrCode::create('https://15.236.191.187/inscription/' . $seanceID)
+            $qrCode = QrCode::create('https://15.236.191.187/inscriptionFormation_//' . $seanceID)
                 ->setEncoding(new Encoding('UTF-8'))
                 ->setErrorCorrectionLevel(new ErrorCorrectionLevelLow())
                 ->setSize(120)
@@ -379,7 +379,7 @@ class InscriptionController extends AbstractController
 
             $dompdf->set_option('isHtml5ParserEnabled', true);
 
-            $html = $this->renderView('inscription/InscriptionQRCodePDF.html.twig', [
+            $html = $this->renderView('Formation_/inscription/InscriptionQRCodePDF.html.twig', [
                 'seance' => $seance,
                 'qrCodes' => $qrCodes
             ]);

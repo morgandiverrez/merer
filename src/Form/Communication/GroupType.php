@@ -2,11 +2,13 @@
 
 namespace App\Form\Communication;
 
-use App\Entity\Communication\Group;
 use Doctrine\ORM\EntityRepository;
+use App\Entity\Communication\Group;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 class GroupType extends AbstractType
 {
@@ -14,11 +16,12 @@ class GroupType extends AbstractType
     {
         $builder
             ->add('name')
-            ->add('description', TextArea::class,[ 'required' =>false,])
-            ->add( 'contains', EntityType::class, [
+            ->add('description', TextareaType::class,[ 'required' =>false,])
+            ->add('include', EntityType::class, [
                 'class' => Group::class,
-                'multiple'=>false,
-                'required' => false,                
+                'multiple' => false,
+                'required' => false,
+                      
             ])
         ;
     }
@@ -28,5 +31,6 @@ class GroupType extends AbstractType
         $resolver->setDefaults([
             'data_class' => Group::class,
         ]);
+
     }
 }

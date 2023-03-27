@@ -39,7 +39,7 @@ class PaymentDeadlineController extends AbstractController
             return $this->redirectToRoute('invoice_show', ['invoiceID'=> $invoice->getId()]);
         }
 
-        return $this->render('paymentDeadline/new.html.twig', [
+        return $this->render('Comptability/paymentDeadline/new.html.twig', [
             'paymentDeadline' => $paymentDeadline,
             'form' => $form->createView(),
         ]);
@@ -64,7 +64,7 @@ class PaymentDeadlineController extends AbstractController
             return $this->redirectToRoute('invoice_show', ['invoiceID' => $invoice->getId()]);
         }
 
-        return $this->render('paymentDeadline/new.html.twig', [
+        return $this->render('Comptability/paymentDeadline/new.html.twig', [
             'paymentDeadline' => $paymentDeadline,
             'form' => $form->createView(),
         ]);

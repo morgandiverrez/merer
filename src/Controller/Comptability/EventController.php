@@ -35,7 +35,7 @@ class EventController extends AbstractController
                 $totals[$event->getId()] = $entityManager->getRepository(TransactionLine::class)->totalByEvent($event)['total'];
         }
         
-        return $this->render('event/showAll.html.twig', [
+        return $this->render('Comptability/event/showAll.html.twig', [
             'events' => $events,
             'totals' => $totals,
 
@@ -57,7 +57,7 @@ class EventController extends AbstractController
             $totalImpression[$impression->getId()] =(new ImpressionController)->impressionTotale( $entityManager, $impression->getId());
         }
 
-        return $this->render('event/show.html.twig', [
+        return $this->render('Comptability/event/show.html.twig', [
             'event' => $event,
             'total' => $total,
             'totalTransaction' => $totalTransaction,
@@ -90,7 +90,7 @@ class EventController extends AbstractController
             return $this->redirectToRoute('event_show', ['eventID' => $event->getId()]);
         }
 
-        return $this->render('event/new.html.twig', [
+        return $this->render('Comptability/event/new.html.twig', [
             'event' => $event,
             'form' => $form->createView(),
 
@@ -123,7 +123,7 @@ class EventController extends AbstractController
             return $this->redirectToRoute('event_show', ['eventID' => $eventID]);
         }
 
-        return $this->render('event/edit.html.twig', [
+        return $this->render('Comptability/event/edit.html.twig', [
             'event' => $event,
             'form' => $form->createView(),
 

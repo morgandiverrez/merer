@@ -60,7 +60,7 @@ class FormationController extends AbstractController
             }
         }
 
-        return $this->render('formation/showAll.html.twig', [     
+        return $this->render('Formation_/formation/showAll.html.twig', [     
             'formations' => $formations,
         ]);
     }
@@ -74,7 +74,7 @@ class FormationController extends AbstractController
         
         $formation = $entityManager->getRepository(Formation::class)->findById($formationID)[0];
        
-        return $this->render('formation/show.html.twig', [
+        return $this->render('Formation_/formation/show.html.twig', [
             'formation'=>$formation,
             
         ]);
@@ -99,7 +99,7 @@ class FormationController extends AbstractController
             
         }
 
-        return $this->render('formation/new.html.twig', [
+        return $this->render('Formation_/formation/new.html.twig', [
             'formation' => $formation,
             'form' => $form->createView(),
             
@@ -122,7 +122,7 @@ class FormationController extends AbstractController
             return $this->redirectToRoute('catalogue_show', [ 'formationID' => $formationID]);
         }
 
-        return $this->render('formation/edit.html.twig', [
+        return $this->render('Formation_/formation/edit.html.twig', [
             'formation' => $formation,
             'form' => $form->createView(),
             

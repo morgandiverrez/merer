@@ -34,7 +34,7 @@ class FundBoxController extends AbstractController
             $totals[$box->getName()] = $entityManager->getRepository(FundBox::class)->montantTotale($box->getId())[0]['total_amount'];
             if ($totals[$box->getName()] == null) $totals[$box->getName()] = 0;
         }
-        return $this->render('fundBox/showAll.html.twig', [
+        return $this->render('Comptability/fundBox/showAll.html.twig', [
             'fundBox' => $fundBoxs,
             'totals'=>$totals,
 

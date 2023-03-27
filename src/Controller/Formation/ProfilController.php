@@ -76,7 +76,7 @@ class ProfilController extends AbstractController
             }
         }
 
-        return $this->render('profil/showAll.html.twig', [
+        return $this->render('Formation_/profil/showAll.html.twig', [
             'profils' => $profils,
             
         ]);
@@ -113,7 +113,7 @@ class ProfilController extends AbstractController
                 array_push($totals, (new InvoiceController)->invoiceTotale($invoice));
             }
         }
-        return $this->render('profil/show.html.twig', [       
+        return $this->render('Formation_/profil/show.html.twig', [       
             'totals' => $totals,    
         ]);
     }
@@ -125,7 +125,7 @@ class ProfilController extends AbstractController
     {
         
         $profil = $entityManager->getRepository( Profil::class)->findByID($profilID)[0];
-        return $this->render('profil/showForFormateurice.html.twig', [
+        return $this->render('Formation_/profil/showForFormateurice.html.twig', [
             'profil' => $profil,
         ]);
     }
@@ -190,7 +190,7 @@ class ProfilController extends AbstractController
             return $this->redirectToRoute('profil_showForFormateurice', ['profilID' => $profil->getID()]);
         }
 
-        return $this->render('profil/edit.html.twig', [
+        return $this->render('Formation_/profil/edit.html.twig', [
             'profil' => $profil,
             'form' => $form->createView(),
             
@@ -267,7 +267,7 @@ class ProfilController extends AbstractController
             return $this->redirectToRoute('profil_show');
         }
 
-        return $this->render('profil/edit.html.twig', [
+        return $this->render('Formation_/profil/edit.html.twig', [
             'form' => $form->createView(),
             'profil' => $profil,
         ]);
@@ -296,7 +296,7 @@ class ProfilController extends AbstractController
         $inscriptions = $profil-> getSeanceProfil();
 
 
-        return $this->render('profil/listeFormationSuivie.html.twig', [
+        return $this->render('Formation_/profil/listeFormationSuivie.html.twig', [
             'profil' => $profil,
             'inscriptions' => $inscriptions,
         ]);
@@ -311,7 +311,7 @@ class ProfilController extends AbstractController
 
         $listeFormateurice = $entityManager->getRepository(User::class)->findAllUserWithProfilAndFormateurice();
  
-        return $this->render('profil/ListeFormateurice.html.twig', [
+        return $this->render('Formation_/profil/ListeFormateurice.html.twig', [
             'users' => $listeFormateurice,
             
         ]);
@@ -355,7 +355,7 @@ class ProfilController extends AbstractController
         }
 
 
-        return $this->render('profil/gestionRoles.html.twig', [
+        return $this->render('Formation_/profil/gestionRoles.html.twig', [
             'users' => $users,  
 
         ]);

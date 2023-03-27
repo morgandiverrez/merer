@@ -34,7 +34,7 @@ class EvenementController extends AbstractController
                 $evenements = array_intersect($evenements, $entityManager->getRepository(Evenement::class)->findAllByDescription($posts['description']));
             }
         }
-        return $this->render('evenement/showAll.html.twig', [
+        return $this->render('Formation_/evenement/showAll.html.twig', [
             'evenements' => $evenements,
 
         ]);
@@ -63,7 +63,7 @@ class EvenementController extends AbstractController
 
         
 
-        return $this->render('evenement/show.html.twig', [
+        return $this->render('Formation_/evenement/show.html.twig', [
             'evenement' => $evenement,
             'seanceByCreneauAndParcours'=> $seanceByCreneauAndParcours,
         ]);
@@ -150,7 +150,7 @@ class EvenementController extends AbstractController
             return $this->redirectToRoute('evenement_show', ['evenementID' => $evenement->getId()]);
         }
 
-        return $this->render('evenement/new.html.twig', [
+        return $this->render('Formation_/evenement/new.html.twig', [
             'evenement' => $evenement,
             'form' => $form->createView(),
 
@@ -240,7 +240,7 @@ class EvenementController extends AbstractController
         }
        
             $entityManager->flush();
-        return $this->render('evenement/edit.html.twig', [
+        return $this->render('Formation_/evenement/edit.html.twig', [
             'evenement' => $evenement,
             'form' => $form->createView(),
 

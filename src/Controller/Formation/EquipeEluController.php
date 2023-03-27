@@ -39,7 +39,7 @@ class EquipeEluController extends AbstractController
                 $equipeElus = array_intersect($equipeElus, $entityManager->getRepository(EquipeElu::class)->findAllByFedeFi($posts['fedeFi']));
             }
         }
-        return $this->render('equipe_elu/showAll.html.twig', [
+        return $this->render('Formation_/equipe_elu/showAll.html.twig', [
             'equipeElus' => $equipeElus,
             
         ]);
@@ -51,7 +51,7 @@ class EquipeEluController extends AbstractController
     {
         $equipeElu = $entityManager->getRepository(EquipeElu::class)->findById($equipeEluID)[0];
         
-        return $this->render('equipe_elu/show.html.twig', [
+        return $this->render('Formation_/equipe_elu/show.html.twig', [
             'equipeElu' => $equipeElu,
             
         ]);
@@ -73,7 +73,7 @@ class EquipeEluController extends AbstractController
             return $this->redirectToRoute('equipeElu_show', ['equipeEluID' => $equipeElu -> getId()]);
         }
 
-        return $this->render('equipe_elu/new.html.twig', [
+        return $this->render('Formation_/equipe_elu/new.html.twig', [
             'equipeElu' => $equipeElu,
             'form' => $form->createView(),
             
@@ -99,7 +99,7 @@ class EquipeEluController extends AbstractController
             return $this->redirectToRoute('equipeElu_show', ['equipeEluID' => $equipeEluID]);
         }
 
-        return $this->render('equipe_elu/edit.html.twig', [
+        return $this->render('Formation_/equipe_elu/edit.html.twig', [
             'equipeElu' => $equipeElu,
             'form' => $form->createView(),
             
