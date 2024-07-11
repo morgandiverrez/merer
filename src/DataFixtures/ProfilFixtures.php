@@ -70,7 +70,7 @@ class ProfilFixtures extends Fixture implements DependentFixtureInterface
         $profil2->setTelephone($this->faker->phoneNumber());
         $this->addReference('PROFIL_PREZ', $profil2);
 
-        $user2->setEMail('presidence@fedeb.net');
+        $user2->setEMail('presidence@*****.net');
         $user2->setProfil($profil2);
         $user2->setRoles(['ROLE_ADMIN']);
         $password = $this->hasher->hashPassword($user, 'password');
@@ -91,7 +91,7 @@ class ProfilFixtures extends Fixture implements DependentFixtureInterface
         $profil2a->setTelephone($this->faker->phoneNumber());
         $this->addReference('PROFIL_TRESO', $profil2a);
 
-        $user2a->setEMail('treso@fedeb.net');
+        $user2a->setEMail('treso@*****.net');
         $user2a->setProfil($profil2a);
         $user2a->setRoles(['ROLE_TRESO']);
         $user2a->setPassword($password);
@@ -111,7 +111,7 @@ class ProfilFixtures extends Fixture implements DependentFixtureInterface
         $profil2b->setTelephone($this->faker->phoneNumber());
         $this->addReference('PROFIL_FORMA', $profil2b);
 
-        $user2b->setEMail('formation@fedeb.net');
+        $user2b->setEMail('formation@*****.net');
         $user2b->setProfil($profil2b);
         $user2b->setRoles(['ROLE_FORMA']);
         $user2b->setPassword($password);
@@ -134,7 +134,7 @@ class ProfilFixtures extends Fixture implements DependentFixtureInterface
         $this->addReference('PROFIL_FORMATEURICE', $profil3);
 
 
-        $user3->setEMail('formateurice@fedeb.net');
+        $user3->setEMail('formateurice@*****.net');
         $user3->setProfil($profil3);
         $user3->setRoles(['ROLE_FORMATEURICE']);
         $user3->setPassword($password);
@@ -157,7 +157,7 @@ class ProfilFixtures extends Fixture implements DependentFixtureInterface
         $this->addReference('PROFIL_USER', $profil4);
 
 
-        $user4->setEMail('user@fedeb.net');
+        $user4->setEMail('user@*****.net');
         $user4->setProfil($profil4);
         $user4->setRoles(['ROLE_USER']);
         $user4->setPassword($password);
@@ -178,7 +178,7 @@ class ProfilFixtures extends Fixture implements DependentFixtureInterface
       
         $this->addReference('PROFIL_5b', $profil5);
 
-        $user5->setEMail('bf@fedeb.net');
+        $user5->setEMail('bf@*****.net');
         $user5->setProfil($profil5);
         $user5->setRoles(['ROLE_BF']);
         $user5->setPassword($password);

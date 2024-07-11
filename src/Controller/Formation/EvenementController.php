@@ -115,7 +115,7 @@ class EvenementController extends AbstractController
                     $profil->addSeance($seance);
                     $entityManager->persist($profil);
 
-                    $sender_email ='no-reply@fedeb.net';
+                    $sender_email ='no-reply@*****.net';
                     $recipient_emails = [$profil->getUser()->getEmail()];
 
                     $subject = 'Merer - Formation alloué';
@@ -204,7 +204,7 @@ class EvenementController extends AbstractController
                     $profil->addSeance($seance);
                     $entityManager->persist($profil);
 
-                    $sender_email ='no-reply@fedeb.net';
+                    $sender_email ='no-reply@*****.net';
                     $recipient_emails = [$profil->getUser()->getEmail()];
 
                     $subject = 'Merer - Formation alloué';

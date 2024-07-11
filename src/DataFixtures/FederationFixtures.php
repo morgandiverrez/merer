@@ -15,7 +15,7 @@ class FederationFixtures extends Fixture
         $this->faker = Factory::create();
 
         $federation = new Federation();
-        $federation->setSocialReason('Fédé B');
+        $federation->setSocialReason('******');
         $federation->setStatutoryObject($this->faker->sentence());
         $federation->setCreationDate($this->faker->datetime());
         $federation->setRepresentedBy('Baptiste LE MASSON');

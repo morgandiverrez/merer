@@ -87,7 +87,7 @@ class MailRetourCommand extends Command
             foreach($seance->getSeanceProfil() as $seanceProfil){
                 $profil = $seanceProfil->getProfil();
                 if(  $this->entityManager->getRepository(Retour::class)->findBy2ID($seance->getId(), $profil->getId()) == []){
-                    $sender_email = 'no-reply@fedeb.net';
+                    $sender_email = '****@******';
                     $recipient_emails = [$profil->getUser()->getEmail()];
                     $subject = 'Merer - Retour de formation';
                     $plaintext_body = 'Retour de formation';
@@ -105,7 +105,7 @@ class MailRetourCommand extends Command
                                     'Data' => " <p>Bonjour,</p>
                                                 <p>Suite à la formation ".$seance->getName()." du ".$seance->getDateTime()->format('d/m/Y à H:i').".</p>
                                                 <p>Veuillez répondre au formulaire de retour via ce <a href='https://15.236.191.187/retour/new/{{seance.getId()}}'>lien</a>.</p>
-                                                <p>Lien pour vous connecter à la plateforme Merer <a href='https://15.236.191.187/'>Merer - Fédé B</a>.</p>"
+                                                <p>Lien pour vous connecter à la plateforme Merer <a href='https://15.236.191.187/'>Merer - ******</a>.</p>"
                                 ],
                                 'Text' => [
                                     'Charset' => $char_set,

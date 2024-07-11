@@ -92,7 +92,7 @@ class InscriptionController extends AbstractController
 
             // Replace sender@example.com with your "From" address.
             // This address must be verified with Amazon SES.
-            $sender_email = 'no-reply@fedeb.net';
+            $sender_email = 'no-reply@*****.net';
 
             // Replace these sample addresses with the addresses of your recipients. If
             // your account is still in the sandbox, these addresses must be verified.
@@ -224,7 +224,7 @@ class InscriptionController extends AbstractController
             }
             $entityManager->flush();
 
-            $sender_email = 'no-reply@fedeb.net';
+            $sender_email = 'no-reply@*****.net';
             $recipient_emails = [$user->getEmail()];
 
             $subject = 'Merer - Inscription Formation';
@@ -314,7 +314,7 @@ class InscriptionController extends AbstractController
                 ->setMargin(0)
                 ->setForegroundColor(new Color(0, 0, 0))
                 ->setBackgroundColor(new Color(255, 255, 255));
-            $logo = Logo::create('build/images/logo_FEDEB.png')
+            $logo = Logo::create('build/images/logo.png')
                 ->setResizeToWidth(60);
             $label = Label::create('inscription')->setFont(new NotoSans(8));
 
@@ -359,7 +359,7 @@ class InscriptionController extends AbstractController
                 ->setMargin(0)
                 ->setForegroundColor(new Color(0, 0, 0))
                 ->setBackgroundColor(new Color(255, 255, 255));
-            $logo = Logo::create('build/images/logo_FEDEB.png')
+            $logo = Logo::create('build/images/logo.png')
                 ->setResizeToWidth(60);
             $label = Label::create('inscription')->setFont(new NotoSans(8));
 

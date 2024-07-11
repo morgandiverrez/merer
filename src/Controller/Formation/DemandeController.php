@@ -95,7 +95,7 @@ class DemandeController extends AbstractController
             $entityManager->flush();
 
             
-            $sender_email = 'no-reply@fedeb.net';
+            $sender_email = 'no-reply@*****.net';
             $recipient_emails = ['diverrezm@gmail.com'];
             $subject = 'Merer - Demande Formation';
             $plaintext_body = 'demande formation' ;

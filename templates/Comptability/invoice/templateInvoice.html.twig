@@ -1714,14 +1714,14 @@ hXcS2sYPcYLmAwAcku4f0XwBAOBbsHEPVgcAAHQfAADQfQAA+CIkFGMBABwUlWpg/jsAAA5G948z
             <tr><th class="mx-5">{{ federation.socialReason }}</th><th class="mx-5 ">Adresse de facturation :</th></tr>
             <tr><th class="mx-5">{{ institution.location.adress }}</th><th class="mx-5 ">{{ invoice.customer.contacts[0].name }} <b>{{ invoice.customer.contacts[0].lastName }}</b></th></tr>
             <tr><th class="mx-5">{{ institution.location.zipCode }} {{ institution.location.city }}</th><th class="mx-5">{{ invoice.customer.location.adress }}</th></tr>
-            <tr><th class="mx-5">Email : tresorerie@fedeb.net</th><th class="mx-5 ">{{ invoice.customer.location.zipCode }} {{ invoice.customer.location.city }}</th></tr>
+            <tr><th class="mx-5">Email : tresorerie@*****.net</th><th class="mx-5 ">{{ invoice.customer.location.zipCode }} {{ invoice.customer.location.city }}</th></tr>
             <tr><th class="mx-5">Tel : 06-52-32-97-64</th><th class="mx-5">  {% if invoice.customer.administrativeidentifier.administrativeidentifierId is defined %}
                         {% set j = "E" %}
                     {% else %}
                         {% set j ="P" %}
                     {% endif %}
                     {{ j }}-{{  invoice.customer.chartofaccounts.code|slice(4) }}</th></tr>
-            <tr><th class="mx-5">Site web : <a href="https://fedeb.net/" class="text-decoration-none text-dark">fedeb.net</a></th><th></th></tr>
+            <tr><th class="mx-5">Site web : <a href="https://******.net/" class="text-decoration-none text-dark">******.net</a></th><th></th></tr>
             </tbody>
         </table>
 

@@ -238,7 +238,7 @@ class ResetPasswordController extends AbstractController
             return $this->redirectToRoute('passwordForgotapp_forgot_password_request');
         }
         
-        $sender_email = 'no-reply@fedeb.net';
+        $sender_email = 'no-reply@*****.net';
          $recipient_emails = [$emailFormData];
         $subject = 'Merer - Reset Password';
         $plaintext_body = 'reset Password' ;
@@ -285,7 +285,7 @@ class ResetPasswordController extends AbstractController
         $resetToken = $this->resetPasswordHelper->generateResetToken($user);
       
 
-        $sender_email = 'no-reply@fedeb.net';
+        $sender_email = 'no-reply@*****.net';
          $recipient_emails = [$user->getEmail()];
         $subject = 'Merer - Reset Password';
         $plaintext_body = 'reset Password' ;

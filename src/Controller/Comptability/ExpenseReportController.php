@@ -387,7 +387,7 @@ class ExpenseReportController extends AbstractController
         $entityManager->persist($expenseReport);
         $entityManager->flush();
 
-                $sender_email = 'no-reply@fedeb.net';
+                $sender_email = 'no-reply@*****.net';
         $recipient_emails = [$expenseReport->getSupplier()->getCustomer()->getUser()->getEmail()];
 
         $subject = 'Merer - Confirmation NDF';
@@ -432,7 +432,7 @@ class ExpenseReportController extends AbstractController
             ->setMargin(0)
             ->setForegroundColor(new Color(0, 0, 0))
             ->setBackgroundColor(new Color(255, 255, 255));
-        $logo = Logo::create('build/images/logo_FEDEB.png')
+        $logo = Logo::create('build/images/logo.png')
         ->setResizeToWidth(60);
         $label = Label::create('NDF')->setFont(new NotoSans(8));
 
@@ -474,7 +474,7 @@ class ExpenseReportController extends AbstractController
         $expenseReport = $entityManager->getRepository(ExpenseReport::class)->findById($expenseReportID)[0];
         
        
-        $federation = $entityManager->getRepository(Federation::class)->findBySocialReason("Fédé B")[0];
+        $federation = $entityManager->getRepository(Federation::class)->findBySocialReason("******")[0];
      
         $institution = $entityManager->getRepository(Institution::class)->findHeadquarterById($federation->getId());
 
