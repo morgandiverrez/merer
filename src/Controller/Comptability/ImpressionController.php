@@ -49,7 +49,7 @@ class ImpressionController extends AbstractController
                 ->setMargin(0)
                 ->setForegroundColor(new Color(0, 0, 0))
                 ->setBackgroundColor(new Color(255, 255, 255));
-            $logo = Logo::create('build/images/logo_FEDEB.png')
+            $logo = Logo::create('build/images/logo.png')
             ->setResizeToWidth(60);
             $label = Label::create('impression')->setFont(new NotoSans(8));
 
@@ -216,7 +216,7 @@ class ImpressionController extends AbstractController
             $entityManager->flush();
             
             try{
-                $sender_email ='no-reply@fedeb.net';
+                $sender_email ='no-reply@*****.net';
                 $recipient_emails = [$impression->getCustomer()->getUser()->getEmail()];
 
                 $subject = 'Merer - Nouvelle impression';

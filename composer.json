@@ -45,6 +45,7 @@
         "symfony/runtime": "6.1.*",
         "symfony/security-bundle": "6.1.*",
         "symfony/serializer": "6.1.*",
+        "symfony/stimulus-bundle": "^2.18",
         "symfony/string": "6.1.*",
         "symfony/translation": "6.1.*",
         "symfony/twig-bundle": "6.1.*",

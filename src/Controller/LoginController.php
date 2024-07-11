@@ -79,8 +79,8 @@ class LoginController extends AbstractController
            if ($request->isMethod('post')) {
             $posts = $request->request->all();
 
-            $sender_email ='no-reply@fedeb.net';
-                $recipient_emails = ['diverrezm@gmail.com', 'numerique@fedeb.net'];
+            $sender_email ='no-reply@*****.net';
+                $recipient_emails = ['diverrezm@gmail.com', 'numerique@*****.net'];
 
                 $subject = 'Merer - Support';
                 $plaintext_body = 'Support Merer' ;

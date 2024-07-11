@@ -37,7 +37,7 @@ class RegistrationController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
 
-        $sender_email = 'no-reply@fedeb.net';
+        $sender_email = 'no-reply@*****.net';
         $recipient_emails = [$form->get('email')->getData()];
 
         $subject = 'Merer - Inscription';
@@ -98,7 +98,7 @@ class RegistrationController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
 
-        $sender_email = 'no-reply@fedeb.net';
+        $sender_email = 'no-reply@*****.net';
         $recipient_emails = [$form->get('email')->getData()];
 
         $subject = 'Merer - Inscription';

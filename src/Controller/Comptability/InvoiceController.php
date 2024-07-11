@@ -199,7 +199,7 @@ class InvoiceController extends AbstractController
         $entityManager->persist($invoice);
         $entityManager->flush();
 
-        $sender_email = 'no-reply@fedeb.net';
+        $sender_email = 'no-reply@*****.net';
         $recipient_emails = [$invoice->getCustomer()->getUser()->getEmail()];
 
         $subject = 'Merer - Nouvelle Facture';
@@ -268,7 +268,7 @@ class InvoiceController extends AbstractController
         if($user != $invoice->getCustomer()->getUser() and ! $this->isGranted("ROLE_TRESO")){
             return $this->redirectToRoute('profil_show');
         }
-        $federation = $entityManager->getRepository(Federation::class)->findBySocialReason("Fédé B")[0];
+        $federation = $entityManager->getRepository(Federation::class)->findBySocialReason("******")[0];
      
         $institution = $entityManager->getRepository(Institution::class)->findHeadquarterById($federation->getId());
 
