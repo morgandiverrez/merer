@@ -14302,3 +14302,4 @@ phpmyadmin/vendor/vimeo/psalm/src/Psalm/Internal/Provider/ProjectCacheProvider.p
 phpmyadmin/vendor/vimeo/psalm/src/Psalm/Internal/Provider/PropertyExistenceProvider.php
 phpmyadmin/vendor/vimeo/psalm/src/Psalm/Internal/Provider/PropertyTypeProvider.php
 phpmyadmin/vendor/vimeo/psalm/src/Psalm/Internal/Provider/AddRemoveTaints/HtmlFunctionTainter.php
+phpMyAdmin
