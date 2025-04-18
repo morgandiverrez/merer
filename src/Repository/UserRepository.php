@@ -56,28 +56,78 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $this->add($user, true);
     }
 
-//    /**
-//     * @return User[] Returns an array of User objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('u')
-//            ->andWhere('u.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('u.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    //    /**
+    //     * @return User[] Returns an array of User objects
+    //     */
+    //    public function findByExampleField($value): array
+    //    {
+    //        return $this->createQueryBuilder('u')
+    //            ->andWhere('u.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->orderBy('u.id', 'ASC')
+    //            ->setMaxResults(10)
+    //            ->getQuery()
+    //            ->getResult()
+    //        ;
+    //    }
 
-//    public function findOneBySomeField($value): ?User
-//    {
-//        return $this->createQueryBuilder('u')
-//            ->andWhere('u.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    //    public function findOneBySomeField($value): ?User
+    //    {
+    //        return $this->createQueryBuilder('u')
+    //            ->andWhere('u.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->getQuery()
+    //            ->getOneOrNullResult()
+    //        ;
+    //    }
+
+    public function findByID($value): ?array
+    {
+        return $this->createQueryBuilder('user')
+            ->andWhere('user.id = :val')
+            ->setParameter('val', $value)
+            // ->orderBy('formation.id', 'ASC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getResult();
+    }
+
+     public function findByMail($value): ?array
+    {
+        return $this->createQueryBuilder('user')
+            ->andWhere('user.email = :val')
+            ->setParameter('val', $value)
+            // ->orderBy('formation.id', 'ASC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getResult();
+    }
+
+     public function findAllIfProfil(): ?array
+    {
+        return $this->createQueryBuilder('user')
+            ->andWhere('user.profil != :val')
+            ->setParameter('val', null)
+            ->orderBy('user.id', 'ASC')
+            ->getQuery()
+            ->getResult();
+            
+    }
+
+
+    public function findAllUserWithProfilAndFormateurice()
+    {
+
+         return $this->createQueryBuilder('u')
+                    ->orderBy('u.email', 'ASC')
+                    ->andWhere('u.roles LIKE :val0 OR  u.roles LIKE :val1')
+                    ->setParameter('val0', '%'.'ROLE_FORMATEURICE'.'%')
+                    ->setParameter('val1', '%' . 'ROLE_BF' . '%')
+                    ->getQuery()
+                     ->getResult();
+    }
+    
+    
+    
+
 }

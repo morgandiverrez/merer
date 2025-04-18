@@ -2,14 +2,17 @@
 
 namespace App\Entity;
 
-use App\Repository\UserRepository;
+use App\Entity\Formation\Profil;
+use App\Entity\Comptability\Customer;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\UserRepository;
+use App\Entity\Communication\Editor;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-#[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
+#[UniqueEntity(fields: ['email'], message: 'Il y a déjà un compte avec cet email')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -26,10 +29,25 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'string')]
     private $password;
 
+    #[ORM\OneToOne(inversedBy: 'user', targetEntity: Profil::class, cascade: ['persist', 'remove'])]
+    private $profil = null;
+
+    #[ORM\OneToOne(inversedBy: 'user', cascade: ['persist', 'remove'])]
+    private ?Customer $customer = null;
+
+    #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
+    private ?Editor $editor = null;
+
     public function getId(): ?int
     {
         return $this->id;
     }
+
+    public function  __toString()
+    {
+        return $this->getEmail();
+    }
+
 
     public function getEmail(): ?string
     {
@@ -95,4 +113,47 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
     }
+
+    public function getProfil(): ?profil
+    {
+        return $this->profil;
+    }
+
+    public function setProfil(profil $profil): self
+    {
+        $this->profil = $profil;
+
+        return $this;
+    }
+
+    public function getCustomer(): ?Customer
+    {
+        return $this->customer;
+    }
+
+    public function setCustomer(?Customer $customer): self
+    {
+        $this->customer = $customer;
+
+        return $this;
+    }
+
+    public function getEditor(): ?Editor
+    {
+        return $this->editor;
+    }
+
+    public function setEditor(Editor $editor): self
+    {
+        // set the owning side of the relation if necessary
+        if ($editor->getUser() !== $this) {
+            $editor->setUser($this);
+        }
+
+        $this->editor = $editor;
+
+        return $this;
+    }
+
+  
 }
