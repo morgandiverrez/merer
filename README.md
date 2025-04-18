@@ -53,7 +53,12 @@ Pour installer et configurer ce projet localement, suivez ces étapes :
     npm install
     ```
 
-6. Démarrez le serveur de développement :
+6. Installez les dépendances frontend :
+    ```bash
+    npm run dev
+    ```
+
+7. Démarrez le serveur de développement :
     ```bash
     symfony server:start
     ```
